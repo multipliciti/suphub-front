@@ -3,28 +3,40 @@ import s from './Modals.module.scss';
 import { useAppSelector } from '@/redux/hooks';
 import { Login } from './Login';
 import { ForgotPassword } from './ForgotPassword';
-import { CheckEmail } from './ CheckEmail/CheckEmail';
+import { CheckEmail } from './ CheckEmail';
+import { Registration } from './Registration';
+import { classNames } from '@/utils/classNames';
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
 	return (
 		<>
-			{modal === 'login' && (
-				<div className={s.wrapper}>
-					<Login />
-				</div>
-			)}
+			<div className={classNames(s.wrapper, modal === 'login' && s.wrapper_active)}>
+				<Login />
+			</div>
 
-			{modal === 'ForgotPassword' && (
-				<div className={s.wrapper}>
-					<ForgotPassword />
-				</div>
-			)}
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'ForgotPassword' && s.wrapper_active
+				)}
+			>
+				<ForgotPassword />
+			</div>
 
-			{modal === 'checkEmail' && (
-				<div className={s.wrapper}>
-					<CheckEmail />
-				</div>
-			)}
+			<div
+				className={classNames(s.wrapper, modal === 'checkEmail' && s.wrapper_active)}
+			>
+				<CheckEmail />
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'registration' && s.wrapper_active
+				)}
+			>
+				<Registration />
+			</div>
 		</>
 	);
 };

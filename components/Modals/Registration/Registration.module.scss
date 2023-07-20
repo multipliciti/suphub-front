@@ -1,0 +1,99 @@
+.description {
+	display: flex;
+	gap: 8px;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 24px;
+	.title {
+		color: #0f172a;
+		text-align: center;
+
+		font-family: Lato;
+		font-size: 24px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 32px;
+	}
+
+	.subtitle {
+		color: #64748b;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 24px;
+
+		&_login {
+			display: inline-block;
+			margin-left: 8px;
+			color: #4259ed;
+			font-family: Lato;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 24px;
+		}
+	}
+}
+
+.names {
+	display: flex;
+	gap: 16px;
+
+	.title {
+		color: #0f172a;
+
+		font-family: Lato;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: 20px;
+	}
+
+	&_wrapper {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		flex-grow: 1;
+	}
+
+	&_label {
+		transition: border 0.3s ease;
+		display: flex;
+		align-items: center;
+
+		position: relative;
+		border-radius: 8px;
+		border: 1px solid #cbd5e1;
+		background: #fff;
+		max-width: 172px;
+		padding: 10px 15px;
+	}
+	&_input::placeholder {
+		color: #94a3b8;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 24px;
+	}
+	&_input {
+		color: #0f172a;
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 24px;
+
+		height: 24px;
+		outline: none;
+
+		border: none;
+		top: 0;
+		bottom: 0;
+		left: 10px;
+		max-width: 90%;
+	}
+}

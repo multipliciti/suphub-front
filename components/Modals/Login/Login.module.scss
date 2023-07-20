@@ -70,6 +70,19 @@
 	border-radius: 8px;
 	margin-top: 24px;
 	border: 1px solid #fdd6d3;
+	max-height: 0px;
+	opacity: 0;
+	transition: height 0.4s ease, opacity 0.3s ease;
+	position: absolute;
+	pointer-events: none;
+
+	&_active {
+		position: relative;
+		opacity: 1;
+		max-height: 100px;
+		transition-delay: 0s;
+		pointer-events: all;
+	}
 
 	&_text {
 		color: #020617;
@@ -121,6 +134,7 @@
 		}
 
 		&_label {
+			transition: border 0.3s ease;
 			display: flex;
 			justify-content: space-between;
 			position: relative;
@@ -140,7 +154,7 @@
 	}
 
 	.password {
-		margin-top: 16px;
+		margin-top: 12px;
 		&_text {
 			color: #0f172a;
 			font-family: Lato;
@@ -171,6 +185,7 @@
 		}
 
 		&_label {
+			transition: border 0.3s ease;
 			display: flex;
 			justify-content: space-between;
 			position: relative;
@@ -219,7 +234,45 @@
 		width: 100%;
 		border: none;
 		border-radius: 8px;
-		background: #4259ed;
 		cursor: pointer;
+		transition: background-color 0.3s ease, color 0.3s ease;
+
+		&_valid {
+			background: #4259ed;
+			color: #fff;
+		}
+	}
+
+	.label_invalid {
+		border: solid 1px #f52419;
+	}
+
+	.invalid {
+		margin-top: 8px;
+		display: flex;
+		align-items: center;
+		flex-direction: row;
+		gap: 4px;
+		color: #f52419;
+
+		font-family: Lato;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 20px;
+		height: 0px;
+		opacity: 0;
+		transition: height 0.3s ease, opacity 0.3s ease;
+		visibility: hidden;
+
+		&_active {
+			visibility: visible;
+			height: 10px;
+			opacity: 1;
+		}
+
+		&_password {
+			color: #020617;
+		}
 	}
 }

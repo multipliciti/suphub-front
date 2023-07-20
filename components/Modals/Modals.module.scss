@@ -1,4 +1,5 @@
 .wrapper {
+	z-index: 1000;
 	position: absolute;
 	height: 100vh;
 	width: 100vw;
@@ -8,4 +9,40 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+
+	&_layout {
+		padding-top: 16px;
+		padding-left: 36px;
+		padding-right: 36px;
+		padding-bottom: 48px;
+		border-radius: 12px;
+		background: #fff;
+		min-width: 480px;
+
+		.modal_header {
+			display: flex;
+			align-items: center;
+			width: 100%;
+			margin-bottom: 32px;
+			.logo {
+				flex-grow: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.close {
+				cursor: pointer;
+			}
+		}
+	}
+
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.3s ease;
+
+	&_active {
+		opacity: 1;
+		pointer-events: all;
+	}
 }
