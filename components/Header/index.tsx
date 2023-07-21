@@ -25,7 +25,14 @@ export const Header = () => {
 						>
 							Log in
 						</li>
-						<li className={s.signup}>Sign up</li>
+						<li
+							onClick={() => {
+								dispatch(setModal('registration'));
+							}}
+							className={s.signup}
+						>
+							Sign up
+						</li>
 					</ul>
 				</div>
 			</div>

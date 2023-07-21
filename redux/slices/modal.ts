@@ -13,7 +13,7 @@ interface CounterState {
 
 const initialState: CounterState = {
 	switchModal: false,
-	modal: 'registration',
+	modal: '',
 };
 
 const modalSlice = createSlice({
