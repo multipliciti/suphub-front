@@ -19,14 +19,6 @@ export const ResetPassword = () => {
 			>
 				<ResetForm />
 			</div>
-			<div
-				className={classNames(
-					s.wrapper,
-					modal === 'reset sucsess' && s.wrapper_active
-				)}
-			>
-				<Success />
-			</div>
 		</>
 	);
 };

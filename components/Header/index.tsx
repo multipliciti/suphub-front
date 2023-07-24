@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import '@/styles/globals.scss';
 import s from './Header.module.scss';
-import { setModal, switchModal } from '@/redux/slices/modal';
+import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 //img
 import logo from '@/imgs/Header/Logo.svg';

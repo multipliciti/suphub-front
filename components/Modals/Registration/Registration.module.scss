@@ -25,6 +25,7 @@
 		line-height: 24px;
 
 		&_login {
+			cursor: pointer;
 			display: inline-block;
 			margin-left: 8px;
 			color: #4259ed;
@@ -67,9 +68,13 @@
 		border-radius: 8px;
 		border: 1px solid #cbd5e1;
 		background: #fff;
-		max-width: 172px;
 		padding: 10px 15px;
+
+		&:focus-within {
+			border-color: #4259ed;
+		}
 	}
+
 	&_input::placeholder {
 		color: #94a3b8;
 
@@ -79,6 +84,7 @@
 		font-weight: 400;
 		line-height: 24px;
 	}
+
 	&_input {
 		color: #0f172a;
 		font-family: Lato;
@@ -95,5 +101,223 @@
 		bottom: 0;
 		left: 10px;
 		max-width: 90%;
+	}
+}
+
+.auth {
+	margin-top: 16px;
+	position: relative;
+	display: flex;
+	gap: 16px;
+	flex-direction: column;
+
+	&_email {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	&_password {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.title {
+		color: #0f172a;
+		font-variant-numeric: lining-nums proportional-nums;
+
+		font-family: Lato;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: 20px;
+	}
+
+	&_label {
+		transition: border 0.3s ease;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 10px 12px;
+		width: 100%;
+		border-radius: 8px;
+		border: 1px solid #cbd5e1;
+		background: #fff;
+
+		&:focus-within {
+			border-color: #4259ed;
+		}
+
+		.input {
+			max-height: 24px;
+			outline: none;
+			border: none;
+			width: 100%;
+
+			color: #0f172a;
+			font-family: Lato;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 24px;
+		}
+
+		.input::placeholder {
+			color: #94a3b8;
+
+			font-family: Lato;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 24px;
+		}
+
+		.image {
+			cursor: pointer;
+		}
+	}
+}
+
+.btn {
+	&_send {
+		transition: background-color 0.3s ease;
+		border: none;
+		outline: none;
+		cursor: pointer;
+		display: flex;
+		padding: 10px 20px;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		border-radius: 8px;
+		margin-top: 24px;
+		width: 100%;
+		background: #e2e8f0;
+
+		color: #94a3b8;
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 24px;
+
+		&_active {
+			background: #4259ed;
+			color: #fff;
+		}
+	}
+
+	&_create {
+		border: none;
+		outline: none;
+		cursor: pointer;
+		display: flex;
+		padding: 10px 20px;
+		justify-content: center;
+		align-items: center;
+		gap: 8px;
+		border-radius: 8px;
+		margin-top: 24px;
+		background: #2dce7c;
+		width: 100%;
+		color: #1e293b;
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 24px;
+	}
+}
+
+.polici {
+	margin-top: 16px;
+	max-width: 408px;
+	color: #64748b;
+	text-align: center;
+	font-family: Lato;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 24px;
+
+	&_span {
+		cursor: pointer;
+		color: #4259ed;
+	}
+}
+
+.split {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 24px;
+	margin-top: 24px;
+	.text {
+		color: #64748b;
+		text-align: center;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 24px;
+		position: relative;
+
+		&::before,
+		&::after {
+			content: '';
+			position: absolute;
+			bottom: 50%;
+			width: 45%;
+			height: 1px;
+			background-color: #e2e8f0;
+		}
+
+		&::before {
+			left: 0;
+		}
+
+		&::after {
+			right: 0;
+		}
+	}
+}
+
+//validation
+
+.icon_invalid {
+	transition: opacity 0.3s ease;
+	opacity: 0;
+
+	&_active {
+		opacity: 1;
+	}
+}
+
+.names_label_invalid {
+	border: 1px solid red;
+}
+
+.password {
+	display: flex;
+	gap: 4px;
+	align-items: center;
+	opacity: 0;
+	transition: opacity 0.3s ease, height 0.3s ease;
+	height: 0px;
+
+	&_invalid {
+		opacity: 1;
+		height: auto;
+
+		&_text {
+			color: #0f172a;
+
+			font-family: Lato;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 20px;
+		}
 	}
 }

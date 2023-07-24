@@ -7,16 +7,19 @@ import { classNames } from '@/utils/classNames';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { LayoutModal } from '../layout';
+import { isEmail } from './validation';
+import { isPassword } from './validation';
 //imgs
 import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 import modal_close from '@/imgs/Modal/Modal_close.svg';
 import modal_email from '@/imgs/Modal/email.svg';
 import modal_password from '@/imgs/Modal/pasword.svg';
 import modal_eye from '@/imgs/Modal/eye.svg';
-import modal_incorrect from '@/imgs/Modal/Login/incorrect.svg';
-import modal_invalid from '@/imgs/Modal/ForgotPassword/invalid.svg';
+import modal_done from '@/imgs/Modal/done.svg';
 import password_invalid from '@/imgs/Modal/password_invalid.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
+import invalid_icon from '@/imgs/Modal/invalid_icon.svg';
+import close_eye from '@/imgs/Modal/close_eye.svg';
 
 interface FormType {
 	email: string;
@@ -25,8 +28,6 @@ interface FormType {
 
 export const Login: React.FC = () => {
 	const dispatch = useAppDispatch();
-	const [email, setEmail] = useState<string>('');
-	const [password, setPassword] = useState<string>('');
 	const [incorrect, setIncorrect] = useState<boolean>(true);
 	const [hidePassword, setHidePassword] = useState<boolean>(false);
 
@@ -34,11 +35,10 @@ export const Login: React.FC = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
-		trigger,
 		getValues,
 	} = useForm({
 		defaultValues: { email: '', password: '' },
-		mode: 'onBlur',
+		mode: 'onChange',
 		shouldFocusError: true,
 	});
 
@@ -57,25 +57,18 @@ export const Login: React.FC = () => {
 		console.log('Form Errors:', errors);
 	};
 
-	const isEmail = (data: string) => {
-		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-		return emailRegex.test(data);
-	};
-
-	const isPassword = (data: string) => {
-		return data.length < 8 ? false : true;
-	};
-
-	const onChangeisPassword = (data: string) => {
-		trigger('password');
-	};
-
 	return (
 		<LayoutModal>
 			<div className={s.content}>
 				<h3 className={s.title}>Welcome back</h3>
 				<p className={s.subtitle}>
-					New to Suphub? <span className={s.signup}>Signup</span>
+					New to Suphub?
+					<span
+						onClick={() => dispatch(setModal('registration'))}
+						className={s.signup}
+					>
+						Signup
+					</span>
 				</p>
 			</div>
 
@@ -108,17 +101,32 @@ export const Login: React.FC = () => {
 						/>
 
 						<input
-							{...register('email', { required: true, validate: isEmail })}
-							value={email}
+							{...register('email', { validate: isEmail })}
 							className={s.email_input}
 							id="email"
 							type="text"
-							onChange={(e) => {
-								setEmail(e.target.value);
-							}}
+						/>
+
+						<Image
+							className={classNames(
+								s.icon_invalid,
+								errors?.email && s.icon_invalid_active,
+								getValues('email').length > 0 &&
+									isEmail(getValues('email')) &&
+									s.icon_invalid_active
+							)}
+							src={
+								getValues('email').length > 0 && isEmail(getValues('email'))
+									? modal_done
+									: invalid_icon
+							}
+							alt="invalid_icon"
+							width={20}
+							height={20}
 						/>
 					</label>
-					<div className={classNames(s.invalid, errors?.email && s.invalid_active)}>
+
+					{/* <div className={classNames(s.invalid, errors?.email && s.invalid_active)}>
 						<Image
 							className={s.invalid_image}
 							src={modal_invalid}
@@ -127,7 +135,7 @@ export const Login: React.FC = () => {
 							height={12}
 						/>
 						<span>Please enter a valid email</span>
-					</div>
+					</div> */}
 				</div>
 
 				<div className={s.password}>
@@ -146,7 +154,7 @@ export const Login: React.FC = () => {
 								setHidePassword(!hidePassword);
 							}}
 							className={`${s.label_image} ${s.label_eye}`}
-							src={modal_eye}
+							src={hidePassword ? close_eye : modal_eye}
 							alt="modal_eye"
 							width={20}
 							height={20}
@@ -156,13 +164,9 @@ export const Login: React.FC = () => {
 								required: true,
 								validate: isPassword,
 							})}
-							// value={password}
 							className={s.password_input}
 							id="password"
 							type={hidePassword ? 'password' : 'text'}
-							// onChange={(e) => {
-							// 	onChangeisPassword(e.target.value);
-							// }}
 						/>
 					</label>
 					<div
@@ -183,7 +187,7 @@ export const Login: React.FC = () => {
 				</div>
 
 				<span
-					onClick={() => dispatch(setModal('ForgotPassword'))}
+					onClick={() => dispatch(setModal('forgotPassword'))}
 					className={s.forgot}
 				>
 					Forgot password?
@@ -191,7 +195,6 @@ export const Login: React.FC = () => {
 
 				<button
 					onClick={(e) => {
-						// e.preventDefault();
 						setIncorrect(!incorrect);
 					}}
 					className={classNames(

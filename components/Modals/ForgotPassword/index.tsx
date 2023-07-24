@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import s from './ForgotPassword.module.scss';
 import Image from 'next/image';
 import { setModal } from '@/redux/slices/modal';
@@ -7,12 +7,12 @@ import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { LayoutModal } from '../layout';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { isEmail } from './validation';
 
 //imgs
-import modal_logo from '@/imgs/Modal/Modal_logo.svg';
-import modal_close from '@/imgs/Modal/Modal_close.svg';
 import modal_email from '@/imgs/Modal/email.svg';
-import modal_invalid from '@/imgs/Modal/ForgotPassword/invalid.svg';
+import invalid_icon from '@/imgs/Modal/invalid_icon.svg';
+import modal_done from '@/imgs/Modal/done.svg';
 
 interface FormType {
 	email: string;
@@ -20,9 +20,7 @@ interface FormType {
 
 export const ForgotPassword: React.FC = () => {
 	const dispatch = useAppDispatch();
-	// const [email, setEmail] = useState<string>('');
-	// const [validEmail, setValidEmail] = useState<boolean>(true);
-	// const [isBlurred, setIsBlurred] = useState<boolean>(false);
+	const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
 
 	const {
 		register,
@@ -30,19 +28,14 @@ export const ForgotPassword: React.FC = () => {
 		formState: { errors },
 		trigger,
 		getValues,
+		setError,
+		clearErrors,
 	} = useForm({
-		mode: 'onBlur',
+		mode: 'onChange',
 		defaultValues: { email: '' },
 		shouldFocusError: false,
 		shouldUnregister: false,
 	});
-
-	// console.log('isBlurred', isBlurred);
-
-	const isEmail = (data: string) => {
-		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-		return emailRegex.test(data);
-	};
 
 	const submit: SubmitHandler<FormType> = (data: FormType) => {
 		console.log('data', data);
@@ -51,16 +44,6 @@ export const ForgotPassword: React.FC = () => {
 	const onError = () => {
 		console.log('error');
 	};
-
-	// const onBlurHandler = async () => {
-	// 	await trigger('email');
-	// 	// if (!isBlurred) setIsBlurred(true);
-	// };
-
-	// const onChangeHandler = () => {
-	// 	trigger('email');
-	// 	console.log(getValues());
-	// };
 
 	return (
 		<LayoutModal>
@@ -77,7 +60,11 @@ export const ForgotPassword: React.FC = () => {
 					<div className={s.email}>
 						<p className={s.email_text}>Email</p>
 						<label
-							className={classNames(s.email_label, errors?.email && s.label_invalid)}
+							className={classNames(
+								s.email_label,
+								invalidEmail && s.label_invalid,
+								errors?.email && s.label_invalid
+							)}
 							htmlFor="email"
 						>
 							<Image
@@ -97,10 +84,28 @@ export const ForgotPassword: React.FC = () => {
 								id="email"
 								type="text"
 							/>
+
+							<Image
+								className={classNames(
+									s.icon_invalid,
+									errors?.email && s.icon_invalid_active,
+									getValues('email').length > 0 &&
+										isEmail(getValues('email')) &&
+										s.icon_invalid_active
+								)}
+								src={
+									getValues('email').length > 0 && isEmail(getValues('email'))
+										? modal_done
+										: invalid_icon
+								}
+								alt="invalid_icon"
+								width={20}
+								height={20}
+							/>
 						</label>
 					</div>
 
-					<div className={classNames(s.invalid, errors?.email && s.invalid_active)}>
+					{/* <div className={classNames(s.invalid, invalidEmail && s.invalid_active)}>
 						<Image
 							className={s.invalid_image}
 							src={modal_invalid}
@@ -109,18 +114,15 @@ export const ForgotPassword: React.FC = () => {
 							height={12}
 						/>
 						<span>Please enter a valid email</span>
-					</div>
+					</div> */}
 
 					<button
-						className={classNames(
-							s.submit,
-							isEmail(getValues('email')) && s.submit_active
-						)}
+						className={classNames(s.submit, !errors?.email && s.submit_active)}
 					>
 						Reset password
 					</button>
 					<p onClick={() => dispatch(setModal('login'))} className={s.back}>
-						Back to Login
+						<span className={s.back_link}>Back to Login</span>
 					</p>
 				</form>
 			</div>

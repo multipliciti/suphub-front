@@ -14,7 +14,7 @@ export const CheckEmail = () => {
 	return (
 		<div className={s.wrapper}>
 			<div className={s.modal_header}>
-				<div onClick={() => dispatch(setModal('ForgotPassword'))} className={s.back}>
+				<div onClick={() => dispatch(setModal('forgotPassword'))} className={s.back}>
 					<Image src={back_btn} alt="back_btn" width={20} height={20} />
 					<span className={s.back_text}>Back</span>
 				</div>

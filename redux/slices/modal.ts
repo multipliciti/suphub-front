@@ -1,18 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface CounterState {
-	switchModal: boolean;
 	modal:
 		| ''
 		| 'login'
-		| 'ForgotPassword'
+		| 'forgotPassword'
 		| 'checkEmail'
 		| 'reset sucsess'
-		| 'registration';
+		| 'registration'
+		| 'verifyEmail';
 }
 
 const initialState: CounterState = {
-	switchModal: false,
 	modal: '',
 };
 
@@ -20,18 +19,16 @@ const modalSlice = createSlice({
 	name: 'modal',
 	initialState,
 	reducers: {
-		switchModal(state, action: PayloadAction<boolean>) {
-			state.switchModal = action.payload;
-		},
 		setModal(
 			state,
 			action: PayloadAction<
 				| 'login'
-				| 'ForgotPassword'
+				| 'forgotPassword'
 				| ''
 				| 'checkEmail'
 				| 'reset sucsess'
 				| 'registration'
+				| 'verifyEmail'
 			>
 		) {
 			state.modal = action.payload;
@@ -39,6 +36,6 @@ const modalSlice = createSlice({
 	},
 });
 
-export const { setModal, switchModal } = modalSlice.actions;
+export const { setModal } = modalSlice.actions;
 
 export default modalSlice.reducer;

@@ -5,18 +5,21 @@ import { classNames } from '@/utils/classNames';
 import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 //imgs
 import modal_password from '@/imgs/Modal/pasword.svg';
 import modal_eye from '@/imgs/Modal/eye.svg';
 import password_invalid from '@/imgs/Modal/password_invalid.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
-import { useState } from 'react';
-import { error } from 'console';
+import close_eye from '@/imgs/Modal/close_eye.svg';
 
 export const ResetForm = () => {
 	const dispatch = useAppDispatch();
+	const [hidePassword, setHidePassword] = useState<boolean>(false);
+	const [hidePasswordConfirm, setHidePasswordConfirm] = useState<boolean>(false);
+	const { push } = useRouter();
 
-	// const [resetActive, setResetActive] = useState<boolean>(false);
 	interface FormType {
 		password: string;
 		confirm: string;
@@ -78,12 +81,15 @@ export const ResetForm = () => {
 								placeholder="Min 8 characters"
 								id="password"
 								className={s.label_password_input}
-								type="text"
+								type={hidePassword ? 'password' : 'text'}
 							/>
-							<span className={s.label_image}>
+							<span
+								onClick={() => setHidePassword(!hidePassword)}
+								className={s.label_image}
+							>
 								<Image
 									className={s.label_image}
-									src={modal_eye}
+									src={hidePassword ? close_eye : modal_eye}
 									alt="modal_eye"
 									width={20}
 									height={20}
@@ -93,7 +99,7 @@ export const ResetForm = () => {
 						<div
 							className={classNames(
 								s.invalid,
-								getValues().password.length > 0 && s.invalid_active
+								getValues('password').length > 0 && s.invalid_active
 							)}
 						>
 							<Image
@@ -121,12 +127,15 @@ export const ResetForm = () => {
 								placeholder="Min 8 characters"
 								className={s.label_confirm_input}
 								id="confirm"
-								type="text"
+								type={hidePasswordConfirm ? 'password' : 'text'}
 							/>
-							<span className={s.label_image}>
+							<span
+								onClick={() => setHidePasswordConfirm(!hidePasswordConfirm)}
+								className={s.label_image}
+							>
 								<Image
 									className={s.label_image}
-									src={modal_eye}
+									src={hidePasswordConfirm ? close_eye : modal_eye}
 									alt="modal_eye"
 									width={20}
 									height={20}
@@ -157,7 +166,7 @@ export const ResetForm = () => {
 									matchingPassword(getValues('confirm')) &&
 									s.reset_active
 							)}
-							onClick={() => dispatch(setModal('reset sucsess'))}
+							onClick={() => push('/success-password')}
 						>
 							Reset password
 						</button>

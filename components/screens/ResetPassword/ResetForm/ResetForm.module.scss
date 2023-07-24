@@ -51,6 +51,7 @@
 		}
 
 		&_password {
+			transition: border 0.3s ease;
 			position: relative;
 			display: flex;
 			justify-content: space-between;
@@ -82,9 +83,14 @@
 				overflow: hidden;
 				width: 80%;
 			}
+
+			&:focus-within {
+				border-color: #4259ed;
+			}
 		}
 
 		&_confirm {
+			transition: border 0.3s ease;
 			position: relative;
 			display: flex;
 			justify-content: space-between;
@@ -120,10 +126,16 @@
 			&_image {
 				cursor: pointer;
 			}
+
+			&:focus-within {
+				border-color: #4259ed;
+			}
 		}
 	}
 
 	.reset {
+		pointer-events: none;
+		cursor: pointer;
 		margin-bottom: 24px;
 		transition: all 0.4s;
 		color: #94a3b8;
@@ -144,6 +156,7 @@
 		cursor: pointer;
 
 		&_active {
+			pointer-events: all;
 			color: #fff;
 			background-color: #4259ed;
 		}

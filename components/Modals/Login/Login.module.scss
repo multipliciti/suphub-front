@@ -147,6 +147,18 @@
 			gap: 8px;
 			align-self: stretch;
 
+			.icon_invalid {
+				transition: opacity 0.3s ease;
+				opacity: 0;
+				&_active {
+					opacity: 1;
+				}
+			}
+
+			&:focus-within {
+				border-color: #4259ed;
+			}
+
 			&_image {
 				cursor: pointer;
 			}
@@ -198,6 +210,10 @@
 			align-items: center;
 			gap: 8px;
 			align-self: stretch;
+
+			&:focus-within {
+				border-color: #4259ed;
+			}
 		}
 	}
 

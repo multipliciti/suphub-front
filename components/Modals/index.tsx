@@ -6,6 +6,7 @@ import { ForgotPassword } from './ForgotPassword';
 import { CheckEmail } from './ CheckEmail';
 import { Registration } from './Registration';
 import { classNames } from '@/utils/classNames';
+import { VerifyEmail } from './VerifyEmail';
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
 	return (
@@ -17,7 +18,7 @@ export const Modal = () => {
 			<div
 				className={classNames(
 					s.wrapper,
-					modal === 'ForgotPassword' && s.wrapper_active
+					modal === 'forgotPassword' && s.wrapper_active
 				)}
 			>
 				<ForgotPassword />
@@ -36,6 +37,15 @@ export const Modal = () => {
 				)}
 			>
 				<Registration />
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'verifyEmail' && s.wrapper_active
+				)}
+			>
+				<VerifyEmail />
 			</div>
 		</>
 	);
