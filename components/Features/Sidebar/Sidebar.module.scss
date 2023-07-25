@@ -1,0 +1,17 @@
+.wrapper {
+	background-color: #465569;
+	max-width: 230px;
+	padding: 24px 16px;
+	max-height: calc(100vh - 60px); //-header
+
+	.title {
+		margin-bottom: 12px;
+		color: #fff;
+
+		font-family: Lato;
+		font-size: 18px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 24px;
+	}
+}

@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
-import { ResetPassword } from '@/components/screens/ResetPassword';
-import { Success } from '@/components/screens/ResetPassword/Success';
+import { ResetPassword } from '@/components/Screens/ResetPassword';
+import { Success } from '@/components/Screens/ResetPassword/Success';
 
 export const metadata: Metadata = {
 	title: 'Reset password Success',

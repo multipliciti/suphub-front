@@ -1,0 +1,35 @@
+.wrapper {
+	padding: 16px 24px;
+	border-radius: 8px;
+	border: 1px solid #e2e8f0;
+	background: #f8fafc;
+
+	@media (max-width: 1550px) {
+		overflow-x: scroll;
+	}
+
+	.header {
+		display: flex;
+		gap: 8px;
+		align-items: center;
+
+		&_img {
+			cursor: pointer;
+		}
+
+		&_title {
+			color: #0f172a;
+
+			font-family: Lato;
+			font-size: 20px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 26px;
+		}
+	}
+}
+
+.content {
+	display: flex;
+	gap: 16px;
+}

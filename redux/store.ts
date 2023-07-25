@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import { ThunkAction, Action } from '@reduxjs/toolkit';
 import modalSlice from './slices/modal';
+import sideBarSlice from './slices/sideBar';
 
 export function makeStore() {
 	return configureStore({
 		reducer: {
 			modalSlice,
+			sideBarSlice,
 		},
 	});
 }

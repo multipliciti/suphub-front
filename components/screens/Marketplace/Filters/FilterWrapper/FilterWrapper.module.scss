@@ -1,0 +1,49 @@
+.wrapper {
+	margin-top: 12px;
+	border-radius: 8px;
+	border: 1px solid #cbd5e1;
+	background: #fff;
+	box-shadow: 0px -4px 24px 0px rgba(42, 50, 54, 0.06);
+}
+
+.title {
+	width: 100%;
+	padding: 12px 16px;
+	border-bottom: 1px solid #e2e8f0;
+	.text {
+		color: #0f172a;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 24px;
+	}
+}
+
+.content {
+	max-height: 180px;
+	overflow-y: scroll;
+}
+
+.select {
+	border-top: 1px solid #e2e8f0;
+	display: flex;
+	padding: 12px 16px;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 8px;
+
+	&_btn {
+		background-color: transparent;
+		border: none;
+		outline: none;
+		color: #4259ed;
+
+		font-family: Lato;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 20px;
+	}
+}
