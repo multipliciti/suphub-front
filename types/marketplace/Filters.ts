@@ -11,3 +11,7 @@ export interface ItemFilter {
 	items: ItemInner[];
 	id: number;
 }
+
+export interface StoreItem {
+	[key: string]: number[];
+}

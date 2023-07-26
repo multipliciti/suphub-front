@@ -8,11 +8,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
 	return (
-		<div
-			style={{
-				display: 'flex',
-			}}
-		>
+		<div className="wrp">
 			<Sidebar />
 			{children}
 		</div>

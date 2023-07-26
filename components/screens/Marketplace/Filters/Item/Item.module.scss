@@ -1,8 +1,18 @@
 .wrapper {
+	transition: background-color 0.3s ease;
 	padding: 8px 16px;
 	display: flex;
 	gap: 8px;
 	min-width: 280px;
+	cursor: pointer;
+
+	&_active {
+		background: #eceefb;
+	}
+}
+
+.wrapper:hover {
+	background: #f1f5f9;
 }
 
 .text {
@@ -13,4 +23,8 @@
 	font-style: normal;
 	font-weight: 400;
 	line-height: 20px;
+}
+
+.selected_img {
+	margin-left: auto;
 }

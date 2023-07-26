@@ -26,10 +26,69 @@
 			font-weight: 700;
 			line-height: 26px;
 		}
+
+		&_count {
+			transition: opacity 0.3s ease;
+
+			opacity: 0;
+			pointer-events: none;
+			color: #64748b;
+
+			font-family: Lato;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 24px;
+
+			&_active {
+				opacity: 1;
+				pointer-events: all;
+			}
+		}
+
+		.clear {
+			background-color: transparent;
+			transition: opacity 0.3s ease;
+
+			opacity: 0;
+			pointer-events: none;
+			outline: none;
+			border: none;
+
+			color: #f52419;
+
+			font-family: Lato;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 24px;
+
+			&_active {
+				opacity: 1;
+				pointer-events: all;
+			}
+		}
 	}
 }
 
 .content {
 	display: flex;
 	gap: 16px;
+}
+
+//scroll
+.wrapper {
+	overflow-x: scroll;
+}
+
+.wrapper::-webkit-scrollbar {
+	width: 5px;
+	height: 5px;
+	background-color: transparent;
+	border-radius: 5px;
+}
+
+.wrapper::-webkit-scrollbar-thumb {
+	background: #94a3b8;
+	border-radius: 5px;
 }
