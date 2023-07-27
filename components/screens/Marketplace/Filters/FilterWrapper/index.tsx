@@ -5,7 +5,7 @@ import { Item } from '../Item';
 import { useAppSelector } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { useAppDispatch } from '@/redux/hooks';
-import { clearBranch, selectAll } from '@/redux/slices/filters';
+import { clearBranch, selectAll } from '@/redux/slices/marketplace/filters';
 
 interface Props {
 	itemProps: ItemFilter;

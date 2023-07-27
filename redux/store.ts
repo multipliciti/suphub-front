@@ -3,7 +3,8 @@ import { createWrapper } from 'next-redux-wrapper';
 import { ThunkAction, Action } from '@reduxjs/toolkit';
 import modalSlice from './slices/modal';
 import sideBarSlice from './slices/sideBar';
-import filtersSlice from './slices/filters';
+import filtersSlice from './slices/marketplace/filters';
+import productsFilter from './slices/marketplace/productsFilter';
 
 export function makeStore() {
 	return configureStore({
@@ -11,6 +12,7 @@ export function makeStore() {
 			modalSlice,
 			sideBarSlice,
 			filtersSlice,
+			productsFilter,
 		},
 	});
 }

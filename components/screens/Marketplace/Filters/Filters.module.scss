@@ -4,10 +4,6 @@
 	border: 1px solid #e2e8f0;
 	background: #f8fafc;
 
-	@media (max-width: 1550px) {
-		overflow-x: scroll;
-	}
-
 	.header {
 		display: flex;
 		gap: 8px;
@@ -72,14 +68,25 @@
 }
 
 .content {
+	opacity: 0;
+	height: 0px;
+	transition: opacity 0.3s ease, height 0.5s ease;
 	display: flex;
 	gap: 16px;
+	pointer-events: none;
+
+	&_active {
+		opacity: 1;
+		height: auto;
+		height: auto;
+		pointer-events: all;
+	}
 }
 
 //scroll
-.wrapper {
-	overflow-x: scroll;
-}
+// .wrapper {
+// 	overflow-y: scroll;
+// }
 
 .wrapper::-webkit-scrollbar {
 	width: 5px;
