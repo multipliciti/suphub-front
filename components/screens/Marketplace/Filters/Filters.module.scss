@@ -74,12 +74,14 @@
 	display: flex;
 	gap: 16px;
 	pointer-events: none;
+	overflow-x: scroll;
 
 	&_active {
 		opacity: 1;
 		height: auto;
 		height: auto;
 		pointer-events: all;
+		padding-bottom: 10px;
 	}
 }
 
@@ -88,14 +90,14 @@
 // 	overflow-y: scroll;
 // }
 
-.wrapper::-webkit-scrollbar {
+.content::-webkit-scrollbar {
 	width: 5px;
 	height: 5px;
 	background-color: transparent;
 	border-radius: 5px;
 }
 
-.wrapper::-webkit-scrollbar-thumb {
+.content::-webkit-scrollbar-thumb {
 	background: #94a3b8;
 	border-radius: 5px;
 }

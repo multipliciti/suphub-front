@@ -1,4 +1,4 @@
-interface ProductFilterItem {
+export interface ProductFilterItem {
 	title: string;
 	type: string;
 	min?: string;
@@ -6,6 +6,7 @@ interface ProductFilterItem {
 	items?: {
 		id: number;
 		title: string;
+		value: string;
 	}[];
 	selectedItems?: number[];
 }

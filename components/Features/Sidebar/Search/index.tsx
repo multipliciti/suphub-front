@@ -2,7 +2,16 @@
 import s from './Search.module.scss';
 import Image from 'next/image';
 import search from '@/imgs/SideBar/search.svg';
+import { useAppDispatch } from '@/redux/hooks';
+import { setSearchQuery } from '@/redux/slices/sideBar';
+import { ChangeEvent } from 'react';
 export const Search = () => {
+	const dispatch = useAppDispatch();
+
+	const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+		dispatch(setSearchQuery(event.target.value));
+	};
+
 	return (
 		<div className={s.wrapper}>
 			<label className={s.label_search} htmlFor="search">
@@ -12,6 +21,7 @@ export const Search = () => {
 					className={s.label_input}
 					id="search"
 					type="text"
+					onChange={handleSearchChange}
 				/>
 			</label>
 		</div>

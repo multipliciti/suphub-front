@@ -3,6 +3,7 @@
 	margin-bottom: 24px;
 
 	.results {
+		margin-bottom: 24px;
 		color: #0f172a;
 
 		font-family: Lato;
@@ -25,9 +26,13 @@
 
 .products {
 	display: grid;
-	grid-template-columns: repeat(5, 1fr);
-	grid-template-rows: repeat(5, 1fr);
+	grid-template-columns: repeat(4, 1fr);
+	grid-template-rows: repeat(auto-fill, 1fr);
 	grid-column-gap: 0px;
 	grid-row-gap: 0px;
 	gap: 24px;
+
+	// @media (max-width: 1430px) {
+	// 	grid-template-columns: repeat(3, 1fr);
+	// }
 }

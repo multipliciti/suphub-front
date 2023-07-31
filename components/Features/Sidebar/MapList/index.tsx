@@ -4,23 +4,27 @@ import { useAppSelector } from '@/redux/hooks';
 import Image from 'next/image';
 import { useAppDispatch } from '@/redux/hooks';
 import { setParentActiveId, setActiveId } from '@/redux/slices/sideBar';
+import { classNames } from '@/utils/classNames';
 //imgs
 import itemActive from '@/imgs/SideBar/itemActive.svg';
 import itemInactive from '@/imgs/SideBar/itemInactive.svg';
-import { classNames } from '@/utils/classNames';
 
 export const MapList = () => {
-	const items = useAppSelector((state) => state.sideBarSlice.items);
+	const searchQuery = useAppSelector((state) => state.sideBarSlice.searchQuery);
+	const sidebarItems = useAppSelector((state) => state.sideBarSlice.items);
 	const activeId = useAppSelector((state) => state.sideBarSlice.activeId);
 	const parentActiveId = useAppSelector(
 		(state) => state.sideBarSlice.parentActiveId
 	);
-
 	const dispatch = useAppDispatch();
 
+	const filteredSidebarItems = sidebarItems.filter((item) =>
+		item.title.toLowerCase().includes(searchQuery.toLowerCase())
+	);
+
 	return (
-		<div className={s.wrapper}>
-			{items.map((item, index) => {
+		<div className={classNames(s.wrapper)}>
+			{filteredSidebarItems.map((item, index) => {
 				return (
 					<div key={index}>
 						<span

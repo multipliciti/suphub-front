@@ -4,14 +4,23 @@
 .header_container {
 	padding: 10px 25px;
 	background-color: #0f172a;
+	position: fixed;
+	width: 100%;
+	z-index: 100;
 }
 
 .content_container {
-	padding: 32px;
+	transition: all 0.3s ease;
+	padding-right: 32px;
+	padding-bottom: 32px;
+	padding-top: 92px;
+	padding-left: 72px;
+
+	&_sidebar {
+		padding-left: 262px;
+	}
 }
 
 .wrp {
 	display: flex;
-	// max-width: 100%;
-	// flex-direction: column;
 }

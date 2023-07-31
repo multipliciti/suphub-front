@@ -16,14 +16,17 @@ const initialState: ProductFilter = {
 				{
 					id: 1,
 					title: '5 days - 15 days',
+					value: '5 - 15',
 				},
 				{
 					id: 2,
 					title: '15 days - 30 days',
+					value: '15 - 30',
 				},
 				{
 					id: 3,
 					title: '30 days - 45 days',
+					value: '30 - 45',
 				},
 			],
 			selectedItems: [],
@@ -47,18 +50,22 @@ const initialState: ProductFilter = {
 				{
 					id: 1,
 					title: 'Canada',
+					value: 'Canada',
 				},
 				{
 					id: 2,
 					title: 'China',
+					value: 'China',
 				},
 				{
 					id: 3,
 					title: 'UK',
+					value: 'UK',
 				},
 				{
 					id: 4,
 					title: 'USA',
+					value: 'USA',
 				},
 			],
 			selectedItems: [],

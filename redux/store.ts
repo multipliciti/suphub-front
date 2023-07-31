@@ -5,6 +5,7 @@ import modalSlice from './slices/modal';
 import sideBarSlice from './slices/sideBar';
 import filtersSlice from './slices/marketplace/filters';
 import productsFilter from './slices/marketplace/productsFilter';
+import productSlice from './slices/marketplace/products';
 
 export function makeStore() {
 	return configureStore({
@@ -13,6 +14,7 @@ export function makeStore() {
 			sideBarSlice,
 			filtersSlice,
 			productsFilter,
+			productSlice,
 		},
 	});
 }

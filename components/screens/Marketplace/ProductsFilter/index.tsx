@@ -20,14 +20,11 @@ export const ProductsFilter = () => {
 					type="text"
 				/>
 			</label>
-
-			{productFilterItems.map((el, ind) => {
-				return (
-					<div className={s.item} key={ind}>
-						<FilterWrapper item={el} />
-					</div>
-				);
-			})}
+			<div className={s.products_filter}>
+				{productFilterItems.map((el, ind) => {
+					return <FilterWrapper key={ind} item={el} />;
+				})}
+			</div>
 		</div>
 	);
 };

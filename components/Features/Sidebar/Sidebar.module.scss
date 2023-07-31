@@ -1,8 +1,12 @@
 .wrapper {
+	transition: width 0.4s ease;
 	background-color: #465569;
-	max-width: 230px;
 	padding: 24px 16px;
-	max-height: calc(100vh - 60px); //-header
+	height: calc(100vh - 60px);
+	position: fixed;
+	margin-top: 60px;
+
+	width: 0px;
 
 	.title {
 		margin-bottom: 12px;
@@ -13,5 +17,22 @@
 		font-style: normal;
 		font-weight: 700;
 		line-height: 24px;
+	}
+
+	&_active {
+		width: 230px;
+		opacity: 1;
+		pointer-events: all;
+	}
+}
+
+.content {
+	transition: opacity 0.3s ease;
+	opacity: 0;
+	pointer-events: none;
+
+	&_active {
+		opacity: 1;
+		pointer-events: all;
 	}
 }

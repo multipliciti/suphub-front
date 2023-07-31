@@ -1,4 +1,132 @@
-.img_wrapper {
-	padding: 12px;
-	margin-bottom: 16px;
+.wrapper {
+	border-radius: 8px;
+	border: 1px solid #cbd5e1;
+	max-width: 269px;
+
+	@media (max-width: 1430px) {
+		max-width: 269px;
+	}
+	@media (max-width: 1280px) {
+		max-width: 229px;
+	}
+}
+
+.img {
+	&_wrapper {
+		padding: 12px;
+		position: relative;
+		.img {
+			@media (max-width: 1430px) {
+				width: 244px;
+				height: 244px;
+			}
+			@media (max-width: 1280px) {
+				width: 202px;
+				height: 202px;
+			}
+		}
+	}
+
+	&_star {
+		cursor: pointer;
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		min-width: 40px;
+		min-height: 40px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		border-radius: 50px;
+		background: rgba(255, 255, 255, 0.75);
+		backdrop-filter: blur(5px);
+	}
+}
+
+.description_wrapper {
+	padding-left: 16px;
+	padding-right: 16px;
+	padding-bottom: 20px;
+
+	.title {
+		display: -webkit-box;
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 2;
+		align-self: stretch;
+
+		overflow: hidden;
+		color: #0f172a;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 24px;
+	}
+
+	.price {
+		color: #0f172a;
+		font-family: Lato;
+		font-size: 20px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 20px;
+
+		&_format {
+			display: inline-block;
+			margin-top: 16px;
+			margin-bottom: 16px;
+			padding-left: 2px;
+			color: #0f172a;
+			font-family: Lato;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 16px;
+		}
+	}
+}
+
+.row {
+	&_wrapper {
+		border-radius: 4px;
+		// background: #f8fafc;
+		display: flex;
+		padding: 1px 6px;
+		align-items: flex-start;
+		gap: 8px;
+	}
+
+	&_key {
+		overflow: hidden;
+		color: #64748b;
+		text-overflow: ellipsis;
+
+		font-family: Lato;
+		font-size: 12px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 18px;
+	}
+
+	&_value {
+		overflow: hidden;
+		color: #0f172a;
+		text-overflow: ellipsis;
+
+		font-family: Lato;
+		font-size: 12px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 18px;
+	}
+
+	&_backround {
+		background-color: #f8fafc;
+	}
+}
+
+.text {
+	width: 100%;
 }
