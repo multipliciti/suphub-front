@@ -11,7 +11,7 @@ interface CounterState {
 }
 
 const initialState: CounterState = {
-	sideBar: false,
+	sideBar: true,
 	items: [
 		{
 			id: 1,
