@@ -7,6 +7,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { Api } from '@/services';
 //imgs
 import modal_password from '@/imgs/Modal/pasword.svg';
 import modal_eye from '@/imgs/Modal/eye.svg';
@@ -15,15 +16,16 @@ import password_valid from '@/imgs/Modal/password_valid.svg';
 import close_eye from '@/imgs/Modal/close_eye.svg';
 
 export const ResetForm = () => {
+	const api = Api();
+
+	type FormType = {
+		password: string;
+		confirm: string;
+	};
 	const dispatch = useAppDispatch();
 	const [hidePassword, setHidePassword] = useState<boolean>(false);
 	const [hidePasswordConfirm, setHidePasswordConfirm] = useState<boolean>(false);
 	const { push } = useRouter();
-
-	interface FormType {
-		password: string;
-		confirm: string;
-	}
 
 	const {
 		register,
@@ -38,7 +40,17 @@ export const ResetForm = () => {
 	});
 
 	const submit: SubmitHandler<FormType> = (data) => {
-		console.log(data);
+		const requestData = {
+			newPassword: data.confirm,
+			token: 'token',
+		};
+
+		try {
+			api.auth.createPassword(requestData);
+			push('/success-password');
+		} catch (error: any) {
+			console.log(error.message);
+		}
 	};
 
 	const onErrors = (errors: any) => {
@@ -166,7 +178,6 @@ export const ResetForm = () => {
 									matchingPassword(getValues('confirm')) &&
 									s.reset_active
 							)}
-							onClick={() => push('/success-password')}
 						>
 							Reset password
 						</button>

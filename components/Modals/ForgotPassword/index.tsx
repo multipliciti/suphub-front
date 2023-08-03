@@ -8,19 +8,22 @@ import { classNames } from '@/utils/classNames';
 import { LayoutModal } from '../layout';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isEmail } from './validation';
+import { Api } from '@/services';
 
 //imgs
 import modal_email from '@/imgs/Modal/email.svg';
 import invalid_icon from '@/imgs/Modal/invalid_icon.svg';
 import modal_done from '@/imgs/Modal/done.svg';
+import invalid_email from '@/imgs/Modal/incorrect.svg';
 
 interface FormType {
 	email: string;
 }
 
 export const ForgotPassword: React.FC = () => {
+	const api = Api();
 	const dispatch = useAppDispatch();
-	const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
+	const [invalidEmail, setInvalidEmail] = useState<boolean>(true);
 
 	const {
 		register,
@@ -37,8 +40,16 @@ export const ForgotPassword: React.FC = () => {
 		shouldUnregister: false,
 	});
 
-	const submit: SubmitHandler<FormType> = (data: FormType) => {
-		console.log('data', data);
+	const submit: SubmitHandler<FormType> = async (data: FormType) => {
+		try {
+			const response = await api.auth.recovery(data);
+
+			dispatch(setModal('checkEmail'));
+		} catch (error: any) {
+			if (error.response?.data?.statusCode === 403) {
+				setInvalidEmail(true);
+			}
+		}
 	};
 
 	const onError = () => {
@@ -105,16 +116,16 @@ export const ForgotPassword: React.FC = () => {
 						</label>
 					</div>
 
-					{/* <div className={classNames(s.invalid, invalidEmail && s.invalid_active)}>
+					<div className={classNames(s.invalid, invalidEmail && s.invalid_active)}>
 						<Image
 							className={s.invalid_image}
-							src={modal_invalid}
+							src={invalid_email}
 							alt="modal_invalid"
 							width={12}
 							height={12}
 						/>
 						<span>Please enter a valid email</span>
-					</div> */}
+					</div>
 
 					<button
 						className={classNames(s.submit, !errors?.email && s.submit_active)}

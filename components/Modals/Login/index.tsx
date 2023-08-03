@@ -1,5 +1,6 @@
 'use client';
 import React, { useState } from 'react';
+import { LoginDto } from '@/types/services/auth';
 import s from './Login.module.scss';
 import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
@@ -9,6 +10,12 @@ import Image from 'next/image';
 import { LayoutModal } from '../layout';
 import { isEmail } from './validation';
 import { isPassword } from './validation';
+import { Api } from '@/services';
+import { setCookie } from '@/utils/cookies';
+import { useRouter } from 'next/navigation';
+import { setLoginIn } from '@/redux/slices/auth';
+
+import { getCookie } from '@/utils/cookies';
 //imgs
 import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 import modal_close from '@/imgs/Modal/Modal_close.svg';
@@ -20,16 +27,15 @@ import password_invalid from '@/imgs/Modal/password_invalid.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
 import invalid_icon from '@/imgs/Modal/invalid_icon.svg';
 import close_eye from '@/imgs/Modal/close_eye.svg';
-
-interface FormType {
-	email: string;
-	password: string;
-}
+import modal_incorrect from '@/imgs/Modal/incorrect.svg';
 
 export const Login: React.FC = () => {
 	const dispatch = useAppDispatch();
-	const [incorrect, setIncorrect] = useState<boolean>(true);
+	const { push } = useRouter();
+	const [incorrect, setIncorrect] = useState<boolean>(false);
 	const [hidePassword, setHidePassword] = useState<boolean>(false);
+
+	const api = Api();
 
 	const {
 		register,
@@ -49,8 +55,23 @@ export const Login: React.FC = () => {
 		};
 	}
 
-	const submit: SubmitHandler<FormType> = (data) => {
-		console.log(data);
+	const submit: SubmitHandler<LoginDto> = async (data) => {
+		try {
+			const response = await api.auth.loginUser(data);
+			const { token } = response;
+			if (token) {
+				setCookie('accessToken', token, 1);
+				dispatch(setModal(''));
+				dispatch(setLoginIn(true));
+				setTimeout(() => {
+					push('/marketplace');
+				}, 3000);
+			}
+		} catch (error: any) {
+			if (error.response?.data?.statusCode === 401) {
+				setIncorrect(true);
+			}
+		}
 	};
 
 	const onErrors = (errors: any) => {
@@ -72,7 +93,7 @@ export const Login: React.FC = () => {
 				</p>
 			</div>
 
-			{/* <div className={classNames(s.incorrect, incorrect && s.incorrect_active)}>
+			<div className={classNames(s.incorrect, incorrect && s.incorrect_active)}>
 				<Image
 					className={s.label_image}
 					src={modal_incorrect}
@@ -83,7 +104,7 @@ export const Login: React.FC = () => {
 				<p className={s.incorrect_text}>
 					Incorrect password or email. Please try again.
 				</p>
-			</div> */}
+			</div>
 
 			<form className={classNames(s.form)} onSubmit={handleSubmit(submit, onErrors)}>
 				<div className={s.email}>
@@ -194,9 +215,6 @@ export const Login: React.FC = () => {
 				</span>
 
 				<button
-					onClick={(e) => {
-						setIncorrect(!incorrect);
-					}}
 					className={classNames(
 						s.submit,
 						!errors?.password && !errors?.email && s.submit_valid

@@ -14,7 +14,7 @@ interface TypeProps {
 }
 
 export const FilterWrapper = (props: TypeProps) => {
-	const { title, min, max, items, selectedItems, type } = props.item;
+	const { title, items, type } = props.item;
 	const [open, setOpen] = useState<boolean>(false);
 	const [radioOption, setRadioOption] = useState<string>('');
 	const [selectedOption, setSelectedOption] = useState<string[]>(['option2']);

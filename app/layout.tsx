@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 				<MainProvider>
 					<Modal />
 					<Header />
-					<main>{children}</main>
+					<main className="main">{children}</main>
 				</MainProvider>
 			</body>
 		</html>

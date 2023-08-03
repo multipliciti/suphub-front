@@ -6,7 +6,12 @@ import { setModal } from '@/redux/slices/modal';
 //imgs
 import success_img from '@/imgs/ResetPassword/success.svg';
 
-export const Success = () => {
+type PropsType = {
+	title: string;
+	subtitle: string;
+};
+
+export const Success = ({ title, subtitle }: PropsType) => {
 	const dispatch = useAppDispatch();
 
 	return (
@@ -14,8 +19,8 @@ export const Success = () => {
 			<div className={s.content}>
 				<Image src={success_img} alt="success_img" width={128} height={128} />
 
-				<h1 className={s.title}>Password changed</h1>
-				<p className={s.subtitle}>Your password has been changed successfully.</p>
+				<h1 className={s.title}>{title}</h1>
+				<p className={s.subtitle}>{subtitle}</p>
 
 				<button onClick={() => dispatch(setModal('login'))} className={s.btn}>
 					Login

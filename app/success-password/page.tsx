@@ -10,7 +10,10 @@ export const metadata: Metadata = {
 const SuccessPage = () => {
 	return (
 		<>
-			<Success />
+			<Success
+				title="Password changed"
+				subtitle="Your password has been changed successfully."
+			/>
 		</>
 	);
 };

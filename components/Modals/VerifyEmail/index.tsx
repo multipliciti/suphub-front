@@ -1,14 +1,16 @@
 'use client';
 import s from './VerifyEmail.module.scss';
 import Image from 'next/image';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setModal } from '@/redux/slices/modal';
 //imgs
 import modal_close from '@/imgs/Modal/Modal_close.svg';
 import back_btn from '@/imgs/Modal/CheckEmail/back_btn.svg';
 import sheet from '@/imgs/Modal/CheckEmail/sheet.svg';
-import { setModal } from '@/redux/slices/modal';
+
 export const VerifyEmail = () => {
 	const dispatch = useAppDispatch();
+	const email = useAppSelector((state) => state.modalSlice.email);
 
 	return (
 		<div className={s.wrapper}>
@@ -40,8 +42,8 @@ export const VerifyEmail = () => {
 
 				<h3 className={s.title}>Verify your email</h3>
 				<p className={s.subtitle}>
-					Check <span className={s.email}> tom.dallas@gmail.com</span> to verify your
-					account and get started.
+					Check <span className={s.email}> {email}</span> to verify your account and
+					get started.
 				</p>
 
 				<button className={s.btn}>Resend verification email</button>

@@ -7,13 +7,14 @@
 	position: fixed;
 	width: 100%;
 	z-index: 100;
+	min-height: 60px;
 }
 
 .content_container {
 	transition: all 0.3s ease;
 	padding-right: 32px;
 	padding-bottom: 32px;
-	padding-top: 92px;
+	padding-top: 32px;
 	padding-left: 72px;
 
 	&_sidebar {
@@ -23,4 +24,8 @@
 
 .wrp {
 	display: flex;
+}
+
+.main {
+	margin-top: 60px; //-header
 }

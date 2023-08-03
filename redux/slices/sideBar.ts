@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 //types
-import { Item } from '@/types/marketplace/sideBar';
+import { Item } from '@/types/sideBar';
 
 interface CounterState {
 	sideBar: boolean;

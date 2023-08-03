@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import product_img from '@/imgs/Marketplace/Products/product_test2.jpeg';
 import { StaticImageData } from 'next/image';
+import { ProductItemType } from '@/types/marketplace/product';
 
 interface Product {
 	img: StaticImageData;
@@ -14,150 +15,17 @@ interface Product {
 }
 
 interface initialStateType {
-	products: Product[];
+	products: ProductItemType[];
 	favorite: number[];
+	activePage: number;
+	total: number;
 }
 
 const initialState: initialStateType = {
-	products: [
-		{
-			img: product_img,
-			id: 1,
-			title: 'Vinyl Double Pane Fixed Window...',
-			price: 1,
-			description: {
-				MOQ: '10 units',
-				'Lead time (weeks)': '40-50 days',
-				Warranty: '12 month',
-				Certification: 'AAMA, NFRC...',
-				Width: '36”',
-				Height: '60”',
-				Opening: 'Casement',
-				'Frame material': 'Aluminum frame',
-				'Glass type': 'Safety glass',
-			},
-		},
-		{
-			img: product_img,
-			id: 2,
-			title: 'Vinyl Double Pane Fixed Window...',
-			price: 1,
-			description: {
-				MOQ: '10 units',
-				'Lead time (weeks)': '40-50 days',
-				Warranty: '12 month',
-				Certification: 'AAMA, NFRC...',
-				Width: '36”',
-				Height: '60”',
-				Opening: 'Casement',
-				'Frame material': 'Aluminum frame',
-				'Glass type': 'Safety glass',
-			},
-		},
-		{
-			img: product_img,
-			id: 3,
-			title: 'Vinyl Double Pane Fixed Window...',
-			price: 1,
-			description: {
-				MOQ: '10 units',
-				'Lead time (weeks)': '40-50 days',
-				Warranty: '12 month',
-				Certification: 'AAMA, NFRC...',
-				Width: '36”',
-				Height: '60”',
-				Opening: 'Casement',
-				'Frame material': 'Aluminum frame',
-				'Glass type': 'Safety glass',
-			},
-		},
-		{
-			img: product_img,
-			id: 4,
-			title: 'Vinyl Double Pane Fixed Window...',
-			price: 1,
-			description: {
-				MOQ: '10 units',
-				'Lead time (weeks)': '40-50 days',
-				Warranty: '12 month',
-				Certification: 'AAMA, NFRC...',
-				Width: '36”',
-				Height: '60”',
-				Opening: 'Casement',
-				'Frame material': 'Aluminum frame',
-				'Glass type': 'Safety glass',
-			},
-		},
-		{
-			img: product_img,
-			id: 5,
-			title: 'Vinyl Double Pane Fixed Window...',
-			price: 1,
-			description: {
-				MOQ: '10 units',
-				'Lead time (weeks)': '40-50 days',
-				Warranty: '12 month',
-				Certification: 'AAMA, NFRC...',
-				Width: '36”',
-				Height: '60”',
-				Opening: 'Casement',
-				'Frame material': 'Aluminum frame',
-				'Glass type': 'Safety glass',
-			},
-		},
-		{
-			img: product_img,
-			id: 6,
-			title: 'Vinyl Double Pane Fixed Window...',
-			price: 1,
-			description: {
-				MOQ: '10 units',
-				'Lead time (weeks)': '40-50 days',
-				Warranty: '12 month',
-				Certification: 'AAMA, NFRC...',
-				Width: '36”',
-				Height: '60”',
-				Opening: 'Casement',
-				'Frame material': 'Aluminum frame',
-				'Glass type': 'Safety glass',
-			},
-		},
-		{
-			img: product_img,
-			id: 7,
-			title: 'Vinyl Double Pane Fixed Window...',
-			price: 1,
-			description: {
-				MOQ: '10 units',
-				'Lead time (weeks)': '40-50 days',
-				Warranty: '12 month',
-				Certification: 'AAMA, NFRC...',
-				Width: '36”',
-				Height: '60”',
-				Opening: 'Casement',
-				'Frame material': 'Aluminum frame',
-				'Glass type': 'Safety glass',
-			},
-		},
-		{
-			img: product_img,
-			id: 8,
-			title: 'Vinyl Double Pane Fixed Window...',
-			price: 1,
-			description: {
-				MOQ: '10 units',
-				'Lead time (weeks)': '40-50 days',
-				Warranty: '12 month',
-				Certification: 'AAMA, NFRC...',
-				Width: '36”',
-				Height: '60”',
-				Opening: 'Casement',
-				'Frame material': 'Aluminum frame',
-				'Glass type': 'Safety glass',
-			},
-		},
-	],
+	products: [],
+	activePage: 1,
 	favorite: [],
+	total: 0,
 };
 
 const productSlice = createSlice({
@@ -174,9 +42,19 @@ const productSlice = createSlice({
 				state.favorite.push(id);
 			}
 		},
+		setActivePage(state, action: PayloadAction<number>) {
+			state.activePage = action.payload;
+		},
+		setProducts(state, action: PayloadAction<ProductItemType[]>) {
+			state.products = action.payload;
+		},
+		setTotal(state, action: PayloadAction<number>) {
+			state.total = action.payload;
+		},
 	},
 });
 
-export const { toggleFavorite } = productSlice.actions;
+export const { toggleFavorite, setActivePage, setProducts, setTotal } =
+	productSlice.actions;
 
 export default productSlice.reducer;

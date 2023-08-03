@@ -9,10 +9,12 @@ interface CounterState {
 		| 'reset sucsess'
 		| 'registration'
 		| 'verifyEmail';
+	email: string;
 }
 
 const initialState: CounterState = {
 	modal: '',
+	email: '',
 };
 
 const modalSlice = createSlice({
@@ -33,9 +35,12 @@ const modalSlice = createSlice({
 		) {
 			state.modal = action.payload;
 		},
+		setEmail(state, action: PayloadAction<string>) {
+			state.email = action.payload;
+		},
 	},
 });
 
-export const { setModal } = modalSlice.actions;
+export const { setModal, setEmail } = modalSlice.actions;
 
 export default modalSlice.reducer;

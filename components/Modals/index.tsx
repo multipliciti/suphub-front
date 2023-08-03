@@ -7,6 +7,7 @@ import { CheckEmail } from './ CheckEmail';
 import { Registration } from './Registration';
 import { classNames } from '@/utils/classNames';
 import { VerifyEmail } from './VerifyEmail';
+
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
 	return (

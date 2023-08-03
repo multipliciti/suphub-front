@@ -1,11 +1,13 @@
 'use client';
 import s from './Registration.module.scss';
 import { LayoutModal } from '../layout';
-import { setModal } from '@/redux/slices/modal';
+import { setModal, setEmail } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isEmail, isPassword } from './validation';
+import { RegisterUserType } from '@/types/services/auth';
+import { useState } from 'react';
 import Image from 'next/image';
 //imgs
 import modal_email from '@/imgs/Modal/email.svg';
@@ -16,18 +18,15 @@ import modal_done from '@/imgs/Modal/done.svg';
 import invalid_icon from '@/imgs/Modal/invalid_icon.svg';
 import password_invalid from '@/imgs/Modal/password_invalid.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
-import { useState } from 'react';
-
-interface FormType {
-	email: string;
-	password: string;
-	firstName: string;
-	lastName: string;
-}
+import incorrect_email from '@/imgs/Modal/incorrect.svg';
+//Api
+import { Api } from '@/services/';
 
 export const Registration = () => {
+	const api = Api();
 	const dispatch = useAppDispatch();
 	const [hidePassword, setHidePassword] = useState<boolean>(false);
+	const [usedEmail, setUsedEmail] = useState<boolean>(false);
 
 	const {
 		register,
@@ -41,12 +40,25 @@ export const Registration = () => {
 		shouldUnregister: false,
 	});
 
-	const onSubmit: SubmitHandler<FormType> = (data) => {
-		console.log('data', data);
-	};
+	const onSubmit: SubmitHandler<RegisterUserType> = async (data) => {
+		const requestData = {
+			...data,
+			confirmUrl: 'http://localhost:3000/confirm-email',
+		};
+		try {
+			const response = await api.auth.registerUser(requestData);
 
-	const onError = () => {
-		console.log('errors:', errors);
+			dispatch(setModal(`verifyEmail`));
+			dispatch(setEmail(`${requestData.email}`));
+		} catch (error: any) {
+			if (
+				error.response?.status === 400 &&
+				error.response?.data?.message === 'User already exist'
+			) {
+				setUsedEmail(true);
+			} else {
+			}
+		}
 	};
 
 	return (
@@ -54,7 +66,7 @@ export const Registration = () => {
 			<div className={s.description}>
 				<h1 className={s.title}>Create a personal account</h1>
 				<p className={s.subtitle}>
-					Already have an account?{' '}
+					Already have an account?
 					<span
 						onClick={() => dispatch(setModal('login'))}
 						className={s.subtitle_login}
@@ -63,7 +75,7 @@ export const Registration = () => {
 					</span>
 				</p>
 			</div>
-			<form onSubmit={handleSubmit(onSubmit, onError)}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className={s.names}>
 					<div className={s.names_wrapper}>
 						<p className={s.title}>First name</p>
@@ -117,6 +129,7 @@ export const Registration = () => {
 							className={classNames(
 								s.auth_label,
 								errors?.email && s.names_label_invalid
+								// usedEmail && s.names_label_invalid
 							)}
 							htmlFor="email"
 						>
@@ -153,6 +166,19 @@ export const Registration = () => {
 								height={20}
 							/>
 						</label>
+
+						<div
+							className={classNames(s.used_email, usedEmail && s.used_email_active)}
+						>
+							<Image
+								className={s.image}
+								src={incorrect_email}
+								alt="incorrect_email"
+								width={20}
+								height={20}
+							/>
+							<span className={s.used_text}>This email is already used</span>
+						</div>
 					</div>
 					<div className={s.auth_password}>
 						<p className={s.title}>Create password</p>
@@ -213,6 +239,7 @@ export const Registration = () => {
 							!errors?.firstName &&
 							!errors?.lastName &&
 							!errors?.password &&
+							Object.values(getValues()).every((value) => value.trim().length > 0) &&
 							s.btn_send_active
 					)}
 				>

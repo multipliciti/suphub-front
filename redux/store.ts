@@ -6,7 +6,7 @@ import sideBarSlice from './slices/sideBar';
 import filtersSlice from './slices/marketplace/filters';
 import productsFilter from './slices/marketplace/productsFilter';
 import productSlice from './slices/marketplace/products';
-
+import authSlice from './slices/auth';
 export function makeStore() {
 	return configureStore({
 		reducer: {
@@ -15,6 +15,7 @@ export function makeStore() {
 			filtersSlice,
 			productsFilter,
 			productSlice,
+			authSlice,
 		},
 	});
 }
