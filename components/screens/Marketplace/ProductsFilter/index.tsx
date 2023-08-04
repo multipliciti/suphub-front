@@ -23,6 +23,7 @@ export const ProductsFilter = () => {
 				sortParams: {
 					id: 'desc',
 				},
+				searchText: JSON.stringify({ name: { contains: `${value}` } }),
 			});
 			dispatch(setProducts(response.result));
 			dispatch(setTotal(response.total));
@@ -42,7 +43,7 @@ export const ProductsFilter = () => {
 					placeholder="Search product by name"
 					id="search"
 					type="text"
-					// onChange={(e) => fetchProduct(e.target.value)}
+					onChange={(e) => fetchProduct(e.target.value)}
 				/>
 			</label>
 			<div className={s.products_filter}>

@@ -1,0 +1,36 @@
+.container {
+	padding: 24px 60px;
+}
+
+.nav {
+	display: flex;
+	gap: 4px;
+	align-items: center;
+
+	.back {
+		cursor: pointer;
+		display: flex;
+		gap: 4px;
+		align-items: center;
+	}
+
+	&_text {
+		cursor: pointer;
+		color: #4259ed;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 24px;
+	}
+}
+
+.content {
+	margin-top: 12px;
+	display: flex;
+}
+
+.summery {
+	display: block;
+}

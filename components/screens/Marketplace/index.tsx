@@ -5,12 +5,11 @@ import { Filters } from './Filters';
 import { ProductsFilter } from './ProductsFilter';
 import { Products } from './Products';
 import { Pagination } from '@/components/Features/Pagination';
+import { NoResults } from './NoResults';
 import { classNames } from '@/utils/classNames';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
-import { setActivePage } from '@/redux/slices/marketplace/products';
 import { useEffect, useState } from 'react';
-import { ProductItemType } from '@/types/marketplace/product';
 import { Api } from '@/services';
 
 export const Marketplace = () => {
@@ -22,7 +21,6 @@ export const Marketplace = () => {
 	const isSideBar = useAppSelector((state) => state.sideBarSlice.sideBar);
 	const activePage = useAppSelector((state) => state.productSlice.activePage);
 	const total = useAppSelector((state) => state.productSlice.total);
-
 	useEffect(() => {
 		const fetchData = async () => {
 			try {
@@ -35,7 +33,7 @@ export const Marketplace = () => {
 				});
 				dispatch(setProducts(response.result));
 				dispatch(setTotal(response.total));
-				// setTotalPages(response.totalPages);
+
 				console.log('response.totalPage', response);
 			} catch (error) {
 				console.error('Error:', error);
@@ -44,7 +42,6 @@ export const Marketplace = () => {
 
 		fetchData();
 	}, [activePage]);
-	// console.log('totalPage', totalPage);
 	return (
 		<div className={s.wrapper}>
 			<div
@@ -53,17 +50,19 @@ export const Marketplace = () => {
 					isSideBar && 'content_container_sidebar'
 				)}
 			>
-				<div className={s.header}>
-					<Header />
-					<Filters />
-					<ProductsFilter />
-					<Products total={total} products={products} />
-				</div>
-				<Pagination
-					buttons={true}
-					totalPages={totalPages}
-					currentPage={activePage}
-				/>
+				<>
+					<div className={s.header}>
+						<Header />
+						<Filters />
+						<ProductsFilter />
+						<Products total={total} products={products} />
+					</div>
+					<Pagination
+						buttons={true}
+						totalPages={totalPages}
+						currentPage={activePage}
+					/>
+				</>
 			</div>
 		</div>
 	);

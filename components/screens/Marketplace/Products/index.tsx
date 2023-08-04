@@ -7,6 +7,7 @@ import { Api } from '@/services';
 import { ProductItemType } from '@/types/marketplace/product';
 //imgs
 import product_img from '@/imgs/Marketplace/Products/product_test2.jpeg';
+import { NoResults } from '../NoResults';
 
 interface ProductsPropsType {
 	products: ProductItemType[] | undefined;
@@ -22,9 +23,11 @@ export const Products = (props: ProductsPropsType) => {
 			</div>
 
 			<div className={s.products}>
-				{products?.map((el, ind) => {
-					return <ProductItem key={ind} {...el} />;
-				})}
+				{products && products.length < 1 && <NoResults />}
+
+				{products &&
+					products.length > 0 &&
+					products.map((el, ind) => <ProductItem key={ind} {...el} />)}
 			</div>
 		</div>
 	);

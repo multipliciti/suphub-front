@@ -34,6 +34,7 @@ export const Login: React.FC = () => {
 	const { push } = useRouter();
 	const [incorrect, setIncorrect] = useState<boolean>(false);
 	const [hidePassword, setHidePassword] = useState<boolean>(false);
+	const [notVerified, setNotVerified] = useState<boolean>(false);
 
 	const api = Api();
 
@@ -68,8 +69,18 @@ export const Login: React.FC = () => {
 				}, 3000);
 			}
 		} catch (error: any) {
-			if (error.response?.data?.statusCode === 401) {
+			console.log('err', error);
+			if (
+				error.response?.data?.statusCode === 401 &&
+				error.response?.data?.message === 'Unauthorized'
+			) {
 				setIncorrect(true);
+			}
+			if (
+				error.response?.data?.statusCode === 401 &&
+				error.response?.data?.message === 'Email not verified'
+			) {
+				setNotVerified(true);
 			}
 		}
 	};
@@ -147,16 +158,16 @@ export const Login: React.FC = () => {
 						/>
 					</label>
 
-					{/* <div className={classNames(s.invalid, errors?.email && s.invalid_active)}>
+					<div className={classNames(s.invalid, notVerified && s.invalid_active)}>
 						<Image
 							className={s.invalid_image}
-							src={modal_invalid}
-							alt="modal_invalid"
+							src={modal_incorrect}
+							alt="modal_incorrect"
 							width={12}
 							height={12}
 						/>
-						<span>Please enter a valid email</span>
-					</div> */}
+						<span>You need confirm your Email</span>
+					</div>
 				</div>
 
 				<div className={s.password}>

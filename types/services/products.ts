@@ -4,4 +4,5 @@ export interface ProductFind {
 	sortParams: {
 		id: string;
 	};
+	searchText?: string;
 }

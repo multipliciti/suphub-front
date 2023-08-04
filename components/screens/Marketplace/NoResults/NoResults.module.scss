@@ -1,0 +1,35 @@
+.wrapper {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 240px;
+	height: 100%;
+	min-width: 100%;
+
+	.wrapper_inner {
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.title {
+		color: #0f172a;
+		text-align: center;
+
+		font-family: Lato;
+		font-size: 24px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 32px;
+	}
+
+	.subtitle {
+		color: #475569;
+		text-align: center;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+	}
+}

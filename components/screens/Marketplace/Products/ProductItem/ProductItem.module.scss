@@ -91,11 +91,11 @@
 .row {
 	&_wrapper {
 		border-radius: 4px;
-		// background: #f8fafc;
 		display: flex;
 		padding: 1px 6px;
 		align-items: flex-start;
 		gap: 8px;
+		align-items: center;
 	}
 
 	&_key {

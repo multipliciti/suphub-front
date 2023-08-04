@@ -1,0 +1,144 @@
+.wrapper {
+	border: 1px solid #cbd5e1;
+	border-radius: 5px;
+
+	.btn {
+		width: 100%;
+		padding: 10px 20px;
+		border: none;
+		outline: none;
+		background-color: transparent;
+		border-radius: 8px;
+		border: 1px solid #4259ed;
+
+		color: #4259ed;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 24px;
+	}
+}
+
+.header {
+	padding: 16px 20px 0px 20px;
+	display: flex;
+	justify-content: space-between;
+	border-radius: 5px 5px 0 0;
+
+	&_text {
+		color: #0f172a;
+
+		font-family: Lato;
+		font-size: 20px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 26px;
+	}
+
+	&_toggle {
+		transition: transform 0.3s ease;
+		cursor: pointer;
+		&_active {
+			transform: rotate(180deg);
+		}
+	}
+}
+
+.content {
+	padding: 20px 20px 20px 24px;
+
+	.description {
+		display: flex;
+		justify-content: space-between;
+		.title {
+			color: #0f172a;
+
+			font-family: Lato;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 24px;
+		}
+
+		.price {
+			color: #0f172a;
+
+			font-family: Lato;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 24px;
+
+			.unit {
+				color: #64748b;
+
+				font-family: Lato;
+				font-size: 16px;
+				font-style: normal;
+				font-weight: 400;
+				line-height: 24px;
+			}
+		}
+	}
+	.size {
+		margin-top: 4px;
+		color: #64748b;
+
+		font-family: Lato;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 20px;
+	}
+}
+
+.choose {
+	margin-top: 20px;
+
+	opacity: 0;
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height 0.4s ease, opacity 0.4s ease;
+	pointer-events: none;
+
+	&_active {
+		opacity: 1;
+		max-height: 1000px;
+		pointer-events: all;
+	}
+
+	&_title {
+		margin-bottom: 8px;
+		color: #64748b;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 24px;
+	}
+
+	.exemples {
+		display: flex;
+		gap: 17px;
+		margin-bottom: 20px;
+
+		&_img {
+			border-radius: 5px;
+			border: 1px solid #cbd5e1;
+		}
+
+		&_title {
+			margin-top: 4px;
+			color: #0f172a;
+
+			font-family: Lato;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 20px;
+		}
+	}
+}

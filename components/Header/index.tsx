@@ -11,16 +11,48 @@ import { classNames } from '@/utils/classNames';
 import { useEffect } from 'react';
 import { setLoginIn } from '@/redux/slices/auth';
 import { parseCookies } from 'nookies';
+import { Api } from '@/services';
+import { destroyCookie } from 'nookies';
 //img
+import Arrow from '@/imgs/Header/menu/Dropdown items/Arrow - Swap.svg';
+import Calendar from '@/imgs/Header/menu/Dropdown items/Calendar - Dates.svg';
+import Comment from '@/imgs/Header/menu/Dropdown items/Comment - 2.svg';
+import User from '@/imgs/Header/menu/Dropdown items/User.svg';
 import logo from '@/imgs/Header/Logo.svg';
+import LogOut from '@/imgs/Header/Dropdown items/Log Out.svg';
 import star_img from '@/imgs/Header/Star.svg';
 import notifacation_img from '@/imgs/Header/Notification.svg';
+import avatartest from '@/imgs/Header/AvatarsTest.svg';
 import { getCookie } from '@/utils/cookies';
 
 export const Header = () => {
+	const api = Api();
 	const dispatch = useAppDispatch();
 	const isLoggedIn = useAppSelector((state) => state.authSlice.isLoggedIn);
 	const [activeLink, setActiveLink] = useState<number>(1);
+	const [menu, setMenu] = useState<boolean>(false);
+	const menuItems = [
+		{
+			id: 1,
+			img: User,
+			title: 'My profile',
+		},
+		{
+			id: 2,
+			img: Arrow,
+			title: 'Convert to bussiness',
+		},
+		{
+			id: 3,
+			img: Comment,
+			title: 'Send Feedback',
+		},
+		{
+			id: 4,
+			img: Calendar,
+			title: 'Book a call',
+		},
+	];
 
 	interface Button {
 		id: number;
@@ -40,6 +72,14 @@ export const Header = () => {
 			href: '/marketplace',
 		},
 	];
+
+	const fetchLogOut = async () => {
+		try {
+			const response = await api.auth.logout();
+			destroyCookie(null, 'accessToken');
+			window.location.reload();
+		} catch (error: any) {}
+	};
 
 	useEffect(() => {
 		const cookies = parseCookies();
@@ -110,9 +150,43 @@ export const Header = () => {
 									height={24}
 								/>
 							</li>
-							<li className={s.item_avatar}>
-								<Image src={logo} alt="logo" width={24} height={24} />
+							<li onClick={() => setMenu(!menu)} className={s.item_avatar}>
+								<Image
+									className={s.avatar}
+									src={avatartest}
+									alt="avatar"
+									width={24}
+									height={24}
+								/>
+								{menu && (
+									<div className={s.menu}>
+										<div className={s.header}>
+											<Image src={avatartest} alt="avatar" width={36} height={36} />
+											<div className={s.header_info}>
+												<span className={s.header_info_name}>Tom Dallas</span>
+												<span className={s.header_info_person}>Personal</span>
+											</div>
+										</div>
+
+										<div className={s.menu_items}>
+											{menuItems.map((el: any, ind) => {
+												return (
+													<div key={ind} className={s.item}>
+														<Image src={el.img} alt="el" width={20} height={20} />
+														<span className={s.title}>{el.title}</span>
+													</div>
+												);
+											})}
+										</div>
+
+										<button onClick={() => fetchLogOut()} className={s.logout}>
+											<Image src={LogOut} alt="el" width={20} height={20} />
+											<span className={s.text}> Log out</span>
+										</button>
+									</div>
+								)}
 							</li>
+
 							<li></li>
 							<li></li>
 						</ul>
