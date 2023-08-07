@@ -18,7 +18,6 @@ export const Marketplace = () => {
 	const [totalPages, setTotalPages] = useState<number>(2);
 
 	const products = useAppSelector((state) => state.productSlice.products);
-	const isSideBar = useAppSelector((state) => state.sideBarSlice.sideBar);
 	const activePage = useAppSelector((state) => state.productSlice.activePage);
 	const total = useAppSelector((state) => state.productSlice.total);
 	useEffect(() => {
@@ -33,8 +32,6 @@ export const Marketplace = () => {
 				});
 				dispatch(setProducts(response.result));
 				dispatch(setTotal(response.total));
-
-				console.log('response.totalPage', response);
 			} catch (error) {
 				console.error('Error:', error);
 			}
@@ -44,26 +41,13 @@ export const Marketplace = () => {
 	}, [activePage]);
 	return (
 		<div className={s.wrapper}>
-			<div
-				className={classNames(
-					'content_container',
-					isSideBar && 'content_container_sidebar'
-				)}
-			>
-				<>
-					<div className={s.header}>
-						<Header />
-						<Filters />
-						<ProductsFilter />
-						<Products total={total} products={products} />
-					</div>
-					<Pagination
-						buttons={true}
-						totalPages={totalPages}
-						currentPage={activePage}
-					/>
-				</>
+			<div className={s.header}>
+				<Header />
+				<Filters />
+				<ProductsFilter />
+				<Products total={total} products={products} />
 			</div>
+			<Pagination buttons={true} totalPages={totalPages} currentPage={activePage} />
 		</div>
 	);
 };

@@ -239,7 +239,6 @@ export const Registration = () => {
 							!errors?.firstName &&
 							!errors?.lastName &&
 							!errors?.password &&
-							Object.values(getValues()).every((value) => value.trim().length > 0) &&
 							s.btn_send_active
 					)}
 				>

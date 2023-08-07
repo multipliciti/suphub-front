@@ -1,5 +1,5 @@
 import './../styles/globals.scss';
-import { Header } from '@/components/Header';
+import { Header } from '@/components/Features/Header';
 import { Modal } from '@/components/Modals';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';

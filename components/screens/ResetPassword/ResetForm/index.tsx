@@ -14,8 +14,11 @@ import modal_eye from '@/imgs/Modal/eye.svg';
 import password_invalid from '@/imgs/Modal/password_invalid.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
 import close_eye from '@/imgs/Modal/close_eye.svg';
+interface PropsType {
+	token: string;
+}
 
-export const ResetForm = () => {
+export const ResetForm = ({ token }: PropsType) => {
 	const api = Api();
 
 	type FormType = {
@@ -42,15 +45,13 @@ export const ResetForm = () => {
 	const submit: SubmitHandler<FormType> = (data) => {
 		const requestData = {
 			newPassword: data.confirm,
-			token: 'token',
+			token,
 		};
 
 		try {
 			api.auth.createPassword(requestData);
 			push('/success-password');
-		} catch (error: any) {
-			console.log(error.message);
-		}
+		} catch (error: any) {}
 	};
 
 	const onErrors = (errors: any) => {

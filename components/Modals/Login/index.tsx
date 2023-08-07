@@ -8,8 +8,7 @@ import { classNames } from '@/utils/classNames';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { LayoutModal } from '../layout';
-import { isEmail } from './validation';
-import { isPassword } from './validation';
+// import { isPassword } from './validation';
 import { Api } from '@/services';
 import { setCookie } from '@/utils/cookies';
 import { useRouter } from 'next/navigation';
@@ -35,6 +34,8 @@ export const Login: React.FC = () => {
 	const [incorrect, setIncorrect] = useState<boolean>(false);
 	const [hidePassword, setHidePassword] = useState<boolean>(false);
 	const [notVerified, setNotVerified] = useState<boolean>(false);
+	const [correctPassword, setCorrectPassword] = useState<boolean>(false);
+	const [correctEmail, setCorrectEmail] = useState<boolean>(false);
 
 	const api = Api();
 
@@ -49,12 +50,16 @@ export const Login: React.FC = () => {
 		shouldFocusError: true,
 	});
 
-	if (getValues().password === '') {
-		errors.password = {
-			type: 'manual',
-			message: 'First error',
-		};
-	}
+	const isEmail = (data: string) => {
+		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+		// emailRegex.test(data) ? setCorrectEmail(true) : setIncorrect(false);
+		return emailRegex.test(data);
+	};
+
+	const isPassword = (data: string) => {
+		data.length < 8 ? setCorrectPassword(false) : setCorrectPassword(true);
+		return data.length < 8 ? false : true;
+	};
 
 	const submit: SubmitHandler<LoginDto> = async (data) => {
 		try {
@@ -133,7 +138,7 @@ export const Login: React.FC = () => {
 						/>
 
 						<input
-							{...register('email', { validate: isEmail })}
+							{...register('email', { required: true, validate: isEmail })}
 							className={s.email_input}
 							id="email"
 							type="text"
@@ -142,16 +147,9 @@ export const Login: React.FC = () => {
 						<Image
 							className={classNames(
 								s.icon_invalid,
-								errors?.email && s.icon_invalid_active,
-								getValues('email').length > 0 &&
-									isEmail(getValues('email')) &&
-									s.icon_invalid_active
+								getValues('email').length > 0 && s.icon_invalid_active
 							)}
-							src={
-								getValues('email').length > 0 && isEmail(getValues('email'))
-									? modal_done
-									: invalid_icon
-							}
+							src={isEmail(getValues('email')) ? modal_done : invalid_icon}
 							alt="invalid_icon"
 							width={20}
 							height={20}
@@ -209,7 +207,7 @@ export const Login: React.FC = () => {
 					>
 						<Image
 							className={s.invalid_image}
-							src={!errors?.password ? password_valid : password_invalid}
+							src={correctPassword ? password_valid : password_invalid}
 							alt="password_invalid"
 							width={12}
 							height={12}

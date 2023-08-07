@@ -4,7 +4,11 @@ import { ProductFind } from '@/types/services/products';
 export const ProductsApi = (instance: AxiosInstance) => ({
 	async getProduct({ page, limit, sortParams, searchText }: ProductFind) {
 		try {
-			const search = searchText ? `&search=${encodeURIComponent(searchText)}` : '';
+			const searchParams = {
+				attr: { name: { contains: searchText } },
+			};
+
+			const search = searchText ? `&find=${JSON.stringify(searchParams)}` : '';
 			const sort = sortParams
 				? `&sort=${encodeURIComponent(JSON.stringify(sortParams))}`
 				: '';
@@ -28,3 +32,5 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 		}
 	},
 });
+
+// searchText: JSON.stringify({ attr: { name: { contains: `${value}` } } }),

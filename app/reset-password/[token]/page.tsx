@@ -6,10 +6,16 @@ export const metadata: Metadata = {
 	description: 'Reset password ',
 };
 
-const ResetPasswordPage = () => {
+type PropsType = {
+	params: {
+		token: string;
+	};
+};
+
+const ResetPasswordPage = ({ params: { token } }: PropsType) => {
 	return (
 		<>
-			<ResetPassword token={'/'} />
+			<ResetPassword token={token} />
 		</>
 	);
 };

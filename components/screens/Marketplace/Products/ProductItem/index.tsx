@@ -31,19 +31,6 @@ export const ProductItem = (props: any) => {
 		properties.push(el);
 	});
 
-	console.log('properties', properties);
-
-	// const requiredProperties = ['minOrder', 'leadTime', 'warranty', 'certification'];
-
-	// const mainProperties = Object.entries(
-	// 	filterObjectByProperties(props, requiredProperties)
-	// );
-	// const seconderyProperties = attr.slice(0, 5);
-	// console.log('seconderyProperties', seconderyProperties);
-	// console.log('mainProperties', mainProperties);
-	// const main = mergeArrays(seconderyProperties, mainProperties);
-	// console.log('main', main);
-
 	return (
 		<div onClick={() => push(`/product/${id}`)} className={s.wrapper}>
 			<div className={s.img_wrapper}>

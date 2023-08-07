@@ -6,6 +6,7 @@ import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { LayoutModal } from '../layout';
+import { resetPasswordEmailSet } from '@/redux/slices/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { isEmail } from './validation';
 import { Api } from '@/services';
@@ -23,7 +24,7 @@ interface FormType {
 export const ForgotPassword: React.FC = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
-	const [invalidEmail, setInvalidEmail] = useState<boolean>(true);
+	const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
 
 	const {
 		register,
@@ -41,12 +42,16 @@ export const ForgotPassword: React.FC = () => {
 	});
 
 	const submit: SubmitHandler<FormType> = async (data: FormType) => {
+		dispatch(resetPasswordEmailSet(data.email));
 		try {
 			const response = await api.auth.recovery(data);
 
 			dispatch(setModal('checkEmail'));
 		} catch (error: any) {
-			if (error.response?.data?.statusCode === 403) {
+			const forbidden =
+				error.response?.data?.statusCode === 403 &&
+				error.response?.data?.message === 'Forbidden';
+			if (forbidden) {
 				setInvalidEmail(true);
 			}
 		}

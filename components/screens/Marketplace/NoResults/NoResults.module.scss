@@ -6,11 +6,9 @@
 	height: 100%;
 	min-width: 100%;
 
-	.wrapper_inner {
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-	}
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 
 	.title {
 		color: #0f172a;
@@ -24,6 +22,7 @@
 	}
 
 	.subtitle {
+		margin-top: 4px;
 		color: #475569;
 		text-align: center;
 
@@ -31,5 +30,20 @@
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 400;
+	}
+
+	.btn {
+		margin-top: 24px;
+		border: none;
+		border-radius: 8px;
+		background: #4259ed;
+		padding: 10px 20px;
+
+		color: #fff;
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 24px;
 	}
 }

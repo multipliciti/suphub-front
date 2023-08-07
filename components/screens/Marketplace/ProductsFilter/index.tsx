@@ -6,6 +6,7 @@ import { Api } from '@/services';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { FilterWrapper } from './FilterWrapper';
 import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
+import debounce from 'lodash.debounce';
 
 export const ProductsFilter = () => {
 	const dispatch = useAppDispatch();
@@ -23,16 +24,18 @@ export const ProductsFilter = () => {
 				sortParams: {
 					id: 'desc',
 				},
-				searchText: JSON.stringify({ name: { contains: `${value}` } }),
+				searchText: value,
 			});
 			dispatch(setProducts(response.result));
 			dispatch(setTotal(response.total));
-			// setTotalPages(response.totalPages);
-			console.log('response.totalPage', response);
 		} catch (error) {
 			console.error('Error:', error);
 		}
 	};
+
+	const debouncedFetchProduct = debounce((value: string) => {
+		fetchProduct(value);
+	}, 250);
 
 	return (
 		<div className={s.wrapper}>
@@ -43,7 +46,7 @@ export const ProductsFilter = () => {
 					placeholder="Search product by name"
 					id="search"
 					type="text"
-					onChange={(e) => fetchProduct(e.target.value)}
+					onChange={(e) => debouncedFetchProduct(e.target.value)}
 				/>
 			</label>
 			<div className={s.products_filter}>

@@ -22,13 +22,15 @@ export const Products = (props: ProductsPropsType) => {
 				Results: <span className={s.results_text}> {total} products </span>
 			</div>
 
-			<div className={s.products}>
-				{products && products.length < 1 && <NoResults />}
+			{products && products.length < 1 && <NoResults />}
 
-				{products &&
-					products.length > 0 &&
-					products.map((el, ind) => <ProductItem key={ind} {...el} />)}
-			</div>
+			{products && (
+				<div className={s.products}>
+					{products.map((el, ind) => (
+						<ProductItem key={ind} {...el} />
+					))}
+				</div>
+			)}
 		</div>
 	);
 };
