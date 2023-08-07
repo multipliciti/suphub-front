@@ -34,7 +34,13 @@ export const ProductItem = (props: any) => {
 	return (
 		<div onClick={() => push(`/product/${id}`)} className={s.wrapper}>
 			<div className={s.img_wrapper}>
-				<div onClick={() => dispatch(toggleFavorite(id))} className={s.img_star}>
+				<div
+					onClick={(e) => {
+						e.stopPropagation();
+						dispatch(toggleFavorite(id));
+					}}
+					className={s.img_star}
+				>
 					<Image
 						src={selected ? star_active : star}
 						alt="star"

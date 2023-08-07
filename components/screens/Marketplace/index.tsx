@@ -5,8 +5,7 @@ import { Filters } from './Filters';
 import { ProductsFilter } from './ProductsFilter';
 import { Products } from './Products';
 import { Pagination } from '@/components/Features/Pagination';
-import { NoResults } from './NoResults';
-import { classNames } from '@/utils/classNames';
+import { setStatus } from '@/redux/slices/marketplace/products';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
 import { useEffect, useState } from 'react';
@@ -20,23 +19,27 @@ export const Marketplace = () => {
 	const products = useAppSelector((state) => state.productSlice.products);
 	const activePage = useAppSelector((state) => state.productSlice.activePage);
 	const total = useAppSelector((state) => state.productSlice.total);
-	useEffect(() => {
-		const fetchData = async () => {
-			try {
-				const response = await api.product.getProduct({
-					page: activePage,
-					limit: 10,
-					sortParams: {
-						id: 'desc',
-					},
-				});
-				dispatch(setProducts(response.result));
-				dispatch(setTotal(response.total));
-			} catch (error) {
-				console.error('Error:', error);
-			}
-		};
+	const status = useAppSelector((state) => state.productSlice.status);
+	const fetchData = async () => {
+		dispatch(setStatus('pending'));
+		try {
+			const response = await api.product.getProduct({
+				page: activePage,
+				limit: 10,
+				sortParams: {
+					id: 'desc',
+				},
+			});
+			dispatch(setProducts(response.result));
+			dispatch(setTotal(response.total));
+			dispatch(setStatus('seccess'));
+		} catch (error) {
+			console.error('Error:', error);
+			dispatch(setStatus('rejected'));
+		}
+	};
 
+	useEffect(() => {
 		fetchData();
 	}, [activePage]);
 	return (
@@ -45,7 +48,7 @@ export const Marketplace = () => {
 				<Header />
 				<Filters />
 				<ProductsFilter />
-				<Products total={total} products={products} />
+				<Products status={status} total={total} products={products} />
 			</div>
 			<Pagination buttons={true} totalPages={totalPages} currentPage={activePage} />
 		</div>

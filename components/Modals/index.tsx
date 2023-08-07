@@ -37,7 +37,9 @@ export const Modal = () => {
 					modal === 'registration' && s.wrapper_active
 				)}
 			>
-				<Registration />
+				<div className={s.modal}>
+					<Registration />
+				</div>
 			</div>
 
 			<div

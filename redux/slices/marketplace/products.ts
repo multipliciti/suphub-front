@@ -19,6 +19,7 @@ interface initialStateType {
 	favorite: number[];
 	activePage: number;
 	total: number;
+	status: 'pending' | 'seccess' | 'rejected';
 }
 
 const initialState: initialStateType = {
@@ -26,6 +27,7 @@ const initialState: initialStateType = {
 	activePage: 1,
 	favorite: [],
 	total: 0,
+	status: 'pending',
 };
 
 const productSlice = createSlice({
@@ -51,10 +53,13 @@ const productSlice = createSlice({
 		setTotal(state, action: PayloadAction<number>) {
 			state.total = action.payload;
 		},
+		setStatus(state, action: PayloadAction<'pending' | 'seccess' | 'rejected'>) {
+			state.status = action.payload;
+		},
 	},
 });
 
-export const { toggleFavorite, setActivePage, setProducts, setTotal } =
+export const { toggleFavorite, setActivePage, setProducts, setTotal, setStatus } =
 	productSlice.actions;
 
 export default productSlice.reducer;

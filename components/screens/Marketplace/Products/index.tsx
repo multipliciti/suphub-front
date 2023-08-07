@@ -12,9 +12,10 @@ import { NoResults } from '../NoResults';
 interface ProductsPropsType {
 	products: ProductItemType[] | undefined;
 	total: number;
+	status: string;
 }
 export const Products = (props: ProductsPropsType) => {
-	const { products, total } = props;
+	const { products, total, status } = props;
 
 	return (
 		<div className={s.wrapper}>
@@ -22,9 +23,10 @@ export const Products = (props: ProductsPropsType) => {
 				Results: <span className={s.results_text}> {total} products </span>
 			</div>
 
-			{products && products.length < 1 && <NoResults />}
-
-			{products && (
+			{status === 'pendung' && <div> Loading...</div>}
+			{status === 'rejected' && <div> Error! </div>}
+			{products && products.length < 1 && status === 'seccess' && <NoResults />}
+			{products && status === 'seccess' && (
 				<div className={s.products}>
 					{products.map((el, ind) => (
 						<div key={ind} className={s.products_item}>
