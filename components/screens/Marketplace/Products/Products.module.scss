@@ -25,14 +25,21 @@
 }
 
 .products {
+	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
-	grid-template-rows: repeat(auto-fill, 1fr);
-	grid-column-gap: 0px;
-	grid-row-gap: 0px;
-	gap: 24px;
+	grid-column-gap: 20px;
+	grid-row-gap: 20px;
+	justify-content: center;
+	@media (max-width: 1450px) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+	@media (max-width: 1180px) {
+		grid-template-columns: repeat(2, 1fr);
+	}
 
-	// @media (max-width: 1430px) {
-	// 	grid-template-columns: repeat(3, 1fr);
-	// }
+	&_item {
+		display: flex;
+		justify-content: center;
+	}
 }

@@ -27,7 +27,9 @@ export const Products = (props: ProductsPropsType) => {
 			{products && (
 				<div className={s.products}>
 					{products.map((el, ind) => (
-						<ProductItem key={ind} {...el} />
+						<div key={ind} className={s.products_item}>
+							<ProductItem {...el} />
+						</div>
 					))}
 				</div>
 			)}
