@@ -6,16 +6,13 @@ import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { transformAttributesToObj } from '@/utils/transformAttributesToObj';
 //imgs
-import star from '@/imgs/Marketplace/Products/star.svg';
 import star_active from '@/imgs/Marketplace/Products/star_sctive.svg';
-import { ProductItemType } from '@/types/marketplace/product';
 import test2 from '@/imgs/Product/test2.png';
-import { Api } from '@/services';
 import { useState } from 'react';
 
 export const ProductItem = (props: any) => {
 	const { push } = useRouter();
-	const [favorite, setFavorite] = useState<boolean>(false);
+	const [favorite, setFavorite] = useState<boolean>(true);
 	const dispatch = useAppDispatch();
 	const { name, id, dynamic_attr } = props;
 
@@ -31,33 +28,12 @@ export const ProductItem = (props: any) => {
 		properties.push(el);
 	});
 
-	const addFavorite = (id: number) => {
-		const api = Api();
-		try {
-			const response = api.product.addFavorite(id);
-			setFavorite(true);
-		} catch (error: any) {
-			setFavorite(false);
-		}
-	};
-
 	return (
 		<>
 			<div onClick={() => push(`/product/${id}`)} className={s.wrapper}>
 				<div className={s.img_wrapper}>
-					<div
-						onClick={(e) => {
-							e.stopPropagation();
-							addFavorite(id);
-						}}
-						className={s.img_star}
-					>
-						<Image
-							src={favorite ? star_active : star}
-							alt="star"
-							width={20}
-							height={20}
-						/>
+					<div className={s.img_star}>
+						<Image src={star_active} alt="star" width={20} height={20} />
 					</div>
 					<Image className={s.img} src={test2} alt="img" width={244} height={212} />
 				</div>

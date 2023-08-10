@@ -60,7 +60,6 @@ const initialState: CounterState = {
 			],
 			id: 2,
 		},
-
 		{
 			title: 'Certification',
 			items: [

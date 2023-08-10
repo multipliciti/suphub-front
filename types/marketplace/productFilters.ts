@@ -1,6 +1,7 @@
 export interface ProductFilterItem {
 	title: string;
 	type: string;
+	key: string;
 	min?: string;
 	max?: string;
 	items?: {
@@ -12,5 +13,6 @@ export interface ProductFilterItem {
 }
 
 export interface ProductFilter {
-	store: ProductFilterItem[];
+	storeProductsFilter: ProductFilterItem[];
+	storeFavoriteFilter: ProductFilterItem[];
 }

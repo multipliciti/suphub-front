@@ -20,6 +20,7 @@ export const Marketplace = () => {
 	const activePage = useAppSelector((state) => state.productSlice.activePage);
 	const total = useAppSelector((state) => state.productSlice.total);
 	const status = useAppSelector((state) => state.productSlice.status);
+	const filtersProducts = useAppSelector((state) => state.filtersSlice.store);
 	const fetchData = async () => {
 		dispatch(setStatus('pending'));
 		try {

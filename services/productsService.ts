@@ -21,6 +21,7 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
+
 	async getProductOne(id: number) {
 		try {
 			const url = `/product/${id}`;
@@ -31,6 +32,14 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
+	async addFavorite(id: number) {
+		try {
+			const url = `product/add-favorite`;
+			const response = await instance.post(url, { productId: id });
+			return response.data;
+		} catch (error) {
+			console.error('User registration error:', error);
+			throw error;
+		}
+	},
 });
-
-// searchText: JSON.stringify({ attr: { name: { contains: `${value}` } } }),

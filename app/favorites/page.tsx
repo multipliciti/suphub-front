@@ -1,9 +1,9 @@
-import { Marketplace } from '@/components/Screens/Marketplace';
+import { FavoritesComponents } from '@/components/Screens/Favorites';
 
 export default function MyFavorites() {
 	return (
 		<>
-			<div></div>
+			<FavoritesComponents />
 		</>
 	);
 }

@@ -9,35 +9,9 @@ import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
 import debounce from 'lodash.debounce';
 
 export const ProductsFilter = () => {
-	const dispatch = useAppDispatch();
-	const api = Api();
 	const productFilterItems = useAppSelector(
-		(state) => state.productsFilter.storeProductsFilter
+		(state) => state.productsFilter.storeFavoriteFilter
 	);
-	console.log('productFilterItems', productFilterItems);
-	const activePage = useAppSelector((state) => state.productSlice.activePage);
-	const total = useAppSelector((state) => state.productSlice.total);
-
-	const fetchProduct = async (value: string) => {
-		try {
-			const response = await api.product.getProduct({
-				page: activePage,
-				limit: 10,
-				sortParams: {
-					id: 'desc',
-				},
-				searchText: value,
-			});
-			dispatch(setProducts(response.result));
-			dispatch(setTotal(response.total));
-		} catch (error) {
-			console.error('Error:', error);
-		}
-	};
-
-	const debouncedFetchProduct = debounce((value: string) => {
-		fetchProduct(value);
-	}, 250);
 
 	return (
 		<div className={s.wrapper}>
@@ -48,7 +22,6 @@ export const ProductsFilter = () => {
 					placeholder="Search product by name"
 					id="search"
 					type="text"
-					onChange={(e) => debouncedFetchProduct(e.target.value)}
 				/>
 			</label>
 			<div className={s.products_filter}>
