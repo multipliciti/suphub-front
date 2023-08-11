@@ -66,7 +66,7 @@ export const Login: React.FC = () => {
 			const response = await api.auth.loginUser(data);
 			const { token } = response;
 			if (token) {
-				setCookie('token', token, 1);
+				// setCookie('token', token, 1);
 				dispatch(setModal(''));
 				dispatch(setLoginIn(true));
 				setTimeout(() => {

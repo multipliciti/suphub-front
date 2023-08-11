@@ -5,7 +5,7 @@ const initialState: ProductFilter = {
 	storeFavoriteFilter: [
 		{
 			title: 'Unit Price',
-			key: 'untilPrice',
+			key: 'unitPrice',
 			type: 'range',
 			min: '',
 			max: '',
@@ -79,7 +79,7 @@ const initialState: ProductFilter = {
 	storeProductsFilter: [
 		{
 			title: 'Unit Price',
-			key: 'untilPrice',
+			key: 'unitPrice',
 			type: 'range',
 			min: '',
 			max: '',
@@ -123,7 +123,7 @@ const initialState: ProductFilter = {
 		},
 		{
 			title: 'Country of origin',
-			key: 'countryOfrigin',
+			key: 'countryOfOrigin',
 			type: 'select',
 			items: [
 				{
@@ -180,6 +180,7 @@ const productsFilter = createSlice({
 	},
 });
 
-export const {} = productsFilter.actions;
+export const { updateMinProducts, updateMaxproducts, updateSelectedItemsProsuct } =
+	productsFilter.actions;
 
 export default productsFilter.reducer;

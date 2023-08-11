@@ -2,19 +2,26 @@
 import s from './FilterWrapper.module.scss';
 import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
+import {
+	updateMinProducts,
+	updateMaxproducts,
+	updateSelectedItemsProsuct,
+} from '@/redux/slices/marketplace/productsFilter';
 //img
 import close_img from '@/imgs/Marketplace/ProductFilter/close.svg';
 import open_img from '@/imgs/Marketplace/ProductFilter/open.svg';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
 import { classNames } from '@/utils/classNames';
 import { ProductFilterItem } from '@/types/marketplace/productFilters';
+import { useAppDispatch } from '@/redux/hooks';
 
 interface TypeProps {
 	item: ProductFilterItem;
 }
 
 export const FilterWrapper = (props: TypeProps) => {
-	const { title, items, type } = props.item;
+	const dispatch = useAppDispatch();
+	const { title, items, type, key, min, max } = props.item;
 	const [open, setOpen] = useState<boolean>(false);
 	const [radioOption, setRadioOption] = useState<string>('');
 	const [selectedOption, setSelectedOption] = useState<string[]>(['option2']);
@@ -23,11 +30,26 @@ export const FilterWrapper = (props: TypeProps) => {
 		setRadioOption(event.target.value);
 	};
 
+	const handleOptionChangeDaspatch = (selectedOptions: any[]) => {
+		dispatch(
+			updateSelectedItemsProsuct({ filterKey: key, selectedItems: selectedOptions })
+		);
+	};
+
+	const handleMinChange = (event: ChangeEvent<HTMLInputElement>) => {
+		dispatch(updateMinProducts({ filterKey: key, min: event.target.value }));
+	};
+
+	const handleMaxChange = (event: ChangeEvent<HTMLInputElement>) => {
+		dispatch(updateMaxproducts({ filterKey: key, max: event.target.value }));
+	};
+
 	const handleSelectChange = (value: string) => {
 		if (selectedOption.includes(value)) {
 			setSelectedOption(selectedOption.filter((option) => option !== value));
 		} else {
 			setSelectedOption([...selectedOption, value]);
+			handleOptionChangeDaspatch(selectedOption);
 		}
 	};
 
@@ -46,10 +68,24 @@ export const FilterWrapper = (props: TypeProps) => {
 			{type === 'range' && (
 				<div className={classNames(s.inner_wrapper, open && s.inner_wrapper_active)}>
 					<label className={s.label} htmlFor={title}>
-						<input placeholder="min" className={s.input} id={title} type="text" />
+						<input
+							onChange={(e) => handleMinChange(e)}
+							value={min}
+							placeholder="min"
+							className={s.input}
+							id={title}
+							type="text"
+						/>
 					</label>
 					<label className={s.label} htmlFor={title}>
-						<input placeholder="max" className={s.input} id={title} type="text" />
+						<input
+							onChange={(e) => handleMaxChange(e)}
+							placeholder="max"
+							value={max}
+							className={s.input}
+							id={title}
+							type="text"
+						/>
 					</label>
 					<button className={s.clear}>Clear filter</button>
 				</div>

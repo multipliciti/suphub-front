@@ -20,7 +20,48 @@ export const Marketplace = () => {
 	const activePage = useAppSelector((state) => state.productSlice.activePage);
 	const total = useAppSelector((state) => state.productSlice.total);
 	const status = useAppSelector((state) => state.productSlice.status);
-	const filtersProducts = useAppSelector((state) => state.filtersSlice.store);
+	const storeProductsFilter = useAppSelector(
+		(state) => state.productsFilter.storeProductsFilter
+	);
+
+	const minUnitPrice = storeProductsFilter.filter((el) => {
+		return el.key === 'unitPrice';
+	})[0].min;
+	const maxUnitPrice = storeProductsFilter.filter((el) => {
+		return el.key === 'unitPrice';
+	})[0].max;
+	const moqMin = storeProductsFilter.filter((el) => {
+		return el.key === 'moq';
+	})[0].min;
+	const moqMax = storeProductsFilter.filter((el) => {
+		return el.key === 'moq';
+	})[0].max;
+	const leadTime =
+		storeProductsFilter.filter((el) => {
+			return el.key === 'leadTime';
+		})[0].selectedItems || '';
+	const warrantyMin =
+		storeProductsFilter.filter((el) => {
+			return el.key === 'warranty';
+		})[0].min || '';
+	const warrantyMax =
+		storeProductsFilter.filter((el) => {
+			return el.key === 'warranty';
+		})[0].max || '';
+	const countryOfOrigin = storeProductsFilter.filter((el) => {
+		return el.key === 'countryOfOrigin';
+	})[0].selectedItems;
+
+	const jsonStrings = countryOfOrigin?.map((item) => {
+		return `"countryOfOrigin": {"contains": "${item}"}`;
+	});
+
+	const combinedJsonString = jsonStrings?.join(', ');
+
+	const finalJsonString = `{ ${combinedJsonString} }`;
+
+	console.log('finalJsonString', finalJsonString);
+
 	const fetchData = async () => {
 		dispatch(setStatus('pending'));
 		try {
