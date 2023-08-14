@@ -5,33 +5,53 @@ import { Item } from '../Item';
 import { useAppSelector } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { useAppDispatch } from '@/redux/hooks';
-import { clearBranch, selectAll } from '@/redux/slices/marketplace/filters';
+import { selectAll } from '@/redux/slices/marketplace/filters';
+import { removeChar } from '@/redux/slices/marketplace/filters';
+// import { clearBranch, selectAll } from '@/redux/slices/marketplace/filters';
 
 interface Props {
 	itemProps: ItemFilter;
 }
 
 export const FilterWrapper = ({ itemProps }: Props) => {
-	const { title, items } = itemProps;
-	const storeItems = useAppSelector((state) => state.filtersSlice.store[title]);
+	const { attributeName, attributeId, options } = itemProps;
+	const charData = useAppSelector((state) => state.filtersSlice.char);
+	const countSelected = charData.find((el) => {
+		return el.attributeId === attributeId;
+	})?.attributeValues.length;
+	const isBranch = charData.some((el) => {
+		return el.attributeId === attributeId && el.attributeValues?.length > 0;
+	})
+		? true
+		: false;
+
 	const dispatch = useAppDispatch();
+	const attrValueIdAll = options.map((el) => {
+		return el.attrValueId;
+	});
 
 	return (
 		<div className={s.wrapper}>
 			<div className={s.title}>
-				<span className={s.text}>{title}</span>
+				<span className={s.text}>{attributeName}</span>
+				<span
+					className={classNames(
+						s.selected,
+						countSelected !== undefined && countSelected > 0 && s.selected_active
+					)}
+				>
+					{countSelected !== undefined ? `(${countSelected} selected)` : ''}
+				</span>
 			</div>
 
 			<div className={s.content}>
-				{items.map((el, ind) => {
+				{options.map((el, ind) => {
 					return (
 						<div key={ind}>
 							<Item
-								text={el.text}
-								id={el.id}
-								img={el.img}
-								selected={storeItems.includes(el.id)}
-								title={title}
+								text={el.value}
+								attrValueId={el.attrValueId}
+								attributeId={attributeId}
 							/>
 						</div>
 					);
@@ -41,7 +61,7 @@ export const FilterWrapper = ({ itemProps }: Props) => {
 			<div className={s.select}>
 				<button
 					onClick={() => {
-						dispatch(selectAll(title));
+						dispatch(selectAll({ attributeId, attrValueIdAll }));
 					}}
 					className={s.select_btn}
 				>
@@ -50,10 +70,10 @@ export const FilterWrapper = ({ itemProps }: Props) => {
 				<button
 					className={classNames(
 						s.select_btn_clear,
-						storeItems.length > 0 && s.select_btn_clear_active
+						isBranch && s.select_btn_clear_active
 					)}
 					onClick={() => {
-						dispatch(clearBranch(title));
+						dispatch(removeChar(attributeId));
 					}}
 				>
 					Clear all

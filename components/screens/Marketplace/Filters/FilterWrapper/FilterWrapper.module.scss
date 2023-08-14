@@ -19,6 +19,26 @@
 		font-weight: 700;
 		line-height: 24px;
 	}
+
+	.selected {
+		margin-left: 8px;
+		opacity: 0;
+		pointer-events: none;
+		transition: opacity 0.3s ease;
+
+		color: #64748b;
+
+		font-family: Lato;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 20px;
+
+		&_active {
+			opacity: 1;
+			pointer-events: all;
+		}
+	}
 }
 
 .content {

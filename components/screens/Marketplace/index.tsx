@@ -10,6 +10,8 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
 import { useEffect, useState } from 'react';
 import { Api } from '@/services';
+import { setItemsFilter } from '@/redux/slices/marketplace/filters';
+import { transformCharData } from './utils';
 
 export const Marketplace = () => {
 	const dispatch = useAppDispatch();
@@ -20,57 +22,93 @@ export const Marketplace = () => {
 	const activePage = useAppSelector((state) => state.productSlice.activePage);
 	const total = useAppSelector((state) => state.productSlice.total);
 	const status = useAppSelector((state) => state.productSlice.status);
-	const storeProductsFilter = useAppSelector(
-		(state) => state.productsFilter.storeProductsFilter
-	);
+	const productsFilter = useAppSelector((state) => state.productsFilter);
 
-	const minUnitPrice = storeProductsFilter.filter((el) => {
-		return el.key === 'unitPrice';
-	})[0].min;
-	const maxUnitPrice = storeProductsFilter.filter((el) => {
-		return el.key === 'unitPrice';
-	})[0].max;
-	const moqMin = storeProductsFilter.filter((el) => {
-		return el.key === 'moq';
-	})[0].min;
-	const moqMax = storeProductsFilter.filter((el) => {
-		return el.key === 'moq';
-	})[0].max;
+	const storeProductsFilter = productsFilter.storeProductsFilter;
+	const charData = useAppSelector((state) => state.filtersSlice.char);
+	//get items
+	const searchText = productsFilter.searchProductsFilter;
+	const minUnitPrice = storeProductsFilter.find((el) => el.key === 'unitPrice')?.min;
+	const maxUnitPrice = storeProductsFilter.find((el) => el.key === 'unitPrice')?.max;
 	const leadTime =
-		storeProductsFilter.filter((el) => {
-			return el.key === 'leadTime';
-		})[0].selectedItems || '';
+		storeProductsFilter.find((el) => el.key === 'leadTime')?.selectedItems || '';
+	const moqMin = storeProductsFilter.find((el) => el.key === 'moq')?.min;
+	const moqMax = storeProductsFilter.find((el) => el.key === 'moq')?.max;
 	const warrantyMin =
-		storeProductsFilter.filter((el) => {
-			return el.key === 'warranty';
-		})[0].min || '';
+		storeProductsFilter.find((el) => el.key === 'warranty')?.min || '';
 	const warrantyMax =
-		storeProductsFilter.filter((el) => {
-			return el.key === 'warranty';
-		})[0].max || '';
-	const countryOfOrigin = storeProductsFilter.filter((el) => {
-		return el.key === 'countryOfOrigin';
-	})[0].selectedItems;
+		storeProductsFilter.find((el) => el.key === 'warranty')?.max || '';
+	const countryOfOrigin =
+		storeProductsFilter.find((el) => el.key === 'countryOfOrigin')?.selectedItems ||
+		[];
 
-	const jsonStrings = countryOfOrigin?.map((item) => {
-		return `"countryOfOrigin": {"contains": "${item}"}`;
+	const jsonStringsUnitPrice = {
+		unitPrice: {
+			gt: minUnitPrice ? minUnitPrice : 0,
+			lt: maxUnitPrice ? maxUnitPrice : 100000000000,
+		},
+	};
+
+	const jsonStringsMoq = {
+		moq: { gt: moqMin ? moqMin : 0, lt: moqMax ? moqMax : 100000000000 },
+	};
+
+	const jsonStringWarranty =
+		warrantyMin && warrantyMax
+			? {
+					warranty: {
+						gt: moqMin ? moqMin : 0,
+						lt: moqMax ? moqMax : 100000000000,
+					},
+			  }
+			: null;
+
+	const jsonStringsCountry = countryOfOrigin.map((item: any) => {
+		return {
+			countryOfOrigin: { contains: item },
+		};
 	});
 
-	const combinedJsonString = jsonStrings?.join(', ');
+	const jsonStringsSearch = searchText
+		? {
+				name: { contains: searchText },
+		  }
+		: null;
 
-	const finalJsonString = `{ ${combinedJsonString} }`;
+	const leadTimeObj =
+		leadTime.length > 0
+			? {
+					leadTime: { gt: leadTime[0], lt: leadTime[1] },
+			  }
+			: null;
 
+	const filanFiltersObj = transformCharData(charData);
+	const finalAttrObj = {
+		...(jsonStringsSearch && { ...jsonStringsSearch }),
+		...(jsonStringsCountry.length > 0 && Object.assign({}, ...jsonStringsCountry)),
+		...(jsonStringsUnitPrice && { ...jsonStringsUnitPrice }),
+		...(leadTimeObj && { ...leadTimeObj }),
+		...(jsonStringsMoq && { ...jsonStringsMoq }),
+		...(jsonStringWarranty && { ...jsonStringWarranty }),
+	};
+
+	const combinedJsonObj = {
+		attr: finalAttrObj,
+		dynamic_attr: filanFiltersObj,
+	};
+
+	const finalJsonString = JSON.stringify(combinedJsonObj);
 	console.log('finalJsonString', finalJsonString);
-
 	const fetchData = async () => {
-		dispatch(setStatus('pending'));
 		try {
+			dispatch(setStatus('pending'));
 			const response = await api.product.getProduct({
 				page: activePage,
 				limit: 10,
 				sortParams: {
 					id: 'desc',
 				},
+				searchParams: finalJsonString,
 			});
 			dispatch(setProducts(response.result));
 			dispatch(setTotal(response.total));
@@ -81,9 +119,19 @@ export const Marketplace = () => {
 		}
 	};
 
+	const getFiltersFunction = async () => {
+		try {
+			const response = await api.product.getFilters();
+			dispatch(setItemsFilter(response.charFilters));
+		} catch (error) {
+			console.error(error);
+		}
+	};
+
 	useEffect(() => {
+		getFiltersFunction();
 		fetchData();
-	}, [activePage]);
+	}, [activePage, productsFilter, charData]);
 	return (
 		<div className={s.wrapper}>
 			<div className={s.header}>

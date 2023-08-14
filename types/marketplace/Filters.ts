@@ -1,15 +1,19 @@
 import { StaticImageData } from 'next/image';
 
-interface ItemInner {
-	img?: StaticImageData;
-	text: string;
-	id: number;
+export interface Option {
+	value: string;
+	attrValueId: number;
+}
+
+export interface Char {
+	attributeId: number;
+	attributeValues: number[];
 }
 
 export interface ItemFilter {
-	title: string;
-	items: ItemInner[];
-	id: number;
+	attributeId: number;
+	attributeName: string;
+	options: Option[];
 }
 
 export interface StoreItem {

@@ -5,4 +5,5 @@ export interface ProductFind {
 		id: string;
 	};
 	searchText?: string;
+	searchParams?: string;
 }

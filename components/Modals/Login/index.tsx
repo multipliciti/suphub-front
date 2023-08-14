@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { LoginDto } from '@/types/services/auth';
 import s from './Login.module.scss';
 import { setModal } from '@/redux/slices/modal';
@@ -35,7 +35,8 @@ export const Login: React.FC = () => {
 	const [hidePassword, setHidePassword] = useState<boolean>(false);
 	const [notVerified, setNotVerified] = useState<boolean>(false);
 	const [correctPassword, setCorrectPassword] = useState<boolean>(false);
-	const [correctEmail, setCorrectEmail] = useState<boolean>(false);
+
+	const [correctEmail, setCorrectEmail] = useState<boolean>();
 
 	const api = Api();
 
@@ -52,13 +53,9 @@ export const Login: React.FC = () => {
 
 	const isEmail = (data: string) => {
 		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-		// emailRegex.test(data) ? setCorrectEmail(true) : setIncorrect(false);
-		return emailRegex.test(data);
-	};
-
-	const isPassword = (data: string) => {
-		data.length < 8 ? setCorrectPassword(false) : setCorrectPassword(true);
-		return data.length < 8 ? false : true;
+		const res = emailRegex.test(data);
+		setCorrectEmail(res);
+		return res;
 	};
 
 	const submit: SubmitHandler<LoginDto> = async (data) => {
@@ -149,7 +146,7 @@ export const Login: React.FC = () => {
 								s.icon_invalid,
 								getValues('email').length > 0 && s.icon_invalid_active
 							)}
-							src={isEmail(getValues('email')) ? modal_done : invalid_icon}
+							src={!errors.email ? modal_done : invalid_icon}
 							alt="invalid_icon"
 							width={20}
 							height={20}
@@ -192,14 +189,13 @@ export const Login: React.FC = () => {
 						<input
 							{...register('password', {
 								required: true,
-								validate: isPassword,
 							})}
 							className={s.password_input}
 							id="password"
 							type={hidePassword ? 'password' : 'text'}
 						/>
 					</label>
-					<div
+					{/* <div
 						className={classNames(
 							s.invalid,
 							getValues('password').length > 0 && s.invalid_active
@@ -213,7 +209,7 @@ export const Login: React.FC = () => {
 							height={12}
 						/>
 						<span className={s.invalid_password}>Min 8 characters</span>
-					</div>
+					</div> */}
 				</div>
 
 				<span
@@ -223,12 +219,7 @@ export const Login: React.FC = () => {
 					Forgot password?
 				</span>
 
-				<button
-					className={classNames(
-						s.submit,
-						!errors?.password && !errors?.email && s.submit_valid
-					)}
-				>
+				<button className={classNames(s.submit, !errors?.email && s.submit_valid)}>
 					Continue
 				</button>
 			</form>

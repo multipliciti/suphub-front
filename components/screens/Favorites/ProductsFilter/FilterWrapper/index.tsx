@@ -97,7 +97,7 @@ export const FilterWrapper = (props: TypeProps) => {
 										<input
 											id={el.title}
 											type="radio"
-											value={el.value}
+											value={el.value.toString()}
 											checked={el.value === radioOption}
 											onChange={handleOptionChange}
 										/>
@@ -132,7 +132,7 @@ export const FilterWrapper = (props: TypeProps) => {
 						{items?.map((el, ind) => {
 							return (
 								<div
-									onClick={() => handleSelectChange(el.value)}
+									onClick={() => handleSelectChange(el.value.toString())}
 									className={classNames(
 										s.option,
 										selectedOption.includes(el.title) && s.option_active

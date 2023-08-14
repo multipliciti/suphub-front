@@ -4,21 +4,23 @@ import Image from 'next/image';
 import { FilterWrapper } from './FilterWrapper';
 import { ItemFilter } from '@/types/marketplace/filters';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
-import { clearAll } from '@/redux/slices/marketplace/filters';
+
 //imgs
 import close_img from '@/imgs/Marketplace/Filters/close.svg';
 import open_img from '@/imgs/Marketplace/Filters/open.svg';
 import test from '@/imgs/Marketplace/Filters/Sustainability/test.png';
 import { classNames } from '@/utils/classNames';
 import { useState } from 'react';
+import { clearAll } from '@/redux/slices/marketplace/filters';
 
 export const Filters = () => {
 	const dispatch = useAppDispatch();
 	const [open, setOpen] = useState(false);
-	const items = useAppSelector((state) => state.filtersSlice.items);
-	const countAllItems = useAppSelector(
-		(state) => state.filtersSlice.selectedCount.length
-	);
+	const charData = useAppSelector((state) => state.filtersSlice.char);
+	const filterItems = useAppSelector((state) => state.filtersSlice.itemsFilter);
+	const totalAttributeValuesCount = charData.reduce((total, charItem) => {
+		return total + charItem.attributeValues.length;
+	}, 0);
 
 	return (
 		<div className={classNames(s.wrapper)}>
@@ -36,16 +38,16 @@ export const Filters = () => {
 				<span
 					className={classNames(
 						s.header_count,
-						open && countAllItems > 0 && s.header_count_active
+						open && totalAttributeValuesCount > 0 && s.header_count_active
 					)}
 				>
-					({countAllItems} selected)
+					({totalAttributeValuesCount} selected)
 				</span>
 				<button
 					onClick={() => dispatch(clearAll())}
 					className={classNames(
 						s.clear,
-						open && countAllItems > 0 && s.clear_active
+						open && totalAttributeValuesCount > 0 && s.clear_active
 					)}
 				>
 					Clear all
@@ -53,7 +55,7 @@ export const Filters = () => {
 			</div>
 
 			<div className={classNames(s.content, open && s.content_active)}>
-				{items.map((el, ind) => {
+				{filterItems.map((el, ind) => {
 					return <FilterWrapper key={ind} itemProps={el} />;
 				})}
 			</div>

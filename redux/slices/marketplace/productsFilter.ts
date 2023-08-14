@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductFilter } from '@/types/marketplace/productFilters';
 
 const initialState: ProductFilter = {
+	searchFavoriteFilter: '',
+	searchProductsFilter: '',
 	storeFavoriteFilter: [
 		{
 			title: 'Unit Price',
@@ -18,17 +20,17 @@ const initialState: ProductFilter = {
 				{
 					id: 1,
 					title: '5 days - 15 days',
-					value: '5 - 15',
+					value: [5, 15],
 				},
 				{
 					id: 2,
 					title: '15 days - 30 days',
-					value: '15 - 30',
+					value: [15, 30],
 				},
 				{
 					id: 3,
 					title: '30 days - 45 days',
-					value: '30 - 45',
+					value: [30, 45],
 				},
 			],
 			selectedItems: [],
@@ -54,26 +56,21 @@ const initialState: ProductFilter = {
 			items: [
 				{
 					id: 1,
-					title: 'Canada',
-					value: 'Canada',
+					title: '5 days - 15 days',
+					value: [5, 15],
 				},
 				{
 					id: 2,
-					title: 'China',
-					value: 'China',
+					title: '15 days - 30 days',
+					value: [15, 30],
 				},
 				{
 					id: 3,
-					title: 'UK',
-					value: 'UK',
-				},
-				{
-					id: 4,
-					title: 'USA',
-					value: 'USA',
+					title: '30 days - 45 days',
+					value: [30, 45],
 				},
 			],
-			selectedItems: [],
+			redioItems: [],
 		},
 	],
 	storeProductsFilter: [
@@ -92,20 +89,20 @@ const initialState: ProductFilter = {
 				{
 					id: 1,
 					title: '5 days - 15 days',
-					value: '5 - 15',
+					value: [5, 15],
 				},
 				{
 					id: 2,
 					title: '15 days - 30 days',
-					value: '15 - 30',
+					value: [15, 30],
 				},
 				{
 					id: 3,
 					title: '30 days - 45 days',
-					value: '30 - 45',
+					value: [30, 45],
 				},
 			],
-			selectedItems: [],
+			redioItems: [],
 		},
 		{
 			title: 'MOQ',
@@ -128,18 +125,18 @@ const initialState: ProductFilter = {
 			items: [
 				{
 					id: 1,
-					title: 'Canada',
-					value: 'Canada',
+					title: 'Chicago',
+					value: 'Chicago',
 				},
 				{
 					id: 2,
-					title: 'China',
-					value: 'China',
+					title: 'Dallas',
+					value: 'Dallas',
 				},
 				{
 					id: 3,
-					title: 'UK',
-					value: 'UK',
+					title: 'Atlanta',
+					value: 'Atlanta',
 				},
 				{
 					id: 4,
@@ -177,10 +174,17 @@ const productsFilter = createSlice({
 					: filter
 			);
 		},
+		searchProducts: (state, action) => {
+			state.searchProductsFilter = action.payload;
+		},
 	},
 });
 
-export const { updateMinProducts, updateMaxproducts, updateSelectedItemsProsuct } =
-	productsFilter.actions;
+export const {
+	updateMinProducts,
+	searchProducts,
+	updateMaxproducts,
+	updateSelectedItemsProsuct,
+} = productsFilter.actions;
 
 export default productsFilter.reducer;

@@ -13,8 +13,6 @@ export const Header = ({}) => {
 
 	const title = activeItem ? activeItem.title : '';
 
-	console.log('title', title);
-
 	return (
 		<div className={s.wrapper}>
 			<h2 className={s.title}>{title}</h2>

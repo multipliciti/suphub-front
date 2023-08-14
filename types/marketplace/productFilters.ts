@@ -7,12 +7,15 @@ export interface ProductFilterItem {
 	items?: {
 		id: number;
 		title: string;
-		value: string;
+		value: number[] | string;
 	}[];
-	selectedItems?: number[];
+	selectedItems?: string[];
+	redioItems?: number[];
 }
 
 export interface ProductFilter {
 	storeProductsFilter: ProductFilterItem[];
 	storeFavoriteFilter: ProductFilterItem[];
+	searchFavoriteFilter: string;
+	searchProductsFilter: string;
 }

@@ -14,6 +14,7 @@ interface ProductsPropsType {
 	total: number;
 	status: string;
 }
+
 export const Products = (props: ProductsPropsType) => {
 	const { products, total, status } = props;
 

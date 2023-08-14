@@ -2,13 +2,10 @@ import { AxiosInstance } from 'axios';
 import { ProductFind } from '@/types/services/products';
 
 export const ProductsApi = (instance: AxiosInstance) => ({
-	async getProduct({ page, limit, sortParams, searchText }: ProductFind) {
+	async getProduct({ page, limit, sortParams, searchParams }: ProductFind) {
 		try {
-			const searchParams = {
-				attr: { name: { contains: searchText } },
-			};
-
-			const search = searchText ? `&find=${JSON.stringify(searchParams)}` : '';
+			console.log('fetch searchParams', searchParams);
+			const search = searchParams ? `&find=${searchParams}` : '';
 			const sort = sortParams
 				? `&sort=${encodeURIComponent(JSON.stringify(sortParams))}`
 				: '';
@@ -17,7 +14,7 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			const response = await instance.get(url);
 			return response.data;
 		} catch (error) {
-			console.error('User registration error:', error);
+			console.error('Products error:', error);
 			throw error;
 		}
 	},
@@ -28,7 +25,17 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			const response = await instance.get(url);
 			return response.data;
 		} catch (error) {
-			console.error('User registration error:', error);
+			console.error('Products error:', error);
+			throw error;
+		}
+	},
+	async getFilters() {
+		try {
+			const url = `/category/sub/1`;
+			const response = await instance.get(url);
+			return response.data;
+		} catch (error) {
+			console.error('Products error:', error);
 			throw error;
 		}
 	},
@@ -38,7 +45,7 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			const response = await instance.post(url, { productId: id });
 			return response.data;
 		} catch (error) {
-			console.error('User registration error:', error);
+			console.error('Products error:', error);
 			throw error;
 		}
 	},

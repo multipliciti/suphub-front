@@ -5,7 +5,6 @@ import { setModal, setEmail } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { isEmail, isPassword } from './validation';
 import { RegisterUserType } from '@/types/services/auth';
 import { useState } from 'react';
 import Image from 'next/image';
@@ -27,6 +26,22 @@ export const Registration = () => {
 	const dispatch = useAppDispatch();
 	const [hidePassword, setHidePassword] = useState<boolean>(false);
 	const [usedEmail, setUsedEmail] = useState<boolean>(false);
+	//validation
+	const [emailCorrect, setEmailCorrect] = useState<boolean>(false);
+	const [passworsCorrect, setPasswordCorrect] = useState<boolean>(false);
+
+	const isEmail = (data: string) => {
+		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+		const res = emailRegex.test(data);
+		setEmailCorrect(res);
+		return;
+	};
+
+	const isPassword = (data: string) => {
+		const res = data.length < 8 ? false : true;
+		setPasswordCorrect(res);
+		return res;
+	};
 
 	const {
 		register,
@@ -47,7 +62,6 @@ export const Registration = () => {
 		};
 		try {
 			const response = await api.auth.registerUser(requestData);
-
 			dispatch(setModal(`verifyEmail`));
 			dispatch(setEmail(`${requestData.email}`));
 		} catch (error: any) {
@@ -143,6 +157,7 @@ export const Registration = () => {
 							<input
 								{...register('email', {
 									required: 'required',
+									//@ts-ignore
 									validate: isEmail,
 								})}
 								id="email"

@@ -13,7 +13,7 @@ import open_img from '@/imgs/Marketplace/ProductFilter/open.svg';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
 import { classNames } from '@/utils/classNames';
 import { ProductFilterItem } from '@/types/marketplace/productFilters';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 interface TypeProps {
 	item: ProductFilterItem;
@@ -23,33 +23,57 @@ export const FilterWrapper = (props: TypeProps) => {
 	const dispatch = useAppDispatch();
 	const { title, items, type, key, min, max } = props.item;
 	const [open, setOpen] = useState<boolean>(false);
-	const [radioOption, setRadioOption] = useState<string>('');
-	const [selectedOption, setSelectedOption] = useState<string[]>(['option2']);
-
-	const handleOptionChange = (event: ChangeEvent<HTMLInputElement>) => {
-		setRadioOption(event.target.value);
+	const selectedOptionCountry = useAppSelector((state) =>
+		state.productsFilter.storeProductsFilter.find(
+			(el) => el.key === 'countryOfOrigin'
+		)
+	);
+	const selectedOptionLeadTime = useAppSelector((state) =>
+		state.productsFilter.storeProductsFilter.find((el) => el.key === 'leadTime')
+	);
+	// event: ChangeEvent<HTMLInputElement>
+	console.log('selectedOptionLeadTime', selectedOptionLeadTime);
+	const handleOptionChange = (arr: number[]) => {
+		const newSelectedOptionLeadTime = arr;
+		dispatch(
+			updateSelectedItemsProsuct({
+				filterKey: key,
+				selectedItems: newSelectedOptionLeadTime,
+			})
+		);
 	};
 
-	const handleOptionChangeDaspatch = (selectedOptions: any[]) => {
+	const handleOptionChangeDaspatch = (selectedOptionCountrys: any[]) => {
 		dispatch(
-			updateSelectedItemsProsuct({ filterKey: key, selectedItems: selectedOptions })
+			updateSelectedItemsProsuct({
+				filterKey: key,
+				selectedItems: selectedOptionCountrys,
+			})
 		);
 	};
 
 	const handleMinChange = (event: ChangeEvent<HTMLInputElement>) => {
-		dispatch(updateMinProducts({ filterKey: key, min: event.target.value }));
+		dispatch(updateMinProducts({ filterKey: key, min: Number(event.target.value) }));
 	};
 
 	const handleMaxChange = (event: ChangeEvent<HTMLInputElement>) => {
-		dispatch(updateMaxproducts({ filterKey: key, max: event.target.value }));
+		dispatch(updateMaxproducts({ filterKey: key, max: Number(event.target.value) }));
 	};
 
 	const handleSelectChange = (value: string) => {
-		if (selectedOption.includes(value)) {
-			setSelectedOption(selectedOption.filter((option) => option !== value));
-		} else {
-			setSelectedOption([...selectedOption, value]);
-			handleOptionChangeDaspatch(selectedOption);
+		if (selectedOptionCountry) {
+			const currentSelectedItems = selectedOptionCountry.selectedItems || [];
+			const index = currentSelectedItems.indexOf(value);
+
+			if (index !== -1) {
+				const newSelectedOptionCountry = currentSelectedItems.filter(
+					(el) => el !== value
+				);
+				handleOptionChangeDaspatch(newSelectedOptionCountry);
+			} else {
+				const newSelectedOptionCountry = [...currentSelectedItems, value];
+				handleOptionChangeDaspatch(newSelectedOptionCountry);
+			}
 		}
 	};
 
@@ -70,24 +94,32 @@ export const FilterWrapper = (props: TypeProps) => {
 					<label className={s.label} htmlFor={title}>
 						<input
 							onChange={(e) => handleMinChange(e)}
-							value={min}
 							placeholder="min"
 							className={s.input}
 							id={title}
-							type="text"
+							type="number"
+							inputMode="numeric"
 						/>
 					</label>
 					<label className={s.label} htmlFor={title}>
 						<input
 							onChange={(e) => handleMaxChange(e)}
 							placeholder="max"
-							value={max}
 							className={s.input}
 							id={title}
-							type="text"
+							type="number"
+							inputMode="numeric"
 						/>
 					</label>
-					<button className={s.clear}>Clear filter</button>
+					<button
+						onClick={() => {
+							dispatch(updateMinProducts({ filterKey: key, min: 0 }));
+							dispatch(updateMaxproducts({ filterKey: key, max: 0 }));
+						}}
+						className={s.clear}
+					>
+						Clear filter
+					</button>
 				</div>
 			)}
 
@@ -101,14 +133,23 @@ export const FilterWrapper = (props: TypeProps) => {
 										<input
 											id={el.title}
 											type="radio"
-											value={el.value}
-											checked={el.value === radioOption}
-											onChange={handleOptionChange}
+											value={el.title}
+											checked={
+												el.value.toString() ===
+												selectedOptionLeadTime?.selectedItems?.toString()
+											}
+											onClick={() => {
+												if (Array.isArray(el.value)) {
+													handleOptionChange(el.value);
+												}
+											}}
 										/>
 										<span
 											className={classNames(
 												s.radio_title,
-												el.value === radioOption && s.radio_title_active
+												el.value.toString() ===
+													selectedOptionLeadTime?.selectedItems?.toString() &&
+													s.radio_title_active
 											)}
 										>
 											{el.title}
@@ -119,7 +160,17 @@ export const FilterWrapper = (props: TypeProps) => {
 						})}
 					</div>
 
-					<button onClick={(e) => setRadioOption('')} className={s.clear}>
+					<button
+						onClick={(e) =>
+							dispatch(
+								updateSelectedItemsProsuct({
+									filterKey: key,
+									selectedItems: [],
+								})
+							)
+						}
+						className={s.clear}
+					>
 						Clear filter
 					</button>
 				</div>
@@ -136,15 +187,19 @@ export const FilterWrapper = (props: TypeProps) => {
 						{items?.map((el, ind) => {
 							return (
 								<div
-									onClick={() => handleSelectChange(el.value)}
+									onClick={() => handleSelectChange(el.value.toString())}
 									className={classNames(
 										s.option,
-										selectedOption.includes(el.title) && s.option_active
+										selectedOptionCountry?.selectedItems?.includes(
+											el.value.toString()
+										) && s.option_active
 									)}
 								>
 									{el.title}
 
-									{selectedOption.includes(el.title) && (
+									{selectedOptionCountry?.selectedItems?.includes(
+										el.value.toString()
+									) && (
 										<Image
 											className={s.select_img}
 											src={selected_img}
@@ -163,7 +218,10 @@ export const FilterWrapper = (props: TypeProps) => {
 							paddingBottom: '8px',
 							paddingLeft: '12px',
 						}}
-						onClick={(e) => setRadioOption('')}
+						onClick={(e) => {
+							handleOptionChangeDaspatch([]);
+							// setSelectedOption([]);/
+						}}
 						className={s.clear}
 					>
 						Clear filter
