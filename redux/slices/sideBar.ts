@@ -83,10 +83,13 @@ const sideBarSlice = createSlice({
 		setSearchQuery(state, action: PayloadAction<string>) {
 			state.searchQuery = action.payload;
 		},
+		setCategories(state, action: PayloadAction<CategoryItem[]>) {
+			state.categories = action.payload;
+		},
 	},
 });
 
-export const { setSideBar, setParentActiveId, setActiveId, setSearchQuery } =
+export const { setSideBar, setParentActiveId, setActiveId, setSearchQuery, setCategories } =
 	sideBarSlice.actions;
 
 export default sideBarSlice.reducer;

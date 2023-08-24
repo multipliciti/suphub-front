@@ -8,8 +8,9 @@ import { classNames } from '@/utils/classNames';
 //imgs
 import itemActive from '@/imgs/SideBar/itemActive.svg';
 import itemInactive from '@/imgs/SideBar/itemInactive.svg';
+import { CategoryItem } from '@/types/sideBar';
 
-export const MapList = () => {
+export const MapList = ({ categories }: { categories: CategoryItem[] }) => {
 	const searchQuery = useAppSelector((state) => state.sideBarSlice.searchQuery);
 	const sidebarItems = useAppSelector((state) => state.sideBarSlice.items);
 	const activeId = useAppSelector((state) => state.sideBarSlice.activeId);
@@ -24,7 +25,7 @@ export const MapList = () => {
 
 	return (
 		<div className={classNames(s.wrapper)}>
-			{filteredSidebarItems.map((item, index) => {
+			{categories.map((item, index) => {
 				return (
 					<div key={index}>
 						<span
@@ -48,7 +49,7 @@ export const MapList = () => {
 										item.id === parentActiveId ? s.item_title : s.item_title_inactive
 									}
 								>
-									{item.title}
+									{item.name}
 								</span>
 							</div>
 						</span>
@@ -59,7 +60,7 @@ export const MapList = () => {
 								parentActiveId === item.id && s.inner_active
 							)}
 						>
-							{item.innerItems?.map((el, ind) => {
+							{item.subCategories?.map((el, ind) => {
 								return (
 									<span
 										onClick={() => dispatch(setActiveId(el.id))}
@@ -69,7 +70,7 @@ export const MapList = () => {
 											activeId === el.id && s.inner_item_active
 										)}
 									>
-										{el.title}
+										{el.name}
 									</span>
 								);
 							})}

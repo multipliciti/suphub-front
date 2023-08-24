@@ -1,9 +1,9 @@
 import Cookies, { parseCookies } from 'nookies';
 import { AuthApi } from './authService';
 import { ProductsApi } from './productsService';
+import { sideBarApi } from './sideBarService';
 import axios from 'axios';
 import { GetServerSidePropsContext, NextPageContext } from 'next';
-import { setCookie } from 'nookies';
 
 export type ApiReturnType = {
 	sendFormStepOne(): unknown;
@@ -27,6 +27,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 	const apis = {
 		auth: AuthApi(instance),
 		product: ProductsApi(instance),
+		sideBar: sideBarApi(instance)
 	};
 
 	return apis;

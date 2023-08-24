@@ -9,7 +9,7 @@ interface CounterState {
 	itemsFilter: any[];
 	char: Char[];
 }
-
+//test
 const initialState: CounterState = {
 	char: [],
 	selectedCount: [],

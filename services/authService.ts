@@ -6,7 +6,6 @@ import {
 	confirmEmailType,
 } from '@/types/services/auth';
 import { LoginDto } from '@/types/services/auth';
-import { API_URL } from './index';
 
 const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
