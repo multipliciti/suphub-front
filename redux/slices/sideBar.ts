@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 //types
-import { Item } from '@/types/sideBar';
+import { CategoryItem, Item } from '@/types/sideBar';
 
 interface CounterState {
 	sideBar: boolean;
@@ -8,6 +8,7 @@ interface CounterState {
 	activeId: number;
 	parentActiveId: number;
 	searchQuery: string;
+	categories: CategoryItem[]
 }
 
 const initialState: CounterState = {
@@ -63,6 +64,7 @@ const initialState: CounterState = {
 	activeId: 11,
 	parentActiveId: 1,
 	searchQuery: '',
+	categories: []
 };
 
 const sideBarSlice = createSlice({

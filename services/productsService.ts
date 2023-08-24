@@ -9,7 +9,6 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			const sort = sortParams
 				? `&sort=${encodeURIComponent(JSON.stringify(sortParams))}`
 				: '';
-
 			const url = `/product?page=${page}&limit=${limit}${sort}${search}`;
 			const response = await instance.get(url);
 			return response.data;
@@ -18,7 +17,6 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-
 	async getProductOne(id: number) {
 		try {
 			const url = `/product/${id}`;
@@ -43,6 +41,16 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 		try {
 			const url = `product/add-favorite`;
 			const response = await instance.post(url, { productId: id });
+			return response.data;
+		} catch (error) {
+			console.error('Products error:', error);
+			throw error;
+		}
+	},
+	async getCategoryies() {
+		try {
+			const url = `/category`;
+			const response = await instance.get(url);
 			return response.data;
 		} catch (error) {
 			console.error('Products error:', error);

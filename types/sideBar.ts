@@ -8,3 +8,21 @@ export interface Item {
 	title: string;
 	innerItems?: itemInner[];
 }
+
+
+export interface SubCategoryItem {
+	id: number;
+	csiCode: string;
+	name: string;
+	categoryId: number;
+	updatedAt: string;
+	createdAt: string;
+}
+export interface CategoryItem {
+	id: number;
+	name: string;
+	csiCode: string;
+	updatedAt: string;
+	createdAt: string;
+	subCategories: SubCategoryItem[];
+}
