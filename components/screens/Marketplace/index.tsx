@@ -128,24 +128,11 @@ export const Marketplace = () => {
 		}
 	};
 
-	const getCategoryiesFunction = async () => {
-		try {
-			const response = await api.product.getCategoryies();
-			dispatch(setItemsFilter(response.charFilters));
-		} catch (error) {
-			console.error(error);
-		}
-	};
-
-
 	useEffect(() => {
 		getFiltersFunction();
 		fetchData();
 	}, [activePage, productsFilter, charData]);
 
-	useEffect(() => {
-		
-	}, [])
 	return (
 		<div className={s.wrapper}>
 			<div className={s.header}>

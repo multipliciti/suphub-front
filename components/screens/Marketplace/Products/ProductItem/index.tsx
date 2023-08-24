@@ -24,7 +24,6 @@ export const ProductItem = (props: any) => {
 	const opening = dynamic_attr.find((el: any)=> el.label === 'Opening Style')?.value 
 	const frameMatireal = dynamic_attr.find((el: any)=> el.label === 'Frame Material')?.value 
 	const glassType = dynamic_attr.find((el: any)=> el.label === 'Glazing Type')?.value 
-	console.log('product', props)
 
 	const properties = [
 		['MOQ', props.moq ? `${props.moq} units` : '-' ],
@@ -37,8 +36,6 @@ export const ProductItem = (props: any) => {
 		['Frame Material', frameMatireal ? `${frameMatireal}` : '-'],
 		['Glazing Type', glassType ? `${glassType}` : '-']
 	];
-
-	// console.log('dynamic_attr', dynamic_attr)
 
 	const addFavorite = async (id: number) => {
 		const api = Api();
