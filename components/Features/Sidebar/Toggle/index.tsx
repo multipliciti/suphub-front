@@ -11,8 +11,8 @@ export const Toggle = () => {
 	const isSideBar = useAppSelector((state) => state.sideBarSlice.sideBar);
 	return (
 		<div onClick={() => dispatch(setSideBar(!isSideBar))} className={s.wrapper}>
-			<Image
-				className={isSideBar ? s.toggle_active : s.toggle}
+			<Image 
+				className={isSideBar ?  s.toggle : s.toggle_active}
 				src={toggle_img}
 				alt="toggle_img"
 				width={16}

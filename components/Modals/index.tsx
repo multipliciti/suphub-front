@@ -7,9 +7,22 @@ import { CheckEmail } from './ CheckEmail';
 import { Registration } from './Registration';
 import { classNames } from '@/utils/classNames';
 import { VerifyEmail } from './VerifyEmail';
+import { useEffect, useState } from 'react';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
+	// const productsFilter = useAppSelector((state)=> state.productsFilter)
+	// const products = useAppSelector((state)=> state.productSlice)
+	// const [height, setHeight] = useState<string>('')
+
+	// console.log('productsFilter', productsFilter)
+	// console.log('products', products)
+
+	// useEffect(() => {
+	// 	setHeight('100%')
+	// }, [productsFilter,products])	
+
+
 
 	return (
 		<>
@@ -37,6 +50,7 @@ export const Modal = () => {
 					s.wrapper,
 					modal === 'registration' && s.wrapper_active
 				)}
+			
 			>
 				<div className={s.modal}>
 					<Registration />

@@ -4,7 +4,6 @@ import s from './ProductItem.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { transformAttributesToObj } from '@/utils/transformAttributesToObj';
 //imgs
 import star from '@/imgs/Marketplace/Products/star.svg';
 import star_active from '@/imgs/Marketplace/Products/star_sctive.svg';
@@ -17,24 +16,34 @@ export const ProductItem = (props: any) => {
 	const { push } = useRouter();
 	const [favorite, setFavorite] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
-	const { name, id, dynamic_attr } = props;
+	const { name, id, dynamic_attr, unitPrice } = props;
+
+	const certification = dynamic_attr.find((el: any)=> el.label === 'Certification')?.value
+	const width = dynamic_attr.find((el: any)=> el.label === 'Width')?.value
+	const heigth = dynamic_attr.find((el: any)=> el.label === 'Heigth')?.value
+	const opening = dynamic_attr.find((el: any)=> el.label === 'Opening Style')?.value 
+	const frameMatireal = dynamic_attr.find((el: any)=> el.label === 'Frame Material')?.value 
+	const glassType = dynamic_attr.find((el: any)=> el.label === 'Glazing Type')?.value 
+	console.log('product', props)
 
 	const properties = [
-		['MOQ', props.minOrder],
-		['Lead time (weeks)', props.leadTime],
-		['Warranty', props.warranty],
-		['Certification', props.certification],
+		['MOQ', props.moq ? `${props.moq} units` : '-' ],
+		['Lead time (weeks)', props.leadTime ?  `${props.leadTime} days` : '-'],
+		['Warranty', props.warranty ? `${props.warranty} month` : '-' ],
+		['Certification', certification ?  `${certification}` : '-'],
+		['Width', width  ? `${width}"` : '-'],
+		['Heigth', heigth ? `${heigth}"` : '-'],
+		['Opening', opening ? `${opening}` : '-'],
+		['Frame Material', frameMatireal ? `${frameMatireal}` : '-'],
+		['Glazing Type', glassType ? `${glassType}` : '-']
 	];
 
-	const specificProperties = Object.entries(transformAttributesToObj(dynamic_attr));
-	specificProperties.forEach((el) => {
-		properties.push(el);
-	});
+	console.log('dynamic_attr', dynamic_attr)
 
-	const addFavorite = (id: number) => {
+	const addFavorite = async (id: number) => {
 		const api = Api();
 		try {
-			const response = api.product.addFavorite(id);
+			const response = await api.product.addFavorite(id);
 			setFavorite(true);
 		} catch (error: any) {
 			setFavorite(false);
@@ -64,7 +73,7 @@ export const ProductItem = (props: any) => {
 				<div className={s.description_wrapper}>
 					<h1 className={s.title}>{name} </h1>
 					<h2 className={s.price}>
-						<span className={s.price}>$400</span>
+						<span className={s.price}>${unitPrice}</span>
 						<span className={s.price_format}>/ Unit</span>
 					</h2>
 

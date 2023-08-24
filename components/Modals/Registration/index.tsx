@@ -54,11 +54,13 @@ export const Registration = () => {
 		shouldFocusError: false,
 		shouldUnregister: false,
 	});
+	
+	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
 	const onSubmit: SubmitHandler<RegisterUserType> = async (data) => {
 		const requestData = {
 			...data,
-			confirmUrl: 'http://localhost:3000/confirm-email',
+			confirmUrl: `${HOST}/confirm-email`,
 		};
 		try {
 			const response = await api.auth.registerUser(requestData);
