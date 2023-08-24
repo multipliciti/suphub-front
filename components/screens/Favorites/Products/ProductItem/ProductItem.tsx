@@ -4,7 +4,6 @@ import s from './ProductItem.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { transformAttributesToObj } from '@/utils/transformAttributesToObj';
 //imgs
 import star_active from '@/imgs/Marketplace/Products/star_sctive.svg';
 import test2 from '@/imgs/Product/test2.png';
@@ -23,10 +22,6 @@ export const ProductItem = (props: any) => {
 		['Certification', props.certification],
 	];
 
-	const specificProperties = Object.entries(transformAttributesToObj(dynamic_attr));
-	specificProperties.forEach((el) => {
-		properties.push(el);
-	});
 
 	return (
 		<>

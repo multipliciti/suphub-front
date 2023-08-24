@@ -38,7 +38,7 @@ export const ProductItem = (props: any) => {
 		['Glazing Type', glassType ? `${glassType}` : '-']
 	];
 
-	console.log('dynamic_attr', dynamic_attr)
+	// console.log('dynamic_attr', dynamic_attr)
 
 	const addFavorite = async (id: number) => {
 		const api = Api();
