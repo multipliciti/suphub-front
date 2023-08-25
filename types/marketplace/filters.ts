@@ -7,7 +7,7 @@ export interface Option {
 
 export interface Char {
 	attributeId: number;
-	attributeValues: number[];
+	attrValueIds: number[];
 }
 
 export interface ItemFilter {
@@ -19,3 +19,4 @@ export interface ItemFilter {
 export interface StoreItem {
 	[key: string]: number[];
 }
+

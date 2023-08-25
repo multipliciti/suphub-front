@@ -19,7 +19,7 @@ export const Filters = () => {
 	const charData = useAppSelector((state) => state.filtersSlice.char);
 	const filterItems = useAppSelector((state) => state.filtersSlice.itemsFilter);
 	const totalAttributeValuesCount = charData.reduce((total, charItem) => {
-		return total + charItem.attributeValues.length;
+		return total + charItem.attrValueIds.length;
 	}, 0);
 
 	return (

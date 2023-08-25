@@ -18,9 +18,9 @@ export const FilterWrapper = ({ itemProps }: Props) => {
 	const charData = useAppSelector((state) => state.filtersSlice.char);
 	const countSelected = charData.find((el) => {
 		return el.attributeId === attributeId;
-	})?.attributeValues.length;
+	})?.attrValueIds.length;
 	const isBranch = charData.some((el) => {
-		return el.attributeId === attributeId && el.attributeValues?.length > 0;
+		return el.attributeId === attributeId && el.attrValueIds?.length > 0;
 	})
 		? true
 		: false;

@@ -8,7 +8,7 @@ export const transformCharData = (charData: Char[]) => {
 	const transformedData = {
 		char: charData.map((item) => ({
 			attributeId: item.attributeId,
-			attributeValues: item.attributeValues,
+			attrValueIds: item.attrValueIds,
 		})),
 	};
 

@@ -17,8 +17,9 @@ export const IsSideBarContainer = ({ children }: { children: React.ReactNode }) 
 	const fetchCategories = async () => {
 		try {
 		const response = await api.sideBar.getCategoryies();
-		if (response.success) {
-		  setCategories(response.data); // Предполагается, что данные хранятся в поле data
+		if (response) {
+
+		  setCategories(response); 
 		} else {
 			console.error('Failed to fetch categories:', response.error);
 		}

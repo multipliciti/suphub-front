@@ -25,7 +25,7 @@ export const Item = ({ text, img, attributeId, attrValueId }: props) => {
 			(char) => char.attributeId === attributeId
 		);
 		if (charDataForAttribute) {
-			return charDataForAttribute.attributeValues.includes(attrValueId);
+			return charDataForAttribute.attrValueIds.includes(attrValueId);
 		}
 		return false;
 	};

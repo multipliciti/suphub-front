@@ -28,19 +28,19 @@ const filtersSlice = createSlice({
 			);
 
 			if (existingChar) {
-				const updatedAttributeValues = existingChar.attributeValues.includes(
+				const updatedAttributeValues = existingChar.attrValueIds.includes(
 					attrValueId
 				)
-					? existingChar.attributeValues.filter((id) => id !== attrValueId)
-					: [...existingChar.attributeValues, attrValueId];
+					? existingChar.attrValueIds.filter((id) => id !== attrValueId)
+					: [...existingChar.attrValueIds, attrValueId];
 
 				if (updatedAttributeValues.length > 0) {
-					existingChar.attributeValues = updatedAttributeValues;
+					existingChar.attrValueIds = updatedAttributeValues;
 				} else {
 					state.char = charState.filter((char) => char.attributeId !== attributeId);
 				}
 			} else {
-				charState.push({ attributeId, attributeValues: [attrValueId] });
+				charState.push({ attributeId, attrValueIds: [attrValueId] });
 			}
 		},
 
@@ -58,9 +58,9 @@ const filtersSlice = createSlice({
 				(char) => char.attributeId === attributeId
 			);
 			if (existingChar) {
-				existingChar.attributeValues = attrValueIdAll;
+				existingChar.attrValueIds = attrValueIdAll;
 			} else {
-				charState.push({ attributeId, attributeValues: attrValueIdAll });
+				charState.push({ attributeId, attrValueIds: attrValueIdAll });
 			}
 		},
 		setItemsFilter(state, action) {
