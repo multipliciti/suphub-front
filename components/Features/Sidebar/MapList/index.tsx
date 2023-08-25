@@ -10,28 +10,40 @@ import itemActive from '@/imgs/SideBar/itemActive.svg';
 import itemInactive from '@/imgs/SideBar/itemInactive.svg';
 import { CategoryItem } from '@/types/sideBar';
 
-export const MapList = ({ categories }: { categories: CategoryItem[] }) => {
-	const searchQuery = useAppSelector((state) => state.sideBarSlice.searchQuery);
-	const sidebarItems = useAppSelector((state) => state.sideBarSlice.items);
-	const activeId = useAppSelector((state) => state.sideBarSlice.activeId);
-	const parentActiveId = useAppSelector(
-		(state) => state.sideBarSlice.parentActiveId
-	);
+export const MapList = () => {
 	const dispatch = useAppDispatch();
-
-	const filteredSidebarItems = sidebarItems.filter((item) =>
-		item.title.toLowerCase().includes(searchQuery.toLowerCase())
+	const activeId = useAppSelector((state) => state.sideBarSlice.activeId);
+	const parentActiveIds = useAppSelector(
+		(state) => state.sideBarSlice.parentActiveIds
 	);
+	const searchQuery = useAppSelector((state)=> state.sideBarSlice.searchQuery)
+	const categories = useAppSelector((state)=> state.sideBarSlice.categories)
+
+	const categoriesFilter = categories.filter(category => {
+		const categoryMatches = category.name.includes(searchQuery);
+		const subCategoryMatches = category.subCategories.some(subCategory =>
+		subCategory.name.includes(searchQuery)
+		);
+		if (subCategoryMatches) {
+			const categoryIsActive = parentActiveIds.includes(category.id);
+		
+			if (!categoryIsActive && searchQuery !== '' ) {
+				dispatch(setParentActiveId(category.id));
+			}
+		}
+		return categoryMatches || subCategoryMatches;
+	});
+	
 
 	return (
 		<div className={classNames(s.wrapper)}>
-			{categories.map((item, index) => {
+			{categoriesFilter.map((item, index) => {
 				return (
 					<div key={index}>
 						<span
 							onClick={() =>
 								dispatch(
-									setParentActiveId(parentActiveId === item.id ? -1 : item.id)
+									setParentActiveId(item.id)
 								)
 							}
 							className={s.item}
@@ -39,14 +51,14 @@ export const MapList = ({ categories }: { categories: CategoryItem[] }) => {
 							<div className={s.item_wrapper}>
 								<Image
 									className={s.item_img}
-									src={item.id === parentActiveId ? itemActive : itemInactive}
+									src={parentActiveIds.includes(item.id) ? itemActive : itemInactive}
 									alt="itemActive"
 									width={16}
 									height={16}
 								/>
 								<span
 									className={
-										item.id === parentActiveId ? s.item_title : s.item_title_inactive
+										parentActiveIds.includes(item.id) ? s.item_title : s.item_title_inactive
 									}
 								>
 									{item.name}
@@ -57,7 +69,7 @@ export const MapList = ({ categories }: { categories: CategoryItem[] }) => {
 						<div
 							className={classNames(
 								s.inner,
-								parentActiveId === item.id && s.inner_active
+								parentActiveIds.includes(item.id) && s.inner_active
 							)}
 						>
 							{item.subCategories?.map((el, ind) => {

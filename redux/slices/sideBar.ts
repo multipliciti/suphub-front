@@ -1,68 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 //types
-import { CategoryItem, Item } from '@/types/sideBar';
+import { CategoryItem } from '@/types/sideBar';
 
 interface CounterState {
 	sideBar: boolean;
-	items: Item[];
 	activeId: number;
-	parentActiveId: number;
+	parentActiveIds: number[];
 	searchQuery: string;
 	categories: CategoryItem[]
 }
 
 const initialState: CounterState = {
 	sideBar: true,
-	items: [
-		{
-			id: 1,
-			title: 'Windows',
-			innerItems: [
-				{ id: 11, title: 'Aluminum Windows' },
-				{ id: 12, title: 'Wood Windows' },
-				{ id: 13, title: 'Vinyl Windows' },
-			],
-		},
-		{
-			id: 2,
-			title: 'Window Accessories',
-			innerItems: [
-				{ id: 21, title: 'inner 1' },
-				{ id: 22, title: 'inner 2' },
-			],
-		},
-
-		{
-			id: 3,
-			title: 'Doors',
-		},
-		{
-			id: 4,
-			title: 'Lighting',
-		},
-		{
-			id: 5,
-			title: 'Bathroom Hardware',
-		},
-		{
-			id: 6,
-			title: 'Bathroom Vanities',
-		},
-		{
-			id: 7,
-			title: 'HVAC Systems',
-		},
-		{
-			id: 8,
-			title: 'Structural Systems',
-		},
-		{
-			id: 9,
-			title: 'Kitchen Fixtures',
-		},
-	],
 	activeId: 11,
-	parentActiveId: 1,
+	parentActiveIds: [],
 	searchQuery: '',
 	categories: []
 };
@@ -75,10 +26,14 @@ const sideBarSlice = createSlice({
 			state.sideBar = action.payload;
 		},
 		setParentActiveId(state, action: PayloadAction<number>) {
-			state.parentActiveId = action.payload;
+			const indexToRemove = state.parentActiveIds.indexOf(action.payload);
+			indexToRemove !== -1 ? state.parentActiveIds.splice(indexToRemove, 1) : state.parentActiveIds.push(action.payload)
 		},
 		setActiveId(state, action: PayloadAction<number>) {
 			state.activeId = action.payload;
+		},
+		clearParentActiveId(state){
+			state.parentActiveIds = []
 		},
 		setSearchQuery(state, action: PayloadAction<string>) {
 			state.searchQuery = action.payload;
@@ -89,7 +44,7 @@ const sideBarSlice = createSlice({
 	},
 });
 
-export const { setSideBar, setParentActiveId, setActiveId, setSearchQuery, setCategories } =
+export const { setSideBar, setParentActiveId, setActiveId, setSearchQuery, setCategories, clearParentActiveId } =
 	sideBarSlice.actions;
 
 export default sideBarSlice.reducer;

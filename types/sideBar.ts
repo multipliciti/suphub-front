@@ -3,12 +3,6 @@ export interface itemInner {
 	title: string;
 }
 
-export interface Item {
-	id: number;
-	title: string;
-	innerItems?: itemInner[];
-}
-
 
 export interface SubCategoryItem {
 	id: number;

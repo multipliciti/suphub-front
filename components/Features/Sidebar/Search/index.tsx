@@ -3,13 +3,18 @@ import s from './Search.module.scss';
 import Image from 'next/image';
 import search from '@/imgs/SideBar/search.svg';
 import { useAppDispatch } from '@/redux/hooks';
-import { setSearchQuery } from '@/redux/slices/sideBar';
+import { clearParentActiveId, setSearchQuery } from '@/redux/slices/sideBar';
 import { ChangeEvent } from 'react';
+
 export const Search = () => {
 	const dispatch = useAppDispatch();
-
+	
 	const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
 		dispatch(setSearchQuery(event.target.value));
+		// if(event.target.value === ''){
+		// 	dispatch(clearParentActiveId())
+		// }
+		
 	};
 
 	return (

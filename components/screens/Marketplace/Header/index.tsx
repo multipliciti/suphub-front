@@ -5,13 +5,13 @@ import Image from 'next/image';
 import support_img from '@/imgs/Marketplace/Header/support.svg';
 
 export const Header = ({}) => {
-	const items = useAppSelector((state) => state.sideBarSlice.items);
+	const categories = useAppSelector((state)=> state.sideBarSlice.categories)
 	const activeId = useAppSelector((state) => state.sideBarSlice.activeId);
-	const activeItem = items
-		.map((el) => el.innerItems?.find((item) => item.id === activeId))
-		.find((item) => item !== undefined);
 
-	const title = activeItem ? activeItem.title : '';
+	const activeItem = categories
+		.map((el) => el.subCategories?.find((item) => item.id === activeId))
+		.find((item) => item !== undefined);
+	const title = activeItem ? activeItem.name : '';
 
 	return (
 		<div className={s.wrapper}>
