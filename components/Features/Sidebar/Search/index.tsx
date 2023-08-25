@@ -11,9 +11,9 @@ export const Search = () => {
 	
 	const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
 		dispatch(setSearchQuery(event.target.value));
-		// if(event.target.value === ''){
-		// 	dispatch(clearParentActiveId())
-		// }
+		if(event.target.value === ''){
+			dispatch(clearParentActiveId())
+		}
 		
 	};
 

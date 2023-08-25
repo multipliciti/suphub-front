@@ -9,6 +9,7 @@ import { classNames } from '@/utils/classNames';
 import itemActive from '@/imgs/SideBar/itemActive.svg';
 import itemInactive from '@/imgs/SideBar/itemInactive.svg';
 import { CategoryItem } from '@/types/sideBar';
+import { useEffect, useState } from 'react';
 
 export const MapList = () => {
 	const dispatch = useAppDispatch();
@@ -18,26 +19,36 @@ export const MapList = () => {
 	);
 	const searchQuery = useAppSelector((state)=> state.sideBarSlice.searchQuery)
 	const categories = useAppSelector((state)=> state.sideBarSlice.categories)
+	const [categoriesFilter, setCategoriesFilter] = useState<CategoryItem[]>()
 
-	const categoriesFilter = categories.filter(category => {
-		const categoryMatches = category.name.includes(searchQuery);
-		const subCategoryMatches = category.subCategories.some(subCategory =>
-		subCategory.name.includes(searchQuery)
-		);
-		if (subCategoryMatches) {
-			const categoryIsActive = parentActiveIds.includes(category.id);
-		
-			if (!categoryIsActive && searchQuery !== '' ) {
-				dispatch(setParentActiveId(category.id));
-			}
-		}
-		return categoryMatches || subCategoryMatches;
-	});
+	useEffect(() => {
+		const categoriesFilterInner = categories.filter(category => {
+			const searchLower = searchQuery.toLowerCase();
+			const categoryNameLower = category.name.toLowerCase();
 	
-
+			const categoryMatches = categoryNameLower.includes(searchLower);
+			const subCategoryMatches = category.subCategories.some(subCategory =>
+				subCategory.name.toLowerCase().includes(searchLower)
+			);
+	
+			if (subCategoryMatches) {
+				const categoryIsActive = parentActiveIds.includes(category.id);
+	
+				if (!categoryIsActive && searchQuery !== '') {
+					dispatch(setParentActiveId(category.id));
+				}
+			}
+	
+			return categoryMatches || subCategoryMatches;
+		});
+	
+		setCategoriesFilter(categoriesFilterInner);
+	}, [searchQuery, categories]);
+	
+	
 	return (
 		<div className={classNames(s.wrapper)}>
-			{categoriesFilter.map((item, index) => {
+			{categoriesFilter?.map((item, index) => {
 				return (
 					<div key={index}>
 						<span

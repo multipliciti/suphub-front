@@ -11,7 +11,7 @@ export const Header = ({}) => {
 	const activeItem = categories
 		.map((el) => el.subCategories?.find((item) => item.id === activeId))
 		.find((item) => item !== undefined);
-	const title = activeItem ? activeItem.name : '';
+	const title = activeItem ? activeItem.name : 'Vinyl windows';
 
 	return (
 		<div className={s.wrapper}>
