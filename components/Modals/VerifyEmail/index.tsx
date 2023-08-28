@@ -3,6 +3,7 @@ import s from './VerifyEmail.module.scss';
 import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
+import { RegisterUserType } from '@/types/services/auth';
 //imgs
 import modal_close from '@/imgs/Modal/Modal_close.svg';
 import back_btn from '@/imgs/Modal/CheckEmail/back_btn.svg';
@@ -46,7 +47,7 @@ export const VerifyEmail = () => {
 					get started.
 				</p>
 
-				<button className={s.btn}>Resend verification email</button>
+				<button  className={s.btn}>Resend verification email</button>
 
 				<p className={s.help}>
 					Need help? <span className={s.contact}> Contact us </span>{' '}

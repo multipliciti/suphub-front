@@ -16,7 +16,7 @@ export const ProductItem = (props: ResultItem) => {
 	const { push } = useRouter();
 	const [favorite, setFavorite] = useState<boolean>(true);
 	const dispatch = useAppDispatch();
-	const { name, id, } = props.product;
+	const { name, id, unitPrice } = props.product;
 
 	const properties = [
 		['MOQ', props.product.moq],
@@ -33,11 +33,11 @@ export const ProductItem = (props: ResultItem) => {
 						<Image src={star_active} alt="star" width={20} height={20} />
 					</div>
 					<Image className={s.img} src={test2} alt="img" width={244} height={212} />
-				</div>
+				</div> 
 				<div className={s.description_wrapper}>
 					<h1 className={s.title}>{name} </h1>
 					<h2 className={s.price}>
-						<span className={s.price}>$400</span>
+						<span className={s.price}>${unitPrice}</span>
 						<span className={s.price_format}>/ Unit</span>
 					</h2>
 

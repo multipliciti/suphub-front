@@ -23,6 +23,15 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		credentials: "include",
 	});
 
+	instance.interceptors.request.use((config) => {
+		//@ts-ignore
+		const token = Cookies.get('token');
+		if (token) {
+			config.headers.Authorization = `token=${token}`;
+		}
+		return config;
+	});
+
 	const apis = {
 		auth: AuthApi(instance),
 		product: ProductsApi(instance),

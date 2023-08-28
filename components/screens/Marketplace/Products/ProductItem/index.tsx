@@ -11,6 +11,7 @@ import { ProductItemType } from '@/types/marketplace/product';
 import test2 from '@/imgs/Product/test2.png';
 import { Api } from '@/services';
 import { useState } from 'react';
+import { setModal } from '@/redux/slices/modal';
 
 export const ProductItem = (props: any) => {
 	const { push } = useRouter();
@@ -40,19 +41,24 @@ export const ProductItem = (props: any) => {
 
 	const addFavorite = async (id: number) => {
 		const api = Api();
-		try {
-			const response = await api.product.addFavorite(id);
-			setFavorite(true);
-		} catch (error: any) {
-			setFavorite(false);
+		if(user){
+			try {
+				const response = await api.product.addFavorite(id);
+				setFavorite(true);
+			} catch (error: any) {
+				setFavorite(false);
+			}
+		}else{
+			dispatch(setModal('login'))
 		}
+		
 	};
 
 	return (
 		<>
 			<div onClick={() => push(`marketplace//product/${id}`)} className={s.wrapper}>
 					<div className={s.img_wrapper}>
-						{user &&
+						
 							<div
 								onClick={(e) => {
 									e.stopPropagation();
@@ -67,7 +73,7 @@ export const ProductItem = (props: any) => {
 									height={20}
 								/>
 							</div> 
-						}
+						
 					<Image className={s.img} src={test2} alt="img" width={244} height={212} />
 				</div>
 				

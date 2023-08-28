@@ -74,17 +74,17 @@ export const Header = () => {
 		},
 	];
 	const fetchUser = async () => {
+		
 		try {
 			const user = await api.auth.getUser();
 			if(user){
-				dispatch(setUser(user))
 				dispatch(setStatusGetUser('seccess'))
-			}else{
-				dispatch(setUser(null))
-				dispatch(setStatusGetUser('rejected'))
+				dispatch(setUser(user))
 			}
 			
 		} catch (error) {
+			dispatch(setStatusGetUser('rejected'))
+			dispatch(setUser(null))
 			console.error('Error fetching user data:', error);
 		}
 	};

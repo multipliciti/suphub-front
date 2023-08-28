@@ -16,10 +16,10 @@ function getCookieValue(cookieName: string) {
 	  const [name, value] = cookie.trim().split('=');
 	  if (name === cookieName) {
 		return decodeURIComponent(value);
-	  }
+	}
 	}
 	return null;
-  }
+}
 
 export const AuthApi = (instance: AxiosInstance) => ({
 	async registerUser(user: RegisterUserType) {
@@ -88,8 +88,6 @@ export const AuthApi = (instance: AxiosInstance) => ({
 	},
 	async getUser() {
 		try {
-			// const token = getCookieValue('token')
-			// console.log('token is', token)
 			const url = '/auth/get-user';
 			const response: User = await instance.post(url);
 			return response

@@ -59,7 +59,9 @@ export const ResetForm = ({ token }: PropsType) => {
 	};
 
 	const isPassword = (data: string) => {
-		return data.length < 8 ? false : true;
+		const res =  data.length < 8 ? false : true;
+		return res
+
 	};
 
 	const matchingPassword = (data: string) => {

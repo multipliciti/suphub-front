@@ -9,12 +9,14 @@ import { Pagination } from '@/components/Features/Pagination';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
+import { setStatusGetUser, setUser } from '@/redux/slices/auth';
+import { useRouter } from 'next/navigation';
 
 export const FavoritesComponents = () => {
 	const dispatch = useAppDispatch();
 	const api = Api()
 	const [totalPages, setTotalPages] = useState<number>(2);
-``
+	const { push } = useRouter();
 	const user = useAppSelector((state)=> state.authSlice.user)
 	const statusGetUser =  useAppSelector((state)=> state.authSlice.statusGetUser)
 	const products = useAppSelector((state) => state.favoritesProduct.products);
@@ -120,16 +122,20 @@ export const FavoritesComponents = () => {
 		}
 	};
 
+
 	useEffect(() => {
 		if(user && statusGetUser !== 'pending'){
-			// fetchData(finalJsonString)
+			fetchData(finalJsonString)
 			dispatch(setModal(''))
 		}
-		if(!user && statusGetUser !== 'pending' || statusGetUser === 'rejected' || statusGetUser === 'logouted')dispatch(setModal('login'))
+		if(!user && statusGetUser !== 'pending'){
+			dispatch(setModal('login'))
+			push('/marketplace')
+		} 
 		if (products.length > 0) {
 			setTotalPages(Math.ceil(totalPages / 4));
 		}
-	}, [activePage, productsFilter, charData, statusGetUser, products]);
+	}, [activePage, productsFilter, charData, statusGetUser, products, user]);
 
 	return (
 		<div className={s.wrapper}>

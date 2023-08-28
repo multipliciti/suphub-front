@@ -32,7 +32,7 @@ export const Login: React.FC = () => {
 	const { push } = useRouter();
 	const statusGetUser = useAppSelector((state)=> state.authSlice.statusGetUser)
 	const [incorrect, setIncorrect] = useState<boolean>(false);
-	const [hidePassword, setHidePassword] = useState<boolean>(false);
+	const [hidePassword, setHidePassword] = useState<boolean>(true);
 	const [notVerified, setNotVerified] = useState<boolean>(false);
 	const [correctPassword, setCorrectPassword] = useState<boolean>(false);
 
@@ -141,7 +141,7 @@ export const Login: React.FC = () => {
 						/>
 
 						<input
-					
+							placeholder='example@suphub.com'
 							{...register('email', { required: true, validate: isEmail })}
 							className={s.email_input}
 							id="email"
@@ -194,7 +194,7 @@ export const Login: React.FC = () => {
 							height={20}
 						/>
 						<input
-			
+							placeholder='Enter your password'
 							{...register('password', {
 								required: true,
 							})}

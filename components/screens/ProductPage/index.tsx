@@ -13,13 +13,13 @@ import { ProductItemType } from '@/types/marketplace/product';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
 
-
 type PropsType = {
 	id: number;
 	backLink: string;
 };
 
 export const ProductPageComponent = (props: PropsType) => {
+	const api = Api();
 	const { push } = useRouter();
 	const dispatch = useAppDispatch()
 	const user = useAppSelector((state)=> state.authSlice.user)
@@ -29,7 +29,6 @@ export const ProductPageComponent = (props: PropsType) => {
 	const [status, setStatus] = useState<'loading' | 'notFound' | 'seccess'>(
 		'seccess'
 	);
-	const api = Api();
 
 	const fetchProductOne = async (id: number) => {
 		try {
@@ -44,13 +43,8 @@ export const ProductPageComponent = (props: PropsType) => {
 	};
 
 	useEffect(() => {
-		if(user && statusGetUser !== 'pending'){
-			fetchProductOne(id);
-			dispatch(setModal(''))
-		}
-		if(!user && statusGetUser !== 'seccess' )dispatch(setModal('login'))
-		
-	}, [statusGetUser]);
+		fetchProductOne(id);
+	}, []);
 
 	return (
 		<div>
@@ -74,7 +68,7 @@ export const ProductPageComponent = (props: PropsType) => {
 							<AboutProduct product={product} />
 						</div>
 						<div className={s.summery}>
-							<Order />
+							<Order user={user} statusGetUser={statusGetUser}/>
 						</div>
 					</div>
 				</div>

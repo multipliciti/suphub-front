@@ -8,9 +8,7 @@ import { classNames } from '@/utils/classNames';
 import { LayoutModal } from '../layout';
 import { resetPasswordEmailSet } from '@/redux/slices/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { isEmail } from './validation';
 import { Api } from '@/services';
-
 //imgs
 import modal_email from '@/imgs/Modal/email.svg';
 import invalid_icon from '@/imgs/Modal/invalid_icon.svg';
@@ -40,6 +38,12 @@ export const ForgotPassword: React.FC = () => {
 		shouldFocusError: false,
 		shouldUnregister: false,
 	});
+
+	const isEmail = (data: string) => {
+		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+		const res = emailRegex.test(data);
+		return res;
+	};
 
 	const submit: SubmitHandler<FormType> = async (data: FormType) => {
 		dispatch(resetPasswordEmailSet(data.email));
@@ -92,8 +96,9 @@ export const ForgotPassword: React.FC = () => {
 							/>
 
 							<input
+								placeholder='example@suphub.com'
 								{...register('email', {
-									required: true,
+									required: 'required',
 									validate: isEmail,
 								})}
 								className={s.email_input}

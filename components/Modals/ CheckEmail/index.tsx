@@ -50,7 +50,7 @@ export const CheckEmail = () => {
 				<p className={s.description}>
 					If you don’t receive it right away, check your spam folder
 				</p>
-				<button onClick={() => resend()} className={s.resend}>
+				<button onClick={() => dispatch(setModal('forgotPassword'))} className={s.resend}>
 					Resend email
 				</button>
 				<p className={s.contacts}>

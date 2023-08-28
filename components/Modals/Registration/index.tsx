@@ -25,7 +25,7 @@ import { setRegistration } from '@/redux/slices/auth';
 export const Registration = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
-	const [hidePassword, setHidePassword] = useState<boolean>(false);
+	const [hidePassword, setHidePassword] = useState<boolean>(true);
 	const [usedEmail, setUsedEmail] = useState<boolean>(false);
 	//validation
 	const [emailCorrect, setEmailCorrect] = useState<boolean>(false);
@@ -34,8 +34,8 @@ export const Registration = () => {
 	const isEmail = (data: string) => {
 		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 		const res = emailRegex.test(data);
-		setEmailCorrect(res);
-		return;
+		setEmailCorrect(res); //to display when we insert
+		return res;
 	};
 
 	const isPassword = (data: string) => {
@@ -147,7 +147,7 @@ export const Registration = () => {
 							className={classNames(
 								s.auth_label,
 								errors?.email && s.names_label_invalid
-								// usedEmail && s.names_label_invalid
+								
 							)}
 							htmlFor="email"
 						>
@@ -161,7 +161,6 @@ export const Registration = () => {
 							<input
 								{...register('email', {
 									required: 'required',
-									//@ts-ignore
 									validate: isEmail,
 								})}
 								id="email"

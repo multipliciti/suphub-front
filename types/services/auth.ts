@@ -41,5 +41,5 @@ export interface User {
 	buyerCompanyId: number | null;
 	createdAt: string;
 	updatedAt: string;
-}
+} 
 
