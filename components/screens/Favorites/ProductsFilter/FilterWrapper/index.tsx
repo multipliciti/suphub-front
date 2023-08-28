@@ -77,7 +77,9 @@ export const FilterWrapper = (props: TypeProps) => {
 	};
 
 	return (
-		<div onClick={() => setOpen(!open)} className={s.wrapper}>
+		<div onClick={(e) => {
+			setOpen(!open)
+		}} className={s.wrapper}>
 			<span className={s.text}> {title} </span>
 			<Image
 				className={s.img}
@@ -89,7 +91,9 @@ export const FilterWrapper = (props: TypeProps) => {
 
 			{type === 'range' && (
 				<div className={classNames(s.inner_wrapper, open && s.inner_wrapper_active)}>
-					<label className={s.label} htmlFor={title}>
+					<label 
+					onClick={(e)=> e.stopPropagation()}
+					className={s.label} htmlFor={title}>
 						<input
 							onChange={(e) => handleMinChange(e)}
 							placeholder="Min"
@@ -99,7 +103,9 @@ export const FilterWrapper = (props: TypeProps) => {
 							inputMode="numeric"
 						/>
 					</label>
-					<label className={s.label} htmlFor={title}>
+					<label
+							onClick={(e)=> e.stopPropagation()}
+					 		className={s.label} htmlFor={title}>
 						<input
 							onChange={(e) => handleMaxChange(e)}
 							placeholder="Max"
@@ -110,7 +116,8 @@ export const FilterWrapper = (props: TypeProps) => {
 						/>
 					</label>
 					<button
-						onClick={() => {
+						onClick={(e) => {
+							e.stopPropagation()
 							dispatch(updateMinProducts({ filterKey: key, min: 0 }));
 							dispatch(updateMaxproducts({ filterKey: key, max: 0 }));
 						}}
@@ -127,7 +134,9 @@ export const FilterWrapper = (props: TypeProps) => {
 						{items?.map((el, ind) => {
 							return (
 								<div key={ind}>
-									<label htmlFor={el.title} className={s.label_radio}>
+									<label
+									onClick={(e)=> e.stopPropagation()}
+									htmlFor={el.title} className={s.label_radio}>
 										<input
 											id={el.title}
 											type="radio"
@@ -136,7 +145,8 @@ export const FilterWrapper = (props: TypeProps) => {
 												el.value.toString() ===
 												selectedOptionLeadTime?.selectedItems?.toString()
 											}
-											onClick={() => {
+											onClick={(e) => {
+												e.stopPropagation()
 												if (Array.isArray(el.value)) {
 													handleOptionChange(el.value);
 												}
@@ -159,14 +169,15 @@ export const FilterWrapper = (props: TypeProps) => {
 					</div>
 
 					<button
-						onClick={(e) =>
+						onClick={(e) => {
+							e.stopPropagation()
 							dispatch(
 								updateSelectedItemsProsuct({
 									filterKey: key,
 									selectedItems: [],
 								})
 							)
-						}
+						}}
 						className={s.clear}
 					>
 						Clear filter
@@ -185,7 +196,10 @@ export const FilterWrapper = (props: TypeProps) => {
 						{items?.map((el, ind) => {
 							return (
 								<div
-									onClick={() => handleSelectChange(el.value.toString())}
+									onClick={(e) => {
+										e.stopPropagation()
+										handleSelectChange(el.value.toString())
+									}}
 									className={classNames(
 										s.option,
 										selectedOptionCountry?.selectedItems?.includes(
@@ -194,7 +208,6 @@ export const FilterWrapper = (props: TypeProps) => {
 									)}
 								>
 									{el.title}
-
 									{selectedOptionCountry?.selectedItems?.includes(
 										el.value.toString()
 									) && (
@@ -217,8 +230,8 @@ export const FilterWrapper = (props: TypeProps) => {
 							paddingLeft: '12px',
 						}}
 						onClick={(e) => {
+							e.stopPropagation()
 							handleOptionChangeDaspatch([]);
-							// setSelectedOption([]);/
 						}}
 						className={s.clear}
 					>

@@ -90,6 +90,7 @@ export const FilterWrapper = (props: TypeProps) => {
 				<div className={classNames(s.inner_wrapper, open && s.inner_wrapper_active)}>
 					<label className={s.label} htmlFor={title}>
 						<input
+							onClick={(e)=> e.stopPropagation()}
 							onChange={(e) => handleMinChange(e)}
 							placeholder="Min"
 							className={s.input}
@@ -101,6 +102,7 @@ export const FilterWrapper = (props: TypeProps) => {
 					</label>
 					<label className={s.label} htmlFor={title}>
 						<input
+							onClick={(e)=> e.stopPropagation()}
 							onChange={(e) => handleMaxChange(e)}
 							placeholder="Max"
 							className={s.input}
@@ -110,7 +112,8 @@ export const FilterWrapper = (props: TypeProps) => {
 						/>
 					</label>
 					<button
-						onClick={() => {
+						onClick={(e) => {
+							e.stopPropagation();
 							dispatch(updateMinProducts({ filterKey: key, min: 0 }));
 							dispatch(updateMaxproducts({ filterKey: key, max: 0 }));
 						}}
@@ -136,7 +139,8 @@ export const FilterWrapper = (props: TypeProps) => {
 												el.value.toString() ===
 												selectedOptionLeadTime?.selectedItems?.toString()
 											}
-											onClick={() => {
+											onClick={(e) => {
+												e.stopPropagation();
 												if (Array.isArray(el.value)) {
 													handleOptionChange(el.value);
 												}
@@ -159,14 +163,15 @@ export const FilterWrapper = (props: TypeProps) => {
 					</div>
 
 					<button
-						onClick={(e) =>
+						onClick={(e) =>{
+							e.stopPropagation()
 							dispatch(
 								updateSelectedItemsProsuct({
 									filterKey: key,
 									selectedItems: [],
 								})
 							)
-						}
+						}}
 						className={s.clear}
 					>
 						Clear filter
@@ -185,7 +190,10 @@ export const FilterWrapper = (props: TypeProps) => {
 						{items?.map((el, ind) => {
 							return (
 								<div
-									onClick={() => handleSelectChange(el.value.toString())}
+									onClick={(e) => {
+										e.stopPropagation();
+										handleSelectChange(el.value.toString())
+									}}
 									className={classNames(
 										s.option,
 										selectedOptionCountry?.selectedItems?.includes(
@@ -217,8 +225,8 @@ export const FilterWrapper = (props: TypeProps) => {
 							paddingLeft: '12px',
 						}}
 						onClick={(e) => {
+							e.stopPropagation();
 							handleOptionChangeDaspatch([]);
-							// setSelectedOption([]);/
 						}}
 						className={s.clear}
 					>
