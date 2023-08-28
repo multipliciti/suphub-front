@@ -63,6 +63,7 @@ export const Login: React.FC = () => {
 		try {
 			const response = await api.auth.loginUser(data);
 			if (response) {
+				dispatch(setModal(''));
 				const token = response.token
 				Cookies.set('token', token);
 
@@ -76,6 +77,7 @@ export const Login: React.FC = () => {
 					dispatch(setStatusGetUser('rejected')) 
 				}
 			}
+			
 		} catch (error: any) {
 			console.log('err', error);
 			if (

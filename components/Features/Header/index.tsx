@@ -163,7 +163,9 @@ export const Header = () => {
 							</li>
 							<li className={s.split}></li>
 							<li className={s.item_img}>
-								<Image src={star_img} alt="star_img" width={24} height={24} />
+								<Link href={'/favorites'}>
+									<Image src={star_img} alt="star_img" width={24} height={24} />
+								</Link>
 							</li>
 							<li className={s.item_img}>
 								<Image
