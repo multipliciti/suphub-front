@@ -3,6 +3,9 @@
 	display: flex;
 	gap: 12px;
 	align-items: center;
+	@media (max-width: 825px) {
+		flex-wrap: wrap;
+	}
 }
 
 .search {
@@ -41,4 +44,8 @@
 	gap: 12px;
 	align-items: center;
 	width: 100%;
+
+	@media (max-width: 600px) {
+		flex-wrap: wrap;
+	}
 }

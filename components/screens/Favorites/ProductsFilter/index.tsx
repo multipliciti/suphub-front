@@ -2,18 +2,20 @@
 import s from './ProductsFilter.module.scss';
 import search_img from '@/imgs/Marketplace/search.svg';
 import Image from 'next/image';
-import { Api } from '@/services';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { FilterWrapper } from './FilterWrapper';
-import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
 import debounce from 'lodash.debounce';
-import { useEffect } from 'react';
+import { searchProducts } from '@/redux/slices/favorites/productsFilter';
 
 export const ProductsFilter = () => {
+	const dispatch = useAppDispatch();
 	const productFilterItems = useAppSelector(
 		(state) => state.favoritesProductFilter.storeProductsFilter
 	);
-	
+
+	const debouncedSearch = debounce((value) => {
+		dispatch(searchProducts(value));
+	}, 300);
 
 	return (
 		<div className={s.wrapper}>
@@ -24,6 +26,7 @@ export const ProductsFilter = () => {
 					placeholder="Search product by name"
 					id="search"
 					type="text"
+					onChange={(e)=> debouncedSearch(e.target.value)}
 				/>
 			</label>
 			<div className={s.products_filter}>

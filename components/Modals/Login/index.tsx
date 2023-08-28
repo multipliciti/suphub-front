@@ -64,8 +64,6 @@ export const Login: React.FC = () => {
 			const response = await api.auth.loginUser(data);
 			if (response) {
 				dispatch(setModal(''));
-				const token = response.token
-				Cookies.set('token', token);
 
 				const user = await api.auth.getUser()
 				if(user){

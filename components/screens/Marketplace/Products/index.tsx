@@ -1,6 +1,7 @@
 'use client';
 import s from './Products.module.scss';
 import { useAppSelector } from '@/redux/hooks';
+import { classNames } from '@/utils/classNames';
 import { useState } from 'react';
 import { ProductItem } from './ProductItem';
 import { Api } from '@/services';
@@ -17,7 +18,7 @@ interface ProductsPropsType {
 
 export const Products = (props: ProductsPropsType) => {
 	const { products, total, status } = props;
-
+	const isSideBar = useAppSelector((state)=> state.sideBarSlice.sideBar)
 	return (
 		<div className={s.wrapper}>
 			<div className={s.results}>
@@ -28,7 +29,7 @@ export const Products = (props: ProductsPropsType) => {
 			{status === 'rejected' && <div> Error! </div>}
 			{products && products.length < 1 && status === 'seccess' && <NoResults />}
 			{products && status === 'seccess' && (
-				<div className={s.products}>
+				<div className={classNames(s.products, isSideBar && s.products_sidebar  )}>
 					{products.map((el, ind) => (
 						<div key={ind} className={s.products_item}>
 							<ProductItem {...el} />

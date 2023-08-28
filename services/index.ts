@@ -19,8 +19,6 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 	const instance = axios.create({
 		baseURL: API_URL,
 		withCredentials: true,
-		//@ts-ignore
-		credentials: "include",
 	});
 
 	instance.interceptors.request.use((config) => {

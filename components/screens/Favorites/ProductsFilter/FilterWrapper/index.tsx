@@ -14,6 +14,7 @@ import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
 import { classNames } from '@/utils/classNames';
 import { ProductFilterItem } from '@/types/marketplace/productFilters';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import debounce from 'lodash.debounce';
 
 interface TypeProps {
 	item: ProductFilterItem;
@@ -40,8 +41,6 @@ export const FilterWrapper = (props: TypeProps) => {
 			})
 		);
 	};
-	console.log('min', min)
-	console.log('max', max)
 
 	const handleOptionChangeDaspatch = (selectedOptionCountrys: any[]) => {
 		dispatch(
@@ -52,13 +51,13 @@ export const FilterWrapper = (props: TypeProps) => {
 		);
 	};
 
-	const handleMinChange = (event: ChangeEvent<HTMLInputElement>) => {
+	const handleMinChange = debounce((event: ChangeEvent<HTMLInputElement>) => {
 		dispatch(updateMinProducts({ filterKey: key, min: Number(event.target.value) }));
-	};
+	}, 250);
 
-	const handleMaxChange = (event: ChangeEvent<HTMLInputElement>) => {
-		dispatch(updateMaxproducts({ filterKey: key, max: Number(event.target.value) }));
-	};
+	const handleMaxChange =  debounce((event: ChangeEvent<HTMLInputElement>) => {
+		dispatch(updateMaxproducts({ filterKey: key, min: Number(event.target.value) }));
+	}, 250);
 
 	const handleSelectChange = (value: string) => {
 		if (selectedOptionCountry) {
@@ -78,10 +77,9 @@ export const FilterWrapper = (props: TypeProps) => {
 	};
 
 	return (
-		<div className={s.wrapper}>
+		<div onClick={() => setOpen(!open)} className={s.wrapper}>
 			<span className={s.text}> {title} </span>
 			<Image
-				onClick={() => setOpen(!open)}
 				className={s.img}
 				src={open ? open_img : close_img}
 				alt="close_img"

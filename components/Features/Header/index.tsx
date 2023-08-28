@@ -97,7 +97,24 @@ export const Header = () => {
 		try {
 			const response = await api.auth.logout();
 			if(response) {
-				dispatch(setUser(null))
+				dispatch(setUser({
+					"id": 17,
+					"username": null,
+					"email": "radiumglodivin85@gmail.com",
+					"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZGl1bWdsb2RpdmluODVAZ21haWwuY29tIiwiaWQiOjE3LCJyb2xlIjoidXNlciIsImlhdCI6MTY5MzI1NzI2Mn0.D7ffxVRh7RvRU3ALMNp4-ApoVLt6o9VEMxg4h86a_CU",
+					"firstName": "fjfjjjf",
+					"lastName": "jfjfjfjf",
+					"phone": null,
+					"emailVerified": true,
+					"verificationCode": null,
+					"passwordResetCode": null,
+					"role": null,
+					"lastSignedIn": null,
+					"sellerCompanyId": null,
+					"buyerCompanyId": null,
+					"createdAt": "2023-08-25T20:02:53.864Z",
+					"updatedAt": "2023-08-28T21:14:22.871Z"
+				}))
 				dispatch(setStatusGetUser('logouted'))
 			}
 		} catch (error: any) {

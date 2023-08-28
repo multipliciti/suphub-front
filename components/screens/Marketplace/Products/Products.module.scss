@@ -31,15 +31,35 @@
 	grid-column-gap: 20px;
 	grid-row-gap: 20px;
 	justify-content: center;
-	@media (max-width: 1450px) {
+	@media (max-width: 1300px) {
 		grid-template-columns: repeat(3, 1fr);
 	}
-	@media (max-width: 1180px) {
+	@media (max-width: 1010px) {
 		grid-template-columns: repeat(2, 1fr);
+	}
+	@media (max-width: 700px) {
+		grid-template-columns: repeat(1, 1fr);
 	}
 
 	&_item {
 		display: flex;
 		justify-content: center;
+	}
+
+	&_sidebar{
+
+		grid-template-columns: repeat(4, 1fr);
+		
+		@media (max-width: 1450px) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		@media (max-width: 1180px) {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		@media (max-width: 880px) {
+			grid-template-columns: repeat(1, 1fr);
+		}
 	}
 }
