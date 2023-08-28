@@ -7,11 +7,13 @@ import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { FilterWrapper } from './FilterWrapper';
 import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
 import debounce from 'lodash.debounce';
+import { useEffect } from 'react';
 
 export const ProductsFilter = () => {
 	const productFilterItems = useAppSelector(
-		(state) => state.productsFilter.storeFavoriteFilter
+		(state) => state.favoritesProductFilter.storeProductsFilter
 	);
+	
 
 	return (
 		<div className={s.wrapper}>

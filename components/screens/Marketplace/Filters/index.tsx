@@ -2,13 +2,10 @@
 import s from './Filters.module.scss';
 import Image from 'next/image';
 import { FilterWrapper } from './FilterWrapper';
-import { ItemFilter } from '@/types/marketplace/filters';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
-
 //imgs
 import close_img from '@/imgs/Marketplace/Filters/close.svg';
 import open_img from '@/imgs/Marketplace/Filters/open.svg';
-import test from '@/imgs/Marketplace/Filters/Sustainability/test.png';
 import { classNames } from '@/utils/classNames';
 import { useState } from 'react';
 import { clearAll } from '@/redux/slices/marketplace/filters';

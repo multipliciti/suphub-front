@@ -14,14 +14,13 @@ export const API_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 	const cookies = ctx ? Cookies.get(ctx) : parseCookies();
-	const token = cookies.accessToken;
-
+	const token = cookies.token;
+	
 	const instance = axios.create({
 		baseURL: API_URL,
 		withCredentials: true,
-		headers: {
-			Authorization: token || '',
-		},
+		//@ts-ignore
+		credentials: "include",
 	});
 
 	const apis = {

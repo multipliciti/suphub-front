@@ -7,9 +7,10 @@ import test2 from '@/imgs/Product/test2.png';
 import { useState } from 'react';
 import { TableComponent } from './Table';
 import { classNames } from '@/utils/classNames';
+import { ProductItemType } from '@/types/marketplace/product';
 
 interface PropsType {
-	product: any;
+	product: ProductItemType;
 }
 
 export const AboutProduct = (props: PropsType) => {
@@ -66,13 +67,13 @@ Installation clips`,
 			],
 		},
 	];
-
-	const descriptionArr = [
-		['Factory lead time', product.leadTime],
-		['Min. Order Quantity', product.minOrder],
-		['Warranty', product.warranty],
-		['Country of origin', product.countryOfOrigin],
-		['Certifications', product.certification],
+	const dynamic_attr = product.dynamic_attr
+	const certification = dynamic_attr.find((el: any)=> el.label === 'Certification')?.value
+	const properties = [
+		['Min. Order Quantity', product.moq ? `${product.moq} units` : '-' ],
+		['Factory lead time', product.leadTime ?  `${product.leadTime} days` : '-'],
+		['Warranty', product.warranty ? `${product.warranty} month` : '-' ],
+		['Certification', certification ?  `${certification}` : '-'],
 	];
 
 	const images = [
@@ -121,11 +122,10 @@ Installation clips`,
 				</div>
 				<div className={s.product_description}>
 					<p className={s.subtitle}>Weika Windows</p>
-
 					<h3 className={s.title}> {product.name} </h3>
 
 					<div className={s.product_description_wrap}>
-						{descriptionArr.map((el, ind) => {
+						{properties.map((el, ind) => {
 							return (
 								<div className={s.product_description_item} key={ind}>
 									<p className={s.key}>{el[0]}</p>

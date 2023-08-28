@@ -4,7 +4,20 @@ import { ProductFind } from '@/types/services/products';
 export const ProductsApi = (instance: AxiosInstance) => ({
 	async getProduct({ page, limit, sortParams, searchParams }: ProductFind) {
 		try {
-			console.log('fetch searchParams', searchParams);
+			const search = searchParams ? `&find=${searchParams}` : '';
+			const sort = sortParams
+				? `&sort=${encodeURIComponent(JSON.stringify(sortParams))}`
+				: '';
+			const url = `/product?page=${page}&limit=${limit}${sort}${search}`;
+			const response = await instance.get(url);
+			return response.data;
+		} catch (error) {
+			console.error('Products error:', error);
+			throw error;
+		}
+	},
+	async getFavorites({ page, limit, sortParams, searchParams }: ProductFind) {
+		try {
 			const search = searchParams ? `&find=${searchParams}` : '';
 			const sort = sortParams
 				? `&sort=${encodeURIComponent(JSON.stringify(sortParams))}`
@@ -47,4 +60,5 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
+
 });

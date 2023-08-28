@@ -80,8 +80,8 @@ const initialState: ProductFilter = {
 	],
 };
 
-const productsFilter = createSlice({
-	name: 'productsFilters',
+const favoritesProductsFilter = createSlice({
+	name: 'avoritesProductsFilters',
 	initialState,
 	reducers: {
 		updateMinProducts: (state, action) => {
@@ -116,6 +116,6 @@ export const {
 	searchProducts,
 	updateMaxproducts,
 	updateSelectedItemsProsuct,
-} = productsFilter.actions;
+} = favoritesProductsFilter.actions;
 
-export default productsFilter.reducer;
+export default favoritesProductsFilter.reducer;

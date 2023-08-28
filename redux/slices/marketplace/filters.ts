@@ -64,7 +64,6 @@ const filtersSlice = createSlice({
 			}
 		},
 		setItemsFilter(state, action) {
-			console.log('action.payload', action.payload);
 			state.itemsFilter = action.payload;
 		},
 		clearAll(state) {

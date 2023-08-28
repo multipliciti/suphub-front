@@ -8,24 +8,26 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import star_active from '@/imgs/Marketplace/Products/star_sctive.svg';
 import test2 from '@/imgs/Product/test2.png';
 import { useState } from 'react';
+import { ResultItem } from '@/types/favorites/products';
 
-export const ProductItem = (props: any) => {
+export const ProductItem = (props: ResultItem) => {
+
+	const user = useAppSelector((state)=> state.authSlice.user)
 	const { push } = useRouter();
 	const [favorite, setFavorite] = useState<boolean>(true);
 	const dispatch = useAppDispatch();
-	const { name, id, dynamic_attr } = props;
+	const { name, id, } = props.product;
 
 	const properties = [
-		['MOQ', props.minOrder],
-		['Lead time (weeks)', props.leadTime],
-		['Warranty', props.warranty],
-		['Certification', props.certification],
+		['MOQ', props.product.moq],
+		['Lead time (weeks)', props.product.leadTime],
+		['Warranty', props.product.warranty],
+		// ['Certification', props.product.certification],
 	];
-
 
 	return (
 		<>
-			<div onClick={() => push(`/product/${id}`)} className={s.wrapper}>
+			<div onClick={() => push(`favorites/product/${id}`)} className={s.wrapper}>
 				<div className={s.img_wrapper}>
 					<div className={s.img_star}>
 						<Image src={star_active} alt="star" width={20} height={20} />

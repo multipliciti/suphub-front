@@ -20,6 +20,7 @@ import password_valid from '@/imgs/Modal/password_valid.svg';
 import incorrect_email from '@/imgs/Modal/incorrect.svg';
 //Api
 import { Api } from '@/services/';
+import { setRegistration } from '@/redux/slices/auth';
 
 export const Registration = () => {
 	const api = Api();
@@ -66,14 +67,15 @@ export const Registration = () => {
 			const response = await api.auth.registerUser(requestData);
 			dispatch(setModal(`verifyEmail`));
 			dispatch(setEmail(`${requestData.email}`));
+			dispatch(setRegistration(requestData))
 		} catch (error: any) {
 			if (
 				error.response?.status === 400 &&
 				error.response?.data?.message === 'User already exist'
+				
 			) {
 				setUsedEmail(true);
-			} else {
-			}
+			} 
 		}
 	};
 

@@ -7,9 +7,9 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 import Link from 'next/link';
 import { useState } from 'react';
+import { setStatusGetUser, setUser } from '@/redux/slices/auth';
 import { classNames } from '@/utils/classNames';
 import { useEffect } from 'react';
-import { setLoginIn } from '@/redux/slices/auth';
 import { parseCookies } from 'nookies';
 import { Api } from '@/services';
 import { destroyCookie } from 'nookies';
@@ -23,12 +23,13 @@ import LogOut from '@/imgs/Header/Dropdown items/Log Out.svg';
 import star_img from '@/imgs/Header/Star.svg';
 import notifacation_img from '@/imgs/Header/Notification.svg';
 import avatartest from '@/imgs/Header/AvatarsTest.svg';
-import { getCookie } from '@/utils/cookies';
+
 
 export const Header = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
-	const isLoggedIn = useAppSelector((state) => state.authSlice.isLoggedIn);
+	const user = useAppSelector((state) => state.authSlice.user);
+	const statusGetUser = useAppSelector((state)=> state.authSlice.statusGetUser)
 	const [activeLink, setActiveLink] = useState<number>(1);
 	const [menu, setMenu] = useState<boolean>(false);
 	const menuItems = [
@@ -72,24 +73,40 @@ export const Header = () => {
 			href: '/marketplace',
 		},
 	];
+	const fetchUser = async () => {
+		try {
+			const user = await api.auth.getUser();
+			if(user){
+				dispatch(setUser(user))
+				dispatch(setStatusGetUser('seccess'))
+			}else{
+				dispatch(setUser(null))
+				dispatch(setStatusGetUser('rejected'))
+			}
+			
+		} catch (error) {
+			console.error('Error fetching user data:', error);
+		}
+	};
+
+	useEffect(() => {
+		if(statusGetUser !== 'logouted')fetchUser();
+	}, []);
 
 	const fetchLogOut = async () => {
 		try {
 			const response = await api.auth.logout();
-			destroyCookie(null, 'accessToken');
-			window.location.reload();
-		} catch (error: any) {}
+			if(response) {
+				dispatch(setUser(null))
+				dispatch(setStatusGetUser('logouted'))
+			}
+		} catch (error: any) {
+		}
 	};
-
-	useEffect(() => {
-		const cookies = parseCookies();
-		const token = cookies.accessToken;
-		token ? dispatch(setLoginIn(true)) : dispatch(setLoginIn(false));
-	}, []);
 
 	return (
 		<header className={`header_container ${s.header}`}>
-			{isLoggedIn && (
+			{user && (
 				<div className={s.wrapper}>
 					<div className={s.menu}>
 						<Image src={modal_logo} alt="modal_logo" width={32} height={35} />
@@ -103,7 +120,10 @@ export const Header = () => {
 									)}
 								>
 									<Link
-										onClick={() => setActiveLink(button.id)}
+										onClick={(e) =>{
+											e.stopPropagation()
+											setActiveLink(button.id)
+										} }
 										href={button.href}
 										className={classNames(
 											s.menu_btn,
@@ -127,7 +147,10 @@ export const Header = () => {
 									)}
 								>
 									<Link
-										onClick={() => setActiveLink(3)}
+										onClick={(e) => {
+											e.stopPropagation()
+											setActiveLink(3)
+										}}
 										className={classNames(
 											s.menu_btn,
 											activeLink === 3 && s.menu_btn_active
@@ -150,8 +173,12 @@ export const Header = () => {
 									height={24}
 								/>
 							</li>
-							<li onClick={() => setMenu(!menu)} className={s.item_avatar}>
+							<li className={s.item_avatar}>
 								<Image
+									onClick={(e) => {
+										e.stopPropagation()
+										setMenu(!menu)
+									}} 
 									className={s.avatar}
 									src={avatartest}
 									alt="avatar"
@@ -163,7 +190,7 @@ export const Header = () => {
 										<div className={s.header}>
 											<Image src={avatartest} alt="avatar" width={36} height={36} />
 											<div className={s.header_info}>
-												<span className={s.header_info_name}>Tom Dallas</span>
+												<span className={s.header_info_name}>{user.firstName} </span>
 												<span className={s.header_info_person}>Personal</span>
 											</div>
 										</div>
@@ -179,7 +206,12 @@ export const Header = () => {
 											})}
 										</div>
 
-										<button onClick={() => fetchLogOut()} className={s.logout}>
+										<button onClick={(e) => {
+											e.stopPropagation();
+ 											fetchLogOut()
+
+
+										}} className={s.logout}>
 											<Image src={LogOut} alt="el" width={20} height={20} />
 											<span className={s.text}> Log out</span>
 										</button>
@@ -194,7 +226,7 @@ export const Header = () => {
 				</div>
 			)}
 
-			{!isLoggedIn && (
+			{!user && (
 				<div className={s.wrapper}>
 					<Image src={logo} alt="Logo" width={117} height={36} />
 					<div className={s.auth}>

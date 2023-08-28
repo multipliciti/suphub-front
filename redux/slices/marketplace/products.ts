@@ -1,22 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-import product_img from '@/imgs/Marketplace/Products/product_test2.jpeg';
-import { StaticImageData } from 'next/image';
 import { ProductItemType } from '@/types/marketplace/product';
-
-interface Product {
-	img: StaticImageData;
-	id: number;
-	title: string;
-	price: number;
-	description: {
-		[key: string]: string;
-	};
-}
 
 interface initialStateType {
 	products: ProductItemType[];
-	// favorites: any[];
 	activePage: number;
 	total: number;
 	status: 'pending' | 'seccess' | 'rejected';
@@ -25,13 +11,12 @@ interface initialStateType {
 const initialState: initialStateType = {
 	products: [],
 	activePage: 1,
-	
 	total: 0,
 	status: 'pending',
 };
 
-const productSlice = createSlice({
-	name: 'filters',
+const marketplaceProduct = createSlice({
+	name: 'marketplaceProducts',
 	initialState,
 	reducers: {
 		setActivePage(state, action: PayloadAction<number>) {
@@ -50,6 +35,6 @@ const productSlice = createSlice({
 });
 
 export const { setActivePage, setProducts, setTotal, setStatus } =
-	productSlice.actions;
+	marketplaceProduct.actions;
 
-export default productSlice.reducer;
+export default marketplaceProduct.reducer;

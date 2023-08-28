@@ -1,20 +1,17 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { LoginDto } from '@/types/services/auth';
+import Cookies from 'js-cookie'
 import s from './Login.module.scss';
 import { setModal } from '@/redux/slices/modal';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { LayoutModal } from '../layout';
 // import { isPassword } from './validation';
 import { Api } from '@/services';
-import { setCookie } from '@/utils/cookies';
 import { useRouter } from 'next/navigation';
-import { setLoginIn } from '@/redux/slices/auth';
-
-import { getCookie } from '@/utils/cookies';
 //imgs
 import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 import modal_close from '@/imgs/Modal/Modal_close.svg';
@@ -27,10 +24,13 @@ import password_valid from '@/imgs/Modal/password_valid.svg';
 import invalid_icon from '@/imgs/Modal/invalid_icon.svg';
 import close_eye from '@/imgs/Modal/close_eye.svg';
 import modal_incorrect from '@/imgs/Modal/incorrect.svg';
+import { setStatusGetUser } from '@/redux/slices/auth';
+import { setUser } from '@/redux/slices/auth';
 
 export const Login: React.FC = () => {
 	const dispatch = useAppDispatch();
 	const { push } = useRouter();
+	const statusGetUser = useAppSelector((state)=> state.authSlice.statusGetUser)
 	const [incorrect, setIncorrect] = useState<boolean>(false);
 	const [hidePassword, setHidePassword] = useState<boolean>(false);
 	const [notVerified, setNotVerified] = useState<boolean>(false);
@@ -57,18 +57,24 @@ export const Login: React.FC = () => {
 		setCorrectEmail(res);
 		return res;
 	};
+	
 
 	const submit: SubmitHandler<LoginDto> = async (data) => {
 		try {
 			const response = await api.auth.loginUser(data);
-			const { token } = response;
-			if (token) {
-				// setCookie('token', token, 1);
-				dispatch(setModal(''));
-				dispatch(setLoginIn(true));
-				setTimeout(() => {
-					push('/marketplace');
-				}, 3000);
+			if (response) {
+				const token = response.token
+				Cookies.set('token', token);
+
+				const user = await api.auth.getUser()
+				if(user){
+					dispatch(setUser(user)) 
+					dispatch(setStatusGetUser('seccess'))
+					dispatch(setModal(''));
+				}else{
+					dispatch(setUser(null))
+					dispatch(setStatusGetUser('rejected')) 
+				}
 			}
 		} catch (error: any) {
 			console.log('err', error);
@@ -135,6 +141,7 @@ export const Login: React.FC = () => {
 						/>
 
 						<input
+					
 							{...register('email', { required: true, validate: isEmail })}
 							className={s.email_input}
 							id="email"
@@ -187,6 +194,7 @@ export const Login: React.FC = () => {
 							height={20}
 						/>
 						<input
+			
 							{...register('password', {
 								required: true,
 							})}

@@ -9,94 +9,23 @@ import back_btn from '@/imgs/Modal/CheckEmail/back_btn.svg';
 import { Order } from './Order';
 import { AboutProduct } from './AboutProduct';
 import { classNames } from '@/utils/classNames';
+import { ProductItemType } from '@/types/marketplace/product';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+import { setModal } from '@/redux/slices/modal';
+
 
 type PropsType = {
 	id: number;
+	backLink: string;
 };
 
-export const ProductPageComponent = (props: any) => {
+export const ProductPageComponent = (props: PropsType) => {
 	const { push } = useRouter();
-	const { id } = props;
-	const [product, setProduct] = useState<any>({
-		id: 2,
-		name: 'Aluminum-clad Wood Window for All Climate',
-		sku: 'PASSIVE126',
-		certification: 'AAMA, NFRC',
-		warranty: '10-year Warranty',
-		sustainability: 'PHI',
-		productOverview:
-			"Passive 126 aluminum-clad Wood System Window, adopting the self-developed high-temperature insulation material and wood structure, makes its thermal insulation performance up to 10 grade, is a PHA grade products, won the international certification of the world's first all-weather award.",
-		hsCode: '7610.10.0010',
-		countryOfOrigin: 'China',
-		minOrder: 1,
-		leadTime: '45 days',
-		factoryUnitPriceMinQty: 402.78,
-		factoryUnitPriceLargeQty: 343.28,
-		factoryUnitPriceContainerQty: 343.28,
-		containerQty40ft: '75 units',
-		containerQty20ft: '35 units',
-		platformCommissionRate: 15,
-		platformUnitPriceMinQty: 463.2,
-		platformUnitPriceLargeQty: 394.77,
-		platformUnitPriceContainerQty: 394.77,
-		platformOnetimeDiscountedPrice: 375,
-		sellersUrl: '',
-		packaging: 'wooden frame, wooden box,  steel pallet',
-		packageInclude: 'windows',
-		packageDimension: "58'' x 20''",
-		packageWeight: '28 lbs',
-		status: 0,
-		largeQty: '75 units',
-		unitOfMeasurement: 'unit',
-		sellerCompanyId: 1,
-		subCategoryId: 2,
-		updatedAt: '2023-08-01T09:01:52.159Z',
-		createdAt: '2023-08-01T09:01:52.159Z',
-		attr: [
-			{
-				attributeId: 7,
-				attributeDescription: '',
-				label: 'Opening Style',
-				value: 'fixed',
-			},
-			{
-				attributeId: 8,
-				attributeDescription: '',
-				label: 'Opening Size',
-				value: "48'' x 12''",
-			},
-			{
-				attributeId: 9,
-				attributeDescription: '',
-				label: 'Frame Material',
-				value: 'Aluminum',
-			},
-			{
-				attributeId: 10,
-				attributeDescription: 'W/m∙K',
-				label: 'U-Factor',
-				value: 96,
-			},
-			{
-				attributeId: 11,
-				attributeDescription: '',
-				label: 'SHGC',
-				value: 0.39,
-			},
-			{
-				attributeId: 12,
-				attributeDescription: '',
-				label: 'Glazing Type',
-				value: 'triple-pane',
-			},
-			{
-				attributeId: 13,
-				attributeDescription: '',
-				label: 'Climate Zone',
-				value: 'all-climate',
-			},
-		],
-	});
+	const dispatch = useAppDispatch()
+	const user = useAppSelector((state)=> state.authSlice.user)
+	const statusGetUser = useAppSelector((state)=> state.authSlice.statusGetUser)
+	const { id , backLink} = props;
+	const [product, setProduct] = useState<ProductItemType | null>(null);
 	const [status, setStatus] = useState<'loading' | 'notFound' | 'seccess'>(
 		'seccess'
 	);
@@ -115,8 +44,13 @@ export const ProductPageComponent = (props: any) => {
 	};
 
 	useEffect(() => {
-		fetchProductOne(id);
-	}, []);
+		if(user && statusGetUser !== 'pending'){
+			fetchProductOne(id);
+			dispatch(setModal(''))
+		}
+		if(!user && statusGetUser !== 'seccess' )dispatch(setModal('login'))
+		
+	}, [statusGetUser]);
 
 	return (
 		<div>
@@ -124,11 +58,11 @@ export const ProductPageComponent = (props: any) => {
 
 			{status === 'notFound' && <span>Product not found</span>}
 
-			{status === 'seccess' && (
+			{status === 'seccess' && product !== null && (
 				<div className={s.container}>
 					<div className={s.header}>
 						<div className={s.nav}>
-							<span onClick={() => push('/marketplace')} className={s.back}>
+							<span onClick={() => push(`${backLink}`)} className={s.back}>
 								<Image src={back_btn} alt="back_btn" width={20} height={20} />
 								<p className={s.nav_text}>Back</p>
 							</span>

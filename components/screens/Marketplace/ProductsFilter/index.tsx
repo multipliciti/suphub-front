@@ -13,10 +13,10 @@ export const ProductsFilter = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
 	const productFilterItems = useAppSelector(
-		(state) => state.productsFilter.storeProductsFilter
+		(state) => state.marketplaceProductFilter.storeProductsFilter
 	);
-	const activePage = useAppSelector((state) => state.productSlice.activePage);
-	const total = useAppSelector((state) => state.productSlice.total);
+	const activePage = useAppSelector((state) => state.marketplaceProduct.activePage);
+	const total = useAppSelector((state) => state.marketplaceProduct.total);
 
 	return (
 		<div className={s.wrapper}>

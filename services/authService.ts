@@ -4,10 +4,22 @@ import {
 	RegisterUserType,
 	RecoveryType,
 	confirmEmailType,
+	User,
 } from '@/types/services/auth';
 import { LoginDto } from '@/types/services/auth';
 
 const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
+
+function getCookieValue(cookieName: string) {
+	const cookies = document.cookie.split(';');
+	for (const cookie of cookies) {
+	  const [name, value] = cookie.trim().split('=');
+	  if (name === cookieName) {
+		return decodeURIComponent(value);
+	  }
+	}
+	return null;
+  }
 
 export const AuthApi = (instance: AxiosInstance) => ({
 	async registerUser(user: RegisterUserType) {
@@ -55,21 +67,34 @@ export const AuthApi = (instance: AxiosInstance) => ({
 			...data,
 			recoveryUrl: `${HOST}/reset-password`,
 		};
-
 		try {
 			const url = '/auth/recovery';
-			await instance.post(url, requestData);
+			const response = await instance.post(url, requestData);
+			return response
 		} catch (error) {
-			console.error('Error logout:', error);
+			console.error('Error recovery:', error);
 			throw error;
 		}
 	},
 	async logout() {
 		try {
 			const url = '/auth/logout';
-			await instance.post(url);
+			const response = await instance.post(url);
+			return response
 		} catch (error) {
 			console.error('Error logout:', error);
+			throw error;
+		}
+	},
+	async getUser() {
+		try {
+			// const token = getCookieValue('token')
+			// console.log('token is', token)
+			const url = '/auth/get-user';
+			const response: User = await instance.post(url);
+			return response
+		} catch (error) {
+			console.error('Error getUser:', error);
 			throw error;
 		}
 	},

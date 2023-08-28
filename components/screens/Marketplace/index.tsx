@@ -5,7 +5,7 @@ import { Filters } from './Filters';
 import { ProductsFilter } from './ProductsFilter';
 import { Products } from './Products';
 import { Pagination } from '@/components/Features/Pagination';
-import { setStatus } from '@/redux/slices/marketplace/products';
+import { setActivePage, setStatus } from '@/redux/slices/marketplace/products';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
 import { useEffect, useState } from 'react';
@@ -18,11 +18,11 @@ export const Marketplace = () => {
 	const api = Api();
 	const [totalPages, setTotalPages] = useState<number>(2);
 
-	const products = useAppSelector((state) => state.productSlice.products);
-	const activePage = useAppSelector((state) => state.productSlice.activePage);
-	const total = useAppSelector((state) => state.productSlice.total);
-	const status = useAppSelector((state) => state.productSlice.status);
-	const productsFilter = useAppSelector((state) => state.productsFilter);
+	const products = useAppSelector((state) => state.marketplaceProduct.products);
+	const activePage = useAppSelector((state) => state.marketplaceProduct.activePage);
+	const total = useAppSelector((state) => state.marketplaceProduct.total);
+	const status = useAppSelector((state) => state.marketplaceProduct.status);
+	const productsFilter = useAppSelector((state) => state.marketplaceProductFilter);
 
 	const storeProductsFilter = productsFilter.storeProductsFilter;
 	const charData = useAppSelector((state) => state.filtersSlice.char);
@@ -41,6 +41,9 @@ export const Marketplace = () => {
 	const countryOfOrigin =
 		storeProductsFilter.find((el) => el.key === 'countryOfOrigin')?.selectedItems ||
 		[];
+	const setActivePageFunction = (n: number) => {
+		dispatch(setActivePage(n))
+	}
 
 	const jsonStringsUnitPrice = {
 		unitPrice: {
@@ -98,7 +101,6 @@ export const Marketplace = () => {
 	};
 
 	const finalJsonString = JSON.stringify(combinedJsonObj);
-	console.log('finalJsonString', finalJsonString);
 	const fetchData = async () => {
 		try {
 			dispatch(setStatus('pending'));
@@ -131,6 +133,9 @@ export const Marketplace = () => {
 	useEffect(() => {
 		getFiltersFunction();
 		fetchData();
+		if (products.length > 0) {
+			setTotalPages(Math.ceil(totalPages / 4));
+		}
 	}, [activePage, productsFilter, charData]);
 
 	return (
@@ -141,7 +146,7 @@ export const Marketplace = () => {
 				<ProductsFilter />
 				<Products status={status} total={total} products={products} />
 			</div>
-			<Pagination buttons={true} totalPages={totalPages} currentPage={activePage} />
+			<Pagination setActivePage={setActivePageFunction} buttons={true} totalPages={totalPages} currentPage={activePage} />
 		</div>
 	);
 };

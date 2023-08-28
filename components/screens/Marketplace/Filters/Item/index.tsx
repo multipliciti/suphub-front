@@ -2,7 +2,6 @@
 import s from './Item.module.scss';
 import Image, { StaticImageData } from 'next/image';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-// import { toggleFilter } from '@/redux/slices/marketplace/filters';
 import { setChar } from '@/redux/slices/marketplace/filters';
 import { classNames } from '@/utils/classNames';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';

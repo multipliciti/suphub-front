@@ -1,29 +1,29 @@
 'use client';
-import { ProductItemType } from '@/types/marketplace/product';
 import s from './Products.module.scss';
 import { useAppSelector } from '@/redux/hooks';
-import { ProductItem } from './ProductItem/ProductItem';
+import { ProductItem } from './ProductItem';
+import { ResultItem } from '@/types/favorites/products';
 interface ProductsPropsType {
-	products1: ProductItemType[] | undefined;
-	total: number;
+	products: ResultItem[] | undefined;
 	status: string;
 }
-export const Products = () => {
-	const products = useAppSelector((state) => state.productSlice.favorites);
+export const Products = (props : ProductsPropsType) => {
+	const { products } = props;
+	const total = products?.length
 
 	return (
 		<div className={s.wrapper}>
 			<h3 className={s.title}>
 				Results:
-				<span className={s.title_result}> 7 products</span>
-				<div className={s.products}>
-					{products?.map((el, ind) => (
-						<div key={ind} className={s.products_item}>
-							<ProductItem {...el} />
-						</div>
-					))}
-				</div>
+				<span className={s.title_result}>  {total} products </span>
 			</h3>
+			<div className={s.products}>
+				{products?.map((el, ind) => (
+					<div key={ind} className={s.products_item}>
+						<ProductItem {...el} />
+					</div>
+				))}
+			</div>
 		</div>
 	);
 };

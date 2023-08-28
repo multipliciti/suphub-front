@@ -25,7 +25,7 @@ export const MapList = () => {
 		const categoriesFilterInner = categories.filter(category => {
 			const searchLower = searchQuery.toLowerCase();
 			const categoryNameLower = category.name.toLowerCase();
-	
+
 			const categoryMatches = categoryNameLower.includes(searchLower);
 			const subCategoryMatches = category.subCategories.some(subCategory =>
 				subCategory.name.toLowerCase().includes(searchLower)

@@ -59,7 +59,6 @@ export const ResetForm = ({ token }: PropsType) => {
 	};
 
 	const isPassword = (data: string) => {
-		console.log(data);
 		return data.length < 8 ? false : true;
 	};
 

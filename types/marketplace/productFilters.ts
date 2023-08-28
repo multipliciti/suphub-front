@@ -15,7 +15,6 @@ export interface ProductFilterItem {
 
 export interface ProductFilter {
 	storeProductsFilter: ProductFilterItem[];
-	storeFavoriteFilter: ProductFilterItem[];
 	searchFavoriteFilter: string;
 	searchProductsFilter: string;
 }

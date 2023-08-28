@@ -7,7 +7,6 @@ import { classNames } from '@/utils/classNames';
 import { useAppDispatch } from '@/redux/hooks';
 import { selectAll } from '@/redux/slices/marketplace/filters';
 import { removeChar } from '@/redux/slices/marketplace/filters';
-// import { clearBranch, selectAll } from '@/redux/slices/marketplace/filters';
 
 interface Props {
 	itemProps: ItemFilter;

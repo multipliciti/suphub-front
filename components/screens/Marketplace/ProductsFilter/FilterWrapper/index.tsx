@@ -24,15 +24,13 @@ export const FilterWrapper = (props: TypeProps) => {
 	const { title, items, type, key, min, max } = props.item;
 	const [open, setOpen] = useState<boolean>(false);
 	const selectedOptionCountry = useAppSelector((state) =>
-		state.productsFilter.storeProductsFilter.find(
+		state.marketplaceProductFilter.storeProductsFilter.find(
 			(el) => el.key === 'countryOfOrigin'
 		)
 	);
 	const selectedOptionLeadTime = useAppSelector((state) =>
-		state.productsFilter.storeProductsFilter.find((el) => el.key === 'leadTime')
+		state.marketplaceProductFilter.storeProductsFilter.find((el) => el.key === 'leadTime')
 	);
-	// event: ChangeEvent<HTMLInputElement>
-	console.log('selectedOptionLeadTime', selectedOptionLeadTime);
 	const handleOptionChange = (arr: number[]) => {
 		const newSelectedOptionLeadTime = arr;
 		dispatch(
@@ -94,7 +92,7 @@ export const FilterWrapper = (props: TypeProps) => {
 					<label className={s.label} htmlFor={title}>
 						<input
 							onChange={(e) => handleMinChange(e)}
-							placeholder="min"
+							placeholder="Min"
 							className={s.input}
 							id={title}
 							type="number"
@@ -104,7 +102,7 @@ export const FilterWrapper = (props: TypeProps) => {
 					<label className={s.label} htmlFor={title}>
 						<input
 							onChange={(e) => handleMaxChange(e)}
-							placeholder="max"
+							placeholder="Max"
 							className={s.input}
 							id={title}
 							type="number"

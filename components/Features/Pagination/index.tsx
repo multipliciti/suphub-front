@@ -2,7 +2,7 @@
 import { classNames } from '@/utils/classNames';
 import Image from 'next/image';
 import s from './Pagination.module.scss';
-import { setActivePage } from '@/redux/slices/marketplace/products';
+// import { setActivePage } from '@/redux/slices/marketplace/products';
 import { useAppDispatch } from '@/redux/hooks';
 //imgs
 import arrow_left from '@/imgs/Marketplace/arrow_left.svg';
@@ -12,10 +12,12 @@ interface PropsType {
 	currentPage: number;
 	totalPages: number;
 	buttons: boolean;
+	setActivePage: (n: number) => void;
 }
 
-export const Pagination = ({ currentPage, totalPages, buttons }: PropsType) => {
+export const Pagination = ({ currentPage, totalPages, buttons, setActivePage  }: PropsType) => {
 	const dispatch = useAppDispatch();
+
 	const pageNumbersRender = (): number[] => {
 		const maxDisplayedPages = 5;
 		const pagesAroundCurrent = Math.floor((maxDisplayedPages - 1) / 2);
@@ -48,7 +50,7 @@ export const Pagination = ({ currentPage, totalPages, buttons }: PropsType) => {
 			<button
 				onClick={() => {
 					if (currentPage !== 1) {
-						dispatch(setActivePage(currentPage - 1));
+						setActivePage(currentPage - 1);
 					}
 				}}
 				className={classNames(s.btn, buttons && s.btn_active)}
@@ -67,7 +69,7 @@ export const Pagination = ({ currentPage, totalPages, buttons }: PropsType) => {
 				{pageNumbersRender().map((pageNumber) => (
 					<span
 						key={pageNumber}
-						onClick={() => dispatch(setActivePage(pageNumber))}
+						onClick={() => setActivePage(pageNumber)}
 						className={classNames(
 							s.page,
 							pageNumber === currentPage && s.page_active
@@ -77,7 +79,7 @@ export const Pagination = ({ currentPage, totalPages, buttons }: PropsType) => {
 					</span>
 				))}
 				<span className={s.page}>...</span>
-				<span className={s.page} onClick={() => dispatch(setActivePage(totalPages))}>
+				<span className={s.page} onClick={() => setActivePage(totalPages)}>
 					{totalPages}
 				</span>
 			</div>
@@ -85,7 +87,7 @@ export const Pagination = ({ currentPage, totalPages, buttons }: PropsType) => {
 			<button
 				onClick={() => {
 					if (currentPage !== totalPages) {
-						dispatch(setActivePage(currentPage + 1));
+						setActivePage(currentPage + 1);
 					}
 				}}
 				className={classNames(s.btn, buttons && s.btn_active)}

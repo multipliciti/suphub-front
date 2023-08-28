@@ -23,3 +23,23 @@ export interface confirmEmailType {
 	id: number | null;
 	token: string | null;
 }
+
+export interface User {
+	id: number;
+	username: string | null;
+	email: string;
+	token: string;
+	firstName: string;
+	lastName: string;
+	phone: string | null;
+	emailVerified: boolean;
+	verificationCode: string | null;
+	passwordResetCode: string | null;
+	role: string | null;
+	lastSignedIn: string | null;
+	sellerCompanyId: number | null;
+	buyerCompanyId: number | null;
+	createdAt: string;
+	updatedAt: string;
+}
+

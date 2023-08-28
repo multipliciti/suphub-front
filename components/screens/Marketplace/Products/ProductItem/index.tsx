@@ -14,6 +14,7 @@ import { useState } from 'react';
 
 export const ProductItem = (props: any) => {
 	const { push } = useRouter();
+	const user = useAppSelector((state)=> state.authSlice.user)
 	const [favorite, setFavorite] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const { name, id, dynamic_attr, unitPrice } = props;
@@ -49,24 +50,27 @@ export const ProductItem = (props: any) => {
 
 	return (
 		<>
-			<div onClick={() => push(`/product/${id}`)} className={s.wrapper}>
-				<div className={s.img_wrapper}>
-					<div
-						onClick={(e) => {
-							e.stopPropagation();
-							addFavorite(id);
-						}}
-						className={s.img_star}
-					>
-						<Image
-							src={favorite ? star_active : star}
-							alt="star"
-							width={20}
-							height={20}
-						/>
-					</div>
+			<div onClick={() => push(`marketplace//product/${id}`)} className={s.wrapper}>
+					<div className={s.img_wrapper}>
+						{user &&
+							<div
+								onClick={(e) => {
+									e.stopPropagation();
+									addFavorite(id);
+								}}
+								className={s.img_star}
+								>
+								<Image
+									src={favorite ? star_active : star}
+									alt="star"
+									width={20}
+									height={20}
+								/>
+							</div> 
+						}
 					<Image className={s.img} src={test2} alt="img" width={244} height={212} />
 				</div>
+				
 				<div className={s.description_wrapper}>
 					<h1 className={s.title}>{name} </h1>
 					<h2 className={s.price}>
