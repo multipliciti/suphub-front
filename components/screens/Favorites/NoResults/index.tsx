@@ -3,7 +3,7 @@ import {
 	setProducts,
 	setStatus,
 	setTotal,
-} from '@/redux/slices/marketplace/products';
+} from '@/redux/slices/favorites/products';
 import s from './NoResults.module.scss';
 import { useAppDispatch } from '@/redux/hooks';
 import { Api } from '@/services';
@@ -16,7 +16,7 @@ export const NoResults = () => {
 	const fetchData = async () => {
 		dispatch(setStatus('pending'));
 			try {
-				const response = await api.product.getProduct({
+				const response = await api.product.getFavorites({
 					page: 1,
 					limit: 10,
 					sortParams: {

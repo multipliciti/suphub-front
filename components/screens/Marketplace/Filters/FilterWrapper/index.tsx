@@ -1,6 +1,6 @@
 'use client';
 import s from './FilterWrapper.module.scss';
-import { ItemFilter } from '@/types/marketplace/filters';
+import { ItemFilter } from '@/types/products/filters';
 import { Item } from '../Item';
 import { useAppSelector } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';

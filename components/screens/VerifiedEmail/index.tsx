@@ -40,7 +40,7 @@ export const VerifiedEmail = () => {
 	return (
 		<div>
 			{status === 'padding' && <span>loading...</span>}
-
+			{status === 'error'&& <span>error</span>}
 			{status === 'success' && (
 				<Success
 					title={'Email confirmed'}

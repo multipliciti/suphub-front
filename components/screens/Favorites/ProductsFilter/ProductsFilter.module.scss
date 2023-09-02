@@ -3,7 +3,8 @@
 	display: flex;
 	gap: 12px;
 	align-items: center;
-	@media (max-width: 825px) {
+
+	@media (max-width: 1100px) {
 		flex-wrap: wrap;
 	}
 }
@@ -26,10 +27,18 @@
 		border: none;
 		outline: none;
 		background-color: transparent;
+		
+		color: black;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 20px;
 	}
 
 	&_input::placeholder {
-		color: #94a3b8;
+		color: #cbd5e1;
 
 		font-family: Lato;
 		font-size: 14px;
@@ -44,8 +53,8 @@
 	gap: 12px;
 	align-items: center;
 	width: 100%;
-
-	@media (max-width: 600px) {
+	
+	@media (max-width: 900px) {
 		flex-wrap: wrap;
 	}
 }

@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProductFilter } from '@/types/marketplace/productFilters';
+import { ProductFilter } from '@/types/products/productFilters';
 
 const initialState: ProductFilter = {
 	searchFavoriteFilter: '',

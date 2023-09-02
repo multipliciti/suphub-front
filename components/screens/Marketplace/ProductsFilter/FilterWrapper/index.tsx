@@ -7,14 +7,16 @@ import {
 	updateMaxproducts,
 	updateSelectedItemsProsuct,
 } from '@/redux/slices/marketplace/productsFilter';
+import { useRef } from 'react';
 //img
 import close_img from '@/imgs/Marketplace/ProductFilter/close.svg';
 import open_img from '@/imgs/Marketplace/ProductFilter/open.svg';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
 import { classNames } from '@/utils/classNames';
-import { ProductFilterItem } from '@/types/marketplace/productFilters';
+import { ProductFilterItem } from '@/types/products/productFilters';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import debounce from 'lodash.debounce';
+
 interface TypeProps {
 	item: ProductFilterItem;
 }
@@ -23,6 +25,9 @@ export const FilterWrapper = (props: TypeProps) => {
 	const dispatch = useAppDispatch();
 	const { title, items, type, key, min, max } = props.item;
 	const [open, setOpen] = useState<boolean>(false);
+	const minInputRef = useRef<HTMLInputElement | null>(null);
+	const maxInputRef = useRef<HTMLInputElement | null>(null); 
+
 	const selectedOptionCountry = useAppSelector((state) =>
 		state.marketplaceProductFilter.storeProductsFilter.find(
 			(el) => el.key === 'countryOfOrigin'
@@ -55,7 +60,7 @@ export const FilterWrapper = (props: TypeProps) => {
 	}, 250);
 
 	const handleMaxChange =  debounce((event: ChangeEvent<HTMLInputElement>) => {
-		dispatch(updateMaxproducts({ filterKey: key, min: Number(event.target.value) }));
+		dispatch(updateMaxproducts({ filterKey: key, max: Number(event.target.value) }));
 	}, 250);
 
 	const handleSelectChange = (value: string) => {
@@ -75,6 +80,17 @@ export const FilterWrapper = (props: TypeProps) => {
 		}
 	};
 
+	const handleClearFilter = () => {
+		dispatch(updateMinProducts({ filterKey: key, min: '' }));
+		dispatch(updateMaxproducts({ filterKey: key, max: '' }));
+		if (minInputRef.current) {
+			minInputRef.current.value = '';
+		}
+		if (maxInputRef.current) {
+			maxInputRef.current.value = '';
+		}
+	};
+
 	return (
 		<div onClick={() => setOpen(!open)} className={s.wrapper}>
 			<span className={s.text}> {title} </span>
@@ -90,6 +106,7 @@ export const FilterWrapper = (props: TypeProps) => {
 				<div className={classNames(s.inner_wrapper, open && s.inner_wrapper_active)}>
 					<label className={s.label} htmlFor={title}>
 						<input
+							ref={minInputRef}
 							onClick={(e)=> e.stopPropagation()}
 							onChange={(e) => handleMinChange(e)}
 							placeholder="Min"
@@ -97,11 +114,11 @@ export const FilterWrapper = (props: TypeProps) => {
 							id={title}
 							type="number"
 							inputMode="numeric"
-							
 						/>
 					</label>
 					<label className={s.label} htmlFor={title}>
 						<input
+							ref={maxInputRef}
 							onClick={(e)=> e.stopPropagation()}
 							onChange={(e) => handleMaxChange(e)}
 							placeholder="Max"
@@ -114,8 +131,7 @@ export const FilterWrapper = (props: TypeProps) => {
 					<button
 						onClick={(e) => {
 							e.stopPropagation();
-							dispatch(updateMinProducts({ filterKey: key, min: 0 }));
-							dispatch(updateMaxproducts({ filterKey: key, max: 0 }));
+							handleClearFilter()
 						}}
 						className={s.clear}
 					>

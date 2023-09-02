@@ -10,18 +10,17 @@ import { LoginDto } from '@/types/services/auth';
 
 const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
-function getCookieValue(cookieName: string) {
-	const cookies = document.cookie.split(';');
-	for (const cookie of cookies) {
-	  const [name, value] = cookie.trim().split('=');
-	  if (name === cookieName) {
-		return decodeURIComponent(value);
-	}
-	}
-	return null;
-}
-
 export const AuthApi = (instance: AxiosInstance) => ({
+	async resendAuth(user: RegisterUserType) {
+		try {
+			const url = '/auth/resend';
+			const response = await instance.post(url, user);
+			return response.data;
+		} catch (error) {
+			console.error('User resendAuthUser error:', error);
+			throw error;
+		}
+	},
 	async registerUser(user: RegisterUserType) {
 		try {
 			const url = '/auth/registration';

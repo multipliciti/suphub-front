@@ -2,14 +2,16 @@
 import s from './Products.module.scss';
 import { useAppSelector } from '@/redux/hooks';
 import { ProductItem } from './ProductItem';
-import { ResultItem } from '@/types/favorites/products';
+import { ProductItemType } from '@/types/products/product';
+import { NoResults } from '../NoResults';
+
 interface ProductsPropsType {
-	products: ResultItem[] | undefined;
+	products: ProductItemType[] | undefined;
 	status: string;
 }
-export const Products = (props : ProductsPropsType) => {
-	const { products } = props;
-	const total = products?.length
+export const Products = ({products, status} : ProductsPropsType) => {
+	const total = products?.length || 0
+	
 
 	return (
 		<div className={s.wrapper}>
@@ -17,13 +19,17 @@ export const Products = (props : ProductsPropsType) => {
 				Results:
 				<span className={s.title_result}>  {total} products </span>
 			</h3>
+			{status === 'pendung' && <div> Loading...</div>}
+			{status === 'rejected' && <div> Error! </div>}
+			{products && products.length < 1 && status === 'seccess' && <NoResults />}
 			<div className={s.products}>
-				{products?.map((el, ind) => (
+				{total > 0 && products?.map((el, ind) => (
 					<div key={ind} className={s.products_item}>
-						<ProductItem {...el} />
+					<ProductItem {...el} />
 					</div>
 				))}
 			</div>
+			
 		</div>
 	);
 };

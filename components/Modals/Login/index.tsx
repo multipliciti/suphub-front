@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Image from 'next/image';
+import { useSearchParams } from 'next/navigation';
 import { LayoutModal } from '../layout';
 // import { isPassword } from './validation';
 import { Api } from '@/services';
@@ -28,14 +29,13 @@ import { setStatusGetUser } from '@/redux/slices/auth';
 import { setUser } from '@/redux/slices/auth';
 
 export const Login: React.FC = () => {
+	const searchParams = useSearchParams()
 	const dispatch = useAppDispatch();
 	const { push } = useRouter();
 	const statusGetUser = useAppSelector((state)=> state.authSlice.statusGetUser)
 	const [incorrect, setIncorrect] = useState<boolean>(false);
 	const [hidePassword, setHidePassword] = useState<boolean>(true);
 	const [notVerified, setNotVerified] = useState<boolean>(false);
-	const [correctPassword, setCorrectPassword] = useState<boolean>(false);
-
 	const [correctEmail, setCorrectEmail] = useState<boolean>();
 
 	const api = Api();
@@ -70,6 +70,10 @@ export const Login: React.FC = () => {
 					dispatch(setUser(user)) 
 					dispatch(setStatusGetUser('seccess'))
 					dispatch(setModal(''));
+					if(searchParams.get('id') && searchParams.get('token')){
+						push('/marketplace')
+					}
+					
 				}else{
 					dispatch(setUser(null))
 					dispatch(setStatusGetUser('rejected')) 

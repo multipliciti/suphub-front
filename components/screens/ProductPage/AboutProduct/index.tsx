@@ -7,15 +7,16 @@ import test2 from '@/imgs/Product/test2.png';
 import { useState } from 'react';
 import { TableComponent } from './Table';
 import { classNames } from '@/utils/classNames';
-import { ProductItemType } from '@/types/marketplace/product';
+import { ProductItemType } from '@/types/products/product';
 
 interface PropsType {
 	product: ProductItemType;
 }
 
-export const AboutProduct = (props: PropsType) => {
-	const { product } = props;
+export const AboutProduct = ({product}: PropsType) => {
 	const [activeImg, setActiveImg] = useState<number>(1);
+	const {dynamic_attr} = product;
+	console.log('product', product)
 
 	const tablesData = [
 		{
@@ -67,14 +68,14 @@ Installation clips`,
 			],
 		},
 	];
-	const dynamic_attr = product.dynamic_attr
 	const certification = dynamic_attr.find((el: any)=> el.label === 'Certification')?.value
 	const properties = [
 		['Min. Order Quantity', product.moq ? `${product.moq} units` : '-' ],
 		['Factory lead time', product.leadTime ?  `${product.leadTime} days` : '-'],
 		['Warranty', product.warranty ? `${product.warranty} month` : '-' ],
 		['Certification', certification ?  `${certification}` : '-'],
-	];
+		['Country of origin', product.countryOfOrigin ? `${product.countryOfOrigin}` : '-']
+	]
 
 	const images = [
 		{

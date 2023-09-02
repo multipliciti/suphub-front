@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProductItemType } from '@/types/marketplace/product';
+import { ProductItemType } from '@/types/products/product';
 
 interface initialStateType {
 	products: ProductItemType[];

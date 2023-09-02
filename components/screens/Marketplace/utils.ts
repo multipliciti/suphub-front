@@ -1,4 +1,5 @@
-import { Char } from '@/types/marketplace/filters';
+import { Char } from '@/types/products/filters';
+import { ProductFilterItem } from '@/types/products/productFilters';
 
 export const transformCharData = (charData: Char[]) => {
 	if (charData.length === 0) {
@@ -14,3 +15,5 @@ export const transformCharData = (charData: Char[]) => {
 
 	return transformedData;
 };
+
+

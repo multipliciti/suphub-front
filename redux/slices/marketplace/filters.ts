@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StoreItem } from '@/types/marketplace/filters';
-import { Char } from '@/types/marketplace/filters';
-import { ItemFilter } from '@/types/marketplace/filters';
+import { StoreItem } from '@/types/products/filters';
+import { Char } from '@/types/products/filters';
+import { ItemFilter } from '@/types/products/filters';
 import test from '@/imgs/Marketplace/Filters/Sustainability/test.png';
 
 interface CounterState {

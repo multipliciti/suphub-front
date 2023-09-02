@@ -1,7 +1,7 @@
 'use client';
 import s from './FilterWrapper.module.scss';
 import Image from 'next/image';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import {
 	updateMinProducts,
 	updateMaxproducts,
@@ -12,7 +12,7 @@ import close_img from '@/imgs/Marketplace/ProductFilter/close.svg';
 import open_img from '@/imgs/Marketplace/ProductFilter/open.svg';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
 import { classNames } from '@/utils/classNames';
-import { ProductFilterItem } from '@/types/marketplace/productFilters';
+import { ProductFilterItem } from '@/types/products/productFilters';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import debounce from 'lodash.debounce';
 
@@ -24,6 +24,8 @@ export const FilterWrapper = (props: TypeProps) => {
 	const dispatch = useAppDispatch();
 	const { title, items, type, key, min, max } = props.item;
 	const [open, setOpen] = useState<boolean>(false);
+	const minInputRef = useRef<HTMLInputElement | null>(null);
+	const maxInputRef = useRef<HTMLInputElement | null>(null); 
 	const selectedOptionCountry = useAppSelector((state) =>
 		state.favoritesProductFilter.storeProductsFilter.find(
 			(el) => el.key === 'countryOfOrigin'
@@ -56,7 +58,7 @@ export const FilterWrapper = (props: TypeProps) => {
 	}, 250);
 
 	const handleMaxChange =  debounce((event: ChangeEvent<HTMLInputElement>) => {
-		dispatch(updateMaxproducts({ filterKey: key, min: Number(event.target.value) }));
+		dispatch(updateMaxproducts({ filterKey: key, max: Number(event.target.value) }));
 	}, 250);
 
 	const handleSelectChange = (value: string) => {
@@ -73,6 +75,17 @@ export const FilterWrapper = (props: TypeProps) => {
 				const newSelectedOptionCountry = [...currentSelectedItems, value];
 				handleOptionChangeDaspatch(newSelectedOptionCountry);
 			}
+		}
+	};
+
+	const handleClearFilter = () => {
+		dispatch(updateMinProducts({ filterKey: key, min: '' }));
+		dispatch(updateMaxproducts({ filterKey: key, max: '' }));
+		if (minInputRef.current) {
+			minInputRef.current.value = '';
+		}
+		if (maxInputRef.current) {
+			maxInputRef.current.value = '';
 		}
 	};
 
@@ -95,6 +108,7 @@ export const FilterWrapper = (props: TypeProps) => {
 					onClick={(e)=> e.stopPropagation()}
 					className={s.label} htmlFor={title}>
 						<input
+							ref={minInputRef}
 							onChange={(e) => handleMinChange(e)}
 							placeholder="Min"
 							className={s.input}
@@ -107,6 +121,7 @@ export const FilterWrapper = (props: TypeProps) => {
 							onClick={(e)=> e.stopPropagation()}
 					 		className={s.label} htmlFor={title}>
 						<input
+							ref={maxInputRef}
 							onChange={(e) => handleMaxChange(e)}
 							placeholder="Max"
 							className={s.input}
@@ -118,8 +133,7 @@ export const FilterWrapper = (props: TypeProps) => {
 					<button
 						onClick={(e) => {
 							e.stopPropagation()
-							dispatch(updateMinProducts({ filterKey: key, min: 0 }));
-							dispatch(updateMaxproducts({ filterKey: key, max: 0 }));
+							handleClearFilter()
 						}}
 						className={s.clear}
 					>

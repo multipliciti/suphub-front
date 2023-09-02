@@ -9,7 +9,7 @@ import back_btn from '@/imgs/Modal/CheckEmail/back_btn.svg';
 import { Order } from './Order';
 import { AboutProduct } from './AboutProduct';
 import { classNames } from '@/utils/classNames';
-import { ProductItemType } from '@/types/marketplace/product';
+import { ProductItemType } from '@/types/products/product';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
 

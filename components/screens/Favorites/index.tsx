@@ -2,6 +2,7 @@
 import s from './Favorites.module.scss';
 import { ProductsFilter } from './ProductsFilter';
 import { Products } from './Products';
+import { ProductItemType } from '@/types/products/product';
 import { useAppSelector } from '@/redux/hooks';
 import { setActivePage, setProducts, setStatus, setTotal } from '@/redux/slices/favorites/products';
 import { Api } from '@/services';
@@ -24,7 +25,6 @@ export const FavoritesComponents = () => {
 	const productsFilter = useAppSelector((state) => state.favoritesProductFilter);
 
 	const storeProductsFilter = productsFilter.storeProductsFilter;
-	const charData = useAppSelector((state) => state.filtersSlice.char);
 	//get items
 	const searchText = productsFilter.searchProductsFilter;
 	const minUnitPrice = storeProductsFilter.find((el) => el.key === 'unitPrice')?.min;
@@ -45,26 +45,26 @@ export const FavoritesComponents = () => {
 		dispatch(setActivePage(n))
 	}
 
-	const jsonStringsUnitPrice = {
-		unitPrice: {
-			gt: minUnitPrice ? minUnitPrice : 0,
-			lt: maxUnitPrice ? maxUnitPrice : 100000000000,
+	const jsonStringsUnitPrice = (minUnitPrice || minUnitPrice) ? {
+		moq: {
+			...(minUnitPrice ? { gt: minUnitPrice } : {}),
+			...(maxUnitPrice ? { lt: maxUnitPrice } : {}),
 		},
-	};
+	} : null;
 
-	const jsonStringsMoq = {
-		moq: { gt: moqMin ? moqMin : 0, lt: moqMax ? moqMax : 100000000000 },
-	};
-
-	const jsonStringWarranty =
-		warrantyMin && warrantyMax
-			? {
-					warranty: {
-						gt: moqMin ? moqMin : 0,
-						lt: moqMax ? moqMax : 100000000000,
-					},
-			}
-			: null;
+	const jsonStringsMoq = (moqMin || moqMax) ? {
+		moq: {
+			...(moqMin ? { gt: moqMin } : {}),
+			...(moqMax ? { lt: moqMax } : {}),
+		},
+	} : null;
+	
+	const jsonStringWarranty = (warrantyMin || warrantyMax) ? {
+		warranty: {
+			...(warrantyMin ? { gt: warrantyMin } : {}),
+			...(warrantyMax ? { lt: warrantyMax } : {}),
+		},
+	} : null;
 
 	const jsonStringsCountry = countryOfOrigin.map((item: any) => {
 		return {
@@ -115,15 +115,13 @@ export const FavoritesComponents = () => {
 			dispatch(setTotal(response.total));
 			dispatch(setStatus('seccess'));
 		} catch (error) {
-			console.error('Error:', error);
 			dispatch(setStatus('rejected'));
 		}
 	};
 
-
 	useEffect(() => {
 		if(user && statusGetUser !== 'pending'){
-			// fetchData(finalJsonString)
+			fetchData(finalJsonString)
 			console.log('fetch favorites started')
 			dispatch(setModal(''))
 		}
@@ -133,7 +131,7 @@ export const FavoritesComponents = () => {
 		if (products.length > 0) {
 			setTotalPages(Math.ceil(totalPages / 4));
 		}
-	}, [activePage, productsFilter, charData, statusGetUser, products, user]);
+	}, [activePage, productsFilter, statusGetUser, user]);
 
 	return (
 		<div className={s.wrapper}>

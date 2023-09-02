@@ -35,9 +35,9 @@ export const Marketplace = () => {
 	const moqMin = storeProductsFilter.find((el) => el.key === 'moq')?.min;
 	const moqMax = storeProductsFilter.find((el) => el.key === 'moq')?.max;
 	const warrantyMin =
-		storeProductsFilter.find((el) => el.key === 'warranty')?.min || '';
+		storeProductsFilter.find((el) => el.key === 'warranty')?.min;
 	const warrantyMax =
-		storeProductsFilter.find((el) => el.key === 'warranty')?.max || '';
+		storeProductsFilter.find((el) => el.key === 'warranty')?.max ;
 	const countryOfOrigin =
 		storeProductsFilter.find((el) => el.key === 'countryOfOrigin')?.selectedItems ||
 		[];
@@ -45,26 +45,27 @@ export const Marketplace = () => {
 		dispatch(setActivePage(n))
 	}
 
-	const jsonStringsUnitPrice = {
-		unitPrice: {
-			gt: minUnitPrice ? minUnitPrice : 0,
-			lt: maxUnitPrice ? maxUnitPrice : 100000000000,
+
+	const jsonStringsUnitPrice = (minUnitPrice || minUnitPrice) ? {
+		moq: {
+			...(minUnitPrice ? { gt: minUnitPrice } : {}),
+			...(maxUnitPrice ? { lt: maxUnitPrice } : {}),
 		},
-	};
+	} : null;
 
-	const jsonStringsMoq = {
-		moq: { gt: moqMin ? moqMin : 0, lt: moqMax ? moqMax : 100000000000 },
-	};
-
-	const jsonStringWarranty =
-		warrantyMin && warrantyMax
-			? {
-					warranty: {
-						gt: moqMin ? moqMin : 0,
-						lt: moqMax ? moqMax : 100000000000,
-					},
-			  }
-			: null;
+	const jsonStringsMoq = (moqMin || moqMax) ? {
+		moq: {
+			...(moqMin ? { gt: moqMin } : {}),
+			...(moqMax ? { lt: moqMax } : {}),
+		},
+	} : null;
+	
+	const jsonStringWarranty = (warrantyMin || warrantyMax) ? {
+		warranty: {
+			...(warrantyMin ? { gt: warrantyMin } : {}),
+			...(warrantyMax ? { lt: warrantyMax } : {}),
+		},
+	} : null;
 
 	const jsonStringsCountry = countryOfOrigin.map((item: any) => {
 		return {
