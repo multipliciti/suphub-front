@@ -18,15 +18,17 @@ export const Marketplace = () => {
 	const api = Api();
 	const [totalPages, setTotalPages] = useState<number>(2);
 
+	
 	const products = useAppSelector((state) => state.marketplaceProduct.products);
 	const activePage = useAppSelector((state) => state.marketplaceProduct.activePage);
 	const total = useAppSelector((state) => state.marketplaceProduct.total);
 	const status = useAppSelector((state) => state.marketplaceProduct.status);
 	const productsFilter = useAppSelector((state) => state.marketplaceProductFilter);
-
 	const storeProductsFilter = productsFilter.storeProductsFilter;
 	const charData = useAppSelector((state) => state.filtersSlice.char);
 	//get items
+	const sortDirection = useAppSelector((state) => state.marketplaceProductFilter.sortDirection);
+	const activeId = useAppSelector((state) => state.sideBarSlice.activeId);
 	const searchText = productsFilter.searchProductsFilter;
 	const minUnitPrice = storeProductsFilter.find((el) => el.key === 'unitPrice')?.min;
 	const maxUnitPrice = storeProductsFilter.find((el) => el.key === 'unitPrice')?.max;
@@ -45,6 +47,9 @@ export const Marketplace = () => {
 		dispatch(setActivePage(n))
 	}
 
+	const subCategoryId = {
+		subCategoryId: activeId
+	}
 
 	const jsonStringsUnitPrice = (minUnitPrice || minUnitPrice) ? {
 		moq: {
@@ -88,6 +93,7 @@ export const Marketplace = () => {
 
 	const filanFiltersObj = transformCharData(charData);
 	const finalAttrObj = {
+		...(subCategoryId),
 		...(jsonStringsSearch && { ...jsonStringsSearch }),
 		...(jsonStringsCountry.length > 0 && Object.assign({}, ...jsonStringsCountry)),
 		...(jsonStringsUnitPrice && { ...jsonStringsUnitPrice }),
@@ -108,9 +114,7 @@ export const Marketplace = () => {
 			const response = await api.product.getProduct({
 				page: activePage,
 				limit: 10,
-				sortParams: {
-					id: 'desc',
-				},
+				sortParams: sortDirection ? sortDirection : {id: "desc"}, 
 				searchParams: finalJsonString,
 			});
 			dispatch(setProducts(response.result));
@@ -124,7 +128,7 @@ export const Marketplace = () => {
 
 	const getFiltersFunction = async () => {
 		try {
-			const response = await api.product.getFilters();
+			const response = await api.product.getFilters(activeId);
 			dispatch(setItemsFilter(response.charFilters));
 		} catch (error) {
 			console.error(error);
@@ -137,7 +141,7 @@ export const Marketplace = () => {
 		if (products.length > 0) {
 			setTotalPages(Math.ceil(totalPages / 4));
 		}
-	}, [activePage, productsFilter, charData]);
+	}, [activePage, productsFilter, charData, activeId]);
 
 	return (
 		<div className={s.wrapper}>

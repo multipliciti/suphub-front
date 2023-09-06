@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductFilter } from '@/types/products/productFilters';
 
 const initialState: ProductFilter = {
+	activeTitle: 'Lead time',
+	sortDirection: null,
 	searchFavoriteFilter: '',
 	searchProductsFilter: '',
 	storeProductsFilter: [
@@ -108,6 +110,11 @@ const favoritesProductsFilter = createSlice({
 		searchProducts: (state, action) => {
 			state.searchProductsFilter = action.payload;
 		},
+		setSortDirection:(state, action) => {
+			const obj =  action.payload;
+			state.sortDirection = obj.sortDirection;
+			state.activeTitle = obj.activeTitle
+		},
 	},
 });
 
@@ -116,6 +123,7 @@ export const {
 	searchProducts,
 	updateMaxproducts,
 	updateSelectedItemsProsuct,
+	setSortDirection
 } = favoritesProductsFilter.actions;
 
 export default favoritesProductsFilter.reducer;

@@ -10,7 +10,6 @@ import { Pagination } from '@/components/Features/Pagination';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
-import { setStatusGetUser, setUser } from '@/redux/slices/auth';
 
 export const FavoritesComponents = () => {
 	const dispatch = useAppDispatch();
@@ -20,9 +19,9 @@ export const FavoritesComponents = () => {
 	const statusGetUser =  useAppSelector((state)=> state.authSlice.statusGetUser)
 	const products = useAppSelector((state) => state.favoritesProduct.products);
 	const activePage = useAppSelector((state) => state.favoritesProduct.activePage);
-	const total = useAppSelector((state) => state.favoritesProduct.total);
 	const status = useAppSelector((state) => state.favoritesProduct.status);
 	const productsFilter = useAppSelector((state) => state.favoritesProductFilter);
+	const sortDirection = useAppSelector((state) => state.favoritesProductFilter.sortDirection);
 
 	const storeProductsFilter = productsFilter.storeProductsFilter;
 	//get items
@@ -106,9 +105,7 @@ export const FavoritesComponents = () => {
 			const response = await api.product.getFavorites({
 				page: activePage,
 				limit: 10,
-				sortParams: {
-					id: 'desc',
-				},
+				sortParams: sortDirection ? sortDirection : {id: "desc"}, 
 				searchParams: JsonString,
 			});
 			dispatch(setProducts(response.result));
@@ -122,7 +119,6 @@ export const FavoritesComponents = () => {
 	useEffect(() => {
 		if(user && statusGetUser !== 'pending'){
 			fetchData(finalJsonString)
-			console.log('fetch favorites started')
 			dispatch(setModal(''))
 		}
 		if(!user && statusGetUser !== 'pending'){
@@ -131,7 +127,7 @@ export const FavoritesComponents = () => {
 		if (products.length > 0) {
 			setTotalPages(Math.ceil(totalPages / 4));
 		}
-	}, [activePage, productsFilter, statusGetUser, user]);
+	}, [activePage, productsFilter, statusGetUser, user, sortDirection]);
 
 	return (
 		<div className={s.wrapper}>

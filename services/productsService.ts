@@ -40,9 +40,9 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async getFilters() {
+	async getFilters(n: number) {
 		try {
-			const url = `/category/sub/1`;
+			const url = `/category/sub/${n}`;
 			const response = await instance.get(url);
 			return response.data;
 		} catch (error) {

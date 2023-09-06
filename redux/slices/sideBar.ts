@@ -12,7 +12,7 @@ interface CounterState {
 
 const initialState: CounterState = {
 	sideBar: true,
-	activeId: 11,
+	activeId: 1,
 	parentActiveIds: [],
 	searchQuery: '',
 	categories: []
