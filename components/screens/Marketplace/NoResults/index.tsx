@@ -5,23 +5,21 @@ import {
 	setTotal,
 } from '@/redux/slices/marketplace/products';
 import s from './NoResults.module.scss';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Api } from '@/services';
 
 export const NoResults = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
+	const sortDirection = useAppSelector((state) => state.marketplaceProductFilter.sortDirection);
 	
-
 	const fetchData = async () => {
 		dispatch(setStatus('pending'));
 			try {
 				const response = await api.product.getProduct({
 					page: 1,
 					limit: 10,
-					sortParams: {
-						id: 'desc',
-					},
+					sortParams: sortDirection ? sortDirection : {id: "desc"}, 
 				});
 				dispatch(setProducts(response.result));
 				dispatch(setTotal(response.total));

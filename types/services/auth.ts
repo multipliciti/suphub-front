@@ -43,3 +43,7 @@ export interface User {
 	updatedAt: string;
 } 
 
+// export interface ResponceUser {
+// 	data: {}
+// }
+

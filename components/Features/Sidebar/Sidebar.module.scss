@@ -5,6 +5,8 @@
 	height: calc(100vh - 60px);
 	position: fixed;
 	width: 0px;
+	opacity: auto;
+	
 
 	.title {
 		margin-bottom: 12px;
@@ -28,9 +30,12 @@
 	transition: opacity 0.3s ease;
 	opacity: 0;
 	pointer-events: none;
+	
 
 	&_active {
 		opacity: 1;
 		pointer-events: all;
 	}
 }
+
+

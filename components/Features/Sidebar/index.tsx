@@ -42,6 +42,7 @@ export const Sidebar = () => {
 				<h5 className={s.title}>All categories</h5>
 				<Search />
 				<MapList />
+				
 			</div>
 		</div>
 	);

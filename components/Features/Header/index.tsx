@@ -76,10 +76,10 @@ export const Header = () => {
 	const fetchUser = async () => {
 		
 		try {
-			const user = await api.auth.getUser();
-			if(user){
+			const responce = await api.auth.getUser();
+			if(responce){
 				dispatch(setStatusGetUser('seccess'))
-				dispatch(setUser(user))
+				dispatch(setUser(responce.data.user))
 			}
 			
 		} catch (error) {
@@ -103,6 +103,7 @@ export const Header = () => {
 		} catch (error: any) {
 		}
 	};
+	console.log('user', user)
 
 	return (
 		<header className={`header_container ${s.header}`}>
@@ -192,7 +193,8 @@ export const Header = () => {
 										<div className={s.header}>
 											<Image src={avatartest} alt="avatar" width={36} height={36} />
 											<div className={s.header_info}>
-												<span className={s.header_info_name}>{user.firstName} </span>
+												{/* @ts-ignore */}
+												<span className={s.header_info_name}>{user.data.firstName} </span>
 												<span className={s.header_info_person}>Personal</span>
 											</div>
 										</div>

@@ -35,10 +35,10 @@ export const NoResults = () => {
 	return (
 		<div className={s.wrapper}>
 			<h3 className={s.title}>No results</h3>
-			<p className={s.subtitle}>Please change your search or clear your filters.</p>
-			<button onClick={fetchData} className={s.btn}>
+			{/* <p className={s.subtitle}>Please change your search or clear your filters.</p> */}
+			{/* <button onClick={fetchData} className={s.btn}>
 				Сlear filters
-			</button>
+			</button> */}
 		</div>
 	);
 };

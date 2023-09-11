@@ -22,7 +22,7 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			const sort = sortParams
 				? `&sort=${encodeURIComponent(JSON.stringify(sortParams))}`
 				: '';
-			const url = `/product?page=${page}&limit=${limit}${sort}${search}`;
+			const url = `/product/favorites?page=${page}&limit=${limit}${sort}${search}`;
 			const response = await instance.get(url);
 			return response.data;
 		} catch (error) {
@@ -54,6 +54,16 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 		try {
 			const url = `product/add-favorite`;
 			const response = await instance.post(url, { productId: id });
+			return response.data;
+		} catch (error) {
+			console.error('Products error:', error);
+			throw error;
+		}
+	},
+	async removeFavorite(id: number) {
+		try {
+			const url = `product/favorite/${id}`;
+			const response = await instance.delete(url);
 			return response.data;
 		} catch (error) {
 			console.error('Products error:', error);

@@ -36,6 +36,7 @@ export interface ProductItemType {
 	unitPrice: number;
 	moq: number;
 	warranty: number;
+	favorite: boolean;
 	countryOfOrigin: string;
 	leadTime: number;
 	images: Image[];

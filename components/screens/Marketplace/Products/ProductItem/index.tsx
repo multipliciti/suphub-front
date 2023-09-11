@@ -10,15 +10,16 @@ import star_active from '@/imgs/Marketplace/Products/star_sctive.svg';
 import { ProductItemType } from '@/types/products/product';
 import test2 from '@/imgs/Product/test2.png';
 import { Api } from '@/services';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { setModal } from '@/redux/slices/modal';
 
 export const ProductItem = (props: ProductItemType) => {
 	const { push } = useRouter();
 	const user = useAppSelector((state)=> state.authSlice.user)
-	const [favorite, setFavorite] = useState<boolean>(false);
+
 	const dispatch = useAppDispatch();
-	const { name, id, dynamic_attr, unitPrice } = props;
+	const { name, id, dynamic_attr, unitPrice, favorite } = props;
+	const [favoriteStar, setFavoriteStar] = useState<boolean>(false);
 
 	const certification = dynamic_attr.find((el: any)=> el.label === 'Certification')?.value
 	const width = dynamic_attr.find((el: any)=> el.label === 'Width')?.value
@@ -39,23 +40,30 @@ export const ProductItem = (props: ProductItemType) => {
 		['Glazing Type', glassType ? `${glassType}` : '-']
 	];
 
-	const addFavorite = async (id: number) => {
-		const api = Api();
-		if(user){
-			try {
-				if(!favorite){
-					const response = await api.product.addFavorite(id);
-					setFavorite(true);
-				}
-			} catch (error: any) {
-				setFavorite(false);
-			}
-		}else{
-			dispatch(setModal('login'))
-		}
-		
-	};
+	useEffect(() => {
+        setFavoriteStar(favorite);
+    }, [favorite]);
 
+	const changeFavorite = async (id: number) => {
+		if (!user) {
+			dispatch(setModal('login'));
+			return;
+		}
+	
+		const api = Api();
+		try {
+			if (favoriteStar) {
+				await api.product.removeFavorite(id);
+				setFavoriteStar(false);
+			} else {
+				await api.product.addFavorite(id);
+				setFavoriteStar(true);
+			}
+		} catch (error) {
+			setFavoriteStar(!favoriteStar);
+		}
+	};
+	
 	return (
 		<>
 			<div onClick={() => push(`marketplace//product/${id}`)} className={s.wrapper}>
@@ -63,12 +71,12 @@ export const ProductItem = (props: ProductItemType) => {
 							<div
 								onClick={(e) => {
 									e.stopPropagation();
-									addFavorite(id);
+									changeFavorite(id);
 								}}
 								className={s.img_star}
 								>
 								<Image
-									src={favorite ? star_active : star}
+									src={favoriteStar ? star_active : star}
 									alt="star"
 									width={20}
 									height={20}

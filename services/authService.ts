@@ -88,7 +88,7 @@ export const AuthApi = (instance: AxiosInstance) => ({
 	async getUser() {
 		try {
 			const url = '/auth/get-user';
-			const response: User = await instance.post(url);
+			const response = await instance.post(url);
 			return response
 		} catch (error) {
 			console.error('Error getUser:', error);

@@ -5,18 +5,18 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 //imgs
+import star from '@/imgs/Marketplace/Products/star.svg';
 import star_active from '@/imgs/Marketplace/Products/star_sctive.svg';
 import test2 from '@/imgs/Product/test2.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ProductItemType } from '@/types/products/product';
-
-
+import { Api } from '@/services';
 
 export const ProductItem = (props: ProductItemType) => {
 	
 	const { push } = useRouter();
-	const [favorite, setFavorite] = useState<boolean>(true);
-	const { name, id, unitPrice , dynamic_attr} = props;
+	const [favoriteStar, setFavoriteStar] = useState<boolean>(true);
+	const { name, id, unitPrice , dynamic_attr, favorite} = props;
 
 	const certification = dynamic_attr.find((el: any)=> el.label === 'Certification')?.value
 	const width = dynamic_attr.find((el: any)=> el.label === 'Width')?.value
@@ -37,12 +37,40 @@ export const ProductItem = (props: ProductItemType) => {
 		['Glazing Type', glassType ? `${glassType}` : '-']
 	];
 
+	useEffect(() => {
+        setFavoriteStar(favorite);
+    }, [favorite]);
+
+	const changeFavorite = async (id: number) => {
+
+		const api = Api();
+		try {
+			if (favoriteStar) {
+				await api.product.removeFavorite(id);
+				setFavoriteStar(false);
+			} else {
+				await api.product.addFavorite(id);
+				setFavoriteStar(true);
+			}
+		} catch (error) {
+			setFavoriteStar(!favoriteStar);
+		}
+	};
+
 	return (
 		<>
 			<div onClick={() => push(`favorites/product/${id}`)} className={s.wrapper}>
 				<div className={s.img_wrapper}>
-					<div className={s.img_star}>
-						<Image src={star_active} alt="star" width={20} height={20} />
+					<div onClick={(e) => {
+							e.stopPropagation();
+							changeFavorite(id);
+						}} className={s.img_star}>
+					<Image
+						src={favoriteStar ? star_active : star}
+						alt="star"
+						width={20}
+						height={20}
+					/>
 					</div>
 					<Image className={s.img} src={test2} alt="img" width={244} height={212} />
 					<button className={s.add}>
