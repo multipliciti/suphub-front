@@ -18,7 +18,6 @@ export const Marketplace = () => {
 	const api = Api();
 	const [totalPages, setTotalPages] = useState<number>(2);
 
-	
 	const products = useAppSelector((state) => state.marketplaceProduct.products);
 	const activePage = useAppSelector((state) => state.marketplaceProduct.activePage);
 	const total = useAppSelector((state) => state.marketplaceProduct.total);

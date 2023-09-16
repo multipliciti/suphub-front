@@ -21,14 +21,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		withCredentials: true,
 	});
 
-	instance.interceptors.request.use((config) => {
-		//@ts-ignore
-		const token = Cookies.get('token');
-		if (token) {
-			config.headers.Authorization = `token=${token}`;
-		}
-		return config;
-	});
+
 
 	const apis = {
 		auth: AuthApi(instance),

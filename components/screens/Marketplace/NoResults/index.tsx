@@ -11,8 +11,14 @@ import { Api } from '@/services';
 export const NoResults = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
+	const activeId = useAppSelector((state) => state.sideBarSlice.activeId);
 	const sortDirection = useAppSelector((state) => state.marketplaceProductFilter.sortDirection);
-	
+	const finalJsonString = JSON.stringify({
+		attr: {
+			subCategoryId: activeId
+		}
+	});
+
 	const fetchData = async () => {
 		dispatch(setStatus('pending'));
 			try {
@@ -20,6 +26,7 @@ export const NoResults = () => {
 					page: 1,
 					limit: 10,
 					sortParams: sortDirection ? sortDirection : {id: "desc"}, 
+					searchParams: finalJsonString,
 				});
 				dispatch(setProducts(response.result));
 				dispatch(setTotal(response.total));
