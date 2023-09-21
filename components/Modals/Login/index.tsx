@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { LoginDto } from '@/types/services/auth';
+import { LoginDto, User } from '@/types/services/auth';
 import Cookies from 'js-cookie'
 import s from './Login.module.scss';
 import { setModal } from '@/redux/slices/modal';
@@ -61,41 +61,41 @@ export const Login: React.FC = () => {
 
 	const submit: SubmitHandler<LoginDto> = async (data) => {
 		try {
-			const response = await api.auth.loginUser(data);
-			if (response) {
-				dispatch(setModal(''));
+		  const response = await api.auth.loginUser(data);
+		  if (response) {
+			dispatch(setModal(''));
+			const userResponse = await api.auth.getUser();
+			const user = userResponse.data; 
 
-				const user = await api.auth.getUser()
-				if(user){
-					dispatch(setUser(user)) 
-					dispatch(setStatusGetUser('seccess'))
-					dispatch(setModal(''));
-					if(searchParams.get('id') && searchParams.get('token')){
-						push('/marketplace')
-					}
-					
-				}else{
-					dispatch(setUser(null))
-					dispatch(setStatusGetUser('rejected')) 
-				}
+			if (user) {
+			  dispatch(setUser(user));
+			  dispatch(setStatusGetUser('seccess'));
+			  dispatch(setModal(''));
+			  if (searchParams.get('id') && searchParams.get('token')) {
+				push('/marketplace');
+			  }
+			} else {
+			  dispatch(setUser(null));
+			  dispatch(setStatusGetUser('rejected'));
 			}
-			
+		  }
 		} catch (error: any) {
-			console.log('err', error);
-			if (
-				error.response?.data?.statusCode === 401 &&
-				error.response?.data?.message === 'Unauthorized'
-			) {
-				setIncorrect(true);
-			}
-			if (
-				error.response?.data?.statusCode === 401 &&
-				error.response?.data?.message === 'Email not verified'
-			) {
-				setNotVerified(true);
-			}
+		  console.log('err', error);
+		  if (
+			error.response?.data?.statusCode === 401 &&
+			error.response?.data?.message === 'Unauthorized'
+		  ) {
+			setIncorrect(true);
+		  }
+		  if (
+			error.response?.data?.statusCode === 401 &&
+			error.response?.data?.message === 'Email not verified'
+		  ) {
+			setNotVerified(true);
+		  }
 		}
-	};
+	  };
+	  
 
 	const onErrors = (errors: any) => {
 		console.log('Form Errors:', errors);

@@ -16,58 +16,25 @@ interface PropsType {
 export const AboutProduct = ({product}: PropsType) => {
 	const [activeImg, setActiveImg] = useState<number>(1);
 	const {dynamic_attr} = product;
-	console.log('product', product)
+	const shipmentPackaging =[
+		{
+			label: "packaging", 
+			value: product.packaging ? product.packaging : "-"
+		},
+		{
+			label: "packageInclude", 
+			value: product.packageInclude ?  product.packageInclude : "-"
+		},
+		{
+			label: "packageDimension", 
+			value: product.packageDimension ?  product.packageDimension : "-"
+		},
+		{
+			label: "packageWeight", 
+			value: product.packageWeight ?  product.packageWeight : "-"
+		},
+	]
 
-	const tablesData = [
-		{
-			id: 1,
-			title: 'Specification',
-			arr: [
-				{ id: 1, key: 'Frame types', value: 'Aluminum' },
-				{ id: 2, key: 'Opening styles', value: 'Laminated glass, Safety glass' },
-				{ id: 3, key: 'Glazing type', value: 'Laminated glass, Safety glass' },
-				{
-					id: 4,
-					key: 'Accessories',
-					value: `Nailing fin
-Installation clips`,
-				},
-				{ id: 5, key: 'Center-of-glass U-factor', value: 'Range' },
-				{ id: 6, key: 'Whole assembly U-value', value: 'Range' },
-				{ id: 7, key: 'R-Value', value: 'Range' },
-				{ id: 8, key: 'SHGC', value: 'Range between 0 - 1' },
-				{ id: 9, key: 'Visible Transmittance', value: 'Range between 0 - 1' },
-				{ id: 10, key: 'Air Leakage', value: 'Range between 0.1 - 0.3' },
-				{
-					id: 11,
-					key: 'Condensation Resistance',
-					value: 'RaRange between 1 - 100nge',
-				},
-				{ id: 12, key: 'Sound Transmission Class', value: 'Range between 18 - 38' },
-				{ id: 13, key: 'Interior Color', value: '-' },
-				{ id: 14, key: 'Exterior Color', value: '-' },
-				{ id: 15, key: 'Grid Pattern', value: '-' },
-				{ id: 16, key: 'Grille Type', value: '-' },
-				{ id: 17, key: 'Finish Hardware Color', value: '-' },
-				{ id: 19, key: 'Lock Type', value: '-' },
-				{ id: 20, key: 'Forced Entry', value: '-' },
-				{ id: 21, key: 'Performance Class and Grade', value: '-' },
-				{ id: 22, key: 'Structural Rating', value: '-' },
-				{ id: 23, key: 'Weather Stripping', value: '-' },
-				{ id: 24, key: 'Sound Transmission Class (STC)', value: '-' },
-				{ id: 25, key: 'Water Resistance', value: '-' },
-			],
-		},
-		{
-			id: 2,
-			title: 'Shipment & Packaging',
-			arr: [
-				{ id: 1, key: 'Packaging', value: '-' },
-				{ id: 2, key: 'Packaging dimensions', value: '-' },
-				{ id: 3, key: 'Images', value: '-' },
-			],
-		},
-	];
 	const certification = dynamic_attr.find((el: any)=> el.label === 'Certification')?.value
 	const properties = [
 		['Min. Order Quantity', product.moq ? `${product.moq} units` : '-' ],
@@ -137,7 +104,7 @@ Installation clips`,
 					</div>
 				</div>
 			</div>
-			<TableComponent tables={tablesData} />
+			<TableComponent shipmentPackaging={shipmentPackaging} dynamic_attr={dynamic_attr} />
 		</div>
 	);
 };

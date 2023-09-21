@@ -38,12 +38,11 @@ export const Sidebar = () => {
 	return (
 		<div className={classNames(s.wrapper, toggle && s.wrapper_active)}>
 			<Toggle />
-			<div className={classNames(s.content, isSideBar && s.content_active)}>
-				<h5 className={s.title}>All categories</h5>
-				<Search />
-				<MapList />
-				
+				<div className={classNames(s.content, isSideBar && s.content_active)}>
+					<h5 className={s.title}>All categories</h5>
+					<Search />
+					<MapList />
+				</div>
 			</div>
-		</div>
 	);
 };

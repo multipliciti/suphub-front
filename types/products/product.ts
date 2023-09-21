@@ -21,7 +21,7 @@ interface CutSheet {
 	createdAt: string;
 }
 
-interface DynamicAttribute {
+export interface DynamicAttribute {
 	attributeId: number;
 	attributeDescription: string;
 	label: string;
@@ -51,10 +51,10 @@ export interface ProductItemType {
 	hsCode: string;
 	largeQty: string;
 	minOrder: number;
-	packageDimension: string;
-	packageInclude: string;
+	packageDimension: string | null;
+	packageInclude: string | null;
 	packageWeight: string;
-	packaging: string;
+	packaging: string | null;
 	platformCommissionRate: number;
 	platformOnetimeDiscountedPrice: number;
 	platformUnitPriceContainerQty: number;

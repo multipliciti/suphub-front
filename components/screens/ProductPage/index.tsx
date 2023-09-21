@@ -21,7 +21,6 @@ type PropsType = {
 export const ProductPageComponent = (props: PropsType) => {
 	const api = Api();
 	const { push } = useRouter();
-	const dispatch = useAppDispatch()
 	const user = useAppSelector((state)=> state.authSlice.user)
 	const statusGetUser = useAppSelector((state)=> state.authSlice.statusGetUser)
 	const { id , backLink} = props;

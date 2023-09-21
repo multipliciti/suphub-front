@@ -5,13 +5,11 @@
 	height: calc(100vh - 60px);
 	position: fixed;
 	width: 0px;
-	opacity: auto;
 	
 
 	.title {
 		margin-bottom: 12px;
 		color: #fff;
-
 		font-family: Lato;
 		font-size: 18px;
 		font-style: normal;
@@ -33,7 +31,7 @@
 	
 
 	&_active {
-		opacity: 1;
+		opacity: 0.99;
 		pointer-events: all;
 	}
 }

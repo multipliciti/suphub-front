@@ -105,8 +105,8 @@ export const FilterWrapper = (props: TypeProps) => {
 			{type === 'range' && (
 				<div className={classNames(s.inner_wrapper, open && s.inner_wrapper_active)}>
 					<label 
-					onClick={(e)=> e.stopPropagation()}
-					className={s.label} htmlFor={title}>
+						onClick={(e)=> e.stopPropagation()}
+						className={s.label} htmlFor={title}>
 						<input
 							ref={minInputRef}
 							onChange={(e) => handleMinChange(e)}

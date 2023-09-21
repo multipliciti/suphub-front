@@ -3,7 +3,6 @@ import { classNames } from '@/utils/classNames';
 import s from './ProductItem.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 //imgs
 import star from '@/imgs/Marketplace/Products/star.svg';
 import star_active from '@/imgs/Marketplace/Products/star_sctive.svg';
@@ -13,7 +12,6 @@ import { ProductItemType } from '@/types/products/product';
 import { Api } from '@/services';
 
 export const ProductItem = (props: ProductItemType) => {
-	
 	const { push } = useRouter();
 	const [favoriteStar, setFavoriteStar] = useState<boolean>(true);
 	const { name, id, unitPrice , dynamic_attr, favorite} = props;
@@ -24,7 +22,7 @@ export const ProductItem = (props: ProductItemType) => {
 	const opening = dynamic_attr.find((el: any)=> el.label === 'Opening Style')?.value 
 	const frameMatireal = dynamic_attr.find((el: any)=> el.label === 'Frame Material')?.value 
 	const glassType = dynamic_attr.find((el: any)=> el.label === 'Glazing Type')?.value 
-	
+
 	const properties = [
 		['MOQ', props.moq ? `${props.moq} units` : '-' ],
 		['Lead time (weeks)', props.leadTime ?  `${props.leadTime} days` : '-'],
@@ -42,7 +40,6 @@ export const ProductItem = (props: ProductItemType) => {
     }, [favorite]);
 
 	const changeFavorite = async (id: number) => {
-
 		const api = Api();
 		try {
 			if (favoriteStar) {

@@ -1,61 +1,31 @@
 import React, { useState } from 'react';
 import s from './Table.module.scss';
 import { classNames } from '@/utils/classNames';
-
-interface TableItem {
-	id: number;
-	key: string;
-	value: string;
-}
-
-interface Table {
-	title: string;
-	arr: TableItem[];
-	id: number;
-}
+import { DynamicAttribute } from '@/types/products/product';
 
 interface PropsType {
-	tables: Table[];
+	dynamic_attr: DynamicAttribute[]
+	shipmentPackaging: {
+		label: string, 
+		value: string,
+	}[]
 }
 
-export const TableComponent = ({ tables }: PropsType) => {
-	const [activeTable, setActiveTable] = useState<number | null>(1);
+export const TableComponent = ({  dynamic_attr, shipmentPackaging }: PropsType) => {
+	const [activeTable, setActiveTable] = useState<number>(1);
 
-	const handleTableClick = (tableId: number) => {
-		setActiveTable(tableId);
-	};
-
-	const dynamic_attr = [
+	const tables = [
 		{
-            "attributeId": 10,
-            "attributeDescription": "",
-            "label": "Certification",
-            "order": 1,
-            "value": "AAMA, NFRC"
-        },
-        {
-            "attributeId": 7,
-            "attributeDescription": "",
-            "label": "R-Value",
-            "order": null,
-            "value": 3.57
-        },
-        {
-            "attributeId": 8,
-            "attributeDescription": "",
-            "label": "Accessories",
-            "order": null,
-            "value": "Installation clips"
-        },
-        {
-            "attributeId": 9,
-            "attributeDescription": "",
-            "label": "Visible Transmittance",
-            "order": null,
-            "value": 0.65
-        }
-	]
-
+			id: 1,
+			title: 'Specification',
+			keyShow: dynamic_attr
+		},
+		{
+			id: 2,
+			title: 'Shipment & Packaging',
+			keyShow: shipmentPackaging
+		},
+	];
 	const activeTableData =
 		activeTable !== null ? tables.find((table) => table.id === activeTable) : null;
 
@@ -69,7 +39,7 @@ export const TableComponent = ({ tables }: PropsType) => {
 							s.tables_item,
 							activeTable === table.id && s.tables_item_active
 						)}
-						onClick={() => handleTableClick(table.id)}
+						onClick={() => setActiveTable(table.id)}
 					>
 						{table.title}
 					</div>
@@ -80,7 +50,7 @@ export const TableComponent = ({ tables }: PropsType) => {
 					<h2 className={s.tables_active}>{activeTableData.title}</h2>
 					<table className={s.table}>
 						<tbody>
-							{dynamic_attr.map((item, ind) => (
+							{tables.find((el)=> el.id === activeTable)?.keyShow.map((item, ind) => (
 								<tr className={s.table_row} key={ind}>
 									<td className={s.table_key}>{item.label}</td>
 									<td className={s.table_value}>{item.value}</td>

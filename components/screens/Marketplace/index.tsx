@@ -17,7 +17,7 @@ export const Marketplace = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
 	const [totalPages, setTotalPages] = useState<number>(2);
-
+	const user = useAppSelector((state) => state.authSlice.user);
 	const products = useAppSelector((state) => state.marketplaceProduct.products);
 	const activePage = useAppSelector((state) => state.marketplaceProduct.activePage);
 	const total = useAppSelector((state) => state.marketplaceProduct.total);
@@ -49,6 +49,7 @@ export const Marketplace = () => {
 	const subCategoryId = {
 		subCategoryId: activeId
 	}
+	console.log('user1111', user)
 
 	const jsonStringsUnitPrice = (minUnitPrice || minUnitPrice) ? {
 		moq: {

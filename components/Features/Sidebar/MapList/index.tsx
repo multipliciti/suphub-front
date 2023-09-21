@@ -83,6 +83,8 @@ export const MapList = () => {
 								parentActiveIds.includes(item.id) && s.inner_active
 							)}
 						>
+							
+							<div className={s.inner_wrapper}>
 							{item.subCategories?.map((el, ind) => {
 								return (
 									<span
@@ -97,6 +99,7 @@ export const MapList = () => {
 									</span>
 								);
 							})}
+							</div>
 						</div>
 					</div>
 				);

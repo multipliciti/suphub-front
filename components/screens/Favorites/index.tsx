@@ -10,7 +10,7 @@ import { Pagination } from '@/components/Features/Pagination';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
-
+import { CheckfiltersEmpty } from './utils';
 export const FavoritesComponents = () => {
 	const dispatch = useAppDispatch();
 	const api = Api()
@@ -39,7 +39,7 @@ export const FavoritesComponents = () => {
 	const countryOfOrigin =
 		storeProductsFilter.find((el) => el.key === 'countryOfOrigin')?.selectedItems ||
 		[];
-
+	const filtersEmpty = CheckfiltersEmpty(storeProductsFilter)
 	const setActivePageFunction = (n: number)=>{
 		dispatch(setActivePage(n))
 	}
@@ -133,7 +133,7 @@ export const FavoritesComponents = () => {
 		<div className={s.wrapper}>
 			<h3 className={s.title}>My favorites</h3>
 			<ProductsFilter />
-			<Products products={products} status={status}  />
+			<Products filtersEmpty={filtersEmpty} products={products} status={status}  />
 			<div className={s.pagination}>
 				<Pagination setActivePage={setActivePageFunction} buttons={true} totalPages={totalPages} currentPage={activePage} />
 			</div>

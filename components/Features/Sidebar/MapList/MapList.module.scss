@@ -52,7 +52,8 @@
 	opacity: 0;
 	pointer-events: none;
 	max-height: 0px;
-	overflow: hidden;
+	overflow: hidden; 
+	// overflow: auto;
 
 	&_active {
 		opacity: 1;

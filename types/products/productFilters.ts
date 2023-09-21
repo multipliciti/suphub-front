@@ -2,8 +2,8 @@ export interface ProductFilterItem {
 	title: string;
 	type: string;
 	key: string;
-	min?: string;
-	max?: string;
+	min?: string | number;
+	max?: string | number;
 	items?: {
 		id: number;
 		title: string;

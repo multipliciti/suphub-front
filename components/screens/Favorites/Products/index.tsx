@@ -16,8 +16,9 @@ import { setSortDirection } from '@/redux/slices/favorites/productsFilter';
 interface ProductsPropsType {
 	products: ProductItemType[] | undefined;
 	status: string;
+	filtersEmpty: boolean;
 }
-export const Products = ({products, status} : ProductsPropsType) => {
+export const Products = ({products, status, filtersEmpty} : ProductsPropsType) => {
 	const dispatch = useAppDispatch()
 	const total = products?.length || 0
 	const activeTitle = useAppSelector((state)=> state.favoritesProductFilter.activeTitle)
@@ -114,7 +115,7 @@ export const Products = ({products, status} : ProductsPropsType) => {
 			</div>
 			{status === 'pendung' && <div> Loading...</div>}
 			{status === 'rejected' && <div> Error! </div>}
-			{products && products.length < 1 && status === 'seccess' && <NoResults />}
+			{products && products.length < 1 && status === 'seccess' && <NoResults filtersEmpty={filtersEmpty} />}
 			<div className={s.products}>
 				{total > 0 && products?.map((el, ind) => (
 					<div key={ind} className={s.products_item}>
