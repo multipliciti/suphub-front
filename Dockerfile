@@ -25,4 +25,6 @@ ENV NEXT_PUBLIC_CLIENT_HOST=${NEXT_PUBLIC_CLIENT_HOST}
 ENV NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
 
 RUN npm install && npm run build
+
+EXPOSE 3000
 ENTRYPOINT ["bash", "-c", "npm run start"]
