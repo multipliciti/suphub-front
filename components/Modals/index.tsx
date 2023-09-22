@@ -8,11 +8,8 @@ import { Registration } from './Registration';
 import { classNames } from '@/utils/classNames';
 import { VerifyEmail } from './VerifyEmail';
 
-
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
-
-
 	return (
 		<>
 			<div className={classNames(s.wrapper, modal === 'login' && s.wrapper_active)}>
@@ -39,7 +36,6 @@ export const Modal = () => {
 					s.wrapper,
 					modal === 'registration' && s.wrapper_active
 				)}
-			
 			>
 				<div className={s.modal}>
 					<Registration />

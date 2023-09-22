@@ -1,5 +1,5 @@
 'use client';
-import React, { ChangeEvent, useState } from 'react';
+import React, { useState } from 'react';
 import s from './ForgotPassword.module.scss';
 import Image from 'next/image';
 import { setModal } from '@/redux/slices/modal';
@@ -9,6 +9,7 @@ import { LayoutModal } from '../layout';
 import { resetPasswordEmailSet } from '@/redux/slices/auth';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Api } from '@/services';
+import { isEmail } from '@/utils/validationAuth';
 //imgs
 import modal_email from '@/imgs/Modal/email.svg';
 import invalid_icon from '@/imgs/Modal/invalid_icon.svg';
@@ -22,26 +23,27 @@ interface FormType {
 export const ForgotPassword: React.FC = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
+	//for rerender page
+	const [forRender, setForRender] = useState(false);
 	const [invalidEmail, setInvalidEmail] = useState<boolean>(false);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-		trigger,
 		getValues,
-		setError,
-		clearErrors,
 	} = useForm({
 		mode: 'onChange',
 		defaultValues: { email: '' },
 		shouldFocusError: false,
 		shouldUnregister: false,
 	});
+	//I added two validation checks because the page was not being redrawn when the validate function was triggered erroneously. That's why I'm forcing a redraw using forRender.
 
-	const isEmail = (data: string) => {
+	const isEmailRerender = (data: string) => {
 		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 		const res = emailRegex.test(data);
+		setForRender(!forRender);
 		return res;
 	};
 
@@ -49,7 +51,6 @@ export const ForgotPassword: React.FC = () => {
 		dispatch(resetPasswordEmailSet(data.email));
 		try {
 			const response = await api.auth.recovery(data);
-
 			dispatch(setModal('checkEmail'));
 		} catch (error: any) {
 			const forbidden =
@@ -96,10 +97,10 @@ export const ForgotPassword: React.FC = () => {
 							/>
 
 							<input
-								placeholder='example@suphub.com'
+								placeholder="example@suphub.com"
 								{...register('email', {
 									required: 'required',
-									validate: isEmail,
+									validate: isEmailRerender,
 								})}
 								className={s.email_input}
 								id="email"
@@ -138,7 +139,10 @@ export const ForgotPassword: React.FC = () => {
 					</div>
 
 					<button
-						className={classNames(s.submit, !errors?.email && s.submit_active)}
+						className={classNames(
+							s.submit,
+							isEmail(getValues('email')) && s.submit_active
+						)}
 					>
 						Reset password
 					</button>

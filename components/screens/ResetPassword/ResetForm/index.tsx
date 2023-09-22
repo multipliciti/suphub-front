@@ -8,6 +8,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Api } from '@/services';
+//This is the import of a standard validation check. If you need to redraw the page, then use matchingPasswordAndRerender and isPasswordAndRerender below.
+import { isPassword, matchingPassword } from '@/utils/validationAuth';
 //imgs
 import modal_password from '@/imgs/Modal/pasword.svg';
 import modal_eye from '@/imgs/Modal/eye.svg';
@@ -29,13 +31,14 @@ export const ResetForm = ({ token }: PropsType) => {
 	const [hidePassword, setHidePassword] = useState<boolean>(false);
 	const [hidePasswordConfirm, setHidePasswordConfirm] = useState<boolean>(false);
 	const { push } = useRouter();
+	//for rerender page
+	const [forRender, setForRender] = useState(false);
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
 		getValues,
-		watch,
 	} = useForm({
 		defaultValues: { confirm: '', password: '' },
 		mode: 'onChange',
@@ -47,7 +50,6 @@ export const ResetForm = ({ token }: PropsType) => {
 			newPassword: data.confirm,
 			token,
 		};
-
 		try {
 			api.auth.createPassword(requestData);
 			push('/success-password');
@@ -58,20 +60,21 @@ export const ResetForm = ({ token }: PropsType) => {
 		console.log('Form Errors:', errors);
 	};
 
-	const isPassword = (data: string) => {
-		const res =  data.length < 8 ? false : true;
-		return res
-
+	//I added two validation checks because the page was not being redrawn when the validate function was triggered erroneously. That's why I'm forcing a redraw using forRender.
+	const isPasswordAndRerender = (data: string) => {
+		setForRender(!forRender);
+		const res = data.length < 8 ? false : true;
+		return res;
 	};
 
-	const matchingPassword = (data: string) => {
+	const matchingPasswordAndRerender = (data: string) => {
+		setForRender(!forRender);
 		return data === getValues().password;
 	};
 
 	return (
 		<>
 			<div className={classNames(s.wrapper)}>
-				{/* <div className={s.header}></div> */}
 				<div className={s.content}>
 					<form onSubmit={handleSubmit(submit, onErrors)} className={s.form}>
 						<h3 className={s.title}>Reset your password</h3>
@@ -90,7 +93,7 @@ export const ResetForm = ({ token }: PropsType) => {
 							<input
 								{...register('password', {
 									required: true,
-									validate: isPassword,
+									validate: isPasswordAndRerender,
 								})}
 								placeholder="Min 8 characters"
 								id="password"
@@ -136,7 +139,7 @@ export const ResetForm = ({ token }: PropsType) => {
 							<input
 								{...register('confirm', {
 									required: true,
-									validate: matchingPassword,
+									validate: matchingPasswordAndRerender,
 								})}
 								placeholder="Min 8 characters"
 								className={s.label_confirm_input}
@@ -176,8 +179,9 @@ export const ResetForm = ({ token }: PropsType) => {
 						<button
 							className={classNames(
 								s.reset,
+
 								isPassword(getValues('password')) &&
-									matchingPassword(getValues('confirm')) &&
+									matchingPassword(getValues('confirm'), getValues('password')) &&
 									s.reset_active
 							)}
 						>

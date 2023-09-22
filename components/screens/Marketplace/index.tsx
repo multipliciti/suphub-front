@@ -12,7 +12,8 @@ import { useEffect, useState } from 'react';
 import { Api } from '@/services';
 import { setItemsFilter } from '@/redux/slices/marketplace/filters';
 import { transformCharData } from './utils';
-
+import { ResetPassword } from '../ResetPassword';
+import { CheckEmail } from '@/components/Modals/ CheckEmail';
 export const Marketplace = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
@@ -26,7 +27,9 @@ export const Marketplace = () => {
 	const storeProductsFilter = productsFilter.storeProductsFilter;
 	const charData = useAppSelector((state) => state.filtersSlice.char);
 	//get items
-	const sortDirection = useAppSelector((state) => state.marketplaceProductFilter.sortDirection);
+	const sortDirection = useAppSelector(
+		(state) => state.marketplaceProductFilter.sortDirection
+	);
 	const activeId = useAppSelector((state) => state.sideBarSlice.activeId);
 	const searchText = productsFilter.searchProductsFilter;
 	const minUnitPrice = storeProductsFilter.find((el) => el.key === 'unitPrice')?.min;
@@ -35,42 +38,49 @@ export const Marketplace = () => {
 		storeProductsFilter.find((el) => el.key === 'leadTime')?.selectedItems || '';
 	const moqMin = storeProductsFilter.find((el) => el.key === 'moq')?.min;
 	const moqMax = storeProductsFilter.find((el) => el.key === 'moq')?.max;
-	const warrantyMin =
-		storeProductsFilter.find((el) => el.key === 'warranty')?.min;
-	const warrantyMax =
-		storeProductsFilter.find((el) => el.key === 'warranty')?.max ;
+	const warrantyMin = storeProductsFilter.find((el) => el.key === 'warranty')?.min;
+	const warrantyMax = storeProductsFilter.find((el) => el.key === 'warranty')?.max;
 	const countryOfOrigin =
 		storeProductsFilter.find((el) => el.key === 'countryOfOrigin')?.selectedItems ||
 		[];
 	const setActivePageFunction = (n: number) => {
-		dispatch(setActivePage(n))
-	}
+		dispatch(setActivePage(n));
+	};
 
 	const subCategoryId = {
-		subCategoryId: activeId
-	}
-	console.log('user1111', user)
+		subCategoryId: activeId,
+	};
+	console.log('user1111', user);
 
-	const jsonStringsUnitPrice = (minUnitPrice || minUnitPrice) ? {
-		moq: {
-			...(minUnitPrice ? { gt: minUnitPrice } : {}),
-			...(maxUnitPrice ? { lt: maxUnitPrice } : {}),
-		},
-	} : null;
+	const jsonStringsUnitPrice =
+		minUnitPrice || minUnitPrice
+			? {
+					moq: {
+						...(minUnitPrice ? { gt: minUnitPrice } : {}),
+						...(maxUnitPrice ? { lt: maxUnitPrice } : {}),
+					},
+			  }
+			: null;
 
-	const jsonStringsMoq = (moqMin || moqMax) ? {
-		moq: {
-			...(moqMin ? { gt: moqMin } : {}),
-			...(moqMax ? { lt: moqMax } : {}),
-		},
-	} : null;
-	
-	const jsonStringWarranty = (warrantyMin || warrantyMax) ? {
-		warranty: {
-			...(warrantyMin ? { gt: warrantyMin } : {}),
-			...(warrantyMax ? { lt: warrantyMax } : {}),
-		},
-	} : null;
+	const jsonStringsMoq =
+		moqMin || moqMax
+			? {
+					moq: {
+						...(moqMin ? { gt: moqMin } : {}),
+						...(moqMax ? { lt: moqMax } : {}),
+					},
+			  }
+			: null;
+
+	const jsonStringWarranty =
+		warrantyMin || warrantyMax
+			? {
+					warranty: {
+						...(warrantyMin ? { gt: warrantyMin } : {}),
+						...(warrantyMax ? { lt: warrantyMax } : {}),
+					},
+			  }
+			: null;
 
 	const jsonStringsCountry = countryOfOrigin.map((item: any) => {
 		return {
@@ -93,7 +103,7 @@ export const Marketplace = () => {
 
 	const filanFiltersObj = transformCharData(charData);
 	const finalAttrObj = {
-		...(subCategoryId),
+		...subCategoryId,
 		...(jsonStringsSearch && { ...jsonStringsSearch }),
 		...(jsonStringsCountry.length > 0 && Object.assign({}, ...jsonStringsCountry)),
 		...(jsonStringsUnitPrice && { ...jsonStringsUnitPrice }),
@@ -114,7 +124,7 @@ export const Marketplace = () => {
 			const response = await api.product.getProduct({
 				page: activePage,
 				limit: 10,
-				sortParams: sortDirection ? sortDirection : {id: "desc"}, 
+				sortParams: sortDirection ? sortDirection : { id: 'desc' },
 				searchParams: finalJsonString,
 			});
 			dispatch(setProducts(response.result));
@@ -151,7 +161,13 @@ export const Marketplace = () => {
 				<ProductsFilter />
 				<Products status={status} total={total} products={products} />
 			</div>
-			<Pagination setActivePage={setActivePageFunction} buttons={true} totalPages={totalPages} currentPage={activePage} />
+			<Pagination
+				setActivePage={setActivePageFunction}
+				buttons={true}
+				totalPages={totalPages}
+				currentPage={activePage}
+			/>
+			<CheckEmail />
 		</div>
 	);
 };

@@ -10,6 +10,7 @@ import Image from 'next/image';
 import modal_close from '@/imgs/Modal/Modal_close.svg';
 import back_btn from '@/imgs/Modal/CheckEmail/back_btn.svg';
 import sheet from '@/imgs/Modal/CheckEmail/sheet.svg';
+
 export const CheckEmail = () => {
 	const email = useAppSelector((state) => state.authSlice.resetPasswordEmail);
 	const dispatch = useAppDispatch();
@@ -18,7 +19,6 @@ export const CheckEmail = () => {
 	const resend = async () => {
 		try {
 			const response = await api.auth.recovery({ email });
-
 			dispatch(setModal('checkEmail'));
 		} catch (error: any) {
 			console.log('error', error);
@@ -50,7 +50,7 @@ export const CheckEmail = () => {
 				<p className={s.description}>
 					If you don’t receive it right away, check your spam folder
 				</p>
-				<button onClick={() => dispatch(setModal('forgotPassword'))} className={s.resend}>
+				<button onClick={() => resend()} className={s.resend}>
 					Resend email
 				</button>
 				<p className={s.contacts}>

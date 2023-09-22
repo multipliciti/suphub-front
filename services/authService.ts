@@ -64,12 +64,12 @@ export const AuthApi = (instance: AxiosInstance) => ({
 	async recovery(data: RecoveryType) {
 		const requestData = {
 			...data,
-			recoveryUrl: `${HOST}/reset-password`,
+			recoveryUrl: `${HOST}/auth/confirm-email`,
 		};
 		try {
 			const url = '/auth/recovery';
 			const response = await instance.post(url, requestData);
-			return response
+			return response;
 		} catch (error) {
 			console.error('Error recovery:', error);
 			throw error;
@@ -79,7 +79,7 @@ export const AuthApi = (instance: AxiosInstance) => ({
 		try {
 			const url = '/auth/logout';
 			const response = await instance.post(url);
-			return response
+			return response;
 		} catch (error) {
 			console.error('Error logout:', error);
 			throw error;
@@ -89,7 +89,7 @@ export const AuthApi = (instance: AxiosInstance) => ({
 		try {
 			const url = '/auth/get-user';
 			const response = await instance.post(url);
-			return response
+			return response;
 		} catch (error) {
 			console.error('Error getUser:', error);
 			throw error;

@@ -27,20 +27,20 @@ export const Registration = () => {
 	const dispatch = useAppDispatch();
 	const [hidePassword, setHidePassword] = useState<boolean>(true);
 	const [usedEmail, setUsedEmail] = useState<boolean>(false);
-	//validation
-	const [emailCorrect, setEmailCorrect] = useState<boolean>(false);
-	const [passworsCorrect, setPasswordCorrect] = useState<boolean>(false);
+	//
+	const [forRender, setForRender] = useState(false);
 
-	const isEmail = (data: string) => {
+	//I added two validation checks because the page was not being redrawn when the validate function was triggered erroneously. That's why I'm forcing a redraw using forRender.
+	const isEmailRerender = (data: string) => {
 		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
 		const res = emailRegex.test(data);
-		setEmailCorrect(res); //to display when we insert
+		setForRender(!forRender); //to display when we insert
 		return res;
 	};
 
-	const isPassword = (data: string) => {
+	const isPasswordRerender = (data: string) => {
 		const res = data.length < 8 ? false : true;
-		setPasswordCorrect(res);
+		setForRender(!forRender); //to display when we insert
 		return res;
 	};
 
@@ -52,10 +52,10 @@ export const Registration = () => {
 	} = useForm({
 		defaultValues: { email: '', password: '', firstName: '', lastName: '' },
 		mode: 'onChange',
-		shouldFocusError: false,
-		shouldUnregister: false,
+		shouldFocusError: true,
+		shouldUnregister: true,
 	});
-	
+
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
 	const onSubmit: SubmitHandler<RegisterUserType> = async (data) => {
@@ -67,15 +67,14 @@ export const Registration = () => {
 			const response = await api.auth.registerUser(requestData);
 			dispatch(setModal(`verifyEmail`));
 			dispatch(setEmail(`${requestData.email}`));
-			dispatch(setRegistration(requestData))
+			dispatch(setRegistration(requestData));
 		} catch (error: any) {
 			if (
 				error.response?.status === 400 &&
 				error.response?.data?.message === 'User already exist'
-				
 			) {
 				setUsedEmail(true);
-			} 
+			}
 		}
 	};
 
@@ -147,7 +146,6 @@ export const Registration = () => {
 							className={classNames(
 								s.auth_label,
 								errors?.email && s.names_label_invalid
-								
 							)}
 							htmlFor="email"
 						>
@@ -161,7 +159,7 @@ export const Registration = () => {
 							<input
 								{...register('email', {
 									required: 'required',
-									validate: isEmail,
+									validate: isEmailRerender,
 								})}
 								id="email"
 								placeholder="example@suphub.com"
@@ -217,7 +215,7 @@ export const Registration = () => {
 							<input
 								{...register('password', {
 									required: 'required',
-									validate: isPassword,
+									validate: isPasswordRerender,
 								})}
 								id="password"
 								className={s.input}
