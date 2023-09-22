@@ -17,46 +17,41 @@ export const MapList = () => {
 	const parentActiveIds = useAppSelector(
 		(state) => state.sideBarSlice.parentActiveIds
 	);
-	const searchQuery = useAppSelector((state)=> state.sideBarSlice.searchQuery)
-	const categories = useAppSelector((state)=> state.sideBarSlice.categories)
-	const [categoriesFilter, setCategoriesFilter] = useState<CategoryItem[]>()
+	const searchQuery = useAppSelector((state) => state.sideBarSlice.searchQuery);
+	const categories = useAppSelector((state) => state.sideBarSlice.categories);
+	const [categoriesFilter, setCategoriesFilter] = useState<CategoryItem[]>();
 
 	useEffect(() => {
-		const categoriesFilterInner = categories.filter(category => {
+		const categoriesFilterInner = categories.filter((category) => {
 			const searchLower = searchQuery.toLowerCase();
 			const categoryNameLower = category.name.toLowerCase();
 
 			const categoryMatches = categoryNameLower.includes(searchLower);
-			const subCategoryMatches = category.subCategories.some(subCategory =>
+			const subCategoryMatches = category.subCategories.some((subCategory) =>
 				subCategory.name.toLowerCase().includes(searchLower)
 			);
-	
+
 			if (subCategoryMatches) {
 				const categoryIsActive = parentActiveIds.includes(category.id);
-	
+
 				if (!categoryIsActive && searchQuery !== '') {
 					dispatch(setParentActiveId(category.id));
 				}
 			}
-	
+
 			return categoryMatches || subCategoryMatches;
 		});
-	
+
 		setCategoriesFilter(categoriesFilterInner);
 	}, [searchQuery, categories]);
-	
-	
+
 	return (
 		<div className={classNames(s.wrapper)}>
 			{categoriesFilter?.map((item, index) => {
 				return (
 					<div key={index}>
 						<span
-							onClick={() =>
-								dispatch(
-									setParentActiveId(item.id)
-								)
-							}
+							onClick={() => dispatch(setParentActiveId(item.id))}
 							className={s.item}
 						>
 							<div className={s.item_wrapper}>
@@ -69,7 +64,9 @@ export const MapList = () => {
 								/>
 								<span
 									className={
-										parentActiveIds.includes(item.id) ? s.item_title : s.item_title_inactive
+										parentActiveIds.includes(item.id)
+											? s.item_title
+											: s.item_title_inactive
 									}
 								>
 									{item.name}
@@ -83,22 +80,21 @@ export const MapList = () => {
 								parentActiveIds.includes(item.id) && s.inner_active
 							)}
 						>
-							
 							<div className={s.inner_wrapper}>
-							{item.subCategories?.map((el, ind) => {
-								return (
-									<span
-										onClick={() => dispatch(setActiveId(el.id))}
-										key={ind}
-										className={classNames(
-											s.inner_item,
-											activeId === el.id && s.inner_item_active
-										)}
-									>
-										{el.name}
-									</span>
-								);
-							})}
+								{item.subCategories?.map((el, ind) => {
+									return (
+										<span
+											onClick={() => dispatch(setActiveId(el.id))}
+											key={ind}
+											className={classNames(
+												s.inner_item,
+												activeId === el.id && s.inner_item_active
+											)}
+										>
+											{el.name}
+										</span>
+									);
+								})}
 							</div>
 						</div>
 					</div>

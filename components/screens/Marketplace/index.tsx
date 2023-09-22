@@ -12,8 +12,6 @@ import { useEffect, useState } from 'react';
 import { Api } from '@/services';
 import { setItemsFilter } from '@/redux/slices/marketplace/filters';
 import { transformCharData } from './utils';
-import { ResetPassword } from '../ResetPassword';
-import { CheckEmail } from '@/components/Modals/ CheckEmail';
 export const Marketplace = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
@@ -167,7 +165,6 @@ export const Marketplace = () => {
 				totalPages={totalPages}
 				currentPage={activePage}
 			/>
-			<CheckEmail />
 		</div>
 	);
 };
