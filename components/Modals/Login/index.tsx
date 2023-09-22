@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { LoginDto, User } from '@/types/services/auth';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 import s from './Login.module.scss';
 import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -29,10 +29,10 @@ import { setStatusGetUser } from '@/redux/slices/auth';
 import { setUser } from '@/redux/slices/auth';
 
 export const Login: React.FC = () => {
-	const searchParams = useSearchParams()
+	const searchParams = useSearchParams();
 	const dispatch = useAppDispatch();
 	const { push } = useRouter();
-	const statusGetUser = useAppSelector((state)=> state.authSlice.statusGetUser)
+	const statusGetUser = useAppSelector((state) => state.authSlice.statusGetUser);
 	const [incorrect, setIncorrect] = useState<boolean>(false);
 	const [hidePassword, setHidePassword] = useState<boolean>(true);
 	const [notVerified, setNotVerified] = useState<boolean>(false);
@@ -57,45 +57,43 @@ export const Login: React.FC = () => {
 		setCorrectEmail(res);
 		return res;
 	};
-	
 
 	const submit: SubmitHandler<LoginDto> = async (data) => {
 		try {
-		  const response = await api.auth.loginUser(data);
-		  if (response) {
-			dispatch(setModal(''));
-			const userResponse = await api.auth.getUser();
-			const user = userResponse.data; 
+			const response = await api.auth.loginUser(data);
+			if (response) {
+				dispatch(setModal(''));
+				const userResponse = await api.auth.getUser();
+				const user = userResponse.data;
 
-			if (user) {
-			  dispatch(setUser(user));
-			  dispatch(setStatusGetUser('seccess'));
-			  dispatch(setModal(''));
-			  if (searchParams.get('id') && searchParams.get('token')) {
-				push('/marketplace');
-			  }
-			} else {
-			  dispatch(setUser(null));
-			  dispatch(setStatusGetUser('rejected'));
+				if (user) {
+					dispatch(setUser(user));
+					dispatch(setStatusGetUser('seccess'));
+					dispatch(setModal(''));
+					if (searchParams.get('id') && searchParams.get('token')) {
+						push('/marketplace');
+					}
+				} else {
+					dispatch(setUser(null));
+					dispatch(setStatusGetUser('rejected'));
+				}
 			}
-		  }
 		} catch (error: any) {
-		  console.log('err', error);
-		  if (
-			error.response?.data?.statusCode === 401 &&
-			error.response?.data?.message === 'Unauthorized'
-		  ) {
-			setIncorrect(true);
-		  }
-		  if (
-			error.response?.data?.statusCode === 401 &&
-			error.response?.data?.message === 'Email not verified'
-		  ) {
-			setNotVerified(true);
-		  }
+			console.log('err', error);
+			if (
+				error.response?.data?.statusCode === 401 &&
+				error.response?.data?.message === 'Unauthorized'
+			) {
+				setIncorrect(true);
+			}
+			if (
+				error.response?.data?.statusCode === 401 &&
+				error.response?.data?.message === 'Email not verified'
+			) {
+				setNotVerified(true);
+			}
 		}
-	  };
-	  
+	};
 
 	const onErrors = (errors: any) => {
 		console.log('Form Errors:', errors);
@@ -145,7 +143,7 @@ export const Login: React.FC = () => {
 						/>
 
 						<input
-							placeholder='example@suphub.com'
+							placeholder="example@suphub.com"
 							{...register('email', { required: true, validate: isEmail })}
 							className={s.email_input}
 							id="email"
@@ -198,7 +196,7 @@ export const Login: React.FC = () => {
 							height={20}
 						/>
 						<input
-							placeholder='Enter your password'
+							placeholder="Enter your password"
 							{...register('password', {
 								required: true,
 							})}
