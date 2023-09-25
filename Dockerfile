@@ -23,8 +23,10 @@ ARG NEXT_PUBLIC_BASE_URL=http://api.localhost:8080
 ARG NEXT_PUBLIC_CLIENT_HOST=http://localhost:8080
 ENV NEXT_PUBLIC_CLIENT_HOST=${NEXT_PUBLIC_CLIENT_HOST}
 ENV NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
+ARG NODE_ENV=development
+ENV NODE_ENV=${NODE_ENV}
 
-RUN npm install && npm run build
+RUN if [[ ! -z "${NODE_ENV}" ]] && [[ ${NODE_ENV} != development ]]; then npm install && npm run build; fi
 
 EXPOSE 3000
-ENTRYPOINT ["bash", "-c", "npm run start"]
+ENTRYPOINT ["bash", "-c", "if [[ ! -z ${NODE_ENV} ]] && [[ ${NODE_ENV} != development ]]; then npm run start; else npm install; npm run dev; fi"]
