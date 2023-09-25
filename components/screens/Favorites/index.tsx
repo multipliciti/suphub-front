@@ -26,12 +26,12 @@ export const FavoritesComponents = () => {
 	const activePage = useAppSelector((state) => state.favoritesProduct.activePage);
 	const status = useAppSelector((state) => state.favoritesProduct.status);
 	const productsFilter = useAppSelector((state) => state.favoritesProductFilter);
+	const storeProductsFilter = productsFilter.storeProductsFilter;
+
+	//get items for filters
 	const sortDirection = useAppSelector(
 		(state) => state.favoritesProductFilter.sortDirection
 	);
-
-	const storeProductsFilter = productsFilter.storeProductsFilter;
-	//get items
 	const searchText = productsFilter.searchProductsFilter;
 	const minUnitPrice = storeProductsFilter.find((el) => el.key === 'unitPrice')?.min;
 	const maxUnitPrice = storeProductsFilter.find((el) => el.key === 'unitPrice')?.max;
@@ -51,6 +51,7 @@ export const FavoritesComponents = () => {
 		dispatch(setActivePage(n));
 	};
 
+	//Creating request objects
 	const objFetchUnitPrice = createObjFetch(minUnitPrice, maxUnitPrice);
 	const objFetchStringsMoq = createObjFetch(moqMin, moqMax);
 	const objFetchStringWarranty = createObjFetch(warrantyMin, warrantyMax);
@@ -74,6 +75,7 @@ export const FavoritesComponents = () => {
 			  }
 			: null;
 
+	//Creating the final request object.
 	const finalAttrObj = {
 		...(objFetchSearch && { ...objFetchSearch }),
 		...(objFetchCountry.length > 0 && Object.assign({}, ...objFetchCountry)),
@@ -83,10 +85,12 @@ export const FavoritesComponents = () => {
 		...(objFetchStringWarranty && { ...objFetchStringWarranty }),
 	};
 
+	//Combining objects into one request object
 	const combinedJsonObj = {
 		attr: finalAttrObj,
 	};
 
+	//Converting the combinedJsonObj to JSON for the request.
 	const finalJsonString = JSON.stringify(combinedJsonObj);
 
 	const fetchData = async (JsonString: string) => {

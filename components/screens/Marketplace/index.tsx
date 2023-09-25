@@ -28,7 +28,7 @@ export const Marketplace = () => {
 	const productsFilter = useAppSelector((state) => state.marketplaceProductFilter);
 	const storeProductsFilter = productsFilter.storeProductsFilter;
 	const charData = useAppSelector((state) => state.filtersSlice.char);
-	//get items
+	//get items for filters
 	const sortDirection = useAppSelector(
 		(state) => state.marketplaceProductFilter.sortDirection
 	);
@@ -51,10 +51,10 @@ export const Marketplace = () => {
 	const filtersEmpty =
 		checkFiltersEmpty(storeProductsFilter) || checkCharsEmpty(charData);
 
+	//Creating request objects
 	const subCategoryId = {
 		subCategoryId: activeId,
 	};
-
 	const objFetchUnitPrice = createObjFetch(minUnitPrice, maxUnitPrice);
 	const objFetchStringsMoq = createObjFetch(moqMin, moqMax);
 	const objFetchStringWarranty = createObjFetch(warrantyMin, warrantyMax);
@@ -76,7 +76,10 @@ export const Marketplace = () => {
 			  }
 			: null;
 
+	//Creating the final request object. ( 2 objs )
+	//1
 	const filanFiltersObj = transformCharData(charData);
+	//2
 	const finalAttrObj = {
 		...subCategoryId,
 		...(objFetchSearch && { ...objFetchSearch }),
@@ -87,12 +90,16 @@ export const Marketplace = () => {
 		...(objFetchStringWarranty && { ...objFetchStringWarranty }),
 	};
 
+	//Combining two objects into one request object
 	const combinedJsonObj = {
 		attr: finalAttrObj,
 		dynamic_attr: filanFiltersObj,
 	};
 
+	//Converting the combinedJsonObj to JSON for the request.
 	const finalJsonString = JSON.stringify(combinedJsonObj);
+
+	//Request products
 	const fetchData = async () => {
 		try {
 			dispatch(setStatus('pending'));

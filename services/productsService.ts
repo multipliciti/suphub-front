@@ -70,5 +70,4 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-
 });

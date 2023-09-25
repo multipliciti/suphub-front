@@ -14,11 +14,12 @@ export interface ProductFilterItem {
 }
 
 type SortOptions = {
-	[key: string]: "ask" | "desk";
+	[key: string]: 'ask' | 'desk';
 };
 
 export interface ProductFilter {
-	activeTitle: string
+	startResetInputs: boolean;
+	activeTitle: string;
 	sortDirection: null | SortOptions;
 	storeProductsFilter: ProductFilterItem[];
 	searchFavoriteFilter: string;

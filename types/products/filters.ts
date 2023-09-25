@@ -1,5 +1,3 @@
-import { StaticImageData } from 'next/image';
-
 export interface Option {
 	value: string;
 	attrValueId: number;
@@ -19,4 +17,3 @@ export interface ItemFilter {
 export interface StoreItem {
 	[key: string]: number[];
 }
-

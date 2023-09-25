@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductFilter } from '@/types/products/productFilters';
 
 const initialState: ProductFilter = {
+	//When startResetInputsValue changes, it signals that the input values of the filters should be reset completely.
+	startResetInputs: false,
 	activeTitle: 'Lead time',
 	sortDirection: null,
 	searchFavoriteFilter: '',
@@ -86,6 +88,9 @@ const favoritesProductsFilter = createSlice({
 	name: 'avoritesProductsFilters',
 	initialState,
 	reducers: {
+		startResetInputs: (state, action) => {
+			state.startResetInputs = action.payload;
+		},
 		updateMinProducts: (state, action) => {
 			state.storeProductsFilter = state.storeProductsFilter.map((filter) =>
 				filter.key === action.payload.filterKey
@@ -110,10 +115,19 @@ const favoritesProductsFilter = createSlice({
 		searchProducts: (state, action) => {
 			state.searchProductsFilter = action.payload;
 		},
-		setSortDirection:(state, action) => {
-			const obj =  action.payload;
+		setSortDirection: (state, action) => {
+			const obj = action.payload;
 			state.sortDirection = obj.sortDirection;
-			state.activeTitle = obj.activeTitle
+			state.activeTitle = obj.activeTitle;
+		},
+		resetAllFilters: (state) => {
+			state.storeProductsFilter = state.storeProductsFilter.map((filter) => ({
+				...filter,
+				min: '',
+				max: '',
+				selectedItems: [],
+				radioItems: [],
+			}));
 		},
 	},
 });
@@ -123,7 +137,9 @@ export const {
 	searchProducts,
 	updateMaxproducts,
 	updateSelectedItemsProsuct,
-	setSortDirection
+	setSortDirection,
+	startResetInputs,
+	resetAllFilters,
 } = favoritesProductsFilter.actions;
 
 export default favoritesProductsFilter.reducer;

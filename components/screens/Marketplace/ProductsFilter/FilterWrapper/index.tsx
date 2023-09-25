@@ -1,7 +1,7 @@
 'use client';
 import s from './FilterWrapper.module.scss';
 import Image from 'next/image';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
 	updateMinProducts,
 	updateMaxproducts,
@@ -26,16 +26,32 @@ export const FilterWrapper = (props: TypeProps) => {
 	const { title, items, type, key, min, max } = props.item;
 	const [open, setOpen] = useState<boolean>(false);
 	const minInputRef = useRef<HTMLInputElement | null>(null);
-	const maxInputRef = useRef<HTMLInputElement | null>(null); 
+	const maxInputRef = useRef<HTMLInputElement | null>(null);
 
+	const startResetInputsValue = useAppSelector(
+		(state) => state.marketplaceProductFilter.startResetInputs
+	);
 	const selectedOptionCountry = useAppSelector((state) =>
 		state.marketplaceProductFilter.storeProductsFilter.find(
 			(el) => el.key === 'countryOfOrigin'
 		)
 	);
 	const selectedOptionLeadTime = useAppSelector((state) =>
-		state.marketplaceProductFilter.storeProductsFilter.find((el) => el.key === 'leadTime')
+		state.marketplaceProductFilter.storeProductsFilter.find(
+			(el) => el.key === 'leadTime'
+		)
 	);
+
+	//When startResetInputsValue changes, it signals that the input values of the filters should be reset completely.
+	useEffect(() => {
+		if (minInputRef.current) {
+			minInputRef.current.value = '';
+		}
+		if (maxInputRef.current) {
+			maxInputRef.current.value = '';
+		}
+	}, [startResetInputsValue]);
+
 	const handleOptionChange = (arr: number[]) => {
 		const newSelectedOptionLeadTime = arr;
 		dispatch(
@@ -59,7 +75,7 @@ export const FilterWrapper = (props: TypeProps) => {
 		dispatch(updateMinProducts({ filterKey: key, min: Number(event.target.value) }));
 	}, 250);
 
-	const handleMaxChange =  debounce((event: ChangeEvent<HTMLInputElement>) => {
+	const handleMaxChange = debounce((event: ChangeEvent<HTMLInputElement>) => {
 		dispatch(updateMaxproducts({ filterKey: key, max: Number(event.target.value) }));
 	}, 250);
 
@@ -107,7 +123,7 @@ export const FilterWrapper = (props: TypeProps) => {
 					<label className={s.label} htmlFor={title}>
 						<input
 							ref={minInputRef}
-							onClick={(e)=> e.stopPropagation()}
+							onClick={(e) => e.stopPropagation()}
 							onChange={(e) => handleMinChange(e)}
 							placeholder="Min"
 							className={s.input}
@@ -119,7 +135,7 @@ export const FilterWrapper = (props: TypeProps) => {
 					<label className={s.label} htmlFor={title}>
 						<input
 							ref={maxInputRef}
-							onClick={(e)=> e.stopPropagation()}
+							onClick={(e) => e.stopPropagation()}
 							onChange={(e) => handleMaxChange(e)}
 							placeholder="Max"
 							className={s.input}
@@ -131,7 +147,7 @@ export const FilterWrapper = (props: TypeProps) => {
 					<button
 						onClick={(e) => {
 							e.stopPropagation();
-							handleClearFilter()
+							handleClearFilter();
 						}}
 						className={s.clear}
 					>
@@ -179,14 +195,14 @@ export const FilterWrapper = (props: TypeProps) => {
 					</div>
 
 					<button
-						onClick={(e) =>{
-							e.stopPropagation()
+						onClick={(e) => {
+							e.stopPropagation();
 							dispatch(
 								updateSelectedItemsProsuct({
 									filterKey: key,
 									selectedItems: [],
 								})
-							)
+							);
 						}}
 						className={s.clear}
 					>
@@ -208,7 +224,7 @@ export const FilterWrapper = (props: TypeProps) => {
 								<div
 									onClick={(e) => {
 										e.stopPropagation();
-										handleSelectChange(el.value.toString())
+										handleSelectChange(el.value.toString());
 									}}
 									className={classNames(
 										s.option,

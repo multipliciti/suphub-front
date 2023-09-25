@@ -1,7 +1,7 @@
 'use client';
 import s from './FilterWrapper.module.scss';
 import Image from 'next/image';
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import {
 	updateMinProducts,
 	updateMaxproducts,
@@ -25,14 +25,19 @@ export const FilterWrapper = (props: TypeProps) => {
 	const { title, items, type, key, min, max } = props.item;
 	const [open, setOpen] = useState<boolean>(false);
 	const minInputRef = useRef<HTMLInputElement | null>(null);
-	const maxInputRef = useRef<HTMLInputElement | null>(null); 
+	const maxInputRef = useRef<HTMLInputElement | null>(null);
+	const startResetInputsValue = useAppSelector(
+		(state) => state.favoritesProductFilter.startResetInputs
+	);
 	const selectedOptionCountry = useAppSelector((state) =>
 		state.favoritesProductFilter.storeProductsFilter.find(
 			(el) => el.key === 'countryOfOrigin'
 		)
 	);
 	const selectedOptionLeadTime = useAppSelector((state) =>
-		state.favoritesProductFilter.storeProductsFilter.find((el) => el.key === 'leadTime')
+		state.favoritesProductFilter.storeProductsFilter.find(
+			(el) => el.key === 'leadTime'
+		)
 	);
 	const handleOptionChange = (arr: number[]) => {
 		const newSelectedOptionLeadTime = arr;
@@ -43,6 +48,16 @@ export const FilterWrapper = (props: TypeProps) => {
 			})
 		);
 	};
+
+	//When startResetInputsValue changes, it signals that the input values of the filters should be reset completely.
+	useEffect(() => {
+		if (minInputRef.current) {
+			minInputRef.current.value = '';
+		}
+		if (maxInputRef.current) {
+			maxInputRef.current.value = '';
+		}
+	}, [startResetInputsValue]);
 
 	const handleOptionChangeDaspatch = (selectedOptionCountrys: any[]) => {
 		dispatch(
@@ -57,7 +72,7 @@ export const FilterWrapper = (props: TypeProps) => {
 		dispatch(updateMinProducts({ filterKey: key, min: Number(event.target.value) }));
 	}, 250);
 
-	const handleMaxChange =  debounce((event: ChangeEvent<HTMLInputElement>) => {
+	const handleMaxChange = debounce((event: ChangeEvent<HTMLInputElement>) => {
 		dispatch(updateMaxproducts({ filterKey: key, max: Number(event.target.value) }));
 	}, 250);
 
@@ -90,9 +105,12 @@ export const FilterWrapper = (props: TypeProps) => {
 	};
 
 	return (
-		<div onClick={(e) => {
-			setOpen(!open)
-		}} className={s.wrapper}>
+		<div
+			onClick={(e) => {
+				setOpen(!open);
+			}}
+			className={s.wrapper}
+		>
 			<span className={s.text}> {title} </span>
 			<Image
 				className={s.img}
@@ -104,9 +122,11 @@ export const FilterWrapper = (props: TypeProps) => {
 
 			{type === 'range' && (
 				<div className={classNames(s.inner_wrapper, open && s.inner_wrapper_active)}>
-					<label 
-						onClick={(e)=> e.stopPropagation()}
-						className={s.label} htmlFor={title}>
+					<label
+						onClick={(e) => e.stopPropagation()}
+						className={s.label}
+						htmlFor={title}
+					>
 						<input
 							ref={minInputRef}
 							onChange={(e) => handleMinChange(e)}
@@ -118,8 +138,10 @@ export const FilterWrapper = (props: TypeProps) => {
 						/>
 					</label>
 					<label
-							onClick={(e)=> e.stopPropagation()}
-					 		className={s.label} htmlFor={title}>
+						onClick={(e) => e.stopPropagation()}
+						className={s.label}
+						htmlFor={title}
+					>
 						<input
 							ref={maxInputRef}
 							onChange={(e) => handleMaxChange(e)}
@@ -132,8 +154,8 @@ export const FilterWrapper = (props: TypeProps) => {
 					</label>
 					<button
 						onClick={(e) => {
-							e.stopPropagation()
-							handleClearFilter()
+							e.stopPropagation();
+							handleClearFilter();
 						}}
 						className={s.clear}
 					>
@@ -149,8 +171,10 @@ export const FilterWrapper = (props: TypeProps) => {
 							return (
 								<div key={ind}>
 									<label
-									onClick={(e)=> e.stopPropagation()}
-									htmlFor={el.title} className={s.label_radio}>
+										onClick={(e) => e.stopPropagation()}
+										htmlFor={el.title}
+										className={s.label_radio}
+									>
 										<input
 											id={el.title}
 											type="radio"
@@ -160,7 +184,7 @@ export const FilterWrapper = (props: TypeProps) => {
 												selectedOptionLeadTime?.selectedItems?.toString()
 											}
 											onClick={(e) => {
-												e.stopPropagation()
+												e.stopPropagation();
 												if (Array.isArray(el.value)) {
 													handleOptionChange(el.value);
 												}
@@ -184,13 +208,13 @@ export const FilterWrapper = (props: TypeProps) => {
 
 					<button
 						onClick={(e) => {
-							e.stopPropagation()
+							e.stopPropagation();
 							dispatch(
 								updateSelectedItemsProsuct({
 									filterKey: key,
 									selectedItems: [],
 								})
-							)
+							);
 						}}
 						className={s.clear}
 					>
@@ -211,8 +235,8 @@ export const FilterWrapper = (props: TypeProps) => {
 							return (
 								<div
 									onClick={(e) => {
-										e.stopPropagation()
-										handleSelectChange(el.value.toString())
+										e.stopPropagation();
+										handleSelectChange(el.value.toString());
 									}}
 									className={classNames(
 										s.option,
@@ -244,7 +268,7 @@ export const FilterWrapper = (props: TypeProps) => {
 							paddingLeft: '12px',
 						}}
 						onClick={(e) => {
-							e.stopPropagation()
+							e.stopPropagation();
 							handleOptionChangeDaspatch([]);
 						}}
 						className={s.clear}

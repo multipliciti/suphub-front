@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductFilter } from '@/types/products/productFilters';
 
 const initialState: ProductFilter = {
+	//When startResetInputsValue changes, it signals that the input values of the filters should be reset completely.
+	startResetInputs: false,
 	activeTitle: 'Lead time',
 	sortDirection: null,
 	searchFavoriteFilter: '',
@@ -86,6 +88,9 @@ const productsFilter = createSlice({
 	name: 'productsFilters',
 	initialState,
 	reducers: {
+		startResetInputs: (state, action) => {
+			state.startResetInputs = action.payload;
+		},
 		updateMinProducts: (state, action) => {
 			state.storeProductsFilter = state.storeProductsFilter.map((filter) =>
 				filter.key === action.payload.filterKey
@@ -115,6 +120,15 @@ const productsFilter = createSlice({
 			state.sortDirection = obj.sortDirection;
 			state.activeTitle = obj.activeTitle;
 		},
+		resetAllFilters: (state) => {
+			state.storeProductsFilter = state.storeProductsFilter.map((filter) => ({
+				...filter,
+				min: '',
+				max: '',
+				selectedItems: [],
+				radioItems: [],
+			}));
+		},
 	},
 });
 
@@ -124,6 +138,8 @@ export const {
 	updateMaxproducts,
 	updateSelectedItemsProsuct,
 	setSortDirection,
+	startResetInputs,
+	resetAllFilters,
 } = productsFilter.actions;
 
 export default productsFilter.reducer;

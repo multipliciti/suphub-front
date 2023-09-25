@@ -8,41 +8,24 @@ import s from './NoResults.module.scss';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Api } from '@/services';
 import { clearAll } from '@/redux/slices/marketplace/filters';
-
+import { startResetInputs } from '@/redux/slices/marketplace/productsFilter';
+import { resetAllFilters } from '@/redux/slices/marketplace/productsFilter';
 type PropsType = {
 	filtersEmpty: boolean;
 };
 
 export const NoResults = ({ filtersEmpty }: PropsType) => {
 	const dispatch = useAppDispatch();
-	const api = Api();
-	const activeId = useAppSelector((state) => state.sideBarSlice.activeId);
-	const sortDirection = useAppSelector(
-		(state) => state.marketplaceProductFilter.sortDirection
+	const startResetInputsValue = useAppSelector(
+		(state) => state.marketplaceProductFilter.startResetInputs
 	);
-	const finalJsonString = JSON.stringify({
-		attr: {
-			subCategoryId: activeId,
-		},
-	});
 
-	const fetchData = async () => {
-		dispatch(setStatus('pending'));
+	const resetValueFilres = () => {
+		//We're changing the state to signal that we need to reset the inputs for filters ( UI )
+		dispatch(startResetInputs(!startResetInputsValue));
+		//clear data all filters
 		dispatch(clearAll());
-		try {
-			const response = await api.product.getProduct({
-				page: 1,
-				limit: 10,
-				sortParams: sortDirection ? sortDirection : { id: 'desc' },
-				searchParams: finalJsonString,
-			});
-			dispatch(setProducts(response.result));
-			dispatch(setTotal(response.total));
-			dispatch(setStatus('seccess'));
-		} catch (error) {
-			console.error('Error:', error);
-			dispatch(setStatus('rejected'));
-		}
+		dispatch(resetAllFilters());
 	};
 
 	return (
@@ -57,7 +40,7 @@ export const NoResults = ({ filtersEmpty }: PropsType) => {
 			)}
 
 			{filtersEmpty && (
-				<button onClick={fetchData} className={s.btn}>
+				<button onClick={resetValueFilres} className={s.btn}>
 					Сlear filters
 				</button>
 			)}
