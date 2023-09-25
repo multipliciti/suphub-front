@@ -11,12 +11,14 @@ import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
 import { useEffect, useState } from 'react';
 import { Api } from '@/services';
 import { setItemsFilter } from '@/redux/slices/marketplace/filters';
-import { transformCharData } from './utils';
+import { transformCharData } from '@/utils/productsUtils';
+import { checkFiltersEmpty } from '@/utils/productsUtils';
+import { checkCharsEmpty } from '@/utils/productsUtils';
+
 export const Marketplace = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
 	const [totalPages, setTotalPages] = useState<number>(2);
-	const user = useAppSelector((state) => state.authSlice.user);
 	const products = useAppSelector((state) => state.marketplaceProduct.products);
 	const activePage = useAppSelector((state) => state.marketplaceProduct.activePage);
 	const total = useAppSelector((state) => state.marketplaceProduct.total);
@@ -44,11 +46,13 @@ export const Marketplace = () => {
 	const setActivePageFunction = (n: number) => {
 		dispatch(setActivePage(n));
 	};
+	const filtersEmpty =
+		checkFiltersEmpty(storeProductsFilter) || checkCharsEmpty(charData);
 
 	const subCategoryId = {
 		subCategoryId: activeId,
 	};
-	console.log('user1111', user);
+	console.log('filtersEmpty', filtersEmpty);
 
 	const jsonStringsUnitPrice =
 		minUnitPrice || minUnitPrice
@@ -157,7 +161,12 @@ export const Marketplace = () => {
 				<Header />
 				<Filters />
 				<ProductsFilter />
-				<Products status={status} total={total} products={products} />
+				<Products
+					filtersEmpty={filtersEmpty}
+					status={status}
+					total={total}
+					products={products}
+				/>
 			</div>
 			<Pagination
 				setActivePage={setActivePageFunction}

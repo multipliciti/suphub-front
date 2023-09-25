@@ -4,24 +4,31 @@ import { ProductsFilter } from './ProductsFilter';
 import { Products } from './Products';
 import { ProductItemType } from '@/types/products/product';
 import { useAppSelector } from '@/redux/hooks';
-import { setActivePage, setProducts, setStatus, setTotal } from '@/redux/slices/favorites/products';
+import {
+	setActivePage,
+	setProducts,
+	setStatus,
+	setTotal,
+} from '@/redux/slices/favorites/products';
 import { Api } from '@/services';
 import { Pagination } from '@/components/Features/Pagination';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
-import { CheckfiltersEmpty } from './utils';
+import { checkFiltersEmpty } from '@/utils/productsUtils';
 export const FavoritesComponents = () => {
 	const dispatch = useAppDispatch();
-	const api = Api()
+	const api = Api();
 	const [totalPages, setTotalPages] = useState<number>(2);
-	const user = useAppSelector((state)=> state.authSlice.user)
-	const statusGetUser =  useAppSelector((state)=> state.authSlice.statusGetUser)
+	const user = useAppSelector((state) => state.authSlice.user);
+	const statusGetUser = useAppSelector((state) => state.authSlice.statusGetUser);
 	const products = useAppSelector((state) => state.favoritesProduct.products);
 	const activePage = useAppSelector((state) => state.favoritesProduct.activePage);
 	const status = useAppSelector((state) => state.favoritesProduct.status);
 	const productsFilter = useAppSelector((state) => state.favoritesProductFilter);
-	const sortDirection = useAppSelector((state) => state.favoritesProductFilter.sortDirection);
+	const sortDirection = useAppSelector(
+		(state) => state.favoritesProductFilter.sortDirection
+	);
 
 	const storeProductsFilter = productsFilter.storeProductsFilter;
 	//get items
@@ -39,31 +46,40 @@ export const FavoritesComponents = () => {
 	const countryOfOrigin =
 		storeProductsFilter.find((el) => el.key === 'countryOfOrigin')?.selectedItems ||
 		[];
-	const filtersEmpty = CheckfiltersEmpty(storeProductsFilter)
-	const setActivePageFunction = (n: number)=>{
-		dispatch(setActivePage(n))
-	}
+	const filtersEmpty = checkFiltersEmpty(storeProductsFilter);
+	const setActivePageFunction = (n: number) => {
+		dispatch(setActivePage(n));
+	};
 
-	const jsonStringsUnitPrice = (minUnitPrice || minUnitPrice) ? {
-		moq: {
-			...(minUnitPrice ? { gt: minUnitPrice } : {}),
-			...(maxUnitPrice ? { lt: maxUnitPrice } : {}),
-		},
-	} : null;
+	const jsonStringsUnitPrice =
+		minUnitPrice || minUnitPrice
+			? {
+					moq: {
+						...(minUnitPrice ? { gt: minUnitPrice } : {}),
+						...(maxUnitPrice ? { lt: maxUnitPrice } : {}),
+					},
+			  }
+			: null;
 
-	const jsonStringsMoq = (moqMin || moqMax) ? {
-		moq: {
-			...(moqMin ? { gt: moqMin } : {}),
-			...(moqMax ? { lt: moqMax } : {}),
-		},
-	} : null;
-	
-	const jsonStringWarranty = (warrantyMin || warrantyMax) ? {
-		warranty: {
-			...(warrantyMin ? { gt: warrantyMin } : {}),
-			...(warrantyMax ? { lt: warrantyMax } : {}),
-		},
-	} : null;
+	const jsonStringsMoq =
+		moqMin || moqMax
+			? {
+					moq: {
+						...(moqMin ? { gt: moqMin } : {}),
+						...(moqMax ? { lt: moqMax } : {}),
+					},
+			  }
+			: null;
+
+	const jsonStringWarranty =
+		warrantyMin || warrantyMax
+			? {
+					warranty: {
+						...(warrantyMin ? { gt: warrantyMin } : {}),
+						...(warrantyMax ? { lt: warrantyMax } : {}),
+					},
+			  }
+			: null;
 
 	const jsonStringsCountry = countryOfOrigin.map((item: any) => {
 		return {
@@ -105,7 +121,7 @@ export const FavoritesComponents = () => {
 			const response = await api.product.getFavorites({
 				page: activePage,
 				limit: 10,
-				sortParams: sortDirection ? sortDirection : {id: "desc"}, 
+				sortParams: sortDirection ? sortDirection : { id: 'desc' },
 				searchParams: JsonString,
 			});
 			dispatch(setProducts(response.result));
@@ -117,13 +133,13 @@ export const FavoritesComponents = () => {
 	};
 
 	useEffect(() => {
-		if(user && statusGetUser !== 'pending'){
-			fetchData(finalJsonString)
-			dispatch(setModal(''))
+		if (user && statusGetUser !== 'pending') {
+			fetchData(finalJsonString);
+			dispatch(setModal(''));
 		}
-		if(!user && statusGetUser !== 'pending'){
-			dispatch(setModal('login'))
-		} 
+		if (!user && statusGetUser !== 'pending') {
+			dispatch(setModal('login'));
+		}
 		if (products.length > 0) {
 			setTotalPages(Math.ceil(totalPages / 4));
 		}
@@ -133,11 +149,15 @@ export const FavoritesComponents = () => {
 		<div className={s.wrapper}>
 			<h3 className={s.title}>My favorites</h3>
 			<ProductsFilter />
-			<Products filtersEmpty={filtersEmpty} products={products} status={status}  />
+			<Products filtersEmpty={filtersEmpty} products={products} status={status} />
 			<div className={s.pagination}>
-				<Pagination setActivePage={setActivePageFunction} buttons={true} totalPages={totalPages} currentPage={activePage} />
+				<Pagination
+					setActivePage={setActivePageFunction}
+					buttons={true}
+					totalPages={totalPages}
+					currentPage={activePage}
+				/>
 			</div>
-			
 		</div>
 	);
 };

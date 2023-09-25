@@ -110,10 +110,10 @@ const productsFilter = createSlice({
 		searchProducts: (state, action) => {
 			state.searchProductsFilter = action.payload;
 		},
-		setSortDirection:(state, action) => {
-			const obj =  action.payload;
+		setSortDirection: (state, action) => {
+			const obj = action.payload;
 			state.sortDirection = obj.sortDirection;
-			state.activeTitle = obj.activeTitle
+			state.activeTitle = obj.activeTitle;
 		},
 	},
 });
@@ -123,7 +123,7 @@ export const {
 	searchProducts,
 	updateMaxproducts,
 	updateSelectedItemsProsuct,
-	setSortDirection
+	setSortDirection,
 } = productsFilter.actions;
 
 export default productsFilter.reducer;

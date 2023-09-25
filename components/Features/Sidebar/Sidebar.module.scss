@@ -12,13 +12,13 @@
 		overflow-x: hidden;
 		overflow-y: scroll;
 		transform: scaleX(-1);
-		margin-left: 6px;
+		margin-left: 5px;
 	}
 
 	&_inner {
 		overflow-x: hidden;
 		transform: scaleX(-1);
-		padding-left: 17px;
+		padding-left: 15px;
 	}
 
 	&_scroll::-webkit-scrollbar {
