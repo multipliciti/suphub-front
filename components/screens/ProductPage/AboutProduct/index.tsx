@@ -2,7 +2,7 @@
 import s from './AboutProduct.module.scss';
 import Image from 'next/image';
 import pdf_icon from '@/imgs/pdf.svg';
-import test1 from '@/imgs/Product/test1.png';
+import test1 from '@/imgs/Product/ImageTest1.png';
 import test2 from '@/imgs/Product/test2.png';
 import { useState } from 'react';
 import { TableComponent } from './Table';
