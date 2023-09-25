@@ -2,11 +2,9 @@
 import { classNames } from '@/utils/classNames';
 import Image from 'next/image';
 import s from './Pagination.module.scss';
-// import { setActivePage } from '@/redux/slices/marketplace/products';
-import { useAppDispatch } from '@/redux/hooks';
 //imgs
-import arrow_left from '@/imgs/Marketplace/arrow_left.svg';
-import arrow_rigth from '@/imgs/Marketplace/arrow_rigth.svg';
+import arrow_left from '@/imgs/Pagination/arrow_left.svg';
+import arrow_rigth from '@/imgs/Pagination/arrow_rigth.svg';
 
 interface PropsType {
 	currentPage: number;
@@ -15,9 +13,12 @@ interface PropsType {
 	setActivePage: (n: number) => void;
 }
 
-export const Pagination = ({ currentPage, totalPages, buttons, setActivePage  }: PropsType) => {
-	const dispatch = useAppDispatch();
-
+export const Pagination = ({
+	currentPage,
+	totalPages,
+	buttons,
+	setActivePage,
+}: PropsType) => {
 	const pageNumbersRender = (): number[] => {
 		const maxDisplayedPages = 5;
 		const pagesAroundCurrent = Math.floor((maxDisplayedPages - 1) / 2);

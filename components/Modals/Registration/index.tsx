@@ -16,7 +16,7 @@ import close_eye from '@/imgs/Modal/close_eye.svg';
 import modal_done from '@/imgs/Modal/done.svg';
 import invalid_icon from '@/imgs/Modal/invalid_icon.svg';
 import password_invalid from '@/imgs/Modal/password_invalid.svg';
-import password_valid from '@/imgs/Modal/password_valid.svg';
+import password_valid from '@/imgs/Modal/password_invalid.svg';
 import incorrect_email from '@/imgs/Modal/incorrect.svg';
 //Api
 import { Api } from '@/services/';

@@ -7,6 +7,7 @@ import {
 import s from './NoResults.module.scss';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Api } from '@/services';
+import { clearAll } from '@/redux/slices/marketplace/filters';
 
 type PropsType = {
 	filtersEmpty: boolean;
@@ -27,6 +28,7 @@ export const NoResults = ({ filtersEmpty }: PropsType) => {
 
 	const fetchData = async () => {
 		dispatch(setStatus('pending'));
+		dispatch(clearAll());
 		try {
 			const response = await api.product.getProduct({
 				page: 1,
@@ -48,7 +50,6 @@ export const NoResults = ({ filtersEmpty }: PropsType) => {
 			<h3 className={s.title}>No results</h3>
 			{filtersEmpty ? (
 				<p className={s.subtitle}>
-					{' '}
 					Please change your search or clear your filters.
 				</p>
 			) : (
