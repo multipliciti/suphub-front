@@ -42,7 +42,7 @@ workflows:
               only:
                 - develop
           extra-build-args: "--build-arg NEXT_PUBLIC_BASE_URL=${DEV_API_URL} --build-arg NEXT_PUBLIC_CLIENT_HOST=${DEV_NEXT_PUBLIC_CLIENT_HOST}"
-          repo: "${DEV_AWS_ECR_REPO}"
+          repo: "${ECR_FRONT_DEV}"
           tag: "latest,${CIRCLE_SHA1}"
       - patch_deployment:
           name: "deploy-front-dev"
