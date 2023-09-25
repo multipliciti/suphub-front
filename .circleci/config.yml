@@ -30,7 +30,7 @@ jobs:
           aws-region: ${AWS_REGION}
       - run:
           command: |
-            kubectl patch deployment << parameters.deployment-name >> -n << parameters.kubernetes-namespace >> -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"build\":\"${CIRCLE_SHA1}\"}}}}}}"
+            kubectl patch deployment << parameters.deployment-name >> -n << parameters.kubernetes-namespace >> -p "{\"spec\":{\"template\":{\"metadata\":{\"labels\":{\"build\":\"${CIRCLE_SHA1}\"}}}}}"
           name: Patch Deployment
 workflows:
   build-and-deploy-frontend:
