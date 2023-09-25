@@ -1,6 +1,10 @@
 import { ProductFilterItem } from '@/types/products/productFilters';
 import { Char } from '@/types/products/filters';
 
+export function checkCharsEmpty(chars: Char[]): boolean {
+	return chars.length === 0 ? false : true;
+}
+
 export const transformCharData = (charData: Char[]) => {
 	if (charData.length === 0) {
 		return {};
@@ -27,6 +31,19 @@ export function checkFiltersEmpty(filters: ProductFilterItem[]): boolean {
 	});
 }
 
-export function checkCharsEmpty(chars: Char[]): boolean {
-	return chars.length === 0 ? false : true;
+export function createObjFetch(
+	firstArg: string | number | undefined,
+	secondArg: string | number | undefined
+) {
+	const resObj =
+		firstArg || secondArg
+			? {
+					warranty: {
+						...(firstArg ? { gt: firstArg || secondArg } : {}),
+						...(secondArg ? { lt: firstArg || secondArg } : {}),
+					},
+			  }
+			: null;
+
+	return resObj;
 }

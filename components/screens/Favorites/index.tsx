@@ -2,7 +2,6 @@
 import s from './Favorites.module.scss';
 import { ProductsFilter } from './ProductsFilter';
 import { Products } from './Products';
-import { ProductItemType } from '@/types/products/product';
 import { useAppSelector } from '@/redux/hooks';
 import {
 	setActivePage,
@@ -15,7 +14,8 @@ import { Pagination } from '@/components/Features/Pagination';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
-import { checkFiltersEmpty } from '@/utils/productsUtils';
+import { checkFiltersEmpty, createObjFetch } from '@/utils/productsUtils';
+
 export const FavoritesComponents = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
@@ -51,43 +51,17 @@ export const FavoritesComponents = () => {
 		dispatch(setActivePage(n));
 	};
 
-	const jsonStringsUnitPrice =
-		minUnitPrice || minUnitPrice
-			? {
-					moq: {
-						...(minUnitPrice ? { gt: minUnitPrice } : {}),
-						...(maxUnitPrice ? { lt: maxUnitPrice } : {}),
-					},
-			  }
-			: null;
+	const objFetchUnitPrice = createObjFetch(minUnitPrice, maxUnitPrice);
+	const objFetchStringsMoq = createObjFetch(moqMin, moqMax);
+	const objFetchStringWarranty = createObjFetch(warrantyMin, warrantyMax);
 
-	const jsonStringsMoq =
-		moqMin || moqMax
-			? {
-					moq: {
-						...(moqMin ? { gt: moqMin } : {}),
-						...(moqMax ? { lt: moqMax } : {}),
-					},
-			  }
-			: null;
-
-	const jsonStringWarranty =
-		warrantyMin || warrantyMax
-			? {
-					warranty: {
-						...(warrantyMin ? { gt: warrantyMin } : {}),
-						...(warrantyMax ? { lt: warrantyMax } : {}),
-					},
-			  }
-			: null;
-
-	const jsonStringsCountry = countryOfOrigin.map((item: any) => {
+	const objFetchCountry = countryOfOrigin.map((item: any) => {
 		return {
 			countryOfOrigin: { contains: item },
 		};
 	});
 
-	const jsonStringsSearch = searchText
+	const objFetchSearch = searchText
 		? {
 				name: { contains: searchText },
 		  }
@@ -101,12 +75,12 @@ export const FavoritesComponents = () => {
 			: null;
 
 	const finalAttrObj = {
-		...(jsonStringsSearch && { ...jsonStringsSearch }),
-		...(jsonStringsCountry.length > 0 && Object.assign({}, ...jsonStringsCountry)),
-		...(jsonStringsUnitPrice && { ...jsonStringsUnitPrice }),
+		...(objFetchSearch && { ...objFetchSearch }),
+		...(objFetchCountry.length > 0 && Object.assign({}, ...objFetchCountry)),
+		...(objFetchUnitPrice && { ...objFetchUnitPrice }),
 		...(leadTimeObj && { ...leadTimeObj }),
-		...(jsonStringsMoq && { ...jsonStringsMoq }),
-		...(jsonStringWarranty && { ...jsonStringWarranty }),
+		...(objFetchStringsMoq && { ...objFetchStringsMoq }),
+		...(objFetchStringWarranty && { ...objFetchStringWarranty }),
 	};
 
 	const combinedJsonObj = {

@@ -11,9 +11,11 @@ import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
 import { useEffect, useState } from 'react';
 import { Api } from '@/services';
 import { setItemsFilter } from '@/redux/slices/marketplace/filters';
+//utils
 import { transformCharData } from '@/utils/productsUtils';
 import { checkFiltersEmpty } from '@/utils/productsUtils';
 import { checkCharsEmpty } from '@/utils/productsUtils';
+import { createObjFetch } from '@/utils/productsUtils';
 
 export const Marketplace = () => {
 	const dispatch = useAppDispatch();
@@ -52,45 +54,16 @@ export const Marketplace = () => {
 	const subCategoryId = {
 		subCategoryId: activeId,
 	};
-	console.log('filtersEmpty', filtersEmpty);
 
-	const jsonStringsUnitPrice =
-		minUnitPrice || minUnitPrice
-			? {
-					moq: {
-						...(minUnitPrice ? { gt: minUnitPrice } : {}),
-						...(maxUnitPrice ? { lt: maxUnitPrice } : {}),
-					},
-			  }
-			: null;
-
-	const jsonStringsMoq =
-		moqMin || moqMax
-			? {
-					moq: {
-						...(moqMin ? { gt: moqMin } : {}),
-						...(moqMax ? { lt: moqMax } : {}),
-					},
-			  }
-			: null;
-
-	const jsonStringWarranty =
-		warrantyMin || warrantyMax
-			? {
-					warranty: {
-						...(warrantyMin ? { gt: warrantyMin } : {}),
-						...(warrantyMax ? { lt: warrantyMax } : {}),
-					},
-			  }
-			: null;
-
-	const jsonStringsCountry = countryOfOrigin.map((item: any) => {
+	const objFetchUnitPrice = createObjFetch(minUnitPrice, maxUnitPrice);
+	const objFetchStringsMoq = createObjFetch(moqMin, moqMax);
+	const objFetchStringWarranty = createObjFetch(warrantyMin, warrantyMax);
+	const objFetchCountry = countryOfOrigin.map((item: any) => {
 		return {
 			countryOfOrigin: { contains: item },
 		};
 	});
-
-	const jsonStringsSearch = searchText
+	const objFetchSearch = searchText
 		? {
 				name: { contains: searchText },
 		  }
@@ -106,12 +79,12 @@ export const Marketplace = () => {
 	const filanFiltersObj = transformCharData(charData);
 	const finalAttrObj = {
 		...subCategoryId,
-		...(jsonStringsSearch && { ...jsonStringsSearch }),
-		...(jsonStringsCountry.length > 0 && Object.assign({}, ...jsonStringsCountry)),
-		...(jsonStringsUnitPrice && { ...jsonStringsUnitPrice }),
+		...(objFetchSearch && { ...objFetchSearch }),
+		...(objFetchCountry.length > 0 && Object.assign({}, ...objFetchCountry)),
+		...(objFetchUnitPrice && { ...objFetchUnitPrice }),
 		...(leadTimeObj && { ...leadTimeObj }),
-		...(jsonStringsMoq && { ...jsonStringsMoq }),
-		...(jsonStringWarranty && { ...jsonStringWarranty }),
+		...(objFetchStringsMoq && { ...objFetchStringsMoq }),
+		...(objFetchStringWarranty && { ...objFetchStringWarranty }),
 	};
 
 	const combinedJsonObj = {
