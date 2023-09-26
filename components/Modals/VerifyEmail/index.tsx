@@ -6,26 +6,23 @@ import { setModal } from '@/redux/slices/modal';
 import { RegisterUserType } from '@/types/services/auth';
 //imgs
 import modal_close from '@/imgs/Modal/Modal_close.svg';
-import back_btn from '@/imgs/Modal/CheckEmail/back_btn.svg';
-import sheet from '@/imgs/Modal/CheckEmail/sheet.svg';
+import back_btn from '@/imgs/Modal/back_btn.svg';
+import sheet from '@/imgs/Modal/sheet.svg';
 import { Api } from '@/services';
 
 export const VerifyEmail = () => {
-	const api = Api()
+	const api = Api();
 	const dispatch = useAppDispatch();
 	const email = useAppSelector((state) => state.modalSlice.email);
-	const registerFormData = useAppSelector((state)=> state.authSlice.registration) 
+	const registerFormData = useAppSelector((state) => state.authSlice.registration);
 
 	const fetchAuthResend = async (data: RegisterUserType) => {
 		try {
-			
-			const responce = await api.auth.resendAuth(data)
-
+			const responce = await api.auth.resendAuth(data);
 		} catch (error) {
-			console.log('error resendAuth: ',error)
+			console.log('error resendAuth: ', error);
 		}
-		
-	}
+	};
 
 	return (
 		<div className={s.wrapper}>
@@ -61,7 +58,9 @@ export const VerifyEmail = () => {
 					get started.
 				</p>
 
-				<button onClick={()=> fetchAuthResend(registerFormData) }  className={s.btn}>Resend verification email</button>
+				<button onClick={() => fetchAuthResend(registerFormData)} className={s.btn}>
+					Resend verification email
+				</button>
 
 				<p className={s.help}>
 					Need help? <span className={s.contact}> Contact us </span>{' '}

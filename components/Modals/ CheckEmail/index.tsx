@@ -1,15 +1,13 @@
 'use client';
-import React, { useState } from 'react';
 import s from './CheckEmail.module.scss';
 import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Api } from '@/services';
-import { classNames } from '@/utils/classNames';
 import Image from 'next/image';
 //imgs
 import modal_close from '@/imgs/Modal/Modal_close.svg';
-import back_btn from '@/imgs/Modal/CheckEmail/back_btn.svg';
-import sheet from '@/imgs/Modal/CheckEmail/sheet.svg';
+import back_btn from '@/imgs/Modal/back_btn.svg';
+import sheet from '@/imgs/Modal/sheet.svg';
 
 export const CheckEmail = () => {
 	const email = useAppSelector((state) => state.authSlice.resetPasswordEmail);

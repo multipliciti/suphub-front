@@ -2,10 +2,10 @@
 import s from './Header.module.scss';
 import { useAppSelector } from '@/redux/hooks';
 import Image from 'next/image';
-import support_img from '@/imgs/Marketplace/Header/support.svg';
+import support_img from '@/imgs/Marketplace/support.svg';
 
 export const Header = ({}) => {
-	const categories = useAppSelector((state)=> state.sideBarSlice.categories)
+	const categories = useAppSelector((state) => state.sideBarSlice.categories);
 	const activeId = useAppSelector((state) => state.sideBarSlice.activeId);
 
 	const activeItem = categories

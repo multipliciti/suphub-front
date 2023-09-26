@@ -5,7 +5,7 @@ import s from './ProductPage.module.scss';
 import Image from 'next/image';
 import { Api } from '@/services';
 import { spawn } from 'child_process';
-import back_btn from '@/imgs/Modal/CheckEmail/back_btn.svg';
+import back_btn from '@/imgs/Modal/back_btn.svg';
 import { Order } from './Order';
 import { AboutProduct } from './AboutProduct';
 import { classNames } from '@/utils/classNames';
@@ -21,9 +21,9 @@ type PropsType = {
 export const ProductPageComponent = (props: PropsType) => {
 	const api = Api();
 	const { push } = useRouter();
-	const user = useAppSelector((state)=> state.authSlice.user)
-	const statusGetUser = useAppSelector((state)=> state.authSlice.statusGetUser)
-	const { id , backLink} = props;
+	const user = useAppSelector((state) => state.authSlice.user);
+	const statusGetUser = useAppSelector((state) => state.authSlice.statusGetUser);
+	const { id, backLink } = props;
 	const [product, setProduct] = useState<ProductItemType | null>(null);
 	const [status, setStatus] = useState<'loading' | 'notFound' | 'seccess'>(
 		'seccess'
@@ -67,7 +67,7 @@ export const ProductPageComponent = (props: PropsType) => {
 							<AboutProduct product={product} />
 						</div>
 						<div className={s.summery}>
-							<Order user={user} statusGetUser={statusGetUser}/>
+							<Order user={user} statusGetUser={statusGetUser} />
 						</div>
 					</div>
 				</div>
