@@ -1,8 +1,7 @@
 'use client';
 import s from './AboutProduct.module.scss';
 import Image from 'next/image';
-import pdf_icon from '@/imgs/pdf.svg';
-import test1 from '@/imgs/Product/test1.png';
+import test1 from '@/imgs/Product/ImageTest1.png';
 import test2 from '@/imgs/Product/test2.png';
 import { useState } from 'react';
 import { TableComponent } from './Table';
@@ -13,36 +12,41 @@ interface PropsType {
 	product: ProductItemType;
 }
 
-export const AboutProduct = ({product}: PropsType) => {
+export const AboutProduct = ({ product }: PropsType) => {
 	const [activeImg, setActiveImg] = useState<number>(1);
-	const {dynamic_attr} = product;
-	const shipmentPackaging =[
+	const { dynamic_attr } = product;
+	const shipmentPackaging = [
 		{
-			label: "packaging", 
-			value: product.packaging ? product.packaging : "-"
+			label: 'packaging',
+			value: product.packaging ? product.packaging : '-',
 		},
 		{
-			label: "packageInclude", 
-			value: product.packageInclude ?  product.packageInclude : "-"
+			label: 'packageInclude',
+			value: product.packageInclude ? product.packageInclude : '-',
 		},
 		{
-			label: "packageDimension", 
-			value: product.packageDimension ?  product.packageDimension : "-"
+			label: 'packageDimension',
+			value: product.packageDimension ? product.packageDimension : '-',
 		},
 		{
-			label: "packageWeight", 
-			value: product.packageWeight ?  product.packageWeight : "-"
+			label: 'packageWeight',
+			value: product.packageWeight ? product.packageWeight : '-',
 		},
-	]
+	];
 
-	const certification = dynamic_attr.find((el: any)=> el.label === 'Certification')?.value
+	const certification = dynamic_attr.find(
+		(el: any) => el.label === 'Certification'
+	)?.value;
 	const properties = [
-		['Min. Order Quantity', product.moq ? `${product.moq} units` : '-' ],
-		['Factory lead time', product.leadTime ?  `${product.leadTime} days` : '-'],
-		['Warranty', product.warranty ? `${product.warranty} month` : '-' ],
-		['Certification', certification ?  `${certification}` : '-'],
-		['Country of origin', product.countryOfOrigin ? `${product.countryOfOrigin}` : '-']
-	]
+		['Min. Order Quantity', product.moq ? `${product.moq} units` : '-'],
+		['Factory lead time', product.leadTime ? `${product.leadTime} days` : '-'],
+		['Warranty', product.warranty ? `${product.warranty} month` : '-'],
+		['Certification', certification ? `${certification}` : '-'],
+		[
+			'Country of origin',
+			product.countryOfOrigin ? `${product.countryOfOrigin}` : '-',
+		],
+	];
 
 	const images = [
 		{
@@ -104,7 +108,10 @@ export const AboutProduct = ({product}: PropsType) => {
 					</div>
 				</div>
 			</div>
-			<TableComponent shipmentPackaging={shipmentPackaging} dynamic_attr={dynamic_attr} />
+			<TableComponent
+				shipmentPackaging={shipmentPackaging}
+				dynamic_attr={dynamic_attr}
+			/>
 		</div>
 	);
 };
