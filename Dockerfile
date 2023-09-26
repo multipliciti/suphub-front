@@ -26,7 +26,7 @@ ENV NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
 ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 
-RUN if [[ ! -z "${NODE_ENV}" ]] && [[ ${NODE_ENV} != development ]]; then npm install && npm run build; fi
+RUN if [[ ! -z "${NODE_ENV}" ]] && [[ ${NODE_ENV} != development ]]; then npm i --save-dev @types/lodash.debounce && npm install && npm run build; fi
 
 EXPOSE 3000
 ENTRYPOINT ["bash", "-c", "if [[ ! -z ${NODE_ENV} ]] && [[ ${NODE_ENV} != development ]]; then npm run start; else npm install; npm run dev; fi"]
