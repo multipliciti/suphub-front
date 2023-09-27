@@ -3,7 +3,7 @@ import s from './MapList.module.scss';
 import { useAppSelector } from '@/redux/hooks';
 import Image from 'next/image';
 import { useAppDispatch } from '@/redux/hooks';
-import { setParentActiveId, setActiveId } from '@/redux/slices/sideBar';
+import { setParentActiveId, setActiveId } from '@/redux/slices/sideBars/sideBar';
 import { classNames } from '@/utils/classNames';
 //imgs
 import itemActive from '@/imgs/SideBar/itemActive.svg';

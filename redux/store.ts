@@ -2,13 +2,14 @@ import { configureStore } from '@reduxjs/toolkit';
 import { createWrapper } from 'next-redux-wrapper';
 import { ThunkAction, Action } from '@reduxjs/toolkit';
 import modalSlice from './slices/modal';
-import sideBarSlice from './slices/sideBar';
+import sideBarSlice from './slices/sideBars/sideBar';
 import filtersSlice from './slices/marketplace/filters';
 import marketplaceProductFilter from './slices/marketplace/productsFilter';
 import marketplaceProduct from './slices/marketplace/products';
 import favoritesProduct from './slices/favorites/products';
-import favoritesProductFilter from './slices/favorites/productsFilter'
+import favoritesProductFilter from './slices/favorites/productsFilter';
 import authSlice from './slices/auth';
+import buyerSidebarSlice from './slices/sideBars/buyerSidebar';
 
 export function makeStore() {
 	return configureStore({
@@ -20,7 +21,8 @@ export function makeStore() {
 			marketplaceProductFilter,
 			marketplaceProduct,
 			favoritesProduct,
-			favoritesProductFilter
+			favoritesProductFilter,
+			buyerSidebarSlice,
 		},
 	});
 }

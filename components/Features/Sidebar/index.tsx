@@ -8,13 +8,12 @@ import { classNames } from '@/utils/classNames';
 import { CategoryItem } from '@/types/sideBar';
 import { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
-import { setCategories } from '@/redux/slices/sideBar';
+import { setCategories } from '@/redux/slices/sideBars/sideBar';
 import { Api } from '@/services';
 
 export const Sidebar = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
-	const toggle = useAppSelector((state) => state.sideBarSlice.sideBar);
 	const isSideBar = useAppSelector((state) => state.sideBarSlice.sideBar);
 
 	const fetchCategories = async () => {
@@ -35,7 +34,7 @@ export const Sidebar = () => {
 	}, []);
 
 	return (
-		<div className={classNames(s.wrapper, toggle && s.wrapper_active)}>
+		<div className={classNames(s.wrapper, isSideBar && s.wrapper_active)}>
 			<Toggle />
 			<div className={s.wrapper_scroll}>
 				<div className={s.wrapper_inner}>

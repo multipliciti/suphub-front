@@ -23,10 +23,6 @@ export const Pagination = ({
 		const maxDisplayedPages = 5;
 		const pagesAroundCurrent = Math.floor((maxDisplayedPages - 1) / 2);
 
-		if (totalPages <= maxDisplayedPages) {
-			return Array.from({ length: totalPages }, (_, index) => index + 1);
-		}
-
 		const startPage = Math.max(1, currentPage - pagesAroundCurrent);
 		const endPage = Math.min(totalPages, startPage + maxDisplayedPages - 1);
 
@@ -34,13 +30,12 @@ export const Pagination = ({
 			{ length: endPage - startPage + 1 },
 			(_, index) => startPage + index
 		);
-
-		if (currentPage - pagesAroundCurrent > 1) {
-			renderedPages = [1, -1, ...renderedPages];
+		if (totalPages <= maxDisplayedPages) {
+			return Array.from({ length: totalPages }, (_, index) => index + 1);
 		}
 
-		if (currentPage + pagesAroundCurrent < totalPages) {
-			renderedPages = [...renderedPages, -1, totalPages];
+		if (currentPage - pagesAroundCurrent > 1) {
+			renderedPages = [1, -1, ...renderedPages.slice(1)];
 		}
 
 		return renderedPages;

@@ -131,7 +131,7 @@ export const Marketplace = () => {
 		getFiltersFunction();
 		fetchData();
 		if (products.length > 0) {
-			setTotalPages(Math.ceil(totalPages / 4));
+			setTotalPages(100);
 		}
 	}, [activePage, productsFilter, charData, activeId]);
 

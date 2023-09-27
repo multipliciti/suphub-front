@@ -19,7 +19,7 @@ import { checkFiltersEmpty, createObjFetch } from '@/utils/productsUtils';
 export const FavoritesComponents = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
-	const [totalPages, setTotalPages] = useState<number>(2);
+	const [totalPages, setTotalPages] = useState<number>(0);
 	const user = useAppSelector((state) => state.authSlice.user);
 	const statusGetUser = useAppSelector((state) => state.authSlice.statusGetUser);
 	const products = useAppSelector((state) => state.favoritesProduct.products);
@@ -119,7 +119,7 @@ export const FavoritesComponents = () => {
 			dispatch(setModal('login'));
 		}
 		if (products.length > 0) {
-			setTotalPages(Math.ceil(totalPages / 4));
+			setTotalPages(100);
 		}
 	}, [activePage, productsFilter, statusGetUser, user, sortDirection]);
 

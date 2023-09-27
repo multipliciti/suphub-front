@@ -1,14 +1,18 @@
 'use client';
 import { classNames } from '@/utils/classNames';
 import { useAppSelector } from '@/redux/hooks';
-import { Sidebar } from '@/components/Features/Sidebar';
+import { BuyerSidebarComponent } from '@/components/Features/BuyerSidebar';
 
-export const IsSideBarContainer = ({ children }: { children: React.ReactNode }) => {
-	const isSideBar = useAppSelector((state) => state.sideBarSlice.sideBar);
+export const IsBuyerSideBarContainer = ({
+	children,
+}: {
+	children: React.ReactNode;
+}) => {
+	const isSideBar = useAppSelector((state) => state.buyerSidebarSlice.sideBar);
 
 	return (
 		<div>
-			<Sidebar />
+			<BuyerSidebarComponent />
 			<div
 				className={classNames(
 					'content_container',
