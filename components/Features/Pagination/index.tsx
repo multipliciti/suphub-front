@@ -20,22 +20,35 @@ export const Pagination = ({
 	setActivePage,
 }: PropsType) => {
 	const pageNumbersRender = (): number[] => {
+		// Determine the maximum number of displayed pages and the number of pages around the current page
 		const maxDisplayedPages = 5;
 		const pagesAroundCurrent = Math.floor((maxDisplayedPages - 1) / 2);
 
-		const startPage = Math.max(1, currentPage - pagesAroundCurrent);
-		const endPage = Math.min(totalPages, startPage + maxDisplayedPages - 1);
+		// Calculate the starting page, taking into account the number of pages around the current page
+		let startPage = Math.max(1, currentPage - pagesAroundCurrent);
 
-		let renderedPages: number[] = Array.from(
-			{ length: endPage - startPage + 1 },
-			(_, index) => startPage + index
-		);
-		if (totalPages <= maxDisplayedPages) {
-			return Array.from({ length: totalPages }, (_, index) => index + 1);
+		// Calculate the ending page, considering the maximum number of displayed pages
+		let endPage = Math.min(totalPages, startPage + maxDisplayedPages - 1);
+
+		// If the ending page reaches the total number of pages, shift the starting page backward
+		if (endPage === totalPages) {
+			startPage = Math.max(1, totalPages - maxDisplayedPages + 1);
 		}
 
-		if (currentPage - pagesAroundCurrent > 1) {
+		// Create an array of displayed pages from the starting page to the ending page
+		let renderedPages: number[] = Array.from(
+			// Calculate the number of displayed buttons
+			{ length: endPage - startPage },
+			(_, index) => startPage + index
+		);
+
+		// If the starting page is greater than 2, add "1" and "..." before the first displayed page
+		if (startPage > 2) {
 			renderedPages = [1, -1, ...renderedPages.slice(1)];
+		}
+		// If the starting page is 2, add "1" before the first displayed page
+		else if (startPage === 2) {
+			renderedPages = [1, ...renderedPages];
 		}
 
 		return renderedPages;
@@ -74,7 +87,7 @@ export const Pagination = ({
 						{pageNumber === -1 ? '...' : pageNumber}
 					</span>
 				))}
-				<span className={s.page}>...</span>
+				{currentPage > 1 && <span className={s.page}>...</span>}
 				<span className={s.page} onClick={() => setActivePage(totalPages)}>
 					{totalPages}
 				</span>

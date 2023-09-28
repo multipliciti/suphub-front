@@ -20,7 +20,7 @@ import { createObjFetch } from '@/utils/productsUtils';
 export const Marketplace = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
-	const [totalPages, setTotalPages] = useState<number>(2);
+	const [totalPages, setTotalPages] = useState<number>(0);
 	const products = useAppSelector((state) => state.marketplaceProduct.products);
 	const activePage = useAppSelector((state) => state.marketplaceProduct.activePage);
 	const total = useAppSelector((state) => state.marketplaceProduct.total);
@@ -112,6 +112,7 @@ export const Marketplace = () => {
 			dispatch(setProducts(response.result));
 			dispatch(setTotal(response.total));
 			dispatch(setStatus('seccess'));
+			setTotalPages(response.totalPages < 1 ? 1 : response.totalPages);
 		} catch (error) {
 			console.error('Error:', error);
 			dispatch(setStatus('rejected'));
@@ -130,9 +131,6 @@ export const Marketplace = () => {
 	useEffect(() => {
 		getFiltersFunction();
 		fetchData();
-		if (products.length > 0) {
-			setTotalPages(100);
-		}
 	}, [activePage, productsFilter, charData, activeId]);
 
 	return (

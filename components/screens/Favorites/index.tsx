@@ -102,6 +102,7 @@ export const FavoritesComponents = () => {
 				sortParams: sortDirection ? sortDirection : { id: 'desc' },
 				searchParams: JsonString,
 			});
+			setTotalPages(response.totalPages < 1 ? 1 : response.totalPages);
 			dispatch(setProducts(response.result));
 			dispatch(setTotal(response.total));
 			dispatch(setStatus('seccess'));
@@ -117,9 +118,6 @@ export const FavoritesComponents = () => {
 		}
 		if (!user && statusGetUser !== 'pending') {
 			dispatch(setModal('login'));
-		}
-		if (products.length > 0) {
-			setTotalPages(100);
 		}
 	}, [activePage, productsFilter, statusGetUser, user, sortDirection]);
 

@@ -1,7 +1,7 @@
 'use client';
 import { classNames } from '@/utils/classNames';
 import { useAppSelector } from '@/redux/hooks';
-import { Sidebar } from '@/components/Features/Sidebar';
+import { Sidebar } from '@/components/Features/SidebarMarketplace';
 
 export const IsSideBarContainer = ({ children }: { children: React.ReactNode }) => {
 	const isSideBar = useAppSelector((state) => state.sideBarSlice.sideBar);

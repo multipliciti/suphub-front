@@ -78,6 +78,14 @@
 			transition: background-color 0.3s ease;
 			padding: 10px 12px;
 
+			color: #143644;
+
+			font-family: Lato;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 20px;
+
 			&_active {
 				background-color: #f0f2fe;
 			}
