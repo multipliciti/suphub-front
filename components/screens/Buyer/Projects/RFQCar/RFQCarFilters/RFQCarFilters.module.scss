@@ -1,7 +1,77 @@
 .wrapper {
-	margin-top: 24px;
 	display: flex;
 	gap: 12px;
+	margin-top: 24px;
+
+	.request {
+		transition: background-color 0.3s ease, color 0.4s ease;
+		cursor: pointer;
+		min-width: 138px;
+		padding: 8px 12px;
+		outline: none;
+		border: none;
+		background-color: transparent;
+		border-radius: 8px;
+		border: 1px solid #2b1694;
+
+		color: #2b1694;
+
+		font-family: Lato;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 20px;
+
+		&_active {
+			background-color: #2b1694;
+			color: #fff;
+		}
+
+		&_wrapper {
+			position: relative;
+		}
+
+		&_options {
+			box-shadow: 0px 10px 25px 0px rgba(53, 53, 53, 0.12);
+			transition: opacity 0.3s ease;
+			position: absolute;
+			z-index: 2;
+			overflow: hidden;
+			top: 40px;
+			background-color: #fff;
+			border: 1px solid #ebebeb;
+			border-radius: 8px;
+			opacity: 0;
+			pointer-events: none;
+
+			&_active {
+				pointer-events: all;
+				opacity: 1;
+			}
+		}
+
+		&_item {
+			transition: background-color 0.4s ease;
+			padding: 8px 12px;
+			width: 100%;
+			text-align: center;
+			cursor: pointer;
+			outline: none;
+			border: none;
+			background-color: transparent;
+
+			font-family: Lato;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 600;
+			line-height: 20px;
+		}
+
+		&_item:hover {
+			color: #2b1694;
+			background-color: #f0f2fe;
+		}
+	}
 
 	@media (max-width: 890px) {
 		flex-wrap: wrap;
