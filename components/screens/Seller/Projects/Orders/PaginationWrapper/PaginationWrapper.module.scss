@@ -1,0 +1,26 @@
+.wrapper {
+	margin-top: 24px;
+	display: flex;
+	justify-content: flex-end;
+
+	.arrow {
+		cursor: pointer;
+		pointer-events: all;
+
+		&_disable {
+			cursor: not-allowed;
+			pointer-events: none;
+		}
+	}
+}
+
+.step {
+	margin-right: 10px;
+	color: #344054;
+
+	font-family: Lato;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 18px;
+}

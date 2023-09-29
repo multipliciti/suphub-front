@@ -10,6 +10,7 @@ import favoritesProduct from './slices/favorites/products';
 import favoritesProductFilter from './slices/favorites/productsFilter';
 import authSlice from './slices/auth';
 import buyerSidebarSlice from './slices/sideBars/buyerSidebar';
+import sellerSidebarSlice from './slices/sideBars/sellerSidebar';
 
 export function makeStore() {
 	return configureStore({
@@ -23,6 +24,7 @@ export function makeStore() {
 			favoritesProduct,
 			favoritesProductFilter,
 			buyerSidebarSlice,
+			sellerSidebarSlice,
 		},
 	});
 }

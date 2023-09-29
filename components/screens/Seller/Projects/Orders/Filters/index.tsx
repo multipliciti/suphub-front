@@ -1,7 +1,7 @@
 'use client';
 import s from './Filters.module.scss';
-import { useRef, useState } from 'react';
 import { classNames } from '@/utils/classNames';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import search_icon from '@/imgs/search.svg';
 import arrow_icon from '@/imgs/arrow.svg';
@@ -158,7 +158,7 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 				<input
 					ref={inputSearchRef}
 					className={s.label_search}
-					placeholder="Search product by product name, PO, manufacture name  "
+					placeholder="Search product by product name, PO, manufacture name"
 					type="text"
 					name="search"
 					id="search"

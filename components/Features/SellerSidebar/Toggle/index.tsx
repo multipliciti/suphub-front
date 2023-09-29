@@ -1,14 +1,13 @@
 'use client';
 import s from './Toggle.module.scss';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setBuyerSideBar } from '@/redux/slices/sideBars/buyerSidebar';
+import { setBuyerSideBar } from '@/redux/slices/sideBars/sellerSidebar';
 import Image from 'next/image';
-
 import toggle_img from '@/imgs/SideBar/toggle.svg';
 
 export const Toggle = () => {
 	const dispatch = useAppDispatch();
-	const isSideBar = useAppSelector((state) => state.buyerSidebarSlice.sideBar);
+	const isSideBar = useAppSelector((state) => state.sellerSidebarSlice.sideBar);
 	return (
 		<div onClick={() => dispatch(setBuyerSideBar(!isSideBar))} className={s.wrapper}>
 			<Image
