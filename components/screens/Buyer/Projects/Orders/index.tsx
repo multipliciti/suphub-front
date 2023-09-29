@@ -2,6 +2,7 @@
 import { Filters } from './Filters';
 import { useState } from 'react';
 import { ProjectsTable } from './ProjectsTable';
+import { PaginationWrapper } from './PaginationWrapper';
 
 export const Orders = () => {
 	//store filters-inputs value
@@ -11,6 +12,8 @@ export const Orders = () => {
 		status: [],
 		orderType: [],
 	});
+
+	const [currentPage, setCurrentPage] = useState<number>(1);
 
 	const columns = [
 		{ title: 'PO#', key: 'PO#' },
@@ -29,7 +32,7 @@ export const Orders = () => {
 			'Issue Date': '02/26/2023',
 			Manufacturer: 'Example',
 			Product: 'Garage Door',
-			'Order Type': 'Purchase order',
+			'Order Type': 'Sample order',
 			'Subtotal (USD)': '1000$',
 			Status: 'Payment pending',
 			'Est.Delivery': 'Est.Delivery',
@@ -131,6 +134,11 @@ export const Orders = () => {
 			<div>
 				<Filters stateInputs={stateInputs} setStateInputs={setStateInputs} />
 				<ProjectsTable columns={columns} data={data} />
+				<PaginationWrapper
+					currentPage={currentPage}
+					setActivePage={setCurrentPage}
+					totalPages={20}
+				/>
 			</div>
 		);
 	}

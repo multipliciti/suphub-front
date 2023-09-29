@@ -102,7 +102,7 @@ export const FavoritesComponents = () => {
 				sortParams: sortDirection ? sortDirection : { id: 'desc' },
 				searchParams: JsonString,
 			});
-			setTotalPages(response.totalPages < 1 ? 1 : response.totalPages);
+			setTotalPages(5);
 			dispatch(setProducts(response.result));
 			dispatch(setTotal(response.total));
 			dispatch(setStatus('seccess'));

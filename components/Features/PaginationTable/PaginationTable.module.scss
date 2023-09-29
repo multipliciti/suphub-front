@@ -1,0 +1,39 @@
+.wrapper {
+	display: flex;
+	margin: 0px 12px;
+}
+
+.ellipsis {
+	background-color: red;
+	margin: 0px 8px;
+}
+
+.page {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 20px;
+	height: 20px;
+	border-radius: 4px;
+	cursor: pointer;
+
+	color: #64748b;
+	font-family: Inter;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 20px;
+}
+
+.active {
+	width: 20px;
+	height: 20px;
+	background-color: #f1f5f9;
+
+	color: black;
+	font-family: Inter;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 20px;
+}

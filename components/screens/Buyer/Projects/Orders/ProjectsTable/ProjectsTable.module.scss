@@ -81,4 +81,22 @@
 			color: #0ba98a;
 		}
 	}
+	&_order {
+		display: flex;
+		align-items: center;
+
+		.dot {
+			display: inline-block;
+			width: 6px;
+			height: 6px;
+			border-radius: 2px;
+			margin-right: 6px;
+			&_blue {
+				background-color: #4259ed;
+			}
+			&_grey {
+				background-color: #94a3b8;
+			}
+		}
+	}
 }

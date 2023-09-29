@@ -58,6 +58,25 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 												</span>
 											</span>
 										)}
+
+										{/* Order Type */}
+										{column.key === 'Order Type' && (
+											<span className={s.td_order}>
+												<span
+													className={classNames(
+														s.dot,
+														row[column.title] === 'Purchase order' && s.dot_blue,
+														row[column.title] === 'Sample order' && s.dot_grey
+													)}
+												></span>
+												{row[column.key]}
+											</span>
+										)}
+
+										{/* other type */}
+										{column.key !== 'Order Type' &&
+											column.key !== 'Status' &&
+											column.key !== 'Product' && <span>{row[column.key]}</span>}
 									</td>
 								</>
 							))}
