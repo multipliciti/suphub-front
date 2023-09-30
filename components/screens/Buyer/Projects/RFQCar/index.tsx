@@ -19,7 +19,7 @@ export const RFQCar = () => {
 					stateInputs={stateInputs}
 					setStateInputs={setStateInputs}
 				/>
-				<NoResult />
+				{/* <NoResult /> */}
 			</div>
 		);
 	}
