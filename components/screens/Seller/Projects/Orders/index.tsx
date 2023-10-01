@@ -134,11 +134,11 @@ export const Orders = () => {
 			<div>
 				<Filters stateInputs={stateInputs} setStateInputs={setStateInputs} />
 				<ProjectsTable columns={columns} data={data} />
-				<PaginationWrapper
+				{/* <PaginationWrapper
 					currentPage={currentPage}
 					setActivePage={setCurrentPage}
 					totalPages={20}
-				/>
+				/> */}
 			</div>
 		);
 	}
