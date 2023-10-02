@@ -1,0 +1,46 @@
+.wrapper {
+	padding: 20px;
+
+	.btn {
+		&_back {
+			background-color: transparent;
+			border: none;
+			outline: none;
+			cursor: pointer;
+			max-width: min-content;
+			align-items: center;
+			display: flex;
+			gap: 4px;
+		}
+
+		&_text {
+			color: #2b1694;
+
+			font-family: Lato;
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 24px;
+		}
+	}
+
+	.info {
+		display: flex;
+		gap: 20px;
+
+		&_code {
+			color: #0d0d0e;
+
+			font-family: Lato;
+			font-size: 18px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 24px;
+		}
+
+		&_status {
+			border-radius: 4px;
+			padding: 2px 8px;
+		}
+	}
+}
