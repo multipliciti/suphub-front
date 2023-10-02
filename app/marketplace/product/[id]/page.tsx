@@ -1,4 +1,4 @@
-import { ProductPageComponent } from '@/components/Screens/ProductPage';
+import { ProductPageComponent } from '@/components/screens/ProductPage';
 
 type PropsType = {
 	params: {
