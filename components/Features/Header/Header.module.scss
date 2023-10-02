@@ -69,7 +69,6 @@
 	border-radius: 4px;
 
 	color: #cbd5e1;
-	font-family: 'Lato', sans-serif;
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 900;
@@ -127,7 +126,6 @@
 					&_name {
 						color: #0f172a;
 
-						font-family: 'Lato', sans-serif;
 						font-size: 16px;
 						font-style: normal;
 						font-weight: 400;
@@ -137,7 +135,6 @@
 					&_person {
 						color: #64748b;
 
-						font-family: 'Lato', sans-serif;
 						font-size: 12px;
 						font-style: normal;
 						font-weight: 400;
@@ -155,7 +152,6 @@
 
 					color: #0f172a;
 
-					font-family: 'Lato', sans-serif;
 					font-size: 16px;
 					font-style: normal;
 					font-weight: 400;
@@ -178,14 +174,11 @@
 
 				.text {
 					color: var(--alerts-error-red, #f52419);
-					font-variant-numeric: lining-nums proportional-nums;
 
-					/* Body/b1 Regular */
-					font-family: 'Lato', sans-serif;
 					font-size: 16px;
 					font-style: normal;
 					font-weight: 400;
-					line-height: 24px; /* 150% */
+					line-height: 24px;
 				}
 			}
 		}
