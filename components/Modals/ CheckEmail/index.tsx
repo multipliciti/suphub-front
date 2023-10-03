@@ -1,14 +1,15 @@
 'use client';
+import React, { useState } from 'react';
 import s from './CheckEmail.module.scss';
 import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { Api } from '@/services';
+import { classNames } from '@/utils/classNames';
 import Image from 'next/image';
 //imgs
 import modal_close from '@/imgs/Modal/Modal_close.svg';
 import back_btn from '@/imgs/Modal/back_btn.svg';
 import sheet from '@/imgs/Modal/sheet.svg';
-
 export const CheckEmail = () => {
 	const email = useAppSelector((state) => state.authSlice.resetPasswordEmail);
 	const dispatch = useAppDispatch();
@@ -17,6 +18,7 @@ export const CheckEmail = () => {
 	const resend = async () => {
 		try {
 			const response = await api.auth.recovery({ email });
+
 			dispatch(setModal('checkEmail'));
 		} catch (error: any) {
 			console.log('error', error);
@@ -48,7 +50,7 @@ export const CheckEmail = () => {
 				<p className={s.description}>
 					If you don’t receive it right away, check your spam folder
 				</p>
-				<button onClick={() => resend()} className={s.resend}>
+				<button onClick={() => dispatch(setModal('forgotPassword'))} className={s.resend}>
 					Resend email
 				</button>
 				<p className={s.contacts}>

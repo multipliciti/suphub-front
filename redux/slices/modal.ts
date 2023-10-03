@@ -8,7 +8,8 @@ interface CounterState {
 		| 'checkEmail'
 		| 'reset sucsess'
 		| 'registration'
-		| 'verifyEmail';
+		| 'verifyEmail'
+		| 'addToRFQCart';
 	email: string;
 }
 
@@ -31,6 +32,7 @@ const modalSlice = createSlice({
 				| 'reset sucsess'
 				| 'registration'
 				| 'verifyEmail'
+				| 'addToRFQCart'
 			>
 		) {
 			state.modal = action.payload;
