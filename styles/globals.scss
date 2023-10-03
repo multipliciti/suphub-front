@@ -1,6 +1,10 @@
 @import 'reset';
 @import 'fonts';
 
+body {
+	font-family: 'Lato', sans-serif;
+}
+
 .header_container {
 	padding: 10px 25px;
 	background-color: #0f172a;

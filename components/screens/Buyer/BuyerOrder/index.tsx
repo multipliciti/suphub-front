@@ -13,6 +13,7 @@ export const BuyerOrder = ({ id }: TypeProps) => {
 	const product = {
 		status: 'Payment pending',
 		code: 'Order PO#S0983',
+		status_info: 'pending',
 	};
 
 	return (

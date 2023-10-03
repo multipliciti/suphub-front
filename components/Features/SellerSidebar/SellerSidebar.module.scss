@@ -1,8 +1,8 @@
 .wrapper {
-	padding: 24px;
 	transition: width 0.5s ease;
 	background: #fff;
-	padding: 24px 16px;
+	padding: 24px 10px;
+	padding-top: 10px;
 	height: calc(100vh - 60px);
 	position: fixed;
 	width: 0px;
@@ -20,8 +20,10 @@
 	&_inner {
 		overflow-x: hidden;
 		transform: scaleX(-1);
+		padding-top: 18px;
 		padding-left: 15px;
-		padding-right: 10px;
+		padding-right: 15px;
+		padding-bottom: 20px;
 	}
 
 	&_scroll::-webkit-scrollbar {
@@ -69,6 +71,7 @@
 }
 
 .box_weika {
+	transition: box-shadow 0.5s ease;
 	padding: 12px 16px;
 	border-radius: 8px;
 	border: 0.5px solid #cbd5e1;
@@ -128,4 +131,8 @@
 		font-weight: 600;
 		line-height: 18px;
 	}
+}
+
+.box_weika:hover {
+	box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, 0.18);
 }

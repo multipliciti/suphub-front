@@ -24,7 +24,6 @@ export const Nav = ({ activeDisplay, setActiveDisplay }: TypeProps) => {
 
 	return (
 		<div className={s.wrapper}>
-			<h1 className={s.wrapper_title}>Project test</h1>
 			<div className={s.nav}>
 				{navList.map((el, ind) => {
 					return (

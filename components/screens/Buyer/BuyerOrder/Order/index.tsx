@@ -1,11 +1,20 @@
 'use client';
 import s from './Order.module.scss';
 import { classNames } from '@/utils/classNames';
+import { StatusOrder } from './StatusOrder';
+import { Info } from './Info';
 import Image from 'next/image';
 import back_btn from '@/imgs/Buyer&Seller/back_btn.svg';
+
 interface Product {
 	product: any;
 }
+
+// interface PropsType {
+// 	code: string;
+// 	info_status: string;
+// 	status: string;
+// }
 
 export const Order = ({ product }: Product) => {
 	return (
@@ -15,17 +24,12 @@ export const Order = ({ product }: Product) => {
 				<span className={s.btn_text}>Back</span>
 			</button>
 
-			<div className={s.info}>
-				<span className={s.info_code}>{product.code}</span>
-				<span
-					className={classNames(
-						s.info_status,
-						product.status === 'Payment pending' && product.status_panding
-					)}
-				>
-					{product.status}
-				</span>
-			</div>
+			<StatusOrder
+				code={product.code}
+				status_info={product.status_info}
+				status={product.status}
+			/>
+			<Info />
 		</div>
 	);
 };
