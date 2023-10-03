@@ -9,11 +9,11 @@ import { Api } from '@/services';
 import { Project, RfqItem } from '@/types/products/rfq';
 import search_img from '@/imgs/Marketplace/search.svg';
 import modal_close from '@/imgs/Modal/Modal_close.svg';
-import back_btn from '@/imgs/Modal/AddToRfqCart/back_btn.svg';
-import black_arrow from '@/imgs/Modal/AddToRfqCart/arrow_right.svg';
-import white_arrow from '@/imgs/Modal/AddToRfqCart/arrow_right_white.svg';
-import plus_sign from '@/imgs/Modal/AddToRfqCart/plus_sign.svg';
-import plus_sign_white from '@/imgs/Modal/AddToRfqCart/plus_sign_white.svg';
+import back_btn from '@/imgs/Modal/back_btn_add_to_rfq.svg';
+import black_arrow from '@/imgs/Modal/arrow_right.svg';
+import white_arrow from '@/imgs/Modal/arrow_right_white.svg';
+import plus_sign from '@/imgs/Modal/plus_sign.svg';
+import plus_sign_white from '@/imgs/Modal/plus_sign_white.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
 
 
@@ -36,7 +36,24 @@ export const AddToRFQCart = () => {
 
 	const INITIAL_STEP = 1;
 
-	const [projects, setProjects] = useState<Project[] | any>([]);
+	// TODO: replace with real data
+	// const [projects, setProjects] = useState<Project[] | any>([]);
+	const [projects, setProjects] = useState<Project[] | any>([
+		{
+			id: 1,
+			name: 'My best project',
+			type: 'singleFamily',
+			budget: 16000,
+			floorArea: 16000,
+			street: 'No. 1, Shoufeng Rd',
+			city: 'New York',
+			state: 'New York State',
+			country: 'USA',
+			zipcode: ' 10001',
+			updatedAt: '2023-08-29 07:33:34.131',
+			createdAt: '2023-08-29 07:33:34.131',
+		},
+	]);
 	const [step, setStep] = useState<number>(INITIAL_STEP);
 	const [rfqs, setRfqs] = useState<RfqItem[]>([]);
 	const [selectedRfqs, setSelectedRfqs] = useState<Record<number, boolean>>(
@@ -150,21 +167,24 @@ export const AddToRFQCart = () => {
 									project.name.toLowerCase().includes(searchQuery.toLowerCase()),
 								)
 								.map((project: Project) => (
-									// TODO fix ?
-									<button onClick={() => toRfq(project.id, product?.subCategoryId)} className={s.btnItem}>
-										<p>{project.name}</p>
-										<Image
-											src={black_arrow}
-											alt='black_arrow'
-											width={24}
-											height={24}
-										/>
-									</button>
-								))}
-							<button onClick={() => ''} className={s.btnAdd}>
-								Create a new project
-								<Image src={white_arrow} alt='white_arrow' width={24} height={24} />
-							</button>
+										<button onClick={() => product && toRfq(project.id, product.subCategoryId)} className={s.btnItem}>
+											<p>{project.name}</p>
+											<Image
+												src={black_arrow}
+												alt='black_arrow'
+												width={20}
+												height={20}
+											/>
+										</button>
+									),
+								)}
+							{/*TODO Change to real url*/}
+							<Link href='/404' className='noUnderline'>
+								<button onClick={() => ''} className={s.btnAdd}>
+									Create a new project
+									<Image src={white_arrow} alt='white_arrow' width={20} height={20} />
+								</button>
+							</Link>
 						</>
 					)}
 
@@ -186,8 +206,8 @@ export const AddToRFQCart = () => {
 										<Image
 											src={selectedRfqs[product.id] ? password_valid : plus_sign}
 											alt='plus_sign'
-											width={24}
-											height={24}
+											width={20}
+											height={20}
 										/>
 									</button>
 								))}
@@ -208,8 +228,8 @@ export const AddToRFQCart = () => {
 												: plus_sign_white
 										}
 										alt='white_plus_sign'
-										width={24}
-										height={24}
+										width={20}
+										height={20}
 									/>
 								</button>
 							</Link>
