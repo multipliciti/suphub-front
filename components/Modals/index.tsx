@@ -7,9 +7,11 @@ import { CheckEmail } from './ CheckEmail';
 import { Registration } from './Registration';
 import { classNames } from '@/utils/classNames';
 import { VerifyEmail } from './VerifyEmail';
+import { AddToRFQCart } from '@/components/Modals/AddToRFQCart';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
+
 	return (
 		<>
 			<div className={classNames(s.wrapper, modal === 'login' && s.wrapper_active)}>
@@ -49,6 +51,15 @@ export const Modal = () => {
 				)}
 			>
 				<VerifyEmail />
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'addToRFQCart' && s.wrapper_active
+				)}
+			>
+				<AddToRFQCart />
 			</div>
 		</>
 	);
