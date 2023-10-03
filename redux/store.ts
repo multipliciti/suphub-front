@@ -11,6 +11,7 @@ import favoritesProductFilter from './slices/favorites/productsFilter';
 import authSlice from './slices/auth';
 import buyerSidebarSlice from './slices/sideBars/buyerSidebar';
 import sellerSidebarSlice from './slices/sideBars/sellerSidebar';
+import productSlice from './slices/marketplace/product';
 
 export function makeStore() {
 	return configureStore({
@@ -25,6 +26,7 @@ export function makeStore() {
 			favoritesProductFilter,
 			buyerSidebarSlice,
 			sellerSidebarSlice,
+			productSlice,
 		},
 	});
 }

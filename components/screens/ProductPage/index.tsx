@@ -12,6 +12,7 @@ import { classNames } from '@/utils/classNames';
 import { ProductItemType } from '@/types/products/product';
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
+import { setProduct } from '@/redux/slices/marketplace/product';
 
 type PropsType = {
 	id: number;
@@ -19,12 +20,13 @@ type PropsType = {
 };
 
 export const ProductPageComponent = (props: PropsType) => {
+	const dispatch = useAppDispatch();
 	const api = Api();
 	const { push } = useRouter();
 	const user = useAppSelector((state) => state.authSlice.user);
 	const statusGetUser = useAppSelector((state) => state.authSlice.statusGetUser);
 	const { id, backLink } = props;
-	const [product, setProduct] = useState<ProductItemType | null>(null);
+	const [localProduct, setLocalProduct] = useState<ProductItemType | null>(null);
 	const [status, setStatus] = useState<'loading' | 'notFound' | 'seccess'>(
 		'seccess'
 	);
@@ -32,7 +34,8 @@ export const ProductPageComponent = (props: PropsType) => {
 	const fetchProductOne = async (id: number) => {
 		try {
 			const response = await api.product.getProductOne(id);
-			setProduct(response);
+			setLocalProduct(response);
+			dispatch(setProduct(response));
 			setStatus('seccess');
 		} catch (error: any) {
 			if (error.response.data.statusCode == 404) {
@@ -51,7 +54,7 @@ export const ProductPageComponent = (props: PropsType) => {
 
 			{status === 'notFound' && <span>Product not found</span>}
 
-			{status === 'seccess' && product !== null && (
+			{status === 'seccess' && localProduct !== null && (
 				<div className={s.container}>
 					<div className={s.header}>
 						<div className={s.nav}>
@@ -64,7 +67,7 @@ export const ProductPageComponent = (props: PropsType) => {
 
 					<div className={s.content}>
 						<div className={s.product_wrapper}>
-							<AboutProduct product={product} />
+							<AboutProduct product={localProduct} />
 						</div>
 						<div className={s.summery}>
 							<Order user={user} statusGetUser={statusGetUser} />
