@@ -150,7 +150,8 @@ export const AddToRFQCart = () => {
 									project.name.toLowerCase().includes(searchQuery.toLowerCase()),
 								)
 								.map((project: Project) => (
-									<button onClick={() => toRfq(project.id, product.subCategoryId)} className={s.btnItem}>
+									// TODO fix ?
+									<button onClick={() => toRfq(project.id, product?.subCategoryId)} className={s.btnItem}>
 										<p>{project.name}</p>
 										<Image
 											src={black_arrow}
