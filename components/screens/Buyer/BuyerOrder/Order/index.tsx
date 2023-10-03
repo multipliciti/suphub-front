@@ -5,16 +5,11 @@ import { StatusOrder } from './StatusOrder';
 import { Info } from './Info';
 import Image from 'next/image';
 import back_btn from '@/imgs/Buyer&Seller/back_btn.svg';
+import { ProgressOrder } from './ProgressOrder';
 
 interface Product {
 	product: any;
 }
-
-// interface PropsType {
-// 	code: string;
-// 	info_status: string;
-// 	status: string;
-// }
 
 export const Order = ({ product }: Product) => {
 	return (
@@ -30,6 +25,7 @@ export const Order = ({ product }: Product) => {
 				status={product.status}
 			/>
 			<Info />
+			<ProgressOrder />
 		</div>
 	);
 };
