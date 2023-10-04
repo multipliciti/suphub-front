@@ -32,7 +32,7 @@
 	.title {
 		color: #0f172a;
 		text-align: center;
-		font-family: Lato;
+
 		font-size: 24px;
 		font-style: normal;
 		font-weight: 700;
@@ -42,7 +42,7 @@
 
 	.subtitle {
 		color: #64748b;
-		font-family: Lato;
+
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 400;
@@ -50,7 +50,7 @@
 
 		.signup {
 			color: #4259ed;
-			font-family: Lato;
+
 			font-size: 16px;
 			font-style: normal;
 			font-weight: 700;
@@ -87,7 +87,6 @@
 	&_text {
 		color: #020617;
 
-		font-family: Lato;
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 400;
@@ -104,10 +103,10 @@
 
 	.email {
 		position: relative;
-		
+
 		&_text {
 			color: #0f172a;
-			font-family: Lato;
+
 			font-size: 14px;
 			font-style: normal;
 			font-weight: 600;
@@ -117,7 +116,7 @@
 
 		&_input {
 			color: #0f172a;
-			font-family: Lato;
+
 			font-size: 16px;
 			font-style: normal;
 			font-weight: 400;
@@ -134,14 +133,14 @@
 			width: 80%;
 		}
 
-		&_input::placeholder{
-			color: var(--new-grey-400, #94A3B8);
+		&_input::placeholder {
+			color: var(--new-grey-400, #94a3b8);
 			font-variant-numeric: lining-nums proportional-nums;
-			font-family: Lato;
+
 			font-size: 16px;
 			font-style: normal;
 			font-weight: 400;
-			line-height: 24px; 
+			line-height: 24px;
 		}
 
 		&_label {
@@ -180,7 +179,7 @@
 		margin-top: 12px;
 		&_text {
 			color: #0f172a;
-			font-family: Lato;
+
 			font-size: 14px;
 			font-style: normal;
 			font-weight: 600;
@@ -192,7 +191,7 @@
 			display: flex;
 			align-items: center;
 			color: #0f172a;
-			font-family: Lato;
+
 			font-size: 16px;
 			font-style: normal;
 			font-weight: 400;
@@ -209,14 +208,14 @@
 			width: 80%;
 		}
 
-		&_input::placeholder{
-			color: var(--new-grey-400, #94A3B8);
+		&_input::placeholder {
+			color: var(--new-grey-400, #94a3b8);
 			font-variant-numeric: lining-nums proportional-nums;
-			font-family: Lato;
+
 			font-size: 16px;
 			font-style: normal;
 			font-weight: 400;
-			line-height: 24px; 
+			line-height: 24px;
 		}
 
 		&_label {
@@ -249,7 +248,7 @@
 		display: inline-block;
 		margin-top: 8px;
 		color: #4259ed;
-		font-family: Lato;
+
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 700;
@@ -259,7 +258,7 @@
 
 	.submit {
 		color: #fff;
-		font-family: Lato;
+
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 700;
@@ -294,7 +293,6 @@
 		gap: 4px;
 		color: #f52419;
 
-		font-family: Lato;
 		font-size: 14px;
 		font-style: normal;
 		font-weight: 400;

@@ -5,8 +5,7 @@
 	cursor: pointer;
 
 	&:hover {
-		.add{
-			
+		.add {
 			opacity: 1;
 			pointer-events: all;
 		}
@@ -17,14 +16,14 @@
 	&_wrapper {
 		padding: 12px;
 		position: relative;
-	
-		.add{
+
+		.add {
 			opacity: 0;
 			pointer-events: none;
 
 			bottom: 0;
 			position: absolute;
-			background-color: #425AEE;
+			background-color: #425aee;
 			display: flex;
 			width: 244.5px;
 			height: 44px;
@@ -37,16 +36,14 @@
 			border: none;
 			border-radius: 0 0 10px 10px;
 			transition: transform 0.3s ease, opacity 0.3s ease;
-			&_text{
-				color: #FFF;
+			&_text {
+				color: #fff;
 
-				font-family: Lato;
 				font-size: 16px;
 				font-style: normal;
 				font-weight: 700;
 				line-height: 24px;
 			}
-			
 		}
 	}
 
@@ -73,7 +70,6 @@
 	padding-bottom: 20px;
 
 	.title {
-		
 		-webkit-box-orient: vertical;
 		-webkit-line-clamp: 2;
 		align-self: stretch;
@@ -83,7 +79,6 @@
 		overflow: hidden;
 		color: #0f172a;
 
-		font-family: Lato;
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 700;
@@ -92,7 +87,7 @@
 
 	.price {
 		color: #0f172a;
-		font-family: Lato;
+
 		font-size: 20px;
 		font-style: normal;
 		font-weight: 700;
@@ -104,7 +99,7 @@
 			margin-bottom: 16px;
 			padding-left: 2px;
 			color: #0f172a;
-			font-family: Lato;
+
 			font-size: 14px;
 			font-style: normal;
 			font-weight: 400;
@@ -128,7 +123,6 @@
 		color: #64748b;
 		text-overflow: ellipsis;
 
-		font-family: Lato;
 		font-size: 12px;
 		font-style: normal;
 		font-weight: 400;
@@ -140,7 +134,6 @@
 		color: #0f172a;
 		text-overflow: ellipsis;
 
-		font-family: Lato;
 		font-size: 12px;
 		font-style: normal;
 		font-weight: 400;

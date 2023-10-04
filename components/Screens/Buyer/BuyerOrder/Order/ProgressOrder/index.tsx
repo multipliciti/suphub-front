@@ -14,7 +14,7 @@ export const ProgressOrder = () => {
 	const stepRefs = Array.from({ length: 8 }, (_, index) =>
 		useRef<HTMLDivElement | null>(null)
 	);
-	const [activeDisplay, setActiveDisplay] = useState<number>(0);
+	const [activeDisplay, setActiveDisplay] = useState<number[]>([0]);
 	const [activeStep, setActiveStep] = useState<number>(3);
 	// States for wrapper height and active progress
 	const [heightWrapper, setHeightWrapper] = useState<number>(0);
@@ -41,6 +41,18 @@ export const ProgressOrder = () => {
 			}
 		}, 300);
 	}, [activeDisplay]);
+
+	const setActiveDisplayFunction = (n: number) => {
+		setActiveDisplay((prevState) => {
+			if (prevState.includes(n)) {
+				// Select 1 from the array, since it is already present
+				return prevState.filter((item) => item !== n);
+			} else {
+				// Add 1 to the array since it is missing
+				return [...prevState, n];
+			}
+		});
+	};
 
 	return (
 		<div ref={wrapperRef} className={s.wrapper}>
@@ -128,16 +140,16 @@ export const ProgressOrder = () => {
 								<span>kkdkkdkd</span>
 							</span>
 							<span
-								onClick={() => setActiveDisplay(activeDisplay === 1 ? 0 : 1)}
+								onClick={() => setActiveDisplayFunction(1)}
 								className={s.details}
 							>
 								<span className={s.details_title}>
-									{activeDisplay === 1 ? 'Hide details' : 'Show details'}
+									{activeDisplay.includes(1) ? 'Hide details' : 'Show details'}
 								</span>
 								<Image
 									className={classNames(
 										s.details_icon,
-										activeDisplay === 1 && s.details_icon_active
+										activeDisplay.includes(1) && s.details_icon_active
 									)}
 									src={show_details_icon}
 									alt="toggle_img"

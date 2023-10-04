@@ -27,10 +27,9 @@
 		border: none;
 		outline: none;
 		background-color: transparent;
-		
+
 		color: black;
 
-		font-family: Lato;
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 400;
@@ -40,7 +39,6 @@
 	&_input::placeholder {
 		color: #cbd5e1;
 
-		font-family: Lato;
 		font-size: 14px;
 		font-style: normal;
 		font-weight: 400;
@@ -53,7 +51,7 @@
 	gap: 12px;
 	align-items: center;
 	width: 100%;
-	
+
 	@media (max-width: 900px) {
 		flex-wrap: wrap;
 	}

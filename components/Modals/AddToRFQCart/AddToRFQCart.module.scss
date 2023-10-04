@@ -26,7 +26,6 @@
 			color: #0f172a;
 			padding: 0 0 0 24px;
 
-			font-family: Lato;
 			font-size: 24px;
 			font-style: normal;
 			font-weight: 700;
@@ -38,7 +37,6 @@
 		color: #0f172a;
 		text-align: center;
 
-		font-family: Lato;
 		font-size: 24px;
 		font-style: normal;
 		font-weight: 700;
@@ -67,7 +65,6 @@
 			color: #0f172a;
 			text-align: center;
 
-			font-family: Lato;
 			font-size: 24px;
 			font-style: normal;
 			font-weight: 700;
@@ -80,7 +77,6 @@
 			color: #64748b;
 			text-align: center;
 
-			font-family: Lato;
 			font-size: 16px;
 			font-style: normal;
 			font-weight: 400;
@@ -102,7 +98,6 @@
 				outline: none;
 				border-radius: 8px;
 
-				font-family: Lato;
 				font-size: 16px;
 				font-style: normal;
 				font-weight: 700;
@@ -117,13 +112,13 @@
 			&Item {
 				background-color: transparent;
 				border: 1px solid #cbd5e1;
-				color: #0f172a;			
+				color: #0f172a;
 			}
 
 			&Add {
 				cursor: pointer;
 				background: #4259ed;
-				color: #fff;				
+				color: #fff;
 				&:disabled {
 					background: #cbd5e1;
 					color: #0f172a;
@@ -135,7 +130,6 @@
 		.help {
 			color: #64748b;
 
-			font-family: Lato;
 			font-size: 16px;
 			font-style: normal;
 			font-weight: 400;
@@ -170,7 +164,6 @@
 		color: #0f172a;
 		margin: 35px 0px 24px;
 
-		font-family: Lato;
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 700;
@@ -188,7 +181,6 @@
 
 		color: black;
 
-		font-family: Lato;
 		font-size: 16px;
 		font-style: normal;
 		font-weight: 400;
@@ -198,7 +190,6 @@
 	&_input::placeholder {
 		color: #cbd5e1;
 
-		font-family: Lato;
 		font-size: 14px;
 		font-style: normal;
 		font-weight: 400;
