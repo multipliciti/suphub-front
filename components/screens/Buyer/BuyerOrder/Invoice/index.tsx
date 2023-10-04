@@ -2,5 +2,5 @@
 import s from './Invoice.module.scss';
 
 export const Invoice = () => {
-	return <div className={s.wrapper}></div>;
+	return <div className={s.wrapper}>invoice</div>;
 };

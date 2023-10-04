@@ -7,12 +7,13 @@ interface TypeProps {
 	id: number;
 }
 
-export const SellerOrder = ({ id }: TypeProps) => {
+export const BuyerOrder = ({ id }: TypeProps) => {
 	//using id we will must make fetch
 
 	const product = {
 		status: 'Payment pending',
 		code: 'Order PO#S0983',
+		status_info: 'pending',
 	};
 
 	return (

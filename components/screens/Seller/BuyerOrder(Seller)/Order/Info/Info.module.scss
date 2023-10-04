@@ -1,0 +1,63 @@
+.wrapper {
+	display: flex;
+	gap: 16px;
+
+	.item {
+		min-width: 170px;
+		border: 1px solid #e2e8f0;
+		border-radius: 8px;
+		background-color: #fff;
+		padding: 16px;
+		display: flex;
+		gap: 8px;
+		box-shadow: 4px 6px 12px 0px rgba(184, 191, 198, 0.16);
+
+		&_info {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+
+			&_title {
+				color: #58707a;
+
+				font-size: 12px;
+				font-style: normal;
+				font-weight: 400;
+				line-height: 18px;
+			}
+
+			&_value {
+				color: #143644;
+
+				font-size: 14px;
+				font-style: normal;
+				font-weight: 700;
+				line-height: 20px;
+			}
+		}
+	}
+}
+
+.icon {
+	display: inline-block;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
+
+	&_remainig {
+		background-color: #fff7f6;
+	}
+	&_paid {
+		background-color: #c4f1da;
+	}
+
+	&_total {
+		background-color: #e8ebfd;
+	}
+	&_delivey {
+		background-color: #e8ebed;
+	}
+}
