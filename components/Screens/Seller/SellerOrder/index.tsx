@@ -1,5 +1,5 @@
 'use client';
-import s from './BuyerOrder.module.scss';
+import s from './SellerOrder.module.scss';
 import { Invoice } from './Invoice';
 import { Order } from './Order';
 
@@ -7,7 +7,7 @@ interface TypeProps {
 	id: number;
 }
 
-export const BuyerOrder = ({ id }: TypeProps) => {
+export const SellerOrder = ({ id }: TypeProps) => {
 	//using id we will must make fetch
 
 	const product = {

@@ -3,6 +3,7 @@
 	flex-direction: column;
 	gap: 38px;
 	position: relative;
+	overflow: hidden;
 
 	.progress {
 		position: absolute;
@@ -91,6 +92,7 @@
 			&_active {
 				border: 2px solid #2b1694;
 				color: #2b1694;
+				background-color: #f8fafc;
 			}
 
 			&_done {

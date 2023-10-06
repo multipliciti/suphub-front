@@ -24,12 +24,16 @@ export const ProgressOrder = () => {
 	const [heightWrapper, setHeightWrapper] = useState<number>(0);
 	const [heightActiveProgress, setHeightActiveProgress] = useState<number>(0);
 
+	// Set the wrapper height
+	useEffect(() => {
+		if (wrapperRef.current) {
+			setHeightWrapper(wrapperRef.current.offsetHeight);
+		}
+	}, [activeStep, stepRefs]);
+
 	//Set heightActiveProgress height asynchronously Since the animation (Show details) takes time, determining the height needs to be done after its completion.
 	useEffect(() => {
 		setTimeout(() => {
-			if (wrapperRef.current) {
-				setHeightWrapper(wrapperRef.current.offsetHeight);
-			}
 			// Check for a link to the active step and wrapper
 			if (stepRefs[activeStep - 1].current && wrapperRef.current) {
 				const activeStepTop =
@@ -85,7 +89,7 @@ export const ProgressOrder = () => {
 							activeStep > 1 && s.step_number_done
 						)}
 					>
-						{activeStep <= 1 ? (
+						{activeStep < 1 ? (
 							<span>1</span>
 						) : (
 							<Image src={done_icon} alt="done_icon" width={16} height={16} />
@@ -139,7 +143,7 @@ export const ProgressOrder = () => {
 									activeStep >= 2 && s.step_title_confirmed
 								)}
 							>
-								<span>Deposit due</span>
+								<span>Production</span>
 							</span>
 							<span
 								onClick={() => setActiveDisplayFunction(2)}
@@ -223,6 +227,7 @@ export const ProgressOrder = () => {
 			</div>
 
 			{/* step 4 */}
+
 			<div className={s.step}>
 				<div
 					className={classNames(
@@ -310,7 +315,7 @@ export const ProgressOrder = () => {
 									activeStep >= 5 && s.step_title_confirmed
 								)}
 							>
-								<span>Pre-shipment inspection</span>
+								<span>Payment due</span>
 							</span>
 							<span
 								onClick={() => setActiveDisplayFunction(5)}
@@ -332,36 +337,6 @@ export const ProgressOrder = () => {
 							</span>
 						</div>
 						<PaymentDue index={5} activeDisplay={activeDisplay} />
-					</div>
-				</div>
-			</div>
-
-			<div className={s.step}>
-				<div
-					className={classNames(
-						s.step_wrapper,
-						activeStep >= 6 && s.step_wrapper_active
-					)}
-				>
-					<span
-						ref={stepRefs[5]}
-						className={classNames(
-							s.step_number,
-							activeStep === 6 && s.step_number_active,
-							activeStep > 6 && s.step_number_done
-						)}
-					>
-						6
-					</span>
-					<div className={s.step_info}>
-						<span
-							className={classNames(
-								s.step_title,
-								activeStep >= 6 && s.step_title_confirmed
-							)}
-						>
-							kkdkkdkd
-						</span>
 					</div>
 				</div>
 			</div>

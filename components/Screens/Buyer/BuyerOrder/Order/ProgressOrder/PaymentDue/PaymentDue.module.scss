@@ -4,6 +4,7 @@
 	border-radius: 8px;
 	box-shadow: 4px 6px 12px 0px rgba(184, 191, 198, 0.16);
 	border: 1px solid #e7e9ef;
+
 	transition: all 0.3s ease;
 	opacity: 0;
 	pointer-events: none;
@@ -18,9 +19,7 @@
 	}
 
 	.title {
-		margin-bottom: 16px;
 		color: #143644;
-
 		font-size: 14px;
 		font-style: normal;
 		font-weight: 400;
@@ -28,14 +27,13 @@
 	}
 
 	.btn {
+		display: block;
+		margin-left: auto;
+		margin-top: 16px;
+		padding: 8px 20px;
 		border: none;
 		border-radius: 4px;
-		display: flex;
-		margin-left: auto;
-		padding: 8px 20px;
-		background-color: #2b1694;
 		background: #2b1694;
-
 		color: #fff;
 
 		font-size: 14px;
