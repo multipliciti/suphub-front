@@ -16,7 +16,6 @@ import plus_sign from '@/imgs/Modal/plus_sign.svg';
 import plus_sign_white from '@/imgs/Modal/plus_sign_white.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
 
-
 export const AddToRFQCart = () => {
 	const dispatch = useAppDispatch();
 	const product = useAppSelector((state) => state.productSlice.product);
@@ -36,29 +35,10 @@ export const AddToRFQCart = () => {
 
 	const INITIAL_STEP = 1;
 
-	// TODO: replace with real data
-	// const [projects, setProjects] = useState<Project[] | any>([]);
-	const [projects, setProjects] = useState<Project[] | any>([
-		{
-			id: 1,
-			name: 'My best project',
-			type: 'singleFamily',
-			budget: 16000,
-			floorArea: 16000,
-			street: 'No. 1, Shoufeng Rd',
-			city: 'New York',
-			state: 'New York State',
-			country: 'USA',
-			zipcode: ' 10001',
-			updatedAt: '2023-08-29 07:33:34.131',
-			createdAt: '2023-08-29 07:33:34.131',
-		},
-	]);
+	const [projects, setProjects] = useState<Project[] | any>([]);
 	const [step, setStep] = useState<number>(INITIAL_STEP);
 	const [rfqs, setRfqs] = useState<RfqItem[]>([]);
-	const [selectedRfqs, setSelectedRfqs] = useState<Record<number, boolean>>(
-		{},
-	);
+	const [selectedRfqs, setSelectedRfqs] = useState<Record<number, boolean>>({});
 
 	const handleNextStep = () => {
 		setStep((prevStep) => prevStep + 1);
@@ -95,12 +75,12 @@ export const AddToRFQCart = () => {
 		fetchRfq(projectId, subCategoryId);
 		handleNextStep();
 	};
-	const patchRfq = async (product: RfqItem) => {
-		await api.rfq.updateRfq(product.id, {
-			projectId: product.projectId,
-			subCategoryId: product.subCategoryId,
+	const postRfqOption = async (rfq: RfqItem, product) => {
+		await api.rfqOption.create({
+			productId: product.id,
+			rfqId: rfq.id,
 		});
-		setSelectedRfqs({ ...selectedRfqs, [product.id]: true });
+		setSelectedRfqs({ ...selectedRfqs, [rfq.id]: true });
 	};
 
 	useEffect(() => {
@@ -138,24 +118,24 @@ export const AddToRFQCart = () => {
 						}}
 						className={s.back}
 					>
-						<Image src={back_btn} alt='back_btn' width={24} height={24} />
+						<Image src={back_btn} alt="back_btn" width={24} height={24} />
 						<span className={s.back_text}>Back</span>
 					</div>
 				)}
 				{step === 1 && <h3 className={s.title}>Choose Projects</h3>}
 				<span onClick={closeModal} className={s.close}>
-					<Image src={modal_close} alt='modal_close' width={15} height={15} />
+					<Image src={modal_close} alt="modal_close" width={15} height={15} />
 				</span>
 			</div>
 			<div className={s.content}>
-				<label className={s.search_label} htmlFor='search'>
-					<Image src={search_img} alt='search_img' width={24} height={24} />
+				<label className={s.search_label} htmlFor="search">
+					<Image src={search_img} alt="search_img" width={24} height={24} />
 					<input
 						className={s.search_input}
 						placeholder={defineSearchPlaceholder(step)}
 						value={searchQuery}
-						id='search'
-						type='text'
+						id="search"
+						type="text"
 						onChange={handleSearchQueryChange}
 					/>
 				</label>
@@ -164,25 +144,34 @@ export const AddToRFQCart = () => {
 						<>
 							{projects
 								.filter((project: Project) =>
-									project.name.toLowerCase().includes(searchQuery.toLowerCase()),
+									project.name.toLowerCase().includes(searchQuery.toLowerCase())
 								)
 								.map((project: Project) => (
-										<button onClick={() => product && toRfq(project.id, product.subCategoryId)} className={s.btnItem}>
-											<p>{project.name}</p>
-											<Image
-												src={black_arrow}
-												alt='black_arrow'
-												width={20}
-												height={20}
-											/>
-										</button>
-									),
-								)}
+									<button
+										onClick={() =>
+											product && toRfq(project.id, product.subCategoryId)
+										}
+										className={s.btnItem}
+									>
+										<p>{project.name}</p>
+										<Image
+											src={black_arrow}
+											alt="black_arrow"
+											width={20}
+											height={20}
+										/>
+									</button>
+								))}
 							{/*TODO Change to real url*/}
-							<Link href='/404' className='noUnderline'>
+							<Link href="/404" className="noUnderline">
 								<button onClick={() => ''} className={s.btnAdd}>
 									Create a new project
-									<Image src={white_arrow} alt='white_arrow' width={20} height={20} />
+									<Image
+										src={white_arrow}
+										alt="white_arrow"
+										width={20}
+										height={20}
+									/>
 								</button>
 							</Link>
 						</>
@@ -191,28 +180,26 @@ export const AddToRFQCart = () => {
 					{step === 2 && (
 						<>
 							{rfqs
-								.filter((product) =>
-									product.productName
-										.toLowerCase()
-										.includes(searchQuery.toLowerCase()),
+								.filter((rfq) =>
+									rfq.productName.toLowerCase().includes(searchQuery.toLowerCase())
 								)
-								.map((product: RfqItem) => (
+								.map((rfq: RfqItem) => (
 									<button
-										onClick={() => patchRfq(product)}
-										disabled={selectedRfqs[product.id]}
+										onClick={() => postRfqOption(rfq, product)}
+										disabled={selectedRfqs[rfq.id]}
 										className={s.btnItem}
 									>
-										<p>{product.productName}</p>
+										<p>{rfq.productName}</p>
 										<Image
-											src={selectedRfqs[product.id] ? password_valid : plus_sign}
-											alt='plus_sign'
+											src={selectedRfqs[rfq.id] ? password_valid : plus_sign}
+											alt="plus_sign"
 											width={20}
 											height={20}
 										/>
 									</button>
 								))}
 							{/*TODO Change to real url*/}
-							<Link href='/404' className='noUnderline'>
+							<Link href="/404" className="noUnderline">
 								<button
 									onClick={() => {
 										closeModal();
@@ -227,7 +214,7 @@ export const AddToRFQCart = () => {
 												? plus_sign
 												: plus_sign_white
 										}
-										alt='white_plus_sign'
+										alt="white_plus_sign"
 										width={20}
 										height={20}
 									/>
