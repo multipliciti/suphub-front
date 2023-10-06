@@ -34,7 +34,6 @@ export const AddToRFQCart = () => {
 	};
 
 	const INITIAL_STEP = 1;
-
 	const [projects, setProjects] = useState<Project[] | any>([]);
 	const [step, setStep] = useState<number>(INITIAL_STEP);
 	const [rfqs, setRfqs] = useState<RfqItem[]>([]);
@@ -75,7 +74,7 @@ export const AddToRFQCart = () => {
 		fetchRfq(projectId, subCategoryId);
 		handleNextStep();
 	};
-	const postRfqOption = async (rfq: RfqItem, product) => {
+	const postRfqOption = async (rfq: RfqItem, product: any) => {
 		await api.rfqOption.create({
 			productId: product.id,
 			rfqId: rfq.id,
