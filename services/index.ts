@@ -6,6 +6,7 @@ import { ProjectApi } from './projectApi';
 import { RfqApi } from './rfqApi';
 import axios from 'axios';
 import { GetServerSidePropsContext, NextPageContext } from 'next';
+import { RfqOptionApi } from '@/services/rfqOptionApi';
 
 export type ApiReturnType = {
 	sendFormStepOne(): unknown;
@@ -38,6 +39,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		sideBar: sideBarApi(instance),
 		project: ProjectApi(instance),
 		rfq: RfqApi(instance),
+		rfqOption: RfqOptionApi(instance)
 	};
 
 	return apis;

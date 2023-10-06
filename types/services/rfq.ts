@@ -28,11 +28,11 @@ export interface RfqUpdateData {
 	cover?: string;
 }
 export interface RfqOption {
-	size: string;
-	quantity: number;
-	unit: string;
-	price: number;
+	size?: string;
+	quantity?: number;
+	unit?: string;
+	price?: number;
 	productId: number;
 	rfqId: number;
-	status: string;
+	status?: string;
 }

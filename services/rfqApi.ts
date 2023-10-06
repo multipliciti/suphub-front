@@ -46,14 +46,4 @@ export const RfqApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async rfqOption(data: RfqOption) {
-		try {
-			const url = `/rfq/option`;
-			const response = await instance.post(url, data);
-			return response;
-		} catch (error) {
-			console.error('AddToRfqCart error:', error);
-			throw error;
-		}
-	},
 });
