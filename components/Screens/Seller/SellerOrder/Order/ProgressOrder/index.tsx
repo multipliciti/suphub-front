@@ -18,6 +18,8 @@ export const ProgressOrder = () => {
 	const stepRefs = Array.from({ length: 8 }, (_, index) =>
 		useRef<HTMLDivElement | null>(null)
 	);
+	//To re-render and recalculate the height of the progress bar
+	const [rerenderProgress, setRerenderProgress] = useState<boolean>(false);
 	const [activeDisplay, setActiveDisplay] = useState<number[]>([0]);
 	const [activeStep, setActiveStep] = useState<number>(5);
 	// States for wrapper height and active progress
@@ -44,7 +46,7 @@ export const ProgressOrder = () => {
 				if (activeStepTop) setHeightActiveProgress(activeStepTop - wrapperTop);
 			}
 		}, 300);
-	}, [activeDisplay]);
+	}, [activeDisplay, rerenderProgress, setRerenderProgress]);
 
 	const setActiveDisplayFunction = (n: number) => {
 		setActiveDisplay((prevState) => {
@@ -143,7 +145,7 @@ export const ProgressOrder = () => {
 									activeStep >= 2 && s.step_title_confirmed
 								)}
 							>
-								<span>Production</span>
+								<span>Deposit due</span>
 							</span>
 							<span
 								onClick={() => setActiveDisplayFunction(2)}
@@ -221,7 +223,12 @@ export const ProgressOrder = () => {
 								/>
 							</span>
 						</div>
-						<Production index={3} activeDisplay={activeDisplay} />
+						<Production
+							rerenderProgress={rerenderProgress}
+							setRerenderProgress={setRerenderProgress}
+							index={3}
+							activeDisplay={activeDisplay}
+						/>
 					</div>
 				</div>
 			</div>
