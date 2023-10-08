@@ -4,13 +4,18 @@ import Image from 'next/image';
 import { classNames } from '@/utils/classNames';
 import test from '@/imgs/Product/test2.png';
 import { useState } from 'react';
-
 interface PropsType {
 	activeDisplay: number[];
 	index: number;
+	rerenderProgress: boolean;
+	setRerenderProgress: (n: boolean) => void;
 }
-
-export const Production = ({ activeDisplay, index }: PropsType) => {
+export const Production = ({
+	activeDisplay,
+	index,
+	rerenderProgress,
+	setRerenderProgress,
+}: PropsType) => {
 	const [testShow, setTest] = useState<boolean>(false);
 	const [newMessage, setNewMessage] = useState<boolean>(false);
 	const [formData, setFormData] = useState<string>('');
@@ -107,7 +112,10 @@ export const Production = ({ activeDisplay, index }: PropsType) => {
 				{!testShow && !newMessage && (
 					<>
 						<button
-							onClick={() => setNewMessage(!newMessage)}
+							onClick={() => {
+								setRerenderProgress(!rerenderProgress);
+								setNewMessage(!newMessage);
+							}}
 							className={s.buttons_left}
 						>
 							Decline & add feedback
@@ -119,11 +127,18 @@ export const Production = ({ activeDisplay, index }: PropsType) => {
 				)}
 				{!testShow && newMessage && (
 					<>
-						<button onClick={() => setNewMessage(false)} className={s.buttons_left}>
+						<button
+							onClick={() => {
+								setRerenderProgress(!rerenderProgress);
+								setNewMessage(false);
+							}}
+							className={s.buttons_left}
+						>
 							Cancel
 						</button>
 						<button
 							onClick={() => {
+								setRerenderProgress(!rerenderProgress);
 								setNewMessage(false);
 								setTest(!testShow);
 							}}
