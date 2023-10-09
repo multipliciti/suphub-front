@@ -7,11 +7,17 @@
 .photo {
 	position: relative;
 
+	&_wrapper {
+		border: 2px solid black;
+	}
+
 	&_img {
 		height: 500px;
 		width: 500px;
 	}
+
 	&_remove {
+		z-index: 100;
 		right: -21px;
 		top: -15px;
 		cursor: pointer;

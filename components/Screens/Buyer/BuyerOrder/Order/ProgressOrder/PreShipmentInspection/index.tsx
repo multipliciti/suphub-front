@@ -25,115 +25,126 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 	];
 
 	return (
-		<div
-			className={classNames(
-				s.wrapper,
-				activeDisplay.includes(index) && s.wrapper_active
-			)}
-		>
-			<span className={s.data}>01/05/2023</span>
+		<>
+			<div
+				className={classNames(
+					s.data_wrapper,
+					!activeDisplay.includes(index) && s.data_active
+				)}
+			>
+				<p>01/05/2023</p>
+			</div>
 
-			<form className={s.form}>
-				{/* choice type */}
-				<div className={s.form_chapter}>
-					<div className={s.block}>
-						<h5 className={s.title}>Freight type</h5>
-					</div>
-					<div className={classNames(s.block, s.options)}>
-						{optionsArr.map((option, ind) => {
-							return (
-								<span
-									key={ind}
-									className={classNames(
-										s.options_type,
-										option.active && s.options_type_active
-									)}
-								>
-									{option.title}
-								</span>
-							);
-						})}
-					</div>
-				</div>
-				{/* input amount */}
-				<div className={s.form_chapter}>
-					<div className={s.block}>
-						<h5 className={s.title}>Shipment invoice amount</h5>
-						<p className={s.subtitle}>If invoice included shipment, please skip</p>
-					</div>
-					<div className={s.block}>
-						<p className={s.price}>500$</p>
-					</div>
-				</div>
-				{/* pdf */}
-				<div className={s.form_chapter}>
-					<div className={s.block}>
-						<h5 className={s.title}>Upload documents</h5>
-						<p className={s.subtitle}>Bill of lading or other freight document</p>
-					</div>
-					<div className={classNames(s.block, s.pdf)}>
-						<div className={s.pdf_description}>
-							<>
-								<span className={s.pdf_title}>File_Name.pdf</span>
-								<span className={s.pdf_size}>6.9 Mb</span>
-							</>
+			<div
+				className={classNames(
+					s.wrapper,
+					activeDisplay.includes(index) && s.wrapper_active
+				)}
+			>
+				<span className={s.data}>01/05/2023</span>
+
+				<form className={s.form}>
+					{/* choice type */}
+					<div className={s.form_chapter}>
+						<div className={s.block}>
+							<h5 className={s.title}>Freight type</h5>
+						</div>
+						<div className={classNames(s.block, s.options)}>
+							{optionsArr.map((option, ind) => {
+								return (
+									<span
+										key={ind}
+										className={classNames(
+											s.options_type,
+											option.active && s.options_type_active
+										)}
+									>
+										{option.title}
+									</span>
+								);
+							})}
 						</div>
 					</div>
-				</div>
-				{/* Images */}
-				<div className={s.form_chapter}>
-					<div className={s.block}>
-						<h5 className={s.title}>Upload images</h5>
+					{/* input amount */}
+					<div className={s.form_chapter}>
+						<div className={s.block}>
+							<h5 className={s.title}>Shipment invoice amount</h5>
+							<p className={s.subtitle}>If invoice included shipment, please skip</p>
+						</div>
+						<div className={s.block}>
+							<p className={s.price}>500$</p>
+						</div>
 					</div>
-					<div className={classNames(s.block, s.photo)}>
-						{photos?.map((image, ind) => {
-							return (
-								<span className={s.photo_wrapper}>
-									<Image
-										onClick={() => {
-											dispatch(setPhotoShow(image));
-											dispatch(setModal('showPhoto'));
-										}}
-										className={s.photo_img}
-										key={ind}
-										src={image}
-										alt="Image"
-										width={60}
-										height={60}
-									/>
-								</span>
-							);
-						})}
-					</div>
-				</div>
-
-				<div className={s.buttons}>
-					{testShow && (
-						<>
-							<div className={s.status}>
-								<span className={s.status_paid}>Shipment paid</span>
-								<span
-									onClick={() => setTestShow(!testShow)}
-									className={s.status_approved}
-								>
-									Milestone approved
-								</span>
+					{/* pdf */}
+					<div className={s.form_chapter}>
+						<div className={s.block}>
+							<h5 className={s.title}>Upload documents</h5>
+							<p className={s.subtitle}>Bill of lading or other freight document</p>
+						</div>
+						<div className={classNames(s.block, s.pdf)}>
+							<div className={s.pdf_description}>
+								<>
+									<span className={s.pdf_title}>File_Name.pdf</span>
+									<span className={s.pdf_size}>6.9 Mb</span>
+								</>
 							</div>
-						</>
-					)}
+						</div>
+					</div>
+					{/* Images */}
+					<div className={s.form_chapter}>
+						<div className={s.block}>
+							<h5 className={s.title}>Upload images</h5>
+						</div>
+						<div className={classNames(s.block, s.photo)}>
+							{photos?.map((image, ind) => {
+								return (
+									<span className={s.photo_wrapper}>
+										<Image
+											onClick={() => {
+												dispatch(setPhotoShow(image));
+												dispatch(setModal('showPhoto'));
+											}}
+											className={s.photo_img}
+											key={ind}
+											src={image}
+											alt="Image"
+											width={60}
+											height={60}
+										/>
+									</span>
+								);
+							})}
+						</div>
+					</div>
 
-					{!testShow && (
-						<>
-							<button onClick={() => setTestShow(!testShow)} className={s.paid}>
-								Pay $500.00
-							</button>
-							<button onClick={() => setTestShow(!testShow)} className={s.send}>
-								Approve
-							</button>
-						</>
-					)}
-				</div>
-			</form>
-		</div>
+					<div className={s.buttons}>
+						{testShow && (
+							<>
+								<div className={s.status}>
+									<span className={s.status_paid}>Shipment paid</span>
+									<span
+										onClick={() => setTestShow(!testShow)}
+										className={s.status_approved}
+									>
+										Milestone approved
+									</span>
+								</div>
+							</>
+						)}
+
+						{!testShow && (
+							<>
+								<button onClick={() => setTestShow(!testShow)} className={s.paid}>
+									Pay $500.00
+								</button>
+								<button onClick={() => setTestShow(!testShow)} className={s.send}>
+									Approve
+								</button>
+							</>
+						)}
+					</div>
+				</form>
+			</div>
+		</>
 	);
 };

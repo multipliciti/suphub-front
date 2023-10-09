@@ -1,5 +1,5 @@
 'use client';
-import { StaticImageData } from 'next/image';
+import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import s from './ShowPhoto.module.scss';
 import { useAppSelector } from '@/redux/hooks';
 import { useAppDispatch } from '@/redux/hooks';
@@ -8,10 +8,6 @@ import { classNames } from '@/utils/classNames';
 import modal_close from '@/imgs/close.svg';
 
 import Image from 'next/image';
-
-interface PropsType {
-	img: StaticImageData;
-}
 
 export const ShowPhoto = () => {
 	const dispatch = useAppDispatch();
@@ -23,13 +19,17 @@ export const ShowPhoto = () => {
 					<Image src={modal_close} alt="img" height={20} width={20} />
 				</span>
 				{img && (
-					<Image
-						className={s.photo_img}
-						src={img}
-						alt="img"
-						height={32}
-						width={34}
-					/>
+					<TransformWrapper>
+						<TransformComponent>
+							<Image
+								className={s.photo_img}
+								src={img}
+								alt="img"
+								height={32}
+								width={34}
+							/>
+						</TransformComponent>
+					</TransformWrapper>
 				)}
 			</span>
 		</div>
