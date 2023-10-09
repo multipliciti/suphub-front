@@ -8,6 +8,9 @@ import { Registration } from './Registration';
 import { classNames } from '@/utils/classNames';
 import { VerifyEmail } from './VerifyEmail';
 import { AddToRFQCart } from '@/components/Modals/AddToRFQCart';
+import { EditPassword } from '@/components/Modals/EditPassword';
+import { PasswordChanged } from '@/components/Modals/EditPassword/PasswordChanged';
+import { SubmitForReview } from '@/components/Modals/SubmitForReview';
 import { ShowPhoto } from './ShowPhoto';
 
 export const Modal = () => {
@@ -58,6 +61,16 @@ export const Modal = () => {
 					modal === 'addToRFQCart' && s.wrapper_active
 				)}
 			>
+				<AddToRFQCart />
+
+		</div>
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'editPassword' && s.wrapper_active
+				)}
+			>
+				<EditPassword/>
 				{modal === 'addToRFQCart' && <AddToRFQCart />}
 			</div>
 
@@ -66,6 +79,21 @@ export const Modal = () => {
 			>
 				{modal === 'showPhoto' && <ShowPhoto />}
 			</div>
-		</>
-	);
-};
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'passwordChanged' && s.wrapper_active
+				)}
+				>
+				{modal === 'passwordChanged' && <PasswordChanged/>}
+			</div>
+
+			<div className={classNames(
+				s.wrapper,
+				modal === 'submitForReview' && s.wrapper_active
+			)}>
+				{modal === 'submitForReview' && <SubmitForReview/>}
+					 </div>
+	</>
+);};

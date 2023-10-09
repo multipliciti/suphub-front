@@ -10,6 +10,9 @@ interface CounterState {
 		| 'registration'
 		| 'verifyEmail'
 		| 'addToRFQCart'
+		| 'editPassword'
+		| 'passwordChanged'
+	  | 'submitForReview'
 		| 'showPhoto';
 	email: string;
 }
@@ -34,6 +37,9 @@ const modalSlice = createSlice({
 				| 'registration'
 				| 'verifyEmail'
 				| 'addToRFQCart'
+				| 'editPassword'
+				| 'passwordChanged'
+				| 'submitForReview'
 				| 'showPhoto'
 			>
 		) {
