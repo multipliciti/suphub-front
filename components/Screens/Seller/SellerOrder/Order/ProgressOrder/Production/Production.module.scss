@@ -1,3 +1,25 @@
+.data {
+	&_wrapper {
+		opacity: 0;
+
+		max-width: 0px;
+		max-height: 0px;
+		pointer-events: none;
+
+		color: #64748b;
+
+		font-size: 12px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 18px;
+	}
+
+	&_active {
+		opacity: 1;
+		pointer-events: all;
+	}
+}
+
 .wrapper {
 	width: 100%;
 	background-color: #fff;
@@ -9,6 +31,15 @@
 	opacity: 0;
 	pointer-events: none;
 	height: 0;
+
+	&_data {
+		color: #64748b;
+
+		font-size: 12px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 18px;
+	}
 
 	&_active {
 		margin-top: 16px;

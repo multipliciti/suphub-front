@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
 import { RegisterUserType } from '@/types/services/auth';
 //imgs
-import modal_close from '@/imgs/Modal/Modal_close.svg';
+import modal_close from '@/imgs/close.svg';
 import back_btn from '@/imgs/Modal/back_btn.svg';
 import sheet from '@/imgs/Modal/sheet.svg';
 import { Api } from '@/services';

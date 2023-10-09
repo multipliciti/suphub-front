@@ -1,5 +1,7 @@
 'use client';
 import s from './BuyerOrder.module.scss';
+import Image from 'next/image';
+import { useAppSelector } from '@/redux/hooks';
 import { Invoice } from './Invoice';
 import { Order } from './Order';
 
@@ -8,8 +10,9 @@ interface TypeProps {
 }
 
 export const BuyerOrder = ({ id }: TypeProps) => {
-	//using id we will must make fetch
+	const img = useAppSelector((state) => state.orderSlice.img);
 
+	//using id we will must make fetch
 	const product = {
 		status: 'Payment pending',
 		code: 'Order PO#S0983',

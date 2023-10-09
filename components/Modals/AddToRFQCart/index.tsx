@@ -8,7 +8,7 @@ import { useState, useEffect } from 'react';
 import { Api } from '@/services';
 import { Project, RfqItem } from '@/types/products/rfq';
 import search_img from '@/imgs/Marketplace/search.svg';
-import modal_close from '@/imgs/Modal/Modal_close.svg';
+import modal_close from '@/imgs/close.svg';
 import back_btn from '@/imgs/Modal/back_btn_add_to_rfq.svg';
 import black_arrow from '@/imgs/Modal/arrow_right.svg';
 import white_arrow from '@/imgs/Modal/arrow_right_white.svg';

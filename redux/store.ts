@@ -12,6 +12,7 @@ import authSlice from './slices/auth';
 import buyerSidebarSlice from './slices/sideBars/buyerSidebar';
 import sellerSidebarSlice from './slices/sideBars/sellerSidebar';
 import productSlice from './slices/marketplace/product';
+import orderSlice from './slices/Order/order';
 
 export function makeStore() {
 	return configureStore({
@@ -27,6 +28,7 @@ export function makeStore() {
 			buyerSidebarSlice,
 			sellerSidebarSlice,
 			productSlice,
+			orderSlice,
 		},
 	});
 }

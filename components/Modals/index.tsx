@@ -8,6 +8,7 @@ import { Registration } from './Registration';
 import { classNames } from '@/utils/classNames';
 import { VerifyEmail } from './VerifyEmail';
 import { AddToRFQCart } from '@/components/Modals/AddToRFQCart';
+import { ShowPhoto } from './ShowPhoto';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -15,7 +16,7 @@ export const Modal = () => {
 	return (
 		<>
 			<div className={classNames(s.wrapper, modal === 'login' && s.wrapper_active)}>
-				<Login />
+				{modal === 'login' && <Login />}
 			</div>
 
 			<div
@@ -24,13 +25,13 @@ export const Modal = () => {
 					modal === 'forgotPassword' && s.wrapper_active
 				)}
 			>
-				<ForgotPassword />
+				{modal === 'forgotPassword' && <ForgotPassword />}
 			</div>
 
 			<div
 				className={classNames(s.wrapper, modal === 'checkEmail' && s.wrapper_active)}
 			>
-				<CheckEmail />
+				{modal === 'checkEmail' && <CheckEmail />}
 			</div>
 
 			<div
@@ -39,9 +40,7 @@ export const Modal = () => {
 					modal === 'registration' && s.wrapper_active
 				)}
 			>
-				<div className={s.modal}>
-					<Registration />
-				</div>
+				<div className={s.modal}>{modal === 'registration' && <Registration />}</div>
 			</div>
 
 			<div
@@ -50,7 +49,7 @@ export const Modal = () => {
 					modal === 'verifyEmail' && s.wrapper_active
 				)}
 			>
-				<VerifyEmail />
+				{modal === 'verifyEmail' && <VerifyEmail />}
 			</div>
 
 			<div
@@ -59,7 +58,13 @@ export const Modal = () => {
 					modal === 'addToRFQCart' && s.wrapper_active
 				)}
 			>
-				<AddToRFQCart />
+				{modal === 'addToRFQCart' && <AddToRFQCart />}
+			</div>
+
+			<div
+				className={classNames(s.wrapper, modal === 'showPhoto' && s.wrapper_active)}
+			>
+				{modal === 'showPhoto' && <ShowPhoto />}
 			</div>
 		</>
 	);

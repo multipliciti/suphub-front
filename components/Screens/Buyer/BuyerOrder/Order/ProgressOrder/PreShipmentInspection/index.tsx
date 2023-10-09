@@ -1,6 +1,9 @@
 'use client';
 import { ChangeEvent, useState } from 'react';
+import { setPhotoShow } from '@/redux/slices/Order/order';
+import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
+import { setModal } from '@/redux/slices/modal';
 import Image from 'next/image';
 import s from './PreShipmentInspection.module.scss';
 import test from '@/imgs/Marketplace/Products/Product_test.png';
@@ -11,10 +14,15 @@ interface PropsType {
 }
 
 export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
-	const [file, setFile] = useState<File | null>(null);
+	const dispatch = useAppDispatch();
 	const photos = [test, test, test, test];
-
 	const [testShow, setTestShow] = useState<boolean>(false);
+
+	const optionsArr = [
+		{ id: 1, title: 'Air', value: 'Air', active: false },
+		{ id: 2, title: 'Ocean', value: 'Ocean', active: true },
+		{ id: 3, title: 'Truck', value: 'Truck', active: false },
+	];
 
 	return (
 		<div
@@ -32,9 +40,19 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 						<h5 className={s.title}>Freight type</h5>
 					</div>
 					<div className={classNames(s.block, s.options)}>
-						<span className={s.options_type}>Air</span>
-						<span className={s.options_type}>Ocean</span>
-						<span className={s.options_type}>Truck</span>
+						{optionsArr.map((option, ind) => {
+							return (
+								<span
+									key={ind}
+									className={classNames(
+										s.options_type,
+										option.active && s.options_type_active
+									)}
+								>
+									{option.title}
+								</span>
+							);
+						})}
 					</div>
 				</div>
 				{/* input amount */}
@@ -68,13 +86,17 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 						<h5 className={s.title}>Upload images</h5>
 					</div>
 					<div className={classNames(s.block, s.photo)}>
-						{photos?.map((el, ind) => {
+						{photos?.map((image, ind) => {
 							return (
 								<span className={s.photo_wrapper}>
 									<Image
+										onClick={() => {
+											dispatch(setPhotoShow(image));
+											dispatch(setModal('showPhoto'));
+										}}
 										className={s.photo_img}
 										key={ind}
-										src={el}
+										src={image}
 										alt="Image"
 										width={60}
 										height={60}

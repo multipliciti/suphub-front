@@ -7,7 +7,7 @@ import { Api } from '@/services';
 import { classNames } from '@/utils/classNames';
 import Image from 'next/image';
 //imgs
-import modal_close from '@/imgs/Modal/Modal_close.svg';
+import modal_close from '@/imgs/close.svg';
 import back_btn from '@/imgs/Modal/back_btn.svg';
 import sheet from '@/imgs/Modal/sheet.svg';
 export const CheckEmail = () => {
@@ -50,7 +50,10 @@ export const CheckEmail = () => {
 				<p className={s.description}>
 					If you don’t receive it right away, check your spam folder
 				</p>
-				<button onClick={() => dispatch(setModal('forgotPassword'))} className={s.resend}>
+				<button
+					onClick={() => dispatch(setModal('forgotPassword'))}
+					className={s.resend}
+				>
 					Resend email
 				</button>
 				<p className={s.contacts}>

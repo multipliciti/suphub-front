@@ -13,6 +13,12 @@ interface PropsType {
 	setRerenderProgress: (n: boolean) => void;
 }
 
+interface formDataType {
+	data: string;
+	message: string;
+	photos: File[];
+}
+
 export const Production = ({
 	activeDisplay,
 	index,
@@ -22,17 +28,13 @@ export const Production = ({
 	const [testShow, setTestShow] = useState<boolean>(false);
 	const [complete, setComplete] = useState<boolean>(false);
 	const [newMessage, setNewMessage] = useState<boolean>(false);
-	const [formData, setFormData] = useState<{
-		data: string;
-		message: string;
-		photos: File[];
-	} | null>({
-		data: new Date().toLocaleDateString('en-GB'),
-		message: '',
+	const [formData, setFormData] = useState<formDataType | null>({
 		photos: [],
+		data: '',
+		message: '',
 	});
 	const currentdDate = new Date().toLocaleDateString('en-GB');
-	console.log('formData', formData);
+
 	// Add photo
 	const handleAddPhoto = (event: ChangeEvent<HTMLInputElement>) => {
 		const selectedFile = event.target.files && event.target.files[0];
@@ -72,150 +74,161 @@ export const Production = ({
 		});
 	};
 	return (
-		<div
-			className={classNames(
-				s.wrapper,
-				activeDisplay.includes(index) && s.wrapper_active
-			)}
-		>
-			<div className={s.form}>
-				<div className={s.form_block}>
-					<span className={s.data}>01/05/2023</span>
-					<span className={s.title}>Production started</span>
-				</div>
-				{/* add message */}
-				<div className={classNames(s.form_none, newMessage && s.form_block)}>
-					<span className={s.data}>{currentdDate}</span>
-					<div className={s.message_wrapper}>
-						<input
-							onChange={handleAddMessage}
-							placeholder="Provide updates"
-							className={s.message_input}
-							name="message"
-							id="message"
-						/>
-						<div className={s.message_photo}>
-							<label className={s.message_photo_add} htmlFor="add_photo">
-								<input
-									onChange={handleAddPhoto}
-									className={s.photo_input}
-									accept="image/*"
-									id="add_photo"
-									type="file"
-								/>
-								<Image src={plus_icon} alt="plus_icon" width={24} height={24} />
-							</label>
+		<>
+			<div
+				className={classNames(
+					s.data_wrapper,
+					!activeDisplay.includes(index) && s.data_active
+				)}
+			>
+				<p>01/05/2023</p>
+			</div>
 
-							{formData?.photos?.map((el, ind) => {
-								return (
-									<span className={s.message_photo_wrapper}>
-										<span
-											onClick={() => handleRemovePhoto(ind)}
-											className={s.message_photo_remove}
-										>
+			<div
+				className={classNames(
+					s.wrapper,
+					activeDisplay.includes(index) && s.wrapper_active
+				)}
+			>
+				<div className={s.form}>
+					<div className={s.form_block}>
+						<span className={s.data}>01/05/2023</span>
+						<span className={s.title}>Production started</span>
+					</div>
+					{/* add message */}
+					<div className={classNames(s.form_none, newMessage && s.form_block)}>
+						<span className={s.data}>{currentdDate}</span>
+						<div className={s.message_wrapper}>
+							<input
+								onChange={handleAddMessage}
+								placeholder="Provide updates"
+								className={s.message_input}
+								name="message"
+								id="message"
+							/>
+							<div className={s.message_photo}>
+								<label className={s.message_photo_add} htmlFor="add_photo">
+									<input
+										onChange={handleAddPhoto}
+										className={s.photo_input}
+										accept="image/*"
+										id="add_photo"
+										type="file"
+									/>
+									<Image src={plus_icon} alt="plus_icon" width={24} height={24} />
+								</label>
+
+								{formData?.photos?.map((el, ind) => {
+									return (
+										<span className={s.message_photo_wrapper}>
+											<span
+												onClick={() => handleRemovePhoto(ind)}
+												className={s.message_photo_remove}
+											>
+												<Image
+													src={remove_icon}
+													alt="remove_icon"
+													width={12}
+													height={12}
+												/>
+											</span>
 											<Image
-												src={remove_icon}
-												alt="remove_icon"
-												width={12}
-												height={12}
+												className={s.message_photo_img}
+												key={ind}
+												src={URL.createObjectURL(el)}
+												alt="Image"
+												width={60}
+												height={60}
 											/>
 										</span>
+									);
+								})}
+							</div>
+						</div>
+					</div>
+
+					{/* sent new message */}
+					{testShow && formData && (
+						<div className={classNames(s.form_block)}>
+							<div className={s.status}>
+								<p className={s.data}>{formData.data}</p>
+								<p className={classNames(s.status_text, s.status_gray)}>Sent</p>
+							</div>
+
+							<div className={s.sent_wrapper}>
+								<p className={s.sent_title}> {formData.message} </p>
+								<div className={s.sent_photos}>
+									{formData?.photos.map((el, ind) => (
 										<Image
 											className={s.message_photo_img}
 											key={ind}
 											src={URL.createObjectURL(el)}
-											alt="Image"
+											alt="sent_image"
 											width={60}
 											height={60}
 										/>
-									</span>
-								);
-							})}
-						</div>
-					</div>
-				</div>
-
-				{/* sent new message */}
-				{testShow && formData && (
-					<div className={classNames(s.form_block)}>
-						<div className={s.status}>
-							<p className={s.data}>{formData.data}</p>
-							<p className={classNames(s.status_text, s.status_gray)}>Sent</p>
-						</div>
-
-						<div className={s.sent_wrapper}>
-							<p className={s.sent_title}> {formData.message} </p>
-							<div className={s.sent_photos}>
-								{formData?.photos.map((el, ind) => (
-									<Image
-										className={s.message_photo_img}
-										key={ind}
-										src={URL.createObjectURL(el)}
-										alt="sent_image"
-										width={60}
-										height={60}
-									/>
-								))}
+									))}
+								</div>
 							</div>
 						</div>
-					</div>
-				)}
+					)}
 
-				{/* buttons */}
-				<div className={s.buttons}>
-					{!testShow && !newMessage && (
-						<>
-							<button
-								onClick={() => {
-									setNewMessage(true);
-									setTestShow(false);
-									setRerenderProgress(!rerenderProgress);
-								}}
-								className={classNames(
-									s.buttons_updates,
-									complete && s.buttons_updates_disable
-								)}
-							>
-								+ Add an update
-							</button>
-							<button
-								onClick={() => setComplete(true)}
-								className={classNames(
-									s.buttons_production,
-									complete && s.buttons_production_disable
-								)}
-							>
-								Complete production
-							</button>
-						</>
-					)}
-					{testShow && !newMessage && (
-						<span className={s.waiting}>Waiting for customer approval</span>
-					)}
-					{/* new message */}
-					{newMessage && !testShow && (
-						<>
-							<button
-								onClick={() => {
-									setNewMessage(false);
-								}}
-								className={s.buttons_cansel}
-							>
-								Cancel
-							</button>
-							<button
-								onClick={() => {
-									setTestShow(true);
-									setNewMessage(false);
-								}}
-								className={s.buttons_send}
-							>
-								Send
-							</button>
-						</>
-					)}
+					{/* buttons */}
+					<div className={s.buttons}>
+						{!testShow && !newMessage && (
+							<>
+								<button
+									onClick={() => {
+										setNewMessage(true);
+										setTestShow(false);
+										setRerenderProgress(!rerenderProgress);
+									}}
+									className={classNames(
+										s.buttons_updates,
+										complete && s.buttons_updates_disable
+									)}
+								>
+									+ Add an update
+								</button>
+								<button
+									onClick={() => setComplete(true)}
+									className={classNames(
+										s.buttons_production,
+										complete && s.buttons_production_disable
+									)}
+								>
+									Complete production
+								</button>
+							</>
+						)}
+						{testShow && !newMessage && (
+							<span className={s.waiting}>Waiting for customer approval</span>
+						)}
+						{/* new message */}
+						{newMessage && !testShow && (
+							<>
+								<button
+									onClick={() => {
+										setNewMessage(false);
+									}}
+									className={s.buttons_cansel}
+								>
+									Cancel
+								</button>
+								<button
+									onClick={() => {
+										setTestShow(true);
+										setNewMessage(false);
+									}}
+									className={s.buttons_send}
+								>
+									Send
+								</button>
+							</>
+						)}
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 };
