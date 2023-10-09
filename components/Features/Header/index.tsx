@@ -40,24 +40,29 @@ export const Header = () => {
 			id: 1,
 			img: User,
 			title: 'My profile',
+			href: '/settings/personal-info',
 		},
 		{
 			id: 2,
 			img: Arrow,
 			title: 'Convert to bussiness',
+			// TODO href link
+			href: '/404'
 		},
 		{
 			id: 3,
 			img: Comment,
 			title: 'Send Feedback',
+			// TODO href link
+			href: '/404',
 		},
 		{
 			id: 4,
 			img: Calendar,
 			title: 'Book a call',
-		},
-	];
-
+			// TODO href link
+			href: '/404'
+		}];
 	const buttons: Button[] = [
 		{
 			id: 1,
@@ -197,10 +202,10 @@ export const Header = () => {
 										<div className={s.menu_items}>
 											{menuItems.map((el: any, ind) => {
 												return (
-													<div key={ind} className={s.item}>
+													<Link href={el.href} key={ind} className={s.item}>
 														<Image src={el.img} alt="el" width={20} height={20} />
 														<span className={s.title}>{el.title}</span>
-													</div>
+													</Link>
 												);
 											})}
 										</div>
