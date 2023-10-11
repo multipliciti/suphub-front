@@ -59,27 +59,11 @@ export const EditPassword = () => {
 	}
 
 	const onSubmit: SubmitHandler<
-		// RegisterUserType
 		any
 	> = async (data) => {
 		console.log(data);
 		dispatch(setModal('passwordChanged'));
-		// const requestData = {
-		// 	...data,
-		// 	confirmUrl: `${HOST}/confirm-email`,
-		// };
-		// try {
-		// 	const response = await api.auth.registerUser(requestData);
-		// 	dispatch(setModal(`verifyEmail`));
-		// 	dispatch(setEmail(`${requestData.email}`));
-		// 	dispatch(setRegistration(requestData));
-		// } catch (error: any) {
-		// 	if (
-		// 		error.response?.status === 400 &&
-		// 		error.response?.data?.message === 'User already exist'
-		// 	) {
-		// 		setUsedEmail(true);
-		// 	}
+
 	};
 
 	return (
@@ -89,14 +73,13 @@ export const EditPassword = () => {
 					<div className={s.header_row}>
 						<div className={s.header_title}>Edit password</div>
 						<span onClick={closeModal} className={s.back}>
-							<Image className={s.header_close} src={modal_close} />
+							<Image alt='Close Button' className={s.header_close} src={modal_close} />
 						</span>
 					</div>
 					<div className={s.header_description}>Enter your new password below</div>
 				</div>
 				<div className={s.separator} />
 				<div className={s.content}>
-					{/*First Old Password*/}
 					<div className={s.content_input}>
 						<p className={s.content_title}>Old password</p>
 						<label
@@ -130,7 +113,6 @@ export const EditPassword = () => {
 							/>
 						</label>
 					</div>
-					{/*New Password*/}
 					<div className={s.content_input}>
 						<p className={s.content_title}>New password</p>
 						<label className={s.label} htmlFor="password">
@@ -160,7 +142,6 @@ export const EditPassword = () => {
 							/>
 						</label>
 					</div>
-					{/*Confirm Password*/}
 					<div className={s.content_input}>
 						<p className={s.content_title}>Confirm password</p>
 						<label className={s.label} htmlFor="password">

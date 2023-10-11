@@ -1,63 +1,60 @@
 'use client';
 import s from '../GeneralSettingsStyle.module.scss';
-// import { LayoutModal } from '../layout';
 import { setModal, setEmail } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { SubmitHandler, useForm } from 'react-hook-form';
-// import { RegisterUserType } from '@/types/services/auth';
-import React, { useState } from 'react';
-// import Image from 'next/image';
-// //imgs
-// import modal_email from '@/imgs/Modal/email.svg';
-// import modal_password from '@/imgs/Modal/pasword.svg';
-// import modal_eye from '@/imgs/Modal/eye.svg';
-// import close_eye from '@/imgs/Modal/close_eye.svg';
-// import modal_done from '@/imgs/Modal/done.svg';
-// import invalid_icon from '@/imgs/Modal/invalid_icon.svg';
-// import password_invalid from '@/imgs/Modal/password_invalid.svg';
-// import password_valid from '@/imgs/Modal/password_valid.svg';
-// import incorrect_email from '@/imgs/Modal/incorrect.svg';
-// //Api
-import { Api } from '@/services';
+import React, { useEffect, useState } from 'react';
+import chevron_down from '@/imgs/ProfileSettings/chevron-down.svg';
 import Image from 'next/image';
-import modal_password from '@/imgs/Modal/pasword.svg';
-import pencil from '@/imgs/ProfileSettings/pencil.svg';
-import close_eye from '@/imgs/Modal/close_eye.svg';
-import modal_eye from '@/imgs/Modal/eye.svg';
-// import { setRegistration } from '@/redux/slices/auth';
 
 type PaymentType = 'Domestic bank (USA)' | 'International';
 const BankingInfo = () => {
-	// const api = Api();
 	const dispatch = useAppDispatch();
 	const [paymentType, setPaymentType] = useState<PaymentType>('Domestic bank (USA)');
-	const buttons = ['Domestic bank (USA)', 'International'];
+	const buttons: PaymentType[] = ['Domestic bank (USA)', 'International'];
 
 	const [vendorType, setVendorType] = useState('Business');
-	// const [usedEmail, setUsedEmail] = useState<boolean>(false);
-	//
-	// const [forRender, setForRender] = useState(false);
-
-	//I added two validation checks because the page was not being redrawn when the validate function was triggered erroneously. That's why I'm forcing a redraw using forRender.
-	// const isEmailRerender = (data: string) => {
-	// 	const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-	// 	const res = emailRegex.test(data);
-	// 	setForRender(!forRender); //to display when we insert
-	// 	return res;
-	// };
-
-	// const isPasswordRerender = (data: string) => {
-	// 	const res = data.length < 8 ? false : true;
-	// 	setForRender(!forRender); //to display when we insert
-	// 	return res;
-	// };
+	const countries = [
+		'China',
+		'Hong Kong',
+		'Singapore',
+		'Taiwan',
+		'Canada',
+		'United Kingdom',
+		'Germany',
+		'France',
+		'Italy',
+		'Spain',
+		'Netherlands',
+		'Belgium',
+		'Sweden',
+		'Austria',
+		'Poland',
+		'Denmark',
+		'Ireland',
+		'Finland',
+		'Portugal',
+		'Czech Republic',
+		'Greece',
+		'Hungary',
+		'Romania',
+		'Slovakia',
+		'Bulgaria',
+		'Croatia',
+		'Slovenia',
+		'Lithuania',
+		'Latvia',
+		'Estonia',
+		'Cyprus',
+		'Malta',
+		'Luxembourg',
+	];
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-		// getValues,
 	} = useForm({
 		defaultValues: {
 			swiftCode: '',
@@ -65,6 +62,7 @@ const BankingInfo = () => {
 			accountNumber: '',
 			confirmAccountNumber: '',
 			beneficiaryCountry: '',
+			routingNumber: '',
 			addressLine1: '',
 			addressLine2: '',
 		},
@@ -75,28 +73,8 @@ const BankingInfo = () => {
 
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
-	const onSubmit: SubmitHandler<
-		// RegisterUserType
-		any
-	> = async (data) => {
+	const onSubmit: SubmitHandler<any> = async (data) => {
 		console.log(typeof data);
-		// const requestData = {
-		// 	...data,
-		// 	confirmUrl: `${HOST}/confirm-email`,
-		// };
-		// try {
-		// 	const response = await api.auth.registerUser(requestData);
-		// 	dispatch(setModal(`verifyEmail`));
-		// 	dispatch(setEmail(`${requestData.email}`));
-		// 	dispatch(setRegistration(requestData));
-		// } catch (error: any) {
-		// 	if (
-		// 		error.response?.status === 400 &&
-		// 		error.response?.data?.message === 'User already exist'
-		// 	) {
-		// 		setUsedEmail(true);
-		// 	}
-		// }
 	};
 
 	return (
@@ -106,14 +84,7 @@ const BankingInfo = () => {
 					<h5 className={s.title_main}>Direct Deposit</h5>
 					<button
 						onClick={() => dispatch(setModal('submitForReview'))}
-						className={classNames(
-							s.btn_send,
-							!errors?.email &&
-								!errors?.firstName &&
-								!errors?.lastName &&
-								!errors?.password &&
-								s.btn_send_active
-						)}
+						className={classNames(s.btn_send, s.btn_send_active)}
 					>
 						Submit for review
 					</button>
@@ -128,7 +99,7 @@ const BankingInfo = () => {
 								<div
 									className={classNames(
 										s.label_switch,
-										paymentType === buttonName && s.label_switch_active
+										paymentType === buttonName && s.label_switch_active,
 									)}
 									key={index}
 									onClick={() => setPaymentType(buttonName)}
@@ -148,47 +119,47 @@ const BankingInfo = () => {
 
 							<div className={s.radio_group_wrapper}>
 								<div className={s.radio_group}>
-
-									<div className={s.radio_element}><input
-										type='radio'
-										name='vendorType'
-										id={'business'}
-										value='Business'
-										defaultChecked={vendorType === 'Business'}
-										onChange={(e) => setVendorType(e.target.value)}
-									/>
-										<label htmlFor='business'
-											// className={classNames(s.radio_btn, s.radio_text)}
-										>
+									<div className={s.radio_element}>
+										<input
+											className={s.radio_btn}
+											type='radio'
+											name='vendorType'
+											id={'business'}
+											value='Business'
+											checked={vendorType === 'Business'}
+											onChange={(e) => setVendorType(e.target.value)}
+										/>
+										<label className={s.radio_text} htmlFor='business'>
 											Business
-										</label></div>
-									<div className={s.radio_element}><input
-										type='radio'
-										name='vendorType'
-										id='individual'
-										value='Individual'
-										defaultChecked={vendorType === 'Individual'}
-										onChange={(e) => setVendorType(e.target.value)}
-									/>
-										<label htmlFor={'individual'}
-											// className={classNames(s.radio_btn, s.radio_text)}
-										>
+										</label>
+									</div>
+									<div className={s.radio_element}>
+										<input
+											className={s.radio_btn}
+											type='radio'
+											name='vendorType'
+											id='individual'
+											value='Individual'
+											checked={vendorType === 'Individual'}
+											onChange={(e) => setVendorType(e.target.value)}
+										/>
+										<label className={s.radio_text} htmlFor={'individual'}>
 											Individual
-										</label></div>
-
+										</label>
+									</div>
 								</div>
 							</div>
 						</div>
 						<div className={s.separator}></div>
 						<div className={s.row}>
 							<p className={s.title}>Business Name</p>
-							<label className={s.label} htmlFor="businessName">
+							<label className={s.label} htmlFor='businessName'>
 								<input
 									className={s.input}
 									{...register('businessName')}
-									placeholder="Enter Business Name"
-									type="text"
-									id="lastName"
+									placeholder='Enter Business Name'
+									type='text'
+									id='lastName'
 								/>
 							</label>
 						</div>
@@ -202,26 +173,26 @@ const BankingInfo = () => {
 						<div className={s.separator}></div>
 						<div className={s.row}>
 							<p className={s.title}>Routing Number</p>
-							<label className={s.label} htmlFor="confirmAccountNumber">
+							<label className={s.label} htmlFor='confirmAccountNumber'>
 								<input
 									className={s.input}
 									{...register('routingNumber')}
-									id="email"
-									placeholder="Enter Routing Number"
-									type="text"
+									id='email'
+									placeholder='Enter Routing Number'
+									type='text'
 								/>
 							</label>
 						</div>
 						<div className={s.separator}></div>
 						<div className={s.row}>
 							<p className={s.title}>Account Number</p>
-							<label className={s.label} htmlFor="accountNumber">
+							<label className={s.label} htmlFor='accountNumber'>
 								<input
 									className={s.input}
 									{...register('accountNumber')}
-									id="email"
-									placeholder="Enter Account Number"
-									type="text"
+									id='email'
+									placeholder='Enter Account Number'
+									type='text'
 								/>
 							</label>
 						</div>
@@ -232,91 +203,98 @@ const BankingInfo = () => {
 						<div className={s.title_general}>International</div>
 						<div className={s.row}>
 							<p className={s.title}>Swift Code/IBC</p>
-							<label className={s.label} htmlFor="swiftCode">
+							<label className={s.label} htmlFor='swiftCode'>
 								<input
 									className={s.input}
 									{...register('swiftCode')}
-									placeholder="Enter Swift Code/IBC"
-									type="text"
-									id="swiftCode"
+									placeholder='Enter Swift Code/IBC'
+									type='text'
+									id='swiftCode'
 								/>
 							</label>
 						</div>
 						<div className={s.separator}></div>
 						<div className={s.row}>
 							<p className={s.title}>Business Name</p>
-							<label className={s.label} htmlFor="businessName">
+							<label className={s.label} htmlFor='businessName'>
 								<input
 									className={s.input}
 									{...register('businessName')}
-									placeholder="Enter Business Name"
-									type="text"
-									id="lastName"
+									placeholder='Enter Business Name'
+									type='text'
+									id='lastName'
 								/>
 							</label>
 						</div>
 						<div className={s.separator}></div>
 						<div className={s.row}>
 							<p className={s.title}>Account Number</p>
-							<label className={s.label} htmlFor="accountNumber">
+							<label className={s.label} htmlFor='accountNumber'>
 								<input
 									className={s.input}
 									{...register('accountNumber')}
-									id="email"
-									placeholder="Enter Account Number"
-									type="text"
+									id='email'
+									placeholder='Enter Account Number'
+									type='text'
 								/>
 							</label>
 						</div>
 						<div className={s.separator}></div>
 						<div className={s.row}>
 							<p className={s.title}>Confirm Account Number</p>
-							<label className={s.label} htmlFor="confirmAccountNumber">
+							<label className={s.label} htmlFor='confirmAccountNumber'>
 								<input
 									className={s.input}
 									{...register('confirmAccountNumber')}
-									id="email"
-									placeholder="Re-nter Account Number"
-									type="text"
+									id='email'
+									placeholder='Re-nter Account Number'
+									type='text'
 								/>
 							</label>
 						</div>
 						<div className={s.separator}></div>
 						<div className={s.row}>
 							<p className={s.title}>Beneficiary Country</p>
-							<label className={s.label} htmlFor="beneficiaryCountry">
-								<input
-									className={s.input}
-									{...register('beneficiaryCountry')}
-									id="email"
+							<label className={s.dropdown_wrapper} htmlFor='beneficiaryCountry'>
+								<select className={s.dropdown_label} {...register('beneficiaryCountry')}
+									id="beneficiaryCountry"
 									placeholder="Select Country"
-									type="text"
-								/>
+									>
+									{countries.map((country, index) => (
+											<option
+												key={index} value={country}>
+												{country}
+
+											</option>
+										),
+									)}
+								</select>
+								<Image className={s.dropdown_arrow} alt={'chevron_down'} src={chevron_down} />
 							</label>
 						</div>
 						<div className={s.separator}></div>
 						<div className={s.row}>
 							<p className={s.title}>Address Line 1</p>
-							<label className={s.label} htmlFor="addressLine1">
+							<label className={s.label} htmlFor='addressLine1'>
 								<input
 									className={s.input}
 									{...register('addressLine1')}
-									id="email"
-									placeholder="Enter Address"
-									type="text"
+									id='email'
+									placeholder='Enter Address'
+									type='text'
 								/>
 							</label>
 						</div>
 						<div className={s.separator}></div>
 						<div className={s.row}>
 							<p className={s.title}>Address Line 2</p>
-							<label className={s.label} htmlFor="addressLine2">
+							<label className={s.label} htmlFor='addressLine2'>
 								<input
 									className={s.input}
 									{...register('addressLine2')}
-									id="email"
-									placeholder="Enter Address"
-									type="text"
+									id='email'
+									placeholder='Enter Address'
+									type='text'
 								/>
 							</label>
 						</div>

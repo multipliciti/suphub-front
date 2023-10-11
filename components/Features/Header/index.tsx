@@ -45,22 +45,19 @@ export const Header = () => {
 		{
 			id: 2,
 			img: Arrow,
-			title: 'Convert to bussiness',
-			// TODO href link
+			title: 'Convert to business',
 			href: '/404'
 		},
 		{
 			id: 3,
 			img: Comment,
 			title: 'Send Feedback',
-			// TODO href link
 			href: '/404',
 		},
 		{
 			id: 4,
 			img: Calendar,
 			title: 'Book a call',
-			// TODO href link
 			href: '/404'
 		}];
 	const buttons: Button[] = [

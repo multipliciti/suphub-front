@@ -1,7 +1,7 @@
 import React from 'react';
 import CompanyInfo from '@/components/Screens/ProfileSettings/CompanyInfo';
 
-function Page(props) {
+function Page() {
 	return (
 		<CompanyInfo/>
 	);

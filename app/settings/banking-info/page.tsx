@@ -1,7 +1,7 @@
 import React from 'react';
 import BankingInfo from '@/components/Screens/ProfileSettings/BankingInfo';
 
-function Page(props) {
+function Page() {
 	return (
 		<BankingInfo/>
 	);
