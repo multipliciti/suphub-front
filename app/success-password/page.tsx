@@ -3,8 +3,8 @@ import { ResetPassword } from '@/components/Screens/ResetPassword';
 import { Success } from '@/components/Screens/ResetPassword/Success';
 
 export const metadata: Metadata = {
-	title: 'Reset password Success',
-	description: 'Reset password Success',
+	title: 'Reset password PasswordChanged',
+	description: 'Reset password PasswordChanged',
 };
 
 const SuccessPage = () => {

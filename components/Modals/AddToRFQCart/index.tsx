@@ -161,7 +161,6 @@ export const AddToRFQCart = () => {
 										/>
 									</button>
 								))}
-							{/*TODO Change to real url*/}
 							<Link href="/404" className="noUnderline">
 								<button onClick={() => ''} className={s.btnAdd}>
 									Create a new project
@@ -197,7 +196,6 @@ export const AddToRFQCart = () => {
 										/>
 									</button>
 								))}
-							{/*TODO Change to real url*/}
 							<Link href="/404" className="noUnderline">
 								<button
 									onClick={() => {

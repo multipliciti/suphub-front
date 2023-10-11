@@ -1,4 +1,4 @@
-import Image from 'next/image';
+ import Image from 'next/image';
 import { Marketplace } from '@/components/Screens/Marketplace';
 import { IsSideBarContainer } from '@/components/Containers/IsSideBarContainer';
 
