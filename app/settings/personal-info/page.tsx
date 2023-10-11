@@ -1,7 +1,7 @@
 import React from 'react';
 import PersonalInfo from '@/components/Screens/ProfileSettings/PersonalInfo';
 
-function Page(props) {
+function Page() {
 	return (
 		<PersonalInfo/>
 	);
