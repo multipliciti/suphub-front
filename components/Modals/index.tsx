@@ -62,15 +62,14 @@ export const Modal = () => {
 				)}
 			>
 				<AddToRFQCart />
-
-		</div>
+			</div>
 			<div
 				className={classNames(
 					s.wrapper,
 					modal === 'editPassword' && s.wrapper_active
 				)}
 			>
-				<EditPassword/>
+				<EditPassword />
 				{modal === 'addToRFQCart' && <AddToRFQCart />}
 			</div>
 
@@ -85,15 +84,18 @@ export const Modal = () => {
 					s.wrapper,
 					modal === 'passwordChanged' && s.wrapper_active
 				)}
-				>
-				{modal === 'passwordChanged' && <PasswordChanged/>}
+			>
+				{modal === 'passwordChanged' && <PasswordChanged />}
 			</div>
 
-			<div className={classNames(
-				s.wrapper,
-				modal === 'submitForReview' && s.wrapper_active
-			)}>
-				{modal === 'submitForReview' && <SubmitForReview/>}
-					 </div>
-	</>
-);};
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'submitForReview' && s.wrapper_active
+				)}
+			>
+				{modal === 'submitForReview' && <SubmitForReview />}
+			</div>
+		</>
+	);
+};

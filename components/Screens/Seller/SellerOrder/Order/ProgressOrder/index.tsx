@@ -29,20 +29,6 @@ export const ProgressOrder = () => {
 	const [heightWrapper, setHeightWrapper] = useState<number>(0);
 	const [heightActiveProgress, setHeightActiveProgress] = useState<number>(0);
 
-	// Set the wrapper height
-	useEffect(() => {
-		//calculate the height from the end of the container to the last element
-		if (stepRefs[7]?.current) {
-			const heightDifference = heightWrapper - stepRefs[7].current.offsetHeight;
-			console.log('Разница в высоте:', heightDifference);
-		} else {
-			console.error('stepRefs[7] или stepRefs[7].current is undefined');
-		}
-		if (wrapperRef.current) {
-			setHeightWrapper(wrapperRef.current.offsetHeight);
-		}
-	}, [activeStep, stepRefs]);
-
 	//Set heightActiveProgress height asynchronously Since the animation (Show details) takes time, determining the height needs to be done after its completion.
 	useEffect(() => {
 		setTimeout(() => {
@@ -54,6 +40,17 @@ export const ProgressOrder = () => {
 				const wrapperTop = wrapperRef.current.getBoundingClientRect().top;
 				// Setting the height of active progress if activeStepTop is present
 				if (activeStepTop) setHeightActiveProgress(activeStepTop - wrapperTop);
+			}
+
+			// Check for a link to the last step
+			if (stepRefs[7]?.current && wrapperRef.current) {
+				const lastStepBottom = stepRefs[7].current?.getBoundingClientRect().bottom;
+				// Get the bottom border of the wrapper relative to the viewport
+				const wrapperBottom = wrapperRef.current.getBoundingClientRect().bottom;
+				// Calculate the height from the lowest point of wrapperRef to the last step
+				const heightFromLowestPoint = wrapperBottom - lastStepBottom;
+				// set the progress height taking into account the difference between the last element and the bottom of the progress
+				setHeightWrapper(wrapperRef.current.offsetHeight - heightFromLowestPoint);
 			}
 		}, 300);
 	}, [activeDisplay, rerenderProgress, setRerenderProgress]);

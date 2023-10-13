@@ -1,6 +1,6 @@
 'use client';
 import s from './SellerOrder.module.scss';
-import { Invoice } from './Invoice';
+import { InvoiceChatComponent } from './InvoiceChatComponent';
 import { Order } from './Order';
 
 interface TypeProps {
@@ -19,7 +19,7 @@ export const SellerOrder = ({ id }: TypeProps) => {
 	return (
 		<div className={s.wrapper}>
 			<Order product={product} />
-			<Invoice />
+			<InvoiceChatComponent />
 		</div>
 	);
 };

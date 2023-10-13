@@ -1,6 +1,6 @@
 .wrapper {
 	display: flex;
-	gap: 16px;
+	justify-content: space-between;
 
 	.item {
 		min-width: 170px;

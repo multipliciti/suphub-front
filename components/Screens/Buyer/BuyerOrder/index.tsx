@@ -2,7 +2,7 @@
 import s from './BuyerOrder.module.scss';
 import Image from 'next/image';
 import { useAppSelector } from '@/redux/hooks';
-import { Invoice } from './Invoice';
+import { InvoiceChatComponent } from './InvoiceChatComponent';
 import { Order } from './Order';
 
 interface TypeProps {
@@ -22,7 +22,7 @@ export const BuyerOrder = ({ id }: TypeProps) => {
 	return (
 		<div className={s.wrapper}>
 			<Order product={product} />
-			<Invoice />
+			<InvoiceChatComponent />
 		</div>
 	);
 };
