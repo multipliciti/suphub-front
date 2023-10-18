@@ -12,6 +12,7 @@ import { EditPassword } from '@/components/Modals/EditPassword';
 import { PasswordChanged } from '@/components/Modals/EditPassword/PasswordChanged';
 import { SubmitForReview } from '@/components/Modals/SubmitForReview';
 import { ShowPhoto } from './ShowPhoto';
+import { CreateBusinessAccount } from '@/components/Modals/CreateBusinessAccount';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -95,6 +96,15 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'submitForReview' && <SubmitForReview />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'createBusinessAccount' && s.wrapper_active
+				)}
+			>
+				{modal === 'createBusinessAccount' && <CreateBusinessAccount />}
 			</div>
 		</>
 	);

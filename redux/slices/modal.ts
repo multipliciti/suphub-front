@@ -13,7 +13,8 @@ interface CounterState {
 		| 'editPassword'
 		| 'passwordChanged'
 	  | 'submitForReview'
-		| 'showPhoto';
+		| 'showPhoto'
+		| 'createBusinessAccount';
 	email: string;
 }
 
@@ -41,6 +42,7 @@ const modalSlice = createSlice({
 				| 'passwordChanged'
 				| 'submitForReview'
 				| 'showPhoto'
+				| 'createBusinessAccount'
 			>
 		) {
 			state.modal = action.payload;
