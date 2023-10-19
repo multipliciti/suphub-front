@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import s from './ProjectsTable.module.scss';
+import { truncateFileNameEnd } from '@/utils/names';
 import { classNames } from '@/utils/classNames';
 
 interface PropsType {
@@ -33,7 +34,7 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 										{/* Product */}
 										{column.key === 'Product' && (
 											<span className={s.td_product}>
-												<span>{row[column.key]}lll</span>
+												<span>{truncateFileNameEnd(row[column.key], 25)}</span>
 												<span className={s.updates}>See updates</span>
 											</span>
 										)}

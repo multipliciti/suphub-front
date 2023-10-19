@@ -81,7 +81,10 @@ export const Feedback = ({ activeDisplay, index }: PropsType) => {
 					className={s.rate_feedback}
 				></textarea>
 
-				<button onClick={() => setTestShow(true)} className={s.rate_btn}>
+				<button
+					onClick={() => setTestShow(true)}
+					className={classNames(s.rate_btn, formData.rate > 0 && s.rate_btn_active)}
+				>
 					Submit feedback
 				</button>
 			</div>

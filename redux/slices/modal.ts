@@ -12,8 +12,11 @@ interface CounterState {
 		| 'addToRFQCart'
 		| 'editPassword'
 		| 'passwordChanged'
-	  | 'submitForReview'
-		| 'showPhoto';
+		| 'submitForReview'
+		| 'showPhoto'
+		| 'addRequestManually'
+		| 'submitedRFQ'
+		| 'bulkUpload';
 	email: string;
 }
 
@@ -41,6 +44,9 @@ const modalSlice = createSlice({
 				| 'passwordChanged'
 				| 'submitForReview'
 				| 'showPhoto'
+				| 'addRequestManually'
+				| 'submitedRFQ'
+				| 'bulkUpload'
 			>
 		) {
 			state.modal = action.payload;

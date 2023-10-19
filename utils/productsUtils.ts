@@ -1,3 +1,4 @@
+//file for additional functions for products
 import { ProductFilterItem } from '@/types/products/productFilters';
 import { Char } from '@/types/products/filters';
 

@@ -3,6 +3,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { classNames } from '@/utils/classNames';
 import s from './OrderShipped.module.scss';
 import Image from 'next/image';
+import { truncateFileName } from '@/utils/names';
 import pdf_upload_2 from '@/imgs/Buyer&Seller/pdf_upload_2.svg';
 import close_icon from '@/imgs/close.svg';
 
@@ -23,6 +24,8 @@ export const OrderShipped = ({ activeDisplay, index }: PropsType) => {
 		traking: '',
 		file: null,
 	});
+
+	const fileName = formData?.file?.name ?? '';
 
 	// Function to handle changes in text fields
 	const handleAddInputValue = (e: ChangeEvent<HTMLInputElement>) => {
@@ -117,10 +120,10 @@ export const OrderShipped = ({ activeDisplay, index }: PropsType) => {
 						)}
 
 						{/* {if have file} */}
-						{formData.file && (
+						{formData?.file && (
 							<div className={s.file_have}>
 								{/* <Image src={pdf_icon} alt="pdf_icon" width={24} height={24} /> */}
-								<p className={s.file_have_title}>{formData.file.name}</p>
+								<p className={s.file_have_title}>{truncateFileName(fileName, 40)}</p>
 								<Image
 									onClick={() => handleRemoveFile()}
 									className={s.file_have_close}

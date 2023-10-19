@@ -1,7 +1,9 @@
 'use client';
 import s from './RFQCarFilters.module.scss';
 import { useRef, useState } from 'react';
+import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
+import { setModal } from '@/redux/slices/modal';
 import Image from 'next/image';
 import search_icon from '@/imgs/search.svg';
 import arrow_icon from '@/imgs/arrow.svg';
@@ -16,6 +18,7 @@ export const RFQCarFilters = ({
 	stateInputs,
 	setRequest,
 }: TypeProps) => {
+	const dispatch = useAppDispatch();
 	const [activeFilter, setActiveFilter] = useState<number[]>([]);
 	const [requestBtn, setRequestBtn] = useState<boolean>(false);
 	const inputSearchRef = useRef<HTMLInputElement | null>(null);
@@ -61,11 +64,11 @@ export const RFQCarFilters = ({
 			filters: [
 				{
 					id: 1,
-					title: 'Customer name',
+					title: 'Customer name fjffjfjfjjfjfjfj',
 				},
 				{
 					id: 2,
-					title: 'Customer name',
+					title: 'Customer name jfjfjfjfjjfjffjfjfjjf',
 				},
 				{
 					id: 3,
@@ -158,13 +161,17 @@ export const RFQCarFilters = ({
 					)}
 				>
 					<button
-						onClick={() => setRequest(1)}
+						onClick={() => {
+							dispatch(setModal('addRequestManually'));
+						}}
 						className={classNames(s.request_manually, s.request_item)}
 					>
 						Add manually
 					</button>
 					<button
-						onClick={() => setRequest(2)}
+						onClick={() => {
+							dispatch(setModal('bulkUpload'));
+						}}
 						className={classNames(s.request_upload, s.request_item)}
 					>
 						Bulk upload

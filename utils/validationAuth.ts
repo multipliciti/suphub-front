@@ -1,3 +1,4 @@
+//file for additional functions for validation
 export const isPassword = (data: string) => {
 	const res = data.length < 8 ? false : true;
 	return res;

@@ -12,6 +12,9 @@ import { EditPassword } from '@/components/Modals/EditPassword';
 import { PasswordChanged } from '@/components/Modals/EditPassword/PasswordChanged';
 import { SubmitForReview } from '@/components/Modals/SubmitForReview';
 import { ShowPhoto } from './ShowPhoto';
+import { RequestManuallyRFQ } from './RequestManuallyRFQ';
+import { SubmitedRFQ } from './SubmitedRFQ';
+import { BulkUploadRFQ } from './BulkUploadRFQ';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -95,6 +98,30 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'submitForReview' && <SubmitForReview />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'addRequestManually' && s.wrapper_active
+				)}
+			>
+				{modal === 'addRequestManually' && <RequestManuallyRFQ />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'submitedRFQ' && s.wrapper_active
+				)}
+			>
+				{modal === 'submitedRFQ' && <SubmitedRFQ />}
+			</div>
+
+			<div
+				className={classNames(s.wrapper, modal === 'bulkUpload' && s.wrapper_active)}
+			>
+				{modal === 'bulkUpload' && <BulkUploadRFQ />}
 			</div>
 		</>
 	);
