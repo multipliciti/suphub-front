@@ -15,6 +15,7 @@ import { ShowPhoto } from './ShowPhoto';
 import { RequestManuallyRFQ } from './RequestManuallyRFQ';
 import { SubmitedRFQ } from './SubmitedRFQ';
 import { BulkUploadRFQ } from './BulkUploadRFQ';
+import { CreateBusinessAccount } from '@/components/Modals/CreateBusinessAccount';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -122,6 +123,15 @@ export const Modal = () => {
 				className={classNames(s.wrapper, modal === 'bulkUpload' && s.wrapper_active)}
 			>
 				{modal === 'bulkUpload' && <BulkUploadRFQ />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'createBusinessAccount' && s.wrapper_active
+				)}
+			>
+				{modal === 'createBusinessAccount' && <CreateBusinessAccount />}
 			</div>
 		</>
 	);

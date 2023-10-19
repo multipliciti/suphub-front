@@ -16,7 +16,10 @@ interface CounterState {
 		| 'showPhoto'
 		| 'addRequestManually'
 		| 'submitedRFQ'
-		| 'bulkUpload';
+		| 'bulkUpload'
+		| 'submitForReview'
+		| 'showPhoto'
+		| 'createBusinessAccount';
 	email: string;
 }
 
@@ -47,6 +50,7 @@ const modalSlice = createSlice({
 				| 'addRequestManually'
 				| 'submitedRFQ'
 				| 'bulkUpload'
+				| 'createBusinessAccount'
 			>
 		) {
 			state.modal = action.payload;

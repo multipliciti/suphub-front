@@ -58,6 +58,10 @@ export const Registration = () => {
 
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
+	const CreateBusinessAccountModal = () => {
+		dispatch(setModal('createBusinessAccount'));
+	}
+
 	const onSubmit: SubmitHandler<RegisterUserType> = async (data) => {
 		const requestData = {
 			...data,
@@ -271,7 +275,7 @@ export const Registration = () => {
 					<p className={s.text}>or</p>
 				</div>
 
-				<button className={s.btn_create}>Create a business account to trade</button>
+				<button className={s.btn_create} onClick={CreateBusinessAccountModal}>Create a business account to trade</button>
 			</form>
 		</LayoutModal>
 	);
