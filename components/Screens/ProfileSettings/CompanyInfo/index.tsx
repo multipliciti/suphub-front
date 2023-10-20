@@ -8,12 +8,13 @@ import modal_close from '@/imgs/close.svg';
 import plus_sign from '@/imgs/ProfileSettings/plus_sign.svg';
 import small_cross from '@/imgs/ProfileSettings/small_cross.svg';
 import big_cross from '@/imgs/ProfileSettings/big_cross.svg';
-
 import logo_placeholder from '@/imgs/ProfileSettings/logo_placeholder.svg';
 import file_icon from '@/imgs/ProfileSettings/file_icon.svg';
 import Image from 'next/image';
+import { Api } from '@/services';
 
-const CompanyInfo = () => {
+const SellerCompanyInfo = () => {
+	const api = Api();
 	const dispatch = useAppDispatch();
 	const [
 		isFactoryAddressSameAsCompanyAddress,
@@ -26,25 +27,25 @@ const CompanyInfo = () => {
 		register,
 		handleSubmit,
 		setValue,
+		setError,
+		clearErrors,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
-			companyLegalName: '',
+			name: '',
 			logo: '',
-			companyOverview: '',
-			businessCertification: '',
-			factoryCertifications: '',
-			productsCertifiedFor: '',
+			businessCertification: [],
+			factoryCertifications: [],
+			countryProductsCertifiedFor: '',
 			productCertifications: '',
-			factoryImages: '',
-			companyStreetAddress: '',
+			companyStreet: '',
 			companyCity: '',
-			companyStateProvince: '',
+			companyState: '',
 			companyCountry: '',
 			companyZipCode: '',
-			factoryStreetAddress: '',
+			factoryStreet: '',
 			factoryCity: '',
-			factoryStateProvince: '',
+			factoryState: '',
 			factoryCountry: '',
 			factoryZipCode: '',
 		},
@@ -53,23 +54,16 @@ const CompanyInfo = () => {
 		shouldUnregister: true,
 	});
 
-	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
-
-	const onSubmit: SubmitHandler<any> = async (data) => {
-		console.log(data);
-		console.log(previewLogo);
-	};
-
 	const [logoSrc, setLogoSrc] = useState(null);
 	const [previewLogo, setPreviewLogo] = useState<string | any>(null);
 
-	const handleLogoChange = (event: any) => {
-		const file = event.target.files[0];
-		if (file) {
-			setLogoSrc(file);
-			setPreviewLogo(URL.createObjectURL(file));
-		}
-	};
+	const [addCountryInput, setAddCountryInput] = useState<string>('');
+	const [addCertificationInput, setAddCertificationInput] = useState<string>('');
+
+	const [countryProductsCertifiedFor, setProductsCertifiedFor] = useState<string[]>(
+		[]
+	);
+	const [productCertifications, setProductCertifications] = useState<string[]>([]);
 
 	const [businessCertificationFiles, setBusinessCertificationFiles] = useState<any>(
 		[]
@@ -77,26 +71,138 @@ const CompanyInfo = () => {
 	const [factoryCertificationFiles, setFactoryCertificationFiles] = useState<any>(
 		[]
 	);
-	const [factoryImages, setFactoryImages] = useState<any>([]);
-	const [factoryImagesPreview, setFactoryImagesPreview] = useState<any>([]);
+
+	const [
+		initiallyFetchedBusinessCertificationFiles,
+		setInitiallyFetchedBusinessCertificationFiles,
+	] = useState<any>([]);
+	const [
+		initiallyFetchedFactoryCertificationFiles,
+		setInitiallyFetchedFactoryCertificationFiles,
+	] = useState<any>([]);
+
+	const [submitClicked, setSubmitClicked] = useState<boolean>(false);
+
+	const handleLogoChange = (event: any) => {
+		clearErrors('logo');
+		const file:any = event.target.files[0];
+		if (file.size / 1024 / 1024 > 2) {
+			setError('logo', { message: 'File uploads must be under 2MB in size' });
+			setTimeout(() => {
+				clearErrors('logo');
+			}, 5000);
+			return;
+		}
+		if (file) {
+			setLogoSrc(file);
+			setPreviewLogo(URL.createObjectURL(file));
+		}
+	};
+
+	const handleAddCertification = () => {
+		const trimmedInput = addCertificationInput.trim().toLowerCase();
+
+		if (
+			productCertifications.some(
+				(certification) => certification.toLowerCase() === trimmedInput
+			)
+		) {
+			setError('productCertifications', {
+				message: 'This certification already exists',
+			});
+			setTimeout(() => {
+				clearErrors('productCertifications');
+			}, 5000);
+		} else if (trimmedInput.length === 0) {
+			setError('productCertifications', {
+				message: 'Certification cannot be empty',
+			});
+			setTimeout(() => {
+				clearErrors('productCertifications');
+			}, 5000);
+		} else {
+			setProductCertifications((prev: string[]) => [...prev, addCertificationInput]);
+			setAddCertificationInput('');
+		}
+	};
+
+	const handeRemoveCertification = (certificationNameToRemove: string) => {
+		setProductCertifications((prev: string[]) =>
+			prev.filter((certification) => certification !== certificationNameToRemove)
+		);
+	};
+
+	const handleAddCountryCertification = () => {
+		const trimmedInput = addCountryInput.trim().toLowerCase();
+
+		if (
+			countryProductsCertifiedFor.some(
+				(certification) => certification.toLowerCase() === trimmedInput
+			)
+		) {
+			setError('countryProductsCertifiedFor', {
+				message: 'This certification already exists',
+			});
+			setTimeout(() => {
+				clearErrors('countryProductsCertifiedFor');
+			}, 5000);
+		} else if (trimmedInput.length === 0) {
+			setError('countryProductsCertifiedFor', {
+				message: 'Country certification cannot be empty',
+			});
+			setTimeout(() => {
+				clearErrors('countryProductsCertifiedFor');
+			}, 5000);
+		} else {
+			setProductsCertifiedFor((prev: string[]) => [...prev, addCountryInput]);
+			setAddCountryInput('');
+		}
+	};
+
+	const handleRemoveCountryCertification = (certificationNameToRemove: string) => {
+		setProductsCertifiedFor((prev: string[]) =>
+			prev.filter((certification) => certification !== certificationNameToRemove)
+		);
+	};
 
 	const handleBusinessCertificationFiles = (event: any) => {
+		clearErrors('businessCertification');
 		const newFiles = Array.from(event.target.files);
+
+		for (let i = 0; i < newFiles.length; i++) {
+			const file:any = newFiles[i];
+			if (file.size / 1024 / 1024 > 2) {
+				setError('businessCertification', {
+					message: 'File uploads must be under 2MB in size',
+				});
+				setTimeout(() => {
+					clearErrors('businessCertification');
+				}, 5000);
+				return;
+			}
+		}
+
 		setBusinessCertificationFiles((prevFiles: any) => [...prevFiles, ...newFiles]);
 	};
 	const handleFactoryCertificationFiles = (event: any) => {
-		const newFiles = Array.from(event.target.files);
-		setFactoryCertificationFiles((prevFiles: any) => [...prevFiles, ...newFiles]);
-	};
-	const handleFactoryImages = (event: any) => {
-		const newFiles = Array.from(event.target.files);
-		setFactoryImages((prevFiles: any) => [...prevFiles, ...newFiles]);
+		clearErrors('factoryCertifications');
 
-		const newPreviews = newFiles.map((file: any) => URL.createObjectURL(file));
-		setFactoryImagesPreview((prevPreviews: any) => [
-			...prevPreviews,
-			...newPreviews,
-		]);
+		const newFiles = Array.from(event.target.files);
+
+		for (let i = 0; i < newFiles.length; i++) {
+			const file:any = newFiles[i];
+			if (file.size / 1024 / 1024 > 2) {
+				setError('factoryCertifications', {
+					message: ' File uploads must be under 2MB in size',
+				});
+				setTimeout(() => {
+					clearErrors('factoryCertifications');
+				}, 5000);
+				return;
+			}
+		}
+
+		setFactoryCertificationFiles((prevFiles: any) => [...prevFiles, ...newFiles]);
 	};
 
 	const handleRemoveBusinessCertificationFiles = (index: any) => {
@@ -109,32 +215,178 @@ const CompanyInfo = () => {
 			prevFiles.filter((_: any, i: any) => i !== index)
 		);
 	};
-	const handleRemoveFactoryImages = (index: any) => {
-		setFactoryImages((prevFiles: any) =>
-			prevFiles.filter((_: any, i: any) => i !== index)
+
+	useEffect(() => {
+		const fetch = async (id: number) => {
+			const response = await api.sellerCompany.getById(id);
+			const {
+				name,
+				logo,
+				businessCertifications,
+				factoryCertifications,
+				countryProductsCertifiedFor,
+				productCertifications,
+				companyAddress,
+				factoryAddress,
+			} = response.data;
+			setValue('name', name);
+			setValue('companyStreet', companyAddress.street);
+			setValue('companyCity', companyAddress.city);
+			setValue('companyState', companyAddress.state);
+			setValue('companyCountry', companyAddress.country);
+			setValue('companyZipCode', companyAddress.zipcode);
+			setValue('factoryStreet', factoryAddress.street);
+			setValue('factoryCity', factoryAddress.city);
+			setValue('factoryState', factoryAddress.state);
+			setValue('factoryCountry', factoryAddress.country);
+			setValue('factoryZipCode', factoryAddress.zipcode);
+			setProductsCertifiedFor(countryProductsCertifiedFor.split(','));
+			setProductCertifications(productCertifications.split(','));
+			setBusinessCertificationFiles(businessCertifications);
+			setFactoryCertificationFiles(factoryCertifications);
+			setInitiallyFetchedBusinessCertificationFiles(businessCertifications);
+			setInitiallyFetchedFactoryCertificationFiles(factoryCertifications);
+			setPreviewLogo(logo ? logo.url : null);
+		};
+		fetch(1);
+	}, []);
+
+	const onSubmit: SubmitHandler<any> = async (data) => {
+		setSubmitClicked(true);
+		const form: any = {};
+
+		const companyAddress: any = {
+			street: data.companyStreet,
+			city: data.companyCity,
+			state: data.companyState,
+			country: data.companyCountry,
+			zipcode: data.companyZipCode,
+		};
+
+		const factoryAddress: any = {
+			street: data.factoryStreet,
+			city: data.factoryCity,
+			state: data.factoryState,
+			country: data.factoryCountry,
+			zipcode: data.factoryZipCode,
+		};
+
+		form['name'] = data.name;
+		form['countryProductsCertifiedFor'] = countryProductsCertifiedFor.join(',');
+		form['productCertifications'] = productCertifications.join(',');
+		form['companyAddress'] = companyAddress;
+		if (isFactoryAddressSameAsCompanyAddress) {
+			form['factoryAddress'] = companyAddress;
+		} else {
+			form['factoryAddress'] = factoryAddress;
+		}
+
+		const responseForm = await api.sellerCompany.update(form);
+		if (responseForm.status !== 200) return;
+
+		if (logoSrc) {
+			const formData = new FormData();
+			formData.append('file', logoSrc);
+			const responseLogo = await api.sellerCompany.uploadLogo(formData);
+			if (responseLogo.status !== 201) return;
+		}
+
+		const deletedBusinessIds:any[] = [];
+		const deletedFactoryIds:any[]= [];
+
+		const businessCertificationIds = new Set(
+			businessCertificationFiles.map((file:any) => file?.id)
 		);
-		setFactoryImagesPreview((prevFiles: any) =>
-			prevFiles.filter((_: any, i: any) => i !== index)
+		const factoryCertificationIds = new Set(
+			factoryCertificationFiles.map((file:any) => file?.id)
 		);
+
+		initiallyFetchedBusinessCertificationFiles.forEach((file:any) => {
+			if (!businessCertificationIds.has(file.id)) {
+				deletedBusinessIds.push(file.id);
+			}
+		});
+
+		initiallyFetchedFactoryCertificationFiles.forEach((file:any) => {
+			if (!factoryCertificationIds.has(file.id)) {
+				deletedFactoryIds.push(file.id);
+			}
+		});
+
+		if (deletedBusinessIds.length > 0) {
+			const data:any = {};
+			data['type'] = 'business';
+			data['fileIds'] = deletedBusinessIds;
+			const responseDeleteBusiness = await api.sellerCompany.removeCertification(
+				data
+			);
+			if (responseDeleteBusiness.status !== 200) return;
+
+		}
+
+		if (deletedFactoryIds.length > 0) {
+			const data:any = {};
+			data['type'] = 'factory';
+			data['fileIds'] = deletedFactoryIds;
+			const responseDeleteFactory = await api.sellerCompany.removeCertification(
+				data
+			);
+			if (responseDeleteFactory.status !== 200) return;
+
+		}
+
+		const formDataBusiness = new FormData();
+		const formDataFactory = new FormData();
+		if (businessCertificationFiles.length > 0) {
+			formDataBusiness.append('type', 'business');
+
+			businessCertificationFiles.forEach((file:any) => {
+				const fileExists = initiallyFetchedBusinessCertificationFiles.some((initialFile:any) => initialFile.id === file.id);
+				if (!fileExists) {
+					formDataBusiness.append('files', file);
+				}
+			})
+			if (formDataBusiness.has('files')) {
+				const responseBusiness = await api.sellerCompany.uploadCertification(
+					formDataBusiness
+				);
+				if (responseBusiness.status !== 201) return;
+			}
+		}
+
+		if (factoryCertificationFiles.length > 0) {
+			formDataFactory.append('type', 'factory');
+			factoryCertificationFiles.forEach((file:any) => {
+				const fileExists = initiallyFetchedFactoryCertificationFiles.some((initialFile:any) => initialFile.id === file.id);
+				if (!fileExists) {
+					formDataFactory.append('files', file);
+				}
+			})
+			if (formDataFactory.has('files')) {
+				const responseFactory = await api.sellerCompany.uploadCertification(
+					formDataFactory
+				);
+				if (responseFactory.status !== 201) return;
+			}
+		}
+
+
+		setSubmitClicked(false);
+		window.location.reload();
 	};
 
-	const [productsCertifiedFor, setProductsCertifiedFor] = useState<string[]>([
-		'USA',
-		'China',
-	]);
-	const [productCertifications, setProductCertifications] = useState<string[]>([
-		'AAMA',
-		'ASTM',
-		'CSA',
-		'WDMA',
-	]);
-
-
 	return (
-		<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
+		<form className={s.form} onSubmit={handleSubmit(onSubmit)} noValidate>
 			<div className={s.heading}>
 				<h5 className={s.title_main}>Company Info</h5>
-				<button className={classNames(s.btn_send, s.btn_send_active)}>
+				<button
+					className={classNames(
+						s.btn_send,
+						Boolean(!(Object.keys(errors).length > 0)) && s.btn_send_active
+					)}
+					disabled={Boolean(Object.keys(errors).length > 0) || submitClicked}
+					type={'submit'}
+				>
 					Save Changes
 				</button>
 			</div>
@@ -142,29 +394,35 @@ const CompanyInfo = () => {
 				<div className={s.title_general}>General Info</div>
 				<div className={s.row}>
 					<p className={s.title}>Company Legal Name</p>
-					<label className={s.label} htmlFor="companyLegalName">
+					<label className={s.label} htmlFor="name">
 						<input
 							className={s.input}
-							{...register('companyLegalName', {
-								required: 'required companyLegalName',
+							{...register('name', {
+								required: 'Please enter the company name.',
 							})}
 							placeholder="Enter company legal name"
 							type="text"
-							id="companyLegalName"
+							id="name"
 						/>
 					</label>
 				</div>
+				{errors.name && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.name?.message}</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div className={s.row}>
 					<p className={s.title}>Logo</p>
 					<div className={s.logo_wrapper}>
 						<label htmlFor="logoInput">
-							{logoSrc ? (
+							{previewLogo ? (
 								<Image
 									alt={'Logo placeholder'}
 									className={s.logo}
-									width={1}
-									height={1}
+									width={80}
+									height={80}
 									src={previewLogo}
 								/>
 							) : (
@@ -184,18 +442,12 @@ const CompanyInfo = () => {
 						</label>
 					</div>
 				</div>
-				<div className={s.separator}></div>
-				<div className={s.row_align_start}>
-					<p className={s.title}>Company overview</p>
-					<label className={s.label} htmlFor="companyOverview">
-						<textarea
-							className={s.textarea}
-							{...register('companyOverview', { required: 'required' })}
-							id="companyOverview"
-							placeholder="Enter information about company"
-						/>
-					</label>
-				</div>
+				{errors.logo && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.logo?.message}</p>
+					</div>
+				)}
 			</div>
 			<div className={s.settings}>
 				<div className={s.title_general}>Files</div>
@@ -233,6 +485,7 @@ const CompanyInfo = () => {
 							</div>
 							<input
 								{...register('businessCertification')}
+								accept=".jpg, .jpeg, .png, .pdf"
 								type="file"
 								id="businessFileInput"
 								className={s.hidden_input}
@@ -242,6 +495,14 @@ const CompanyInfo = () => {
 						</label>
 					</div>
 				</div>
+				{errors.businessCertification && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>
+							{errors.businessCertification?.message}
+						</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div
 					className={
@@ -284,131 +545,171 @@ const CompanyInfo = () => {
 						</label>
 					</div>
 				</div>
-
+				{errors.factoryCertifications && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>
+							{errors.factoryCertifications?.message}
+						</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div className={s.row}>
 					<p className={s.title}>Products certified for</p>
 					<div className={s.tag_wrapper_countries}>
-						{productsCertifiedFor.map((product) => (
-							<button className={s.tag}>
+						{countryProductsCertifiedFor.map((product) => (
+							<div className={s.tag}>
 								<p>{product}</p>
-								<Image alt="close" className={s.tag_close} src={modal_close} />
-							</button>
+								<Image
+									alt="close"
+									className={s.tag_close}
+									src={modal_close}
+									onClick={() => handleRemoveCountryCertification(product)}
+								/>
+							</div>
 						))}
-						<button className={s.tag_add}>
-							<Image alt={'add product'} src={plus_sign} />
-							<p>Add country</p>
-						</button>
+						<div className={s.tag_add}>
+							<Image
+								alt={'add product'}
+								src={plus_sign}
+								onClick={handleAddCountryCertification}
+							/>
+							<input
+								className={classNames(s.input_certification, s.width_smaller)}
+								value={addCountryInput}
+								onChange={(e) => {
+									setAddCountryInput(e.target.value);
+								}}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') {
+										e.preventDefault();
+										handleAddCountryCertification();
+									}
+								}}
+								placeholder={'Add country'}
+							/>
+						</div>
 					</div>
 				</div>
+				{errors.countryProductsCertifiedFor && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>
+							{errors.countryProductsCertifiedFor?.message}
+						</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
+
 				<div className={s.row}>
 					<p className={s.title}>Product certifications</p>
 					<div className={s.tag_wrapper}>
 						{productCertifications.map((product) => (
-							<button className={s.tag}>
+							<div className={s.tag}>
 								<p>{product}</p>
 								<Image
 									alt={'Add product Certification'}
 									className={s.tag_close}
 									src={modal_close}
+									onClick={() => handeRemoveCertification(product)}
 								/>
-							</button>
+							</div>
 						))}
-						<button className={s.tag_add}>
-							<Image alt="add product certification" src={plus_sign} />
-							<p>Add certification</p>
-						</button>
-					</div>
-				</div>
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>Factory images</p>
-					<div className={s.logo_wrapper}>
-						<div className={s.factory_images}>
-							{factoryImagesPreview.length > 0 &&
-								factoryImagesPreview.map((image: any, index: number) => (
-									<div className={s.factory_image_div} key={index}>
-										<Image
-											alt={'factory image'}
-											className={s.factory_image}
-											width={100}
-											height={100}
-											src={image}
-										/>
-										<div
-											className={s.factory_div}
-											onClick={() => handleRemoveFactoryImages(index)}
-										>
-											<Image
-												src={small_cross}
-												alt={'small_cross'}
-												className={s.factory_close}
-											/>
-										</div>
-									</div>
-								))}
-							<label htmlFor="factoryImages">
-								<Image
-									alt={'image placeholder'}
-									className={s.logo_placeholder_square}
-									src={plus_sign}
-								/>
-								<input
-									{...register('factoryImages')}
-									type="file"
-									id="factoryImages"
-									className={s.hidden_input}
-									onChange={handleFactoryImages}
-									multiple
-								/>
-							</label>
+						<div className={s.tag_add}>
+							<Image
+								alt="add product certification"
+								src={plus_sign}
+								onClick={handleAddCertification}
+							/>
+							<input
+								className={classNames(s.input_certification, s.width_bigger)}
+								value={addCertificationInput}
+								onChange={(e) => {
+									setAddCertificationInput(e.target.value);
+								}}
+								onKeyDown={(e) => {
+									if (e.key === 'Enter') {
+										e.preventDefault();
+										handleAddCertification();
+									}
+								}}
+								placeholder={'Add certification'}
+							/>
 						</div>
 					</div>
 				</div>
+
+				{errors.productCertifications && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>
+							{errors.productCertifications?.message}
+						</p>
+					</div>
+				)}
 			</div>
 			<div className={s.settings}>
 				<div className={s.title_general}>Company Address</div>
 				<div className={s.row}>
 					<p className={s.title}>Street address</p>
-					<label className={s.label} htmlFor="companyStreetAddress">
+					<label className={s.label} htmlFor="companyStreet">
 						<input
 							className={s.input}
-							{...register('companyStreetAddress', { required: 'required address' })}
+							{...register('companyStreet', {
+								required: 'Please provide the street address',
+							})}
 							placeholder="Enter street address"
 							type="text"
-							id="companyStreetAddress"
+							id="companyStreet"
 						/>
 					</label>
 				</div>
+				{errors.companyStreet && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.companyStreet?.message}</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div className={s.row}>
 					<p className={s.title}>City</p>
 					<label className={s.label} htmlFor="companyCity">
 						<input
 							className={s.input}
-							{...register('companyCity', { required: 'required companyCity' })}
+							{...register('companyCity', { required: 'Please fill in the city' })}
 							placeholder="Enter city"
 							type="text"
 							id="companyCity"
 						/>
 					</label>
 				</div>
+				{errors.companyCity && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.companyCity?.message}</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div className={s.row}>
 					<p className={s.title}>State / Province</p>
-					<label className={s.label} htmlFor="companyStateProvince">
+					<label className={s.label} htmlFor="companyState">
 						<input
 							className={s.input}
-							{...register('companyStateProvince', {
-								required: 'required companyStateProvince',
+							{...register('companyState', {
+								required: 'Please specify the state',
 							})}
 							placeholder="Enter state / Province"
 							type="text"
-							id="companyStateProvince"
+							id="companyState"
 						/>
 					</label>
 				</div>
+				{errors.companyState && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.companyState?.message}</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div className={s.row}>
 					<p className={s.title}>Country</p>
@@ -416,7 +717,7 @@ const CompanyInfo = () => {
 						<input
 							className={s.input}
 							{...register('companyCountry', {
-								required: 'required companyCountry',
+								required: 'Please indicate the country',
 							})}
 							placeholder="Enter Country"
 							type="text"
@@ -424,6 +725,12 @@ const CompanyInfo = () => {
 						/>
 					</label>
 				</div>
+				{errors.companyCountry && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.companyCountry?.message}</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div className={s.row}>
 					<p className={s.title}>Zip Code</p>
@@ -431,7 +738,7 @@ const CompanyInfo = () => {
 						<input
 							className={s.input}
 							{...register('companyZipCode', {
-								required: 'required companyZipCode',
+								required: 'Please input the ZIP code',
 							})}
 							placeholder="Enter Zip Code"
 							type="text"
@@ -439,6 +746,12 @@ const CompanyInfo = () => {
 						/>
 					</label>
 				</div>
+				{errors.companyZipCode && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.companyZipCode?.message}</p>
+					</div>
+				)}
 			</div>
 			<div className={s.settings}>
 				<div className={s.row}>
@@ -461,18 +774,26 @@ const CompanyInfo = () => {
 							s.label,
 							isFactoryAddressSameAsCompanyAddress && s.label_disabled
 						)}
-						htmlFor="factoryStreetAddress"
+						htmlFor="factoryStreet"
 					>
 						<input
 							className={s.input}
-							{...register('factoryStreetAddress', { required: 'required address' })}
+							{...register('factoryStreet', {
+								required: 'Please provide the street address',
+							})}
 							placeholder="Enter street address"
 							type="text"
-							id="factoryStreetAddress"
+							id="factoryStreet"
 							disabled={isFactoryAddressSameAsCompanyAddress}
 						/>
 					</label>
 				</div>
+				{!isFactoryAddressSameAsCompanyAddress && errors.factoryStreet && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.factoryStreet?.message}</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div className={s.row}>
 					<p className={s.title}>City</p>
@@ -485,7 +806,7 @@ const CompanyInfo = () => {
 					>
 						<input
 							className={s.input}
-							{...register('factoryCity', { required: 'required factoryCity' })}
+							{...register('factoryCity', { required: 'Please fill in the city' })}
 							placeholder="Enter city"
 							type="text"
 							id="factoryCity"
@@ -493,6 +814,12 @@ const CompanyInfo = () => {
 						/>
 					</label>
 				</div>
+				{!isFactoryAddressSameAsCompanyAddress && errors.factoryCity && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.factoryCity?.message}</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div className={s.row}>
 					<p className={s.title}>State / Province</p>
@@ -501,20 +828,26 @@ const CompanyInfo = () => {
 							s.label,
 							isFactoryAddressSameAsCompanyAddress && s.label_disabled
 						)}
-						htmlFor="factoryStateProvince"
+						htmlFor="factoryState"
 					>
 						<input
 							className={s.input}
-							{...register('factoryStateProvince', {
-								required: 'required factoryStateProvince',
+							{...register('factoryState', {
+								required: 'Please specify the state',
 							})}
 							placeholder="Enter state / Province"
 							type="text"
-							id="factoryStateProvince"
+							id="factoryState"
 							disabled={isFactoryAddressSameAsCompanyAddress}
 						/>
 					</label>
 				</div>
+				{!isFactoryAddressSameAsCompanyAddress && errors.factoryState && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.factoryState?.message}</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div className={s.row}>
 					<p className={s.title}>Country</p>
@@ -528,7 +861,7 @@ const CompanyInfo = () => {
 						<input
 							className={s.input}
 							{...register('factoryCountry', {
-								required: 'required factoryCountry',
+								required: 'Please indicate the country',
 							})}
 							placeholder="Enter Country"
 							type="text"
@@ -537,6 +870,12 @@ const CompanyInfo = () => {
 						/>
 					</label>
 				</div>
+				{!isFactoryAddressSameAsCompanyAddress && errors.factoryCountry && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.factoryCountry?.message}</p>
+					</div>
+				)}
 				<div className={s.separator}></div>
 				<div className={s.row}>
 					<p className={s.title}>Zip Code</p>
@@ -550,7 +889,7 @@ const CompanyInfo = () => {
 						<input
 							className={s.input}
 							{...register('factoryZipCode', {
-								required: 'required factoryZipCode',
+								required: 'Please input the ZIP code',
 							})}
 							placeholder="Enter Zip Code"
 							type="text"
@@ -559,9 +898,15 @@ const CompanyInfo = () => {
 						/>
 					</label>
 				</div>
+				{!isFactoryAddressSameAsCompanyAddress && errors.factoryZipCode && (
+					<div className={s.row_nogap}>
+						<p></p>
+						<p className={s.errorDescription}>{errors.factoryZipCode?.message}</p>
+					</div>
+				)}
 			</div>
 		</form>
 	);
 };
 
-export default CompanyInfo;
+export default SellerCompanyInfo;

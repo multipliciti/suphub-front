@@ -95,4 +95,14 @@ export const AuthApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
+	async updatePassword (data:any) {
+		try {
+			const url = '/auth/password';
+			const response = await instance.patch(url, data);
+			return response;
+		} catch (error) {
+			console.error('Error updatePassword:', error);
+			throw error;
+		}
+	}
 });

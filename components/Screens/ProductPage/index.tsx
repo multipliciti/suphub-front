@@ -38,7 +38,7 @@ export const ProductPageComponent = (props: PropsType) => {
 			dispatch(setProduct(response));
 			setStatus('seccess');
 		} catch (error: any) {
-			if (error.response.data.statusCode == 404) {
+			if (error?.response?.data?.statusCode == 404) {
 				setStatus('notFound');
 			}
 		}

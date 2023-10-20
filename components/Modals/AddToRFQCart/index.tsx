@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Api } from '@/services';
 import { Project, RfqItem } from '@/types/products/rfq';
 import search_img from '@/imgs/Marketplace/search.svg';
