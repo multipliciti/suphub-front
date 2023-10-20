@@ -11,7 +11,8 @@ import { setStatusGetUser, setUser } from '@/redux/slices/auth';
 import { classNames } from '@/utils/classNames';
 import { useEffect } from 'react';
 import { Api } from '@/services';
-//img
+import {useRouter} from 'next/navigation'
+//imgs
 import Arrow from '@/imgs/Header/menu/Arrow.svg';
 import Calendar from '@/imgs/Header/menu/Calendar.svg';
 import Comment from '@/imgs/Header/menu/Comment.svg';
@@ -35,6 +36,7 @@ export const Header = () => {
 	const statusGetUser = useAppSelector((state) => state.authSlice.statusGetUser);
 	const [activeLink, setActiveLink] = useState<number>(1);
 	const [menu, setMenu] = useState<boolean>(false);
+	const router = useRouter()
 	const menuItems = [
 		{
 			id: 1,
@@ -99,6 +101,7 @@ export const Header = () => {
 			if (response) {
 				dispatch(setUser(null));
 				dispatch(setStatusGetUser('logouted'));
+				router.push('/')
 			}
 		} catch (error: any) {}
 	};
