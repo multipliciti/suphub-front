@@ -4,12 +4,13 @@ import { RfqOption } from '@/types/services/rfq';
 export const SellerCompanyApi = (instance: AxiosInstance) => ({
 	async register(data: RfqOption) {
 	},
-	async getAll() {},
+	async getAll() {
+	},
 	async getById(id: number) {
 		try {
-			const url:string = `/seller/` + id.toString()
+			const url: string = `/seller/` + id.toString();
 			const response = await instance.get(url);
-			return response
+			return response;
 		} catch (error) {
 			console.error('Get by id error:', error);
 			throw error;
@@ -17,42 +18,42 @@ export const SellerCompanyApi = (instance: AxiosInstance) => ({
 	},
 	async update(data: any) {
 		try {
-			const url:string = `/seller/` + '1'
+			const url: string = `/seller/` + '1';
 
 			const response = await instance.patch(url, data);
-			return response
+			return response;
 		} catch (error) {
 			console.error('Update error:', error);
 			throw error;
 		}
 	},
-	async uploadLogo(data) {
+	async uploadLogo(data: any) {
 		try {
-			const url:string = '/seller/upload/logo'
+			const url: string = '/seller/upload/logo';
 			const response = await instance.post(url, data);
-			return response
+			return response;
 		} catch (error) {
 			console.error('Upload logo error:', error);
 			throw error;
 		}
 	},
-	async uploadCertification(data) {
+	async uploadCertification(data: any) {
 		try {
-			const url:string = '/seller/upload/certification'
+			const url: string = '/seller/upload/certification';
 			const response = await instance.post(url, data);
-			return response
+			return response;
 		} catch (error) {
 			console.error('Upload certification error:', error);
 			throw error;
 		}
 	},
-	async removeCertification(data:any) {
+	async removeCertification(data: any) {
 		try {
-			const url:string = '/seller/certification'
+			const url: string = '/seller/certification';
 
-			const response:any = await instance.delete(url, {data}
+			const response: any = await instance.delete(url, { data },
 			);
-			return response
+			return response;
 		} catch (error) {
 			console.error('Remove certification error:', error);
 			throw error;

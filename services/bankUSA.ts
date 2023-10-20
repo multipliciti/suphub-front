@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 export const BankUSA = (instance: AxiosInstance) => ({
-	async add (data) {
+	async add (data:any) {
 		try {
 			const url:string = '/bank-usa'
 			const response = await instance.post(url, data);
@@ -22,7 +22,7 @@ export const BankUSA = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async update (data) {
+	async update (data:any) {
 		try {
 			const url:string = '/bank-usa'
 			const response = await instance.patch(url, data);

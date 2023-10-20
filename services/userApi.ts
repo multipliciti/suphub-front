@@ -11,7 +11,7 @@ export const UserApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async update(id, data) {
+	async update(id: any, data: any) {
 		try {
 			const url = '/user/' + id;
 			const response = await instance.patch(url, data);

@@ -26,7 +26,7 @@ export const BuyerCompanyApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async uploadLogo(data) {
+	async uploadLogo(data: any) {
 		try {
 			const url:string = '/buyer/upload/logo'
 			const response = await instance.post(url, data);
