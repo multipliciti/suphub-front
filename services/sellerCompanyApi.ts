@@ -1,10 +1,30 @@
 import { AxiosInstance } from 'axios';
-import { RfqOption } from '@/types/services/rfq';
+import {
+	RegisterSellerCompany,
+	UpdateSellerCompany,
+	RemoveCertification,
+} from '@/types/services/company';
 
 export const SellerCompanyApi = (instance: AxiosInstance) => ({
-	async register(data: RfqOption) {
+	async register(data: RegisterSellerCompany) {
+		try {
+			const url = '/seller';
+			const response = await instance.post(url, data);
+			return response;
+		} catch (error) {
+			console.error('Register error:', error);
+			throw error;
+		}
 	},
 	async getAll() {
+		try {
+			const url = '/seller';
+			const response = await instance.get(url);
+			return response;
+		} catch (error) {
+			console.error('Get all error:', error);
+			throw error;
+		}
 	},
 	async getById(id: number) {
 		try {
@@ -16,7 +36,7 @@ export const SellerCompanyApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async update(data: any) {
+	async update(data: UpdateSellerCompany) {
 		try {
 			const url: string = `/seller/` + '1';
 
@@ -27,9 +47,9 @@ export const SellerCompanyApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async uploadLogo(data: any) {
+	async uploadLogo(data: FormData) {
 		try {
-			const url: string = '/seller/upload/logo';
+			const url = '/seller/upload/logo';
 			const response = await instance.post(url, data);
 			return response;
 		} catch (error) {
@@ -37,9 +57,9 @@ export const SellerCompanyApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async uploadCertification(data: any) {
+	async uploadCertification(data: FormData) {
 		try {
-			const url: string = '/seller/upload/certification';
+			const url = '/seller/upload/certification';
 			const response = await instance.post(url, data);
 			return response;
 		} catch (error) {
@@ -47,12 +67,11 @@ export const SellerCompanyApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async removeCertification(data: any) {
+	async removeCertification(data: RemoveCertification) {
 		try {
-			const url: string = '/seller/certification';
+			const url = '/seller/certification';
 
-			const response: any = await instance.delete(url, { data },
-			);
+			const response: any = await instance.delete(url, { data });
 			return response;
 		} catch (error) {
 			console.error('Remove certification error:', error);

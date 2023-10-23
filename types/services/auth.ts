@@ -43,5 +43,13 @@ export interface User {
 	updatedAt: string;
 }
 
+export interface NewPassword {
+	oldPassword: string;
+	newPassword: string;
+}
 
-
+export interface UpdateUser {
+	firstName?: string;
+	lastName?: string;
+	email?: string;
+}

@@ -3,7 +3,7 @@ import { AxiosInstance } from 'axios';
 const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
 export const sideBarApi = (instance: AxiosInstance) => ({
-    async getCategoryies() {
+	async getCategoryies() {
 		try {
 			const url = `/category`;
 			const response = await instance.get(url);

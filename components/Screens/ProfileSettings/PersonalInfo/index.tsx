@@ -14,7 +14,6 @@ const PersonalInfo = () => {
 	const dispatch = useAppDispatch();
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
-
 	const api = Api();
 
 	const {
@@ -29,28 +28,29 @@ const PersonalInfo = () => {
 		shouldUnregister: true,
 	});
 
+	const [userId, setUserId] = useState<number>(1);
+
 	useEffect(() => {
 		const fetch = async () => {
 			const response = await api.auth.getUser();
-			const {
-				firstName, lastName, email
-			} = response.data;
+			const { firstName, lastName, email, id } = response.data;
 			setValue('firstName', firstName);
 			setValue('lastName', lastName);
 			setValue('email', email);
+			setUserId(id);
 		};
 		fetch();
 	}, []);
 
-	const onSubmit: SubmitHandler<any> = async (data) => {
-		const {firstName, lastName, email, id} = data;
-		const form:any = {};
+	const onSubmit = async (data: any) => {
+		const { firstName, lastName, email } = data;
+		const form: any = {};
 		form['firstName'] = firstName;
 		form['lastName'] = lastName;
 		form['email'] = email;
-		const response = await api.user.update(id, form);
+		const response = await api.user.update(userId, form);
 		if (response.status !== 200) return;
-		window.location.reload()
+		window.location.reload();
 	};
 
 	return (
@@ -113,7 +113,7 @@ const PersonalInfo = () => {
 						<label className={s.label} htmlFor="email">
 							<input
 								className={s.input}
-								{...register('email',{
+								{...register('email', {
 									required: 'Email is required',
 									pattern: {
 										value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
@@ -167,7 +167,7 @@ const PersonalInfo = () => {
 				<div className={s.to_right}>
 					<button
 						onClick={(e) => {
-							e.preventDefault()
+							e.preventDefault();
 							dispatch(setModal('editPassword'));
 						}}
 						className={classNames(s.btn_send, s.btn_send_reset)}

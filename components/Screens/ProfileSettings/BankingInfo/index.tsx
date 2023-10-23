@@ -1,7 +1,5 @@
 'use client';
 import s from '../GeneralSettingsStyle.module.scss';
-import { setModal, setEmail } from '@/redux/slices/modal';
-import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import React, { useEffect, useState } from 'react';
@@ -12,7 +10,6 @@ import { Api } from '@/services';
 type PaymentType = 'Domestic bank (USA)' | 'International';
 const BankingInfo = () => {
 	const api = Api();
-	const dispatch = useAppDispatch();
 	const [paymentType, setPaymentType] = useState<PaymentType>('Domestic bank (USA)');
 	const buttons: PaymentType[] = ['Domestic bank (USA)', 'International'];
 
@@ -90,15 +87,15 @@ const BankingInfo = () => {
 		setVendorType(e.target.value);
 	};
 
-	const fillDefaultValuesDomesticBank = (data:any) => {
+	const fillDefaultValuesDomesticBank = (data: any) => {
 		const { vendorType, businessName, routingNumber, accountNumber } = data;
 		setValue('businessNameDomesticBank', businessName);
-		setVendorType(vendorType)
+		setVendorType(vendorType);
 		setValue('routingNumber', routingNumber);
 		setValue('accountNumberDomesticBank', accountNumber);
 	};
 
-	const fillDefaultValueInternationalBank = (data:any) => {
+	const fillDefaultValueInternationalBank = (data: any) => {
 		const {
 			swiftCode,
 			businessName,
@@ -127,7 +124,6 @@ const BankingInfo = () => {
 				} catch (error) {
 					setIsFirstTimeCreateDomesticBank(true);
 					return;
-
 				}
 			} else {
 				try {
@@ -144,10 +140,10 @@ const BankingInfo = () => {
 	}, [paymentType]);
 
 	const onSubmit: SubmitHandler<any> = async (data) => {
-		const form:any = {};
+		const form: any = {};
 		if (paymentType === 'Domestic bank (USA)') {
 			console.log(data);
-			const {businessNameDomesticBank, routingNumber, accountNumberDomesticBank } =
+			const { businessNameDomesticBank, routingNumber, accountNumberDomesticBank } =
 				data;
 			form['vendorType'] = vendorType;
 			form['businessName'] = businessNameDomesticBank;
@@ -207,12 +203,12 @@ const BankingInfo = () => {
 				<div className={s.heading}>
 					<h5 className={s.title_main}>Direct Deposit</h5>
 					<>
-					<button
-						type={'submit'}
-						className={classNames(s.btn_send, s.btn_send_active)}
-					>
-						Submit for review
-					</button>
+						<button
+							type={'submit'}
+							className={classNames(s.btn_send, s.btn_send_active)}
+						>
+							Submit for review
+						</button>
 					</>
 				</div>
 				<div className={s.settings_bankLocation}>
@@ -252,7 +248,7 @@ const BankingInfo = () => {
 											id={'business'}
 											value="business"
 											checked={vendorType === 'business'}
-											onChange={(e:any) => handleVendorTypeChange(e)}
+											onChange={(e: any) => handleVendorTypeChange(e)}
 										/>
 										<label className={s.radio_text} htmlFor="business">
 											Business
@@ -266,7 +262,7 @@ const BankingInfo = () => {
 											id="individual"
 											value="individual"
 											checked={vendorType === 'individual'}
-											onChange={(e:any) => handleVendorTypeChange(e)}
+											onChange={(e: any) => handleVendorTypeChange(e)}
 										/>
 										<label className={s.radio_text} htmlFor={'individual'}>
 											Individual
