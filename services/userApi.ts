@@ -1,4 +1,5 @@
 import { AxiosInstance } from 'axios';
+import { UpdateUser } from '@/types/services/auth';
 
 export const UserApi = (instance: AxiosInstance) => ({
 	async get() {
@@ -11,14 +12,14 @@ export const UserApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async update(id: any, data: any) {
+	async update(id: number, data: UpdateUser) {
 		try {
-			const url = '/user/' + id;
+			const url = '/user/' + id.toString();
 			const response = await instance.patch(url, data);
 			return response;
-		} catch (error){
+		} catch (error) {
 			console.error('Error update:', error);
 			throw error;
 		}
-	}
+	},
 });

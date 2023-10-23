@@ -9,15 +9,18 @@ import { Api } from '@/services';
 import { useAppDispatch } from '@/redux/hooks';
 const { setModal } = require('@/redux/slices/modal');
 
-
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
-	const router:any = useRouter();
+	const router: any = useRouter();
 	const dispatch = useAppDispatch();
 	const previousUrl = router.query;
 	const user = useAppSelector((state) => state.authSlice.user);
 	const statusGetUser = useAppSelector((state) => state.authSlice.statusGetUser);
 
-	const settingsUrls= ['/settings/personal-info', '/settings/company-info', '/settings/banking-info'];
+	const settingsUrls = [
+		'/settings/personal-info',
+		'/settings/company-info',
+		'/settings/banking-info',
+	];
 	const api = Api();
 
 	useEffect(() => {
@@ -25,21 +28,19 @@ export default function SettingsLayout({ children }: { children: React.ReactNode
 			if (statusGetUser === 'logouted' || statusGetUser === 'rejected') {
 				router.push('/');
 			}
-	}
+		};
 		fetch();
 	}, [statusGetUser]);
 
 	return (
-		user !== null && typeof user === 'object' && (
-					<div className={s.settings_main}>
-						<SettingsSidebar />
-						<div className={s.settings_children}>
-							<>
-								{children}
-							</>
-						</div>
-					</div>
+		user !== null &&
+		typeof user === 'object' && (
+			<div className={s.settings_main}>
+				<SettingsSidebar />
+				<div className={s.settings_children}>
+					<>{children}</>
+				</div>
+			</div>
 		)
 	);
-
 }

@@ -1,21 +1,20 @@
 'use client';
-import s from './CompanyInfoStyle.module.scss';
+import s from '../CompanyInfoStyle.module.scss';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import modal_close from '@/imgs/close.svg';
 import plus_sign from '@/imgs/ProfileSettings/plus_sign.svg';
-import small_cross from '@/imgs/ProfileSettings/small_cross.svg';
 import big_cross from '@/imgs/ProfileSettings/big_cross.svg';
 import logo_placeholder from '@/imgs/ProfileSettings/logo_placeholder.svg';
 import file_icon from '@/imgs/ProfileSettings/file_icon.svg';
 import Image from 'next/image';
 import { Api } from '@/services';
+import { RemoveCertification, UpdateSellerCompany } from '@/types/services/company';
 
 const SellerCompanyInfo = () => {
 	const api = Api();
-	const dispatch = useAppDispatch();
 	const [
 		isFactoryAddressSameAsCompanyAddress,
 		setIsFactoryAddressSameAsCompanyAddress,
@@ -83,9 +82,9 @@ const SellerCompanyInfo = () => {
 
 	const [submitClicked, setSubmitClicked] = useState<boolean>(false);
 
-	const handleLogoChange = (event: any) => {
+	const handleLogoChange = (event: React.ChangeEvent<any>) => {
 		clearErrors('logo');
-		const file:any = event.target.files[0];
+		const file: any = event.target.files[0];
 		if (file.size / 1024 / 1024 > 2) {
 			setError('logo', { message: 'File uploads must be under 2MB in size' });
 			setTimeout(() => {
@@ -165,12 +164,12 @@ const SellerCompanyInfo = () => {
 		);
 	};
 
-	const handleBusinessCertificationFiles = (event: any) => {
+	const handleBusinessCertificationFiles = (event: React.ChangeEvent<any>) => {
 		clearErrors('businessCertification');
 		const newFiles = Array.from(event.target.files);
 
 		for (let i = 0; i < newFiles.length; i++) {
-			const file:any = newFiles[i];
+			const file: any = newFiles[i];
 			if (file.size / 1024 / 1024 > 2) {
 				setError('businessCertification', {
 					message: 'File uploads must be under 2MB in size',
@@ -184,13 +183,13 @@ const SellerCompanyInfo = () => {
 
 		setBusinessCertificationFiles((prevFiles: any) => [...prevFiles, ...newFiles]);
 	};
-	const handleFactoryCertificationFiles = (event: any) => {
+	const handleFactoryCertificationFiles = (event: React.ChangeEvent<any>) => {
 		clearErrors('factoryCertifications');
 
 		const newFiles = Array.from(event.target.files);
 
 		for (let i = 0; i < newFiles.length; i++) {
-			const file:any = newFiles[i];
+			const file: any = newFiles[i];
 			if (file.size / 1024 / 1024 > 2) {
 				setError('factoryCertifications', {
 					message: ' File uploads must be under 2MB in size',
@@ -253,7 +252,7 @@ const SellerCompanyInfo = () => {
 
 	const onSubmit: SubmitHandler<any> = async (data) => {
 		setSubmitClicked(true);
-		const form: any = {};
+		const form: UpdateSellerCompany = {};
 
 		const companyAddress: any = {
 			street: data.companyStreet,
@@ -291,61 +290,61 @@ const SellerCompanyInfo = () => {
 			if (responseLogo.status !== 201) return;
 		}
 
-		const deletedBusinessIds:any[] = [];
-		const deletedFactoryIds:any[]= [];
+		const deletedBusinessIds: number[] = [];
+		const deletedFactoryIds: number[] = [];
 
 		const businessCertificationIds = new Set(
-			businessCertificationFiles.map((file:any) => file?.id)
+			businessCertificationFiles.map((file: any) => file?.id)
 		);
 		const factoryCertificationIds = new Set(
-			factoryCertificationFiles.map((file:any) => file?.id)
+			factoryCertificationFiles.map((file: any) => file?.id)
 		);
 
-		initiallyFetchedBusinessCertificationFiles.forEach((file:any) => {
+		initiallyFetchedBusinessCertificationFiles.forEach((file: any) => {
 			if (!businessCertificationIds.has(file.id)) {
 				deletedBusinessIds.push(file.id);
 			}
 		});
 
-		initiallyFetchedFactoryCertificationFiles.forEach((file:any) => {
+		initiallyFetchedFactoryCertificationFiles.forEach((file: any) => {
 			if (!factoryCertificationIds.has(file.id)) {
 				deletedFactoryIds.push(file.id);
 			}
 		});
 
 		if (deletedBusinessIds.length > 0) {
-			const data:any = {};
+			const data: RemoveCertification = {};
 			data['type'] = 'business';
 			data['fileIds'] = deletedBusinessIds;
 			const responseDeleteBusiness = await api.sellerCompany.removeCertification(
 				data
 			);
 			if (responseDeleteBusiness.status !== 200) return;
-
 		}
 
 		if (deletedFactoryIds.length > 0) {
-			const data:any = {};
+			const data: RemoveCertification = {};
 			data['type'] = 'factory';
 			data['fileIds'] = deletedFactoryIds;
 			const responseDeleteFactory = await api.sellerCompany.removeCertification(
 				data
 			);
 			if (responseDeleteFactory.status !== 200) return;
-
 		}
 
-		const formDataBusiness = new FormData();
-		const formDataFactory = new FormData();
+		const formDataBusiness: FormData = new FormData();
+		const formDataFactory: FormData = new FormData();
 		if (businessCertificationFiles.length > 0) {
 			formDataBusiness.append('type', 'business');
 
-			businessCertificationFiles.forEach((file:any) => {
-				const fileExists = initiallyFetchedBusinessCertificationFiles.some((initialFile:any) => initialFile.id === file.id);
+			businessCertificationFiles.forEach((file: any) => {
+				const fileExists = initiallyFetchedBusinessCertificationFiles.some(
+					(initialFile: any) => initialFile.id === file.id
+				);
 				if (!fileExists) {
 					formDataBusiness.append('files', file);
 				}
-			})
+			});
 			if (formDataBusiness.has('files')) {
 				const responseBusiness = await api.sellerCompany.uploadCertification(
 					formDataBusiness
@@ -356,12 +355,14 @@ const SellerCompanyInfo = () => {
 
 		if (factoryCertificationFiles.length > 0) {
 			formDataFactory.append('type', 'factory');
-			factoryCertificationFiles.forEach((file:any) => {
-				const fileExists = initiallyFetchedFactoryCertificationFiles.some((initialFile:any) => initialFile.id === file.id);
+			factoryCertificationFiles.forEach((file: any) => {
+				const fileExists = initiallyFetchedFactoryCertificationFiles.some(
+					(initialFile: any) => initialFile.id === file.id
+				);
 				if (!fileExists) {
 					formDataFactory.append('files', file);
 				}
-			})
+			});
 			if (formDataFactory.has('files')) {
 				const responseFactory = await api.sellerCompany.uploadCertification(
 					formDataFactory
@@ -369,7 +370,6 @@ const SellerCompanyInfo = () => {
 				if (responseFactory.status !== 201) return;
 			}
 		}
-
 
 		setSubmitClicked(false);
 		window.location.reload();

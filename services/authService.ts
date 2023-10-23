@@ -4,7 +4,7 @@ import {
 	RegisterUserType,
 	RecoveryType,
 	confirmEmailType,
-	User,
+	NewPassword,
 } from '@/types/services/auth';
 import { LoginDto } from '@/types/services/auth';
 
@@ -95,7 +95,7 @@ export const AuthApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async updatePassword (data:any) {
+	async updatePassword(data: NewPassword) {
 		try {
 			const url = '/auth/password';
 			const response = await instance.patch(url, data);
@@ -104,5 +104,5 @@ export const AuthApi = (instance: AxiosInstance) => ({
 			console.error('Error updatePassword:', error);
 			throw error;
 		}
-	}
+	},
 });
