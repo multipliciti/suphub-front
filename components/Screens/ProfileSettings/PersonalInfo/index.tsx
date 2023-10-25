@@ -4,17 +4,22 @@ import { setModal, setEmail } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import modal_password from '@/imgs/Modal/pasword.svg';
 import pencil from '@/imgs/ProfileSettings/pencil.svg';
+import { Api } from '@/services';
 
 const PersonalInfo = () => {
 	const dispatch = useAppDispatch();
+	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
+
+	const api = Api();
 
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm({
 		defaultValues: { firstName: '', lastName: '', email: '' },
@@ -23,12 +28,29 @@ const PersonalInfo = () => {
 		shouldUnregister: true,
 	});
 
-	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
+	const [userId, setUserId] = useState<number>(1);
 
-	const onSubmit: SubmitHandler<
-		any
-	> = async (data) => {
-		console.log(data);
+	useEffect(() => {
+		const fetch = async () => {
+			const response = await api.auth.getUser();
+			const { firstName, lastName, email, id } = response.data;
+			setValue('firstName', firstName);
+			setValue('lastName', lastName);
+			setValue('email', email);
+			setUserId(id);
+		};
+		fetch();
+	}, []);
+
+	const onSubmit = async (data: any) => {
+		const { firstName, lastName, email } = data;
+		const form: any = {};
+		form['firstName'] = firstName;
+		form['lastName'] = lastName;
+		form['email'] = email;
+		const response = await api.user.update(userId, form);
+		if (response.status !== 200) return;
+		window.location.reload();
 	};
 
 	return (
@@ -39,8 +61,9 @@ const PersonalInfo = () => {
 					<button
 						className={classNames(
 							s.btn_send,
-								s.btn_send_active
+							Boolean(!(Object.keys(errors).length > 0)) && s.btn_send_active
 						)}
+						disabled={Boolean(Object.keys(errors).length > 0)}
 					>
 						Save Changes
 					</button>
@@ -52,39 +75,63 @@ const PersonalInfo = () => {
 						<label className={s.label} htmlFor="firstName">
 							<input
 								className={s.input}
-								{...register('firstName', { required: 'required firstName' })}
+								{...register('firstName', { required: 'Please enter first name' })}
 								placeholder="Enter First Name"
 								type="text"
 								id="firstName"
 							/>
 						</label>
 					</div>
+					{errors.firstName && (
+						<div className={s.row_nogap}>
+							<p></p>
+							<p className={s.errorDescription}>{errors.firstName?.message}</p>
+						</div>
+					)}
 					<div className={s.separator}></div>
 					<div className={s.row}>
 						<p className={s.title}>Last name</p>
 						<label className={s.label} htmlFor="lastName">
 							<input
 								className={s.input}
-								{...register('lastName', { required: 'required lastName' })}
+								{...register('lastName', { required: 'Please enter last name' })}
 								placeholder="Enter Last Name"
 								type="text"
 								id="lastName"
 							/>
 						</label>
 					</div>
+					{errors.lastName && (
+						<div className={s.row_nogap}>
+							<p></p>
+							<p className={s.errorDescription}>{errors.lastName?.message}</p>
+						</div>
+					)}
 					<div className={s.separator}></div>
 					<div className={s.row}>
 						<p className={s.title}>Email</p>
 						<label className={s.label} htmlFor="email">
 							<input
 								className={s.input}
-								{...register('email', { required: 'required' })}
+								{...register('email', {
+									required: 'Email is required',
+									pattern: {
+										value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+										message: 'Invalid email format',
+									},
+								})}
 								id="email"
 								placeholder="example@suphub.com"
 								type="text"
 							/>
 						</label>
 					</div>
+					{errors.email && (
+						<div className={s.row_nogap}>
+							<p></p>
+							<p className={s.errorDescription}>{errors.email?.message}</p>
+						</div>
+					)}
 					<div className={s.separator}></div>
 					<div className={s.row}>
 						<p className={s.title}>Password</p>
@@ -119,7 +166,8 @@ const PersonalInfo = () => {
 				</div>
 				<div className={s.to_right}>
 					<button
-						onClick={() => {
+						onClick={(e) => {
+							e.preventDefault();
 							dispatch(setModal('editPassword'));
 						}}
 						className={classNames(s.btn_send, s.btn_send_reset)}

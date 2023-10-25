@@ -124,7 +124,7 @@
 
   &_button {
     display: flex;
-    max-width: 125px;
+    max-width: 126px;
     padding: 8px 16px 8px 8px;
     justify-content: center;
     align-items: center;
@@ -228,6 +228,11 @@
   @include row;
   align-items: center;
 
+  &_nogap {
+    @include row;
+    margin-top: -8px;
+  }
+
   &_align_start {
     @include row;
     align-items: flex-start;
@@ -278,6 +283,7 @@
       color: #94a3b8;
     }
   }
+
 
   .textarea {
     resize: vertical;
@@ -416,17 +422,6 @@
   gap: 12px;
 }
 
-.errorDescription {
-  width: calc(50% - 20px);
-  color: var(--new-grey-500, #64748B);
-  font-variant-numeric: lining-nums proportional-nums;
-
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 18px;
-}
-
 .btn_send {
   background: var(--new-grey-200, #E2E8F0);
   color: var(--new-grey-400, #94A3B8);
@@ -444,9 +439,17 @@
   font-weight: 700;
   line-height: 20px;
 
+  &:disabled {
+    opacity: 100%;
+  }
+
   &_active {
     color: var(--new-colors-white, #FFF);
     background: #2B1694;
+
+    &:disabled {
+      opacity:25%;
+    }
   }
 }
 
@@ -456,3 +459,33 @@
   background-color: #E2E8F0;
 }
 
+.errorDescription {
+    width: calc(50% - 20px);
+    color: var(--new-grey-500, #f52419);
+    font-variant-numeric: lining-nums proportional-nums;
+
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+}
+
+.input_certification {
+  box-sizing: content-box;
+  outline: none;
+  border: none;
+  color: var(--new-grey-900, #0F172A);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 20px;
+}
+
+.width {
+  &_smaller {
+    width:80px;
+  }
+  &_bigger{
+    width:105px
+  }
+}

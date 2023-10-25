@@ -45,7 +45,7 @@ export const ResetForm = ({ token }: PropsType) => {
 		shouldFocusError: true,
 	});
 
-	const submit: SubmitHandler<FormType> = (data) => {
+	const onSubmit: SubmitHandler<FormType> = (data) => {
 		const requestData = {
 			newPassword: data.confirm,
 			token,
@@ -76,7 +76,7 @@ export const ResetForm = ({ token }: PropsType) => {
 		<>
 			<div className={classNames(s.wrapper)}>
 				<div className={s.content}>
-					<form onSubmit={handleSubmit(submit, onErrors)} className={s.form}>
+					<form onSubmit={handleSubmit(onSubmit, onErrors)} className={s.form}>
 						<h3 className={s.title}>Reset your password</h3>
 						<p className={s.subtitle}>
 							Enter a new password bellow to change your password
