@@ -10,14 +10,9 @@ import arrow_icon from '@/imgs/arrow.svg';
 import clear_input from '@/imgs/Buyer&Seller/clear.svg';
 interface TypeProps {
 	setStateInputs: (n: any) => void;
-	setRequest: (n: number) => void;
 	stateInputs: any;
 }
-export const RFQCarFilters = ({
-	setStateInputs,
-	stateInputs,
-	setRequest,
-}: TypeProps) => {
+export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 	const dispatch = useAppDispatch();
 	const [activeFilter, setActiveFilter] = useState<number[]>([]);
 	const [requestBtn, setRequestBtn] = useState<boolean>(false);

@@ -1,0 +1,122 @@
+.table {
+	border-collapse: collapse;
+	width: 100%;
+	border: 1px solid #e2e8f0;
+
+	.thead {
+		height: 37px;
+		border-top: 1px solid #e2e8f0;
+		border-bottom: 2px solid #e2e8f0;
+
+		color: #64748b;
+		font-variant-numeric: lining-nums proportional-nums;
+
+		font-size: 12px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 18px;
+	}
+
+	.tbody {
+		color: #020617;
+		font-variant-numeric: lining-nums proportional-nums;
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 20px;
+
+		.subtitle {
+			color: #94a3b8;
+			font-size: 10px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 10px;
+		}
+
+		.title {
+			overflow: hidden;
+			color: #020617;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 18px;
+		}
+
+		.chat {
+			position: relative;
+			cursor: pointer;
+
+			&_sms {
+				top: 0;
+				right: 3px;
+				position: absolute;
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+				background-color: #cbd5e1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+
+				&_active {
+					background-color: #f5241a;
+				}
+			}
+
+			&_number {
+				color: #fff;
+				font-size: 8px;
+				font-style: normal;
+				font-weight: 700;
+				line-height: 8px;
+			}
+		}
+		.size {
+			color: hsl(229, 84%, 5%);
+
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 20px;
+		}
+
+		.status {
+			padding: 3px 8px;
+			border-radius: 4px;
+
+			text-align: center;
+			font-variant-numeric: lining-nums proportional-nums;
+			font-size: 12px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 18px;
+
+			&_needed {
+				color: red;
+				background: #feeae8;
+			}
+
+			&_sampling {
+				color: #de7a05;
+				background-color: #fff5e8;
+			}
+
+			&_ordered {
+				color: #2b1694;
+				background-color: #f0f2fe;
+			}
+		}
+	}
+}
+.table td {
+	border-top: 2px solid #e2e8f0;
+}
+
+.table th,
+.table td {
+	vertical-align: middle;
+	padding: 8px;
+	text-align: center;
+}
