@@ -32,9 +32,9 @@ export const BuyerCompanyApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async update(data: UpdateBuyerCompany) {
+	async update(id: number, data: UpdateBuyerCompany) {
 		try {
-			const url = `/buyer/` + '1';
+			const url = `/buyer/` + id.toString();
 
 			const response = await instance.patch(url, data);
 			return response;
