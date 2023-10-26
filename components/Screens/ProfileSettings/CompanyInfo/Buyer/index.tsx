@@ -34,7 +34,8 @@ const BuyerCompanyInfo = () => {
 	});
 
 	const [logoSrc, setLogoSrc] = useState(null);
-	const [previewLogo, setPreviewLogo] = useState<string | any>(null);
+	const [previewLogo, setPreviewLogo] = useState<string | null>(null);
+	const [companyId, setCompanyId] = useState<number>(1);
 
 	const [submitClicked, setSubmitClicked] = useState<boolean>(false);
 
@@ -55,8 +56,10 @@ const BuyerCompanyInfo = () => {
 	};
 
 	useEffect(() => {
-		const fetch = async (id: number) => {
-			const response = await api.buyerCompany.getById(id);
+		const fetch = async () => {
+			const getCompanyId = await api.auth.getUser();
+			setCompanyId(getCompanyId.data.buyerCompanyId);
+			const response = await api.buyerCompany.getById(companyId);
 			const { name, logo, address } = response.data;
 			setValue('name', name);
 			setValue('street', address.street);
@@ -66,7 +69,7 @@ const BuyerCompanyInfo = () => {
 			setValue('zipCode', address.zipcode);
 			setPreviewLogo(logo ? logo.url : null);
 		};
-		fetch(1);
+		fetch();
 	}, []);
 
 	const onSubmit: SubmitHandler<any> = async (data) => {
@@ -84,7 +87,7 @@ const BuyerCompanyInfo = () => {
 		form['name'] = data.name;
 		form['address'] = address;
 
-		const responseForm = await api.buyerCompany.update(form);
+		const responseForm = await api.buyerCompany.update(companyId, form);
 		if (responseForm.status !== 200) return;
 
 		if (logoSrc) {

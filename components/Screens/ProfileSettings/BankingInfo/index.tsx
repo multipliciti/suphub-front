@@ -142,7 +142,6 @@ const BankingInfo = () => {
 	const onSubmit: SubmitHandler<any> = async (data) => {
 		const form: any = {};
 		if (paymentType === 'Domestic bank (USA)') {
-			console.log(data);
 			const { businessNameDomesticBank, routingNumber, accountNumberDomesticBank } =
 				data;
 			form['vendorType'] = vendorType;

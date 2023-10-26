@@ -13,7 +13,6 @@ import { BuyerCompanyApi } from '@/services/buyerCompanyApi';
 import { BankUSA } from '@/services/bankUSA';
 import { BankInternational } from '@/services/bankInternational';
 
-
 export type ApiReturnType = {
 	sendFormStepOne(): unknown;
 	auth: ReturnType<typeof AuthApi>;
