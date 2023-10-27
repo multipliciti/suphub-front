@@ -83,7 +83,7 @@ const SellerCompanyInfo = () => {
 
 	const [submitClicked, setSubmitClicked] = useState<boolean>(false);
 
-	const setCompanyAddressDataToFactoryAddress = () => {
+	const setFactoryAddressIsNotTheSameAsCompanyAddressAnymore = () => {
 		const companyStreet = getValues('companyStreet');
 		setValue('factoryStreet', companyStreet);
 		const companyCity = getValues('companyCity');
@@ -95,38 +95,24 @@ const SellerCompanyInfo = () => {
 		const companyZipCode = getValues('companyZipCode');
 		setValue('factoryZipCode', companyZipCode);
 	};
-	const isFactoryAddressSameAsCompanyAddressHandler = () => {
-		setIsFactoryAddressSameAsCompanyAddress(!isFactoryAddressSameAsCompanyAddress);
-		setCompanyAddressDataToFactoryAddress();
-	};
 
-	const setVisuallyCompanyDataToFactoryIfTheSame = (
-		e: React.ChangeEvent<HTMLInputElement>
-	) => {
-		if (isFactoryAddressSameAsCompanyAddress) {
-			const {
-				target: { name, value },
-			} = e;
-			switch (name) {
-				case 'companyStreet':
-					setValue('factoryStreet', value);
-					break;
-				case 'companyCity':
-					setValue('factoryCity', value);
-					break;
-				case 'companyState':
-					setValue('factoryState', value);
-					break;
-				case 'companyCountry':
-					setValue('factoryCountry', value);
-					break;
-				case 'companyZipCode':
-					setValue('factoryZipCode', value);
-					break;
-				default:
-					break;
-			}
-		}
+	const setFactoryAddressVisuallyWhenSameAsCompanyAddress = () => {
+		setValue('factoryStreet', 'Same as Factory Street');
+		setValue('factoryCity', 'Same as Factory City');
+		setValue('factoryState', 'Same as Factory State');
+		setValue('factoryCountry', 'Same as Factory Country');
+		setValue('factoryZipCode', 'Same as Factory Zip Code');
+		clearErrors('factoryStreet');
+		clearErrors('factoryCity');
+		clearErrors('factoryState');
+		clearErrors('factoryCountry');
+		clearErrors('factoryZipCode');
+	};
+	const isFactoryAddressSameAsCompanyAddressHandler = () => {
+		if (isFactoryAddressSameAsCompanyAddress)
+			setFactoryAddressIsNotTheSameAsCompanyAddressAnymore();
+		else setFactoryAddressVisuallyWhenSameAsCompanyAddress();
+		setIsFactoryAddressSameAsCompanyAddress(!isFactoryAddressSameAsCompanyAddress);
 	};
 
 	const handleLogoChange = (event: React.ChangeEvent<any>) => {
@@ -228,11 +214,13 @@ const SellerCompanyInfo = () => {
 			}
 		}
 
-		setBusinessCertificationFiles((prevFiles: any[]) => [...prevFiles, ...newFiles]);
+		setBusinessCertificationFiles((prevFiles: any[]) => [
+			...(prevFiles ?? []),
+			...newFiles,
+		]);
 	};
 	const handleFactoryCertificationFiles = (event: React.ChangeEvent<any>) => {
 		clearErrors('factoryCertifications');
-
 		const newFiles = Array.from(event.target.files);
 
 		for (let i = 0; i < newFiles?.length; i++) {
@@ -248,7 +236,10 @@ const SellerCompanyInfo = () => {
 			}
 		}
 
-		setFactoryCertificationFiles((prevFiles: any) => [...prevFiles, ...newFiles]);
+		setFactoryCertificationFiles((prevFiles: any[]) => [
+			...(prevFiles ?? []),
+			...newFiles,
+		]);
 	};
 
 	const handleRemoveBusinessCertificationFiles = (index: any) => {
@@ -277,23 +268,28 @@ const SellerCompanyInfo = () => {
 				companyAddress,
 				factoryAddress,
 			} = response.data;
+
 			setValue('name', name);
-			setValue('companyStreet', companyAddress.street);
-			setValue('companyCity', companyAddress.city);
-			setValue('companyState', companyAddress.state);
-			setValue('companyCountry', companyAddress.country);
-			setValue('companyZipCode', companyAddress.zipcode);
-			setValue('factoryStreet', factoryAddress.street);
-			setValue('factoryCity', factoryAddress.city);
-			setValue('factoryState', factoryAddress.state);
-			setValue('factoryCountry', factoryAddress.country);
-			setValue('factoryZipCode', factoryAddress.zipcode);
-			setProductsCertifiedFor(countryProductsCertifiedFor.split(','));
-			setProductCertifications(productCertifications.split(','));
-			setBusinessCertificationFiles(businessCertifications);
-			setFactoryCertificationFiles(factoryCertifications);
-			setInitiallyFetchedBusinessCertificationFiles(businessCertifications);
-			setInitiallyFetchedFactoryCertificationFiles(factoryCertifications);
+			setValue('companyStreet', companyAddress?.street ?? '');
+			setValue('companyCity', companyAddress?.city ?? '');
+			setValue('companyState', companyAddress?.state ?? '');
+			setValue('companyCountry', companyAddress?.country ?? '');
+			setValue('companyZipCode', companyAddress?.zipcode ?? '');
+			setValue('factoryStreet', factoryAddress?.street ?? '');
+			setValue('factoryCity', factoryAddress?.city ?? '');
+			setValue('factoryState', factoryAddress?.state ?? '');
+			setValue('factoryCountry', factoryAddress?.country ?? '');
+			setValue('factoryZipCode', factoryAddress?.zipcode ?? '');
+			setProductsCertifiedFor(
+				countryProductsCertifiedFor ? countryProductsCertifiedFor.split(',') : []
+			);
+			setProductCertifications(
+				productCertifications ? productCertifications.split(',') : []
+			);
+			setBusinessCertificationFiles(businessCertifications || []);
+			setFactoryCertificationFiles(factoryCertifications || []);
+			setInitiallyFetchedBusinessCertificationFiles(businessCertifications || []);
+			setInitiallyFetchedFactoryCertificationFiles(factoryCertifications || []);
 			setPreviewLogo(logo ? logo.url : null);
 		};
 		fetch();
@@ -312,11 +308,11 @@ const SellerCompanyInfo = () => {
 		};
 
 		const factoryAddress: any = {
-			street: data.factoryStreet,
-			city: data.factoryCity,
-			state: data.factoryState,
-			country: data.factoryCountry,
-			zipcode: data.factoryZipCode,
+			street: data?.factoryStreet,
+			city: data?.factoryCity,
+			state: data?.factoryState,
+			country: data?.factoryCountry,
+			zipcode: data?.factoryZipCode,
 		};
 
 		form['name'] = data.name;
@@ -343,38 +339,43 @@ const SellerCompanyInfo = () => {
 		const deletedFactoryIds: number[] = [];
 
 		const businessCertificationIds = new Set(
-			businessCertificationFiles.map((file: any) => file?.id)
+			businessCertificationFiles
+				.filter((file: any) => file && file?.id !== null && file?.id !== undefined)
+				.map((file: any) => file.id)
 		);
+
 		const factoryCertificationIds = new Set(
-			factoryCertificationFiles.map((file: any) => file?.id)
+			factoryCertificationFiles
+				.filter((file: any) => file && file?.id !== null && file?.id !== undefined)
+				.map((file: any) => file.id)
 		);
 
 		initiallyFetchedBusinessCertificationFiles.forEach((file: any) => {
-			if (!businessCertificationIds.has(file.id)) {
+			if (file && file?.id && !businessCertificationIds.has(file?.id)) {
 				deletedBusinessIds.push(file.id);
 			}
 		});
 
 		initiallyFetchedFactoryCertificationFiles.forEach((file: any) => {
-			if (!factoryCertificationIds.has(file.id)) {
+			if (file && file?.id && !factoryCertificationIds.has(file?.id)) {
 				deletedFactoryIds.push(file.id);
 			}
 		});
 
-		if (deletedBusinessIds?.length > 0) {
+		if ((deletedBusinessIds ?? []).length > 0) {
 			const data: RemoveCertification = {};
-			data['type'] = 'business';
-			data['fileIds'] = deletedBusinessIds;
+			data.type = 'business';
+			data.fileIds = deletedBusinessIds;
 			const responseDeleteBusiness = await api.sellerCompany.removeCertification(
 				data
 			);
 			if (responseDeleteBusiness.status !== 200) return;
 		}
 
-		if (deletedFactoryIds?.length > 0) {
+		if ((deletedFactoryIds ?? []).length > 0) {
 			const data: RemoveCertification = {};
-			data['type'] = 'factory';
-			data['fileIds'] = deletedFactoryIds;
+			data.type = 'factory';
+			data.fileIds = deletedFactoryIds;
 			const responseDeleteFactory = await api.sellerCompany.removeCertification(
 				data
 			);
@@ -383,40 +384,45 @@ const SellerCompanyInfo = () => {
 
 		const formDataBusiness: FormData = new FormData();
 		const formDataFactory: FormData = new FormData();
-		if (businessCertificationFiles?.length > 0) {
+		if (businessCertificationFiles && businessCertificationFiles.length > 0) {
 			formDataBusiness.append('type', 'business');
-
 			businessCertificationFiles.forEach((file: any) => {
 				const fileExists = initiallyFetchedBusinessCertificationFiles.some(
-					(initialFile: any) => initialFile.id === file.id
+					(initialFile: any) => initialFile && initialFile?.id === file?.id
 				);
 				if (!fileExists) {
 					formDataBusiness.append('files', file);
 				}
 			});
+
 			if (formDataBusiness.has('files')) {
 				const responseBusiness = await api.sellerCompany.uploadCertification(
 					formDataBusiness
 				);
-				if (responseBusiness.status !== 201) return;
+				if (responseBusiness.status !== 201) {
+					return;
+				}
 			}
 		}
 
-		if (factoryCertificationFiles?.length > 0) {
+		if (factoryCertificationFiles && factoryCertificationFiles.length > 0) {
 			formDataFactory.append('type', 'factory');
 			factoryCertificationFiles.forEach((file: any) => {
 				const fileExists = initiallyFetchedFactoryCertificationFiles.some(
-					(initialFile: any) => initialFile.id === file.id
+					(initialFile: any) => initialFile && initialFile?.id === file?.id
 				);
 				if (!fileExists) {
 					formDataFactory.append('files', file);
 				}
 			});
+
 			if (formDataFactory.has('files')) {
 				const responseFactory = await api.sellerCompany.uploadCertification(
 					formDataFactory
 				);
-				if (responseFactory.status !== 201) return;
+				if (responseFactory.status !== 201) {
+					return;
+				}
 			}
 		}
 
@@ -511,9 +517,9 @@ const SellerCompanyInfo = () => {
 							businessCertificationFiles.map((file: any, index: number) => (
 								<div key={index} className={s.upload_row}>
 									<div className={s.upload_filename}>
-										{file.name}
+										{file?.name || 'File Name Missing'}
 										<span className={s.upload_filename_size}>
-											{(file.size / 1024 / 1024).toFixed(2)} Mb
+											{file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0} Mb
 										</span>
 									</div>
 									<span
@@ -564,9 +570,9 @@ const SellerCompanyInfo = () => {
 							factoryCertificationFiles.map((file: any, index: number) => (
 								<div key={index} className={s.upload_row}>
 									<div className={s.upload_filename}>
-										{file.name}
+										{file?.name || 'File Name Missing'}
 										<span className={s.upload_filename_size}>
-											{(file.size / 1024 / 1024).toFixed(2)} Mb
+											{file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0} Mb
 										</span>
 									</div>
 									<span onClick={() => handleRemoveFactoryCertificationFiles(index)}>
@@ -710,9 +716,6 @@ const SellerCompanyInfo = () => {
 							placeholder="Enter street address"
 							type="text"
 							id="companyStreet"
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-								setVisuallyCompanyDataToFactoryIfTheSame(e);
-							}}
 						/>
 					</label>
 				</div>
@@ -732,9 +735,6 @@ const SellerCompanyInfo = () => {
 							placeholder="Enter city"
 							type="text"
 							id="companyCity"
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-								setVisuallyCompanyDataToFactoryIfTheSame(e);
-							}}
 						/>
 					</label>
 				</div>
@@ -756,9 +756,6 @@ const SellerCompanyInfo = () => {
 							placeholder="Enter state / Province"
 							type="text"
 							id="companyState"
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-								setVisuallyCompanyDataToFactoryIfTheSame(e);
-							}}
 						/>
 					</label>
 				</div>
@@ -780,9 +777,6 @@ const SellerCompanyInfo = () => {
 							placeholder="Enter Country"
 							type="text"
 							id="companyCountry"
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-								setVisuallyCompanyDataToFactoryIfTheSame(e);
-							}}
 						/>
 					</label>
 				</div>
@@ -804,9 +798,6 @@ const SellerCompanyInfo = () => {
 							placeholder="Enter Zip Code"
 							type="text"
 							id="companyZipCode"
-							onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-								setVisuallyCompanyDataToFactoryIfTheSame(e);
-							}}
 						/>
 					</label>
 				</div>

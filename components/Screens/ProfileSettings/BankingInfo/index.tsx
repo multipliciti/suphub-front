@@ -61,6 +61,7 @@ const BankingInfo = () => {
 		handleSubmit,
 		setError,
 		setValue,
+		clearErrors,
 		formState: { errors },
 	} = useForm({
 		defaultValues: {
@@ -82,6 +83,7 @@ const BankingInfo = () => {
 
 	const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setSelectedCountry(e.target.value);
+		clearErrors('beneficiaryCountry');
 	};
 	const handleVendorTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 		setVendorType(e.target.value);
@@ -120,19 +122,15 @@ const BankingInfo = () => {
 				try {
 					const response = await api.bankUSA.get();
 					fillDefaultValuesDomesticBank(response.data);
-					setIsFirstTimeCreateDomesticBank(false);
 				} catch (error) {
 					setIsFirstTimeCreateDomesticBank(true);
-					return;
 				}
 			} else {
 				try {
 					const response = await api.bankInternational.get();
 					fillDefaultValueInternationalBank(response.data);
-					setIsFirstTimeCreateInternationalBank(false);
 				} catch (error) {
 					setIsFirstTimeCreateInternationalBank(true);
-					return;
 				}
 			}
 		};
@@ -153,12 +151,12 @@ const BankingInfo = () => {
 
 			if (isFirstTimeCreateDomesticBank) {
 				response = await api.bankUSA.add(form);
+				if (response.status !== 201) return;
 			} else {
 				response = await api.bankUSA.update(form);
+				if (response.status !== 200) return;
 			}
-			if (response.status === 200) {
-				window.location.reload();
-			}
+			window.location.reload();
 		} else {
 			const {
 				swiftCode,
@@ -187,12 +185,12 @@ const BankingInfo = () => {
 			let response;
 			if (isFirstTimeCreateInternationalBank) {
 				response = await api.bankInternational.add(form);
+				if (response.status !== 201) return;
 			} else {
 				response = await api.bankInternational.update(form);
+				if (response.status !== 200) return;
 			}
-			if (response.status === 200) {
-				window.location.reload();
-			}
+			window.location.reload();
 		}
 	};
 

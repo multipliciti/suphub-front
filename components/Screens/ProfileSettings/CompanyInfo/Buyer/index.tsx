@@ -59,14 +59,16 @@ const BuyerCompanyInfo = () => {
 		const fetch = async () => {
 			const getCompanyId = await api.auth.getUser();
 			setCompanyId(getCompanyId.data.buyerCompanyId);
+			// console.log(getCompanyId, 'getCompanyId');
 			const response = await api.buyerCompany.getById(companyId);
+			// console.log(response, 'response');
 			const { name, logo, address } = response.data;
-			setValue('name', name);
-			setValue('street', address.street);
-			setValue('city', address.city);
-			setValue('state', address.state);
-			setValue('country', address.country);
-			setValue('zipCode', address.zipcode);
+			setValue('name', name ?? '');
+			setValue('street', address?.street);
+			setValue('city', address?.city);
+			setValue('state', address?.state);
+			setValue('country', address?.country);
+			setValue('zipCode', address?.zipcode);
 			setPreviewLogo(logo ? logo.url : null);
 		};
 		fetch();
@@ -87,6 +89,7 @@ const BuyerCompanyInfo = () => {
 		form['name'] = data.name;
 		form['address'] = address;
 
+		console.log(form);
 		const responseForm = await api.buyerCompany.update(companyId, form);
 		if (responseForm.status !== 200) return;
 
