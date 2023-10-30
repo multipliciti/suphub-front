@@ -10,11 +10,11 @@ export const Nav = ({ activeDisplay, setActiveDisplay }: TypeProps) => {
 	const navList = [
 		{
 			id: 1,
-			title: 'Overview',
+			title: 'My Products',
 		},
 		{
 			id: 2,
-			title: 'RFQ Cart',
+			title: 'Requests',
 		},
 		{
 			id: 3,
