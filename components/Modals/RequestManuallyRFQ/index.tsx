@@ -11,49 +11,39 @@ import add_img from '@/imgs/plus.svg';
 import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
 import upload_icon from '@/imgs/Buyer&Seller/upload_icon.svg';
 import { classNames } from '@/utils/classNames';
-
-interface formDataType {
-	subcategory: string;
-	productName: string;
-	quantity: string;
-	unitBudget: string;
-	size: string;
-	requiredCertifications: string[];
-	images: File[];
-	files: File[];
-}
+//types
+import { RfqItem } from '@/types/services/rfq';
+//fetch
+import { Api } from '@/services';
 
 export const RequestManuallyRFQ = () => {
+	const api = Api();
 	const dispatch = useAppDispatch();
 
-	const [formData, setFormData] = useState<formDataType>({
-		subcategory: '',
+	const [formData, setFormData] = useState<RfqItem>({
+		subCategoryId: 1,
 		productName: '',
-		quantity: '',
-		unitBudget: '',
-		size: '',
-		requiredCertifications: [],
-		images: [],
-		files: [],
+		quantity: 0,
+		projectId: 2,
 	});
 
-	//set requiredCertifications
+	//set certifications
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		const id = event.currentTarget.id;
 		const value = event.currentTarget.value;
 
-		if (
-			id === 'requiredCertifications' &&
-			(event.key === 'Enter' || event.key === 'Tab')
-		) {
+		if (id === 'certifications' && (event.key === 'Enter' || event.key === 'Tab')) {
 			if (value.trim() !== '') {
-				setFormData((prevState) => ({
-					...prevState,
-					requiredCertifications: [
-						...prevState.requiredCertifications,
+				setFormData((prevState) => {
+					const newCertifications = [
+						...(prevState.certifications || []),
 						value.trim(),
-					],
-				}));
+					];
+					return {
+						...prevState,
+						certifications: newCertifications,
+					};
+				});
 
 				//clear input
 				event.currentTarget.value = '';
@@ -66,7 +56,10 @@ export const RequestManuallyRFQ = () => {
 	//set inputs value
 	const handleValueFormData = (event: ChangeEvent<HTMLInputElement>) => {
 		const id = event.target.id;
-		const value = event.target.value;
+		const type = event.target.type;
+		console.log('type', type);
+		const value =
+			type === 'number' ? Number(event.target.value) : event.target.value;
 
 		setFormData((prevState) => ({ ...prevState, [id]: value }));
 	};
@@ -75,7 +68,7 @@ export const RequestManuallyRFQ = () => {
 	const handleRemoveCertification = (indexToRemove: number) => {
 		setFormData((prevState) => ({
 			...prevState,
-			requiredCertifications: prevState.requiredCertifications.filter(
+			certifications: (prevState.certifications || []).filter(
 				(_, index) => index !== indexToRemove
 			),
 		}));
@@ -89,7 +82,7 @@ export const RequestManuallyRFQ = () => {
 			if (selectedFile) {
 				return {
 					...prevState,
-					images: [...prevState.images, selectedFile],
+					cover: [...(prevState.cover || []), selectedFile],
 				};
 			}
 
@@ -102,9 +95,19 @@ export const RequestManuallyRFQ = () => {
 		setFormData((prevState) => {
 			return {
 				...prevState,
-				images: prevState.images.filter((el, ind) => id !== ind),
+				cover: prevState.cover?.filter((el, ind) => id !== ind),
 			};
 		});
+	};
+
+	//submit
+	const submitData = async (data: RfqItem) => {
+		try {
+			await api.rfq.createRfqItem(data);
+			dispatch(setModal('submitedRFQ'));
+		} catch (error) {
+			console.error('error kfkfkfkfkkfkfkf', error);
+		}
 	};
 
 	return (
@@ -129,10 +132,10 @@ export const RequestManuallyRFQ = () => {
 						</p>
 						<input
 							onChange={handleValueFormData}
-							id="subcategory"
+							id="subCategoryId"
 							placeholder="Choose subcategory"
 							className={s.input}
-							type="text"
+							type="number"
 						/>
 					</div>
 					<div className={s.input_wrapper}>
@@ -156,7 +159,7 @@ export const RequestManuallyRFQ = () => {
 							id="quantity"
 							placeholder="Enter quantity"
 							className={s.input}
-							type="text"
+							type="number"
 						/>
 					</div>
 					<div className={s.input_wrapper}>
@@ -181,8 +184,8 @@ export const RequestManuallyRFQ = () => {
 					</div>
 					<div className={s.input_wrapper}>
 						<p className={s.input_title}>Required Certifications</p>
-						<label className={s.tags_label} htmlFor="requiredCertifications">
-							{formData.requiredCertifications?.map((tag: string, ind: number) => {
+						<label className={s.tags_label} htmlFor="certifications">
+							{formData.certifications?.map((tag: string, ind: number) => {
 								return (
 									<span className={s.tags_item}>
 										<span>{tag}</span>
@@ -199,7 +202,7 @@ export const RequestManuallyRFQ = () => {
 							})}
 							<input
 								onKeyDown={handleKeyDown}
-								id="requiredCertifications"
+								id="certifications"
 								placeholder="Tags"
 								className={s.tags_input}
 								type="text"
@@ -240,7 +243,7 @@ export const RequestManuallyRFQ = () => {
 									height={15}
 								/>
 							</label>
-							{formData.images?.map((el, ind) => {
+							{formData.cover?.map((el, ind) => {
 								return (
 									<span key={ind} className={s.img}>
 										<span className={s.img_remove}>
@@ -301,7 +304,9 @@ export const RequestManuallyRFQ = () => {
 						s.invite,
 						validateFormData(formData) && s.invite_active
 					)}
-					onClick={() => dispatch(setModal('submitedRFQ'))}
+					onClick={() => {
+						submitData(formData);
+					}}
 				>
 					Invite suppliers to quote
 				</button>

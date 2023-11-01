@@ -2,6 +2,18 @@ type SortOptions = {
 	[key: string]: 'asc' | 'desc';
 };
 
+export interface RfqItem {
+	projectId: number;
+	subCategoryId: number;
+	productName: string;
+	quantity: number;
+	budget?: number;
+	size?: string;
+	certifications?: string[];
+	additionalComments?: string;
+	cover?: File[];
+}
+
 export interface RfqFind {
 	projectId: number;
 	limit?: number;
