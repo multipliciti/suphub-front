@@ -166,10 +166,10 @@ export const RequestManuallyRFQ = () => {
 						<p className={s.input_title}>Unit Budget (USD)</p>
 						<input
 							onChange={handleValueFormData}
-							id="unitBudget"
+							id="budget"
 							placeholder="Enter budget"
 							className={s.input}
-							type="text"
+							type="number"
 						/>
 					</div>
 					<div className={s.input_wrapper}>
@@ -179,7 +179,7 @@ export const RequestManuallyRFQ = () => {
 							id="size"
 							placeholder="Enter size"
 							className={s.input}
-							type="text"
+							type="string"
 						/>
 					</div>
 					<div className={s.input_wrapper}>
