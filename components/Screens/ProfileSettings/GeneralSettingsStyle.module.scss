@@ -272,6 +272,9 @@
     gap: 12px;
     padding: 8px 0;
   }
+  &_element:hover {
+    cursor: pointer;
+  }
 
   &_btn {
     accent-color: var(--primary-color-purple, #2B1694);

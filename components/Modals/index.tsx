@@ -16,6 +16,9 @@ import { RequestManuallyRFQ } from './RequestManuallyRFQ';
 import { SubmitedRFQ } from './SubmitedRFQ';
 import { BulkUploadRFQ } from './BulkUploadRFQ';
 import { CreateBusinessAccount } from '@/components/Modals/CreateBusinessAccount';
+import { BusinessVerification } from '@/components/Modals/SellerVerification/BusinessVerification';
+import { DepositSetUp } from '@/components/Modals/SellerVerification/DepositSetUp';
+import { MembershipFee } from '@/components/Modals/SellerVerification/MembershipFee';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -132,6 +135,33 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'createBusinessAccount' && <CreateBusinessAccount />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'sellerVerificationBusinessVerification' && s.wrapper_active
+				)}
+			>
+				{modal === 'sellerVerificationBusinessVerification' && (
+					<BusinessVerification />
+				)}
+			</div>
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'sellerVerificationMembershipFee' && s.wrapper_active
+				)}
+			>
+				{modal === 'sellerVerificationMembershipFee' && <MembershipFee />}
+			</div>
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'sellerVerificationDepositSetUp' && s.wrapper_active
+				)}
+			>
+				{modal === 'sellerVerificationDepositSetUp' && <DepositSetUp />}
 			</div>
 		</>
 	);

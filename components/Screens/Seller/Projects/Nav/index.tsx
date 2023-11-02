@@ -6,18 +6,23 @@ interface TypeProps {
 	activeDisplay: number;
 	setActiveDisplay: (n: number) => void;
 }
+
 export const Nav = ({ activeDisplay, setActiveDisplay }: TypeProps) => {
 	const navList = [
 		{
 			id: 1,
-			title: 'Overview',
+			title: 'Get Started',
 		},
 		{
 			id: 2,
-			title: 'RFQ Cart',
+			title: 'Overview',
 		},
 		{
 			id: 3,
+			title: 'RFQ Cart',
+		},
+		{
+			id: 4,
 			title: 'Orders',
 		},
 	];
