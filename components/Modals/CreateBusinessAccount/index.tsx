@@ -18,6 +18,7 @@ import eye from '@/imgs/Modal/eye.svg';
 import close_eye from '@/imgs/Modal/close_eye.svg';
 import chevron_down from '@/imgs/ProfileSettings/chevron-down.svg';
 import { useForm } from 'react-hook-form';
+import countries from '@/utils/countries';
 
 export const CreateBusinessAccount = () => {
 	const dispatch = useAppDispatch();
@@ -26,43 +27,6 @@ export const CreateBusinessAccount = () => {
 		dispatch(setModal(''));
 		setStep(1);
 	};
-
-	const countries = [
-		'China',
-		'Hong Kong',
-		'Singapore',
-		'Taiwan',
-		'Canada',
-		'United Kingdom',
-		'Germany',
-		'France',
-		'Italy',
-		'Spain',
-		'Netherlands',
-		'Belgium',
-		'Sweden',
-		'Austria',
-		'Poland',
-		'Denmark',
-		'Ireland',
-		'Finland',
-		'Portugal',
-		'Czech Republic',
-		'Greece',
-		'Hungary',
-		'Romania',
-		'Slovakia',
-		'Bulgaria',
-		'Croatia',
-		'Slovenia',
-		'Lithuania',
-		'Latvia',
-		'Estonia',
-		'Cyprus',
-		'Malta',
-		'Luxembourg',
-	];
-
 
 	const {
 		register: step2Register,
@@ -84,8 +48,8 @@ export const CreateBusinessAccount = () => {
 		shouldUnregister: true,
 	});
 
-	const onSubmitStep2 = (data:any) => {
-		setStep(4)
+	const onSubmitStep2 = (data: any) => {
+		setStep(4);
 		console.log(data);
 	};
 
@@ -167,13 +131,10 @@ export const CreateBusinessAccount = () => {
 		shouldUnregister: true,
 	});
 
-
-	const onSubmitStep1 = (data:any) => {
-		setStep(3)
+	const onSubmitStep1 = (data: any) => {
+		setStep(3);
 		console.log(data);
 	};
-
-
 
 	const UserInfoForm = () => {
 		const [hideNewPassword, setHideNewPassword] = React.useState<boolean>(true);
@@ -181,14 +142,13 @@ export const CreateBusinessAccount = () => {
 			React.useState<boolean>(true);
 
 		return (
-			<div className={s.form}
-			>
+			<div className={s.form}>
 				<div className={s.form_title}>Tell us about yourself</div>
 				<div className={s.form_input_group}>
 					<div className={s.form_two_inputs}>
 						<label className={s.label} htmlFor="firstName">
 							<input
-								{...step1Register('firstName', {required: 'Enter first name'})}
+								{...step1Register('firstName', { required: 'Enter first name' })}
 								type="text"
 								name="firstName"
 								id={'firstName'}
@@ -198,7 +158,7 @@ export const CreateBusinessAccount = () => {
 						</label>
 						<label className={s.label} htmlFor="lastName">
 							<input
-								{...step1Register('lastName', {required: 'Enter last name'})}
+								{...step1Register('lastName', { required: 'Enter last name' })}
 								type="text"
 								name="lastName"
 								placeholder="Enter last name"
@@ -431,7 +391,7 @@ export const CreateBusinessAccount = () => {
 
 	const topBar = () => (
 		<div className={s.content_top_bar}>
- 			{step !== 1 && (
+			{step !== 1 && (
 				<div onClick={() => handlePrevStep()} className={s.content_top_bar_back_btn}>
 					<Image src={back_btn} alt="back_btn" width={22} height={22} />
 				</div>

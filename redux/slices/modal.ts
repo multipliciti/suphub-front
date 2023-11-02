@@ -19,7 +19,11 @@ interface CounterState {
 		| 'bulkUpload'
 		| 'submitForReview'
 		| 'showPhoto'
-		| 'createBusinessAccount';
+		| 'createBusinessAccount'
+		| 'sellerVerificationBusinessVerification'
+		| 'sellerVerificationMembershipFee'
+		| 'sellerVerificationDepositSetUp';
+
 	email: string;
 }
 
@@ -51,6 +55,9 @@ const modalSlice = createSlice({
 				| 'submitedRFQ'
 				| 'bulkUpload'
 				| 'createBusinessAccount'
+				| 'sellerVerificationBusinessVerification'
+				| 'sellerVerificationMembershipFee'
+				| 'sellerVerificationDepositSetUp'
 			>
 		) {
 			state.modal = action.payload;

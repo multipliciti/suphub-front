@@ -6,6 +6,7 @@ import { Orders } from './Orders';
 import { Overview } from './Overview';
 import { RFQCar } from './RFQCar';
 import { IsSellerSideBarContainer } from '@/components/Containers/IsSellerSideBarContainer';
+import { GetStarted } from '@/components/Screens/Seller/Projects/GetStarted';
 
 export const Projects = () => {
 	const [activeDisplay, setActiveDisplay] = useState<number>(3);
@@ -13,9 +14,10 @@ export const Projects = () => {
 		<IsSellerSideBarContainer>
 			<div className={s.wrapper}>
 				<Nav activeDisplay={activeDisplay} setActiveDisplay={setActiveDisplay} />
-				{activeDisplay === 1 && <Overview />}
-				{activeDisplay === 2 && <RFQCar />}
-				{activeDisplay === 3 && <Orders />}
+				{activeDisplay === 1 && <GetStarted />}
+				{activeDisplay === 2 && <Overview />}
+				{activeDisplay === 3 && <RFQCar />}
+				{activeDisplay === 4 && <Orders />}
 			</div>
 		</IsSellerSideBarContainer>
 	);
