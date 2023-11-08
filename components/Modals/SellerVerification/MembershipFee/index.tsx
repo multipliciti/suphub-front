@@ -11,52 +11,49 @@ import modal_close from '@/imgs/close.svg';
 import switcher from '@/imgs/Buyer&Seller/SellerVerification/switcher.svg';
 import switcher_circle from '@/imgs/Buyer&Seller/SellerVerification/switcher-circle.svg';
 import stripe_logo from '@/imgs/Buyer&Seller/SellerVerification/stripe-logo.svg';
+import { useRouter } from 'next/navigation';
 
 export const MembershipFee = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
-
+	const router = useRouter();
 	const [hideOldPassword, setHideOldPassword] = React.useState<boolean>(true);
 
+	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST
+
 	const {
-		register,
 		handleSubmit,
-		setError,
-		reset,
-		formState: { errors, touchedFields },
-	} = useForm({
-		defaultValues: { oldPassword: '', newPassword: '', confirmPassword: '' },
-		mode: 'onChange',
-		shouldFocusError: true,
-		shouldUnregister: true,
-	});
+	} = useForm();
 
 	const closeModal = () => {
 		dispatch(setModal(''));
-		reset();
 	};
 
-	const onSubmit: SubmitHandler<any> = async (data) => {
-		const { oldPassword, newPassword, confirmPassword } = data;
-
-		const form: any = {};
-	};
-
-	const [isMonthlyPayment, setIsMonthlyPayment] = useState(true);
-
-	const handleSwitcherClick = () => {
-		setIsMonthlyPayment(!isMonthlyPayment);
+	const Subscribe= async (trial= false) => {
+		try {
+			const planId = 1
+			const res = await api.payment.subscribe(
+				{
+					planId: planId,
+					isTrial: trial,
+					successUrl: `${HOST}/subscription/success`,
+					cancelUrl: `${HOST}/subscription/canceled`,
+				},
+			);
+			if (res.url) router.push(res.url)
+		} catch (e) {
+			console.error(e);
+		}
 	};
 
 	return (
 		<div className={s.wrapper}>
-			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className={s.header}>
 					<div className={s.header_row}>
 						<div className={s.header_title}>Membership fee</div>
 						<span onClick={closeModal} className={s.back}>
 							<Image
-								alt="Close Button"
+								alt='Close Button'
 								className={s.header_close}
 								src={modal_close}
 							/>
@@ -66,32 +63,7 @@ export const MembershipFee = () => {
 						Finish this list to verify your company
 					</div>
 				</div>
-				<div className={s.separator} />
 				<div className={s.content}>
-					<div className={s.content_group_switcher}>
-						<div className={s.content_switcher}>
-							<div className={s.content_switcher_text}>Monthly payment</div>
-							<span
-								className={s.content_switcher_background}
-								onClick={handleSwitcherClick}
-							>
-								<Image
-									className={classNames(
-										s.content_switcher_circle,
-										isMonthlyPayment
-											? s.content_switcher_left
-											: s.content_switcher_right
-									)}
-									src={switcher_circle}
-									alt="Switcher Button"
-								/>
-							</span>
-							<div className={s.content_switcher_text}>Annual payment</div>
-							<div className={s.content_switcher_tag}>
-								<div className={s.content_switcher_tag_text}>10% discount</div>
-							</div>
-						</div>
-					</div>
 					<div className={s.content_group_bottom}>
 						<div className={s.content_group_stripe}>
 							<div className={s.content_title_group}>
@@ -102,10 +74,18 @@ export const MembershipFee = () => {
 							</div>
 							<div className={s.content_payment_group}>
 								<div className={s.content_payment_group_price}>
-									<span className={s.content_payment_price_number}>$89</span>
-									<span className={s.content_payment_price_month}>/ month</span>
+									<span className={s.content_payment_price_number}>
+										$850
+									</span>
+									<span className={s.content_payment_price_month}>
+										/ month
+									</span>
 								</div>
-								<button className={s.content_payment_btn}>
+								<button className={s.content_payment_btn} onClick={() => Subscribe(true)}>
+									<span className={s.content_payment_btn_text}>Trial</span>
+								</button>
+								<button className={s.content_payment_btn}
+								onClick={() => Subscribe(false)}>
 									<span className={s.content_payment_btn_text}>Pay with</span>{' '}
 									<Image src={stripe_logo} alt={'stripe logo'} />
 								</button>
@@ -113,7 +93,6 @@ export const MembershipFee = () => {
 						</div>
 					</div>
 				</div>
-			</form>
 		</div>
 	);
 };

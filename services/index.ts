@@ -14,6 +14,7 @@ import { SellerCompanyApi } from '@/services/sellerCompanyApi';
 import { BuyerCompanyApi } from '@/services/buyerCompanyApi';
 import { BankUSA } from '@/services/bankUSA';
 import { BankInternational } from '@/services/bankInternational';
+import {Payment} from '@/services/payment'
 import { ProductPriceApi } from '@/services/productPriceApi';
 
 export type ApiReturnType = {
@@ -56,6 +57,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		bankUSA: BankUSA(instance),
 		bankInternational: BankInternational(instance),
 		category: CategoryApi(instance),
+		payment: Payment(instance),
 	};
 
 	return apis;

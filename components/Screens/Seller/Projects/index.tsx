@@ -9,7 +9,7 @@ import { IsSellerSideBarContainer } from '@/components/Containers/IsSellerSideBa
 import { GetStarted } from '@/components/Screens/Seller/Projects/GetStarted';
 
 export const Projects = () => {
-	const [activeDisplay, setActiveDisplay] = useState<number>(3);
+	const [activeDisplay, setActiveDisplay] = useState<number>(1);
 	return (
 		<IsSellerSideBarContainer>
 			<div className={s.wrapper}>
