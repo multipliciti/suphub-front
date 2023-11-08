@@ -19,6 +19,10 @@ import { CreateBusinessAccount } from '@/components/Modals/CreateBusinessAccount
 import { BusinessVerification } from '@/components/Modals/SellerVerification/BusinessVerification';
 import { DepositSetUp } from '@/components/Modals/SellerVerification/DepositSetUp';
 import { MembershipFee } from '@/components/Modals/SellerVerification/MembershipFee';
+import { SellerAddNewProduct } from './StorefrontAddProduct/AddNewProduct';
+import { SellerProductBulkUpload } from './StorefrontAddProduct/BulkUpload';
+import { SellerProductUploadImage } from './StorefrontAddProduct/UploadImage';
+
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -162,6 +166,33 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'sellerVerificationDepositSetUp' && <DepositSetUp />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'sellerAddNewProduct' && s.wrapper_active
+				)}
+			>
+				{modal === 'sellerAddNewProduct' && <SellerAddNewProduct />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'sellerProductBulkUpload' && s.wrapper_active
+				)}
+			>
+				{modal === 'sellerProductBulkUpload' && <SellerProductBulkUpload />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'sellerProductUploadImage' && s.wrapper_active
+				)}
+			>
+				{modal === 'sellerProductUploadImage' && <SellerProductUploadImage />}
 			</div>
 		</>
 	);

@@ -1,0 +1,79 @@
+.table {
+  thead {
+    tr {
+      border-bottom: 1px solid #E7E9EF;
+    }
+
+    tr > th:not(:last-child) {
+      border-right: 1px solid #E7E9EF;
+    }
+  }
+
+  tbody {
+    tr {
+      border-bottom: 1px solid #E7E9EF;
+    }
+    tr:not(:last-child) > td:not(:last-child) {
+      border-right: 1px solid #E7E9EF;
+    }
+  }
+
+  input {
+    padding: 4px 8px;
+
+    border: 1px solid #CBD5E1;
+    border-radius: 4px;
+    &:focus {
+      border: 1px solid #755CF1;
+      outline: none;
+    }
+    &::placeholder {
+      color: #CBD5E1;
+    }
+  }
+}
+
+.reset_th_row {
+  > th {
+    background-color: #ffffff !important;
+    font-weight: 400 !important;
+  }
+}
+
+.price_row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+
+  > span {
+    color: #64748B;
+    font-size: 12px;
+  }
+}
+
+.earnings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+
+  &_label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #94A3B8;
+  }
+
+  &_input {
+    width: 150px;
+  }
+}
+
+
+
+.add_btn {
+  border: none;
+  background-color: transparent;
+  color: #755CF1;
+}

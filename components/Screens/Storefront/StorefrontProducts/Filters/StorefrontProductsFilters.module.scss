@@ -1,0 +1,16 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+.filters {
+  display: flex;
+  gap: 6px;
+
+  > * {
+    height: 36px;
+    min-width: 160px;
+  }
+}

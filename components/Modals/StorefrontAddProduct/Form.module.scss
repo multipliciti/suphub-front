@@ -1,0 +1,156 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 16px;
+  flex-grow: 1;
+
+  &_row {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    > span {
+      color: #020617;
+    }
+
+    > p {
+      line-height: 18px;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    > input {
+      width: 100%;
+      height: 40px;
+
+      padding: 10px 12px;
+
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+
+      line-height: 20px;
+
+      &::placeholder {
+        color: #94A3B8;
+      }
+    }
+
+  }
+
+  &_buttons {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 12px;
+
+    > button {
+      border: none;
+      outline: none;
+
+      line-height: 20px;
+    }
+  }
+
+  &_cancel {
+    width: 80px;
+    height: 40px;
+
+    color: #0F172A;
+    background-color: transparent;
+  }
+
+  &_create {
+    padding: 8px 16px;
+    height: 36px;
+
+    background-color: #2B1694;
+    border-radius: 8px;
+    color: #ffffff;
+
+    &:disabled {
+      color: #94A3B8;
+      background-color: #E2E8F0;
+      opacity: 1;
+    }
+  }
+}
+
+.download_btn {
+  padding: 10px 12px;
+
+  display: flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 6px;
+
+  border: 1px solid #2B1694;
+  border-radius: 8px;
+
+  color: #2B1694;
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.success_message {
+  text-align: center;
+  color: #1fbb19 !important;
+}
+
+.error_message {
+  padding-bottom: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &_image {
+    width: 80px;
+    height: 80px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #FEEAE8;
+    border-radius: 100%;
+  }
+
+  &_text {
+    margin-top: 12px;
+    text-align: center;
+
+    > h2 {
+      color: #0F172A;
+      font-size: 18px;
+      line-height: 24px;
+      font-weight: bold;
+    }
+
+    > p {
+      color: #64748B;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  &_button {
+    margin-top: 24px;
+    padding: 8px 16px;
+
+    line-height: 20px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+
+    background-color: #2B1694;
+    border-radius: 8px;
+
+    border: none;
+    outline: none;
+  }
+
+}

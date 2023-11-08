@@ -1,0 +1,33 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  width: 100%;
+
+  border-bottom: 1px solid #CBD5E1;
+}
+
+.link {
+  position: relative;
+  padding: 0 16px;
+  height: 100%;
+
+  color: #0F172A;
+  text-decoration: none;
+
+  &:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 25%;
+    right: 0;
+    display: block;
+    width: 1px;
+    height: 12px;
+    background-color: #CBD5E1;
+  }
+
+  &_active {
+    font-weight: bolder;
+    border-bottom: 3px solid #2B1694;
+  }
+}
