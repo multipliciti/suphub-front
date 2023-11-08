@@ -253,7 +253,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 									{product.images.map((item, index) => (
 										<Image
 											key={item.id + index}
-											src={item.url}
+											src={item.url || ''}
 											alt="image"
 											width={48}
 											height={48}

@@ -29,7 +29,7 @@ export const StorefrontProductImageUploader: FC<Props> = ({ productId, imageList
 			{imageList.length > 0
 			? (
 				<Image
-					src={imageList[0].url}
+					src={imageList[0].url || ''}
 					alt="product_image"
 					width={64}
 					height={64}

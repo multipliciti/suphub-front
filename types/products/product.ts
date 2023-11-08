@@ -3,7 +3,7 @@ interface Image {
 	id: number;
 	key: string;
 	bucket: string;
-	url: string;
+	url: string | null;
 	mime: string;
 	productId: number;
 	updatedAt: string;
