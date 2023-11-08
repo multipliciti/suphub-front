@@ -22,8 +22,11 @@ interface CounterState {
 		| 'createBusinessAccount'
 		| 'sellerVerificationBusinessVerification'
 		| 'sellerVerificationMembershipFee'
-		| 'sellerVerificationDepositSetUp';
-
+		| 'sellerVerificationDepositSetUp'
+		| 'createBusinessAccount'
+		| 'sellerAddNewProduct'
+		| 'sellerProductBulkUpload'
+		| 'sellerProductUploadImage'
 	email: string;
 }
 
@@ -58,6 +61,9 @@ const modalSlice = createSlice({
 				| 'sellerVerificationBusinessVerification'
 				| 'sellerVerificationMembershipFee'
 				| 'sellerVerificationDepositSetUp'
+				| 'sellerAddNewProduct'
+				| 'sellerProductBulkUpload'
+				| 'sellerProductUploadImage'
 			>
 		) {
 			state.modal = action.payload;

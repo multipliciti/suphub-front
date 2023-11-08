@@ -1,0 +1,98 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+
+  > table, th, td {
+    border-collapse: collapse;
+  }
+
+  > table > tbody > tr > td,
+  > table > thead > tr > th {
+    border: 1px solid #E7E9EF;
+    padding: 8px 16px;
+    text-align: left;
+  }
+
+  table {
+    width: 100%;
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #334155;
+    border-radius: 8px;
+  }
+
+
+  thead > tr > th {
+    background-color: #F8FAFC;
+
+    color: #0F172A;
+    font-weight: bold;
+  }
+
+  tbody > tr > td {
+    max-width: 0;
+  }
+}
+
+.images {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.image_upload {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px dotted #94A3B8;
+  border-radius: 8px;
+  background-color: #F8FAFC;
+
+  cursor: pointer;
+}
+
+.button {
+  margin-top: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  gap: 12px;
+
+  > button {
+    border: none;
+    outline: none;
+
+    line-height: 20px;
+  }
+
+  &_cancel {
+    width: 80px;
+    height: 40px;
+
+    color: #0F172A;
+    background-color: transparent;
+  }
+
+  &_create {
+    padding: 8px 16px;
+    height: 36px;
+
+    background-color: #2B1694;
+    border-radius: 8px;
+    color: #ffffff;
+
+    &:disabled {
+      color: #94A3B8;
+      background-color: #E2E8F0;
+      opacity: 1;
+    }
+  }
+}

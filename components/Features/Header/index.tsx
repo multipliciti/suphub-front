@@ -73,6 +73,11 @@ export const Header = () => {
 			label: 'Projects',
 			href: '/marketplace',
 		},
+		{
+			id: 3,
+			label: 'My Storefront',
+			href: '/storefront/products'
+		}
 	];
 
 	const fetchUser = async () => {
@@ -114,8 +119,9 @@ export const Header = () => {
 						<Image src={modal_logo} alt="modal_logo" width={32} height={35} />
 
 						<div className={s.buttons}>
-							{buttons.map((button) => (
+							{buttons.map((button, index) => (
 								<div
+									key={index}
 									className={classNames(
 										s.menu_btn,
 										activeLink === button.id && s.menu_btn_active

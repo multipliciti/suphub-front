@@ -1,0 +1,61 @@
+.wrapper {
+  margin-top: 45px;
+}
+
+.table_wrapper {
+  margin-bottom: 24px;
+
+  table, th, td {
+    border-collapse: collapse;
+    text-align: center;
+  }
+
+  > table > tbody > tr > td,
+  > table > thead > tr > th {
+    border: 1px solid #E7E9EF;
+  }
+
+  table {
+    width: 100%;
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #334155;
+    border-radius: 8px;
+  }
+
+
+  thead > tr > th {
+    padding: 6px 12px;
+
+    font-weight: 400;
+    text-align: left;
+
+  }
+
+  tbody > tr > td {
+    padding: 12px;
+
+    text-align: left;
+  }
+}
+
+.price_tier_header {
+  display: flex;
+}
+
+.status_label {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: #EDF1F6;
+  color: #64748B;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.action_link {
+  color: #755CF1;
+  border: none;
+  text-decoration: none;
+}
