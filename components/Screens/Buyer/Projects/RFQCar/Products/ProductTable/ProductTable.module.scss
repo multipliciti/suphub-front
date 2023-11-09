@@ -1,12 +1,12 @@
 .table {
 	border-collapse: collapse;
 	width: 100%;
-	border: 1px solid #e2e8f0;
+	border-right: 1px solid #e2e8f0;
+	border-bottom: 1px solid #e2e8f0;
 
 	.thead {
-		height: 37px;
 		border-top: 1px solid #e2e8f0;
-		border-bottom: 2px solid #e2e8f0;
+		border-bottom: 1px solid #e2e8f0;
 
 		color: #64748b;
 		font-variant-numeric: lining-nums proportional-nums;
@@ -18,6 +18,9 @@
 	}
 
 	.tbody {
+		tr {
+			cursor: pointer;
+		}
 		color: #020617;
 		font-variant-numeric: lining-nums proportional-nums;
 		font-size: 14px;
@@ -45,12 +48,21 @@
 		}
 
 		.chat {
+			display: block;
+			max-width: 20px;
 			position: relative;
 			cursor: pointer;
 
+			&_wrapper {
+				display: flex;
+				justify-content: center;
+			}
+
 			&_sms {
+				margin-left: auto;
+				margin-right: auto;
 				top: 0;
-				right: 3px;
+				right: -5px;
 				position: absolute;
 				width: 12px;
 				height: 12px;
@@ -93,6 +105,11 @@
 			font-weight: 400;
 			line-height: 18px;
 
+			&_compress {
+				display: block;
+				min-width: 90px;
+			}
+
 			&_needed {
 				color: red;
 				background: #feeae8;
@@ -111,7 +128,7 @@
 	}
 }
 .table td {
-	border-top: 2px solid #e2e8f0;
+	border-top: 1px solid #e2e8f0;
 }
 
 .table th,

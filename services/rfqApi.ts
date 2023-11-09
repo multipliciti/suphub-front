@@ -1,5 +1,10 @@
 import { AxiosInstance } from 'axios';
-import { RfqFind, RfqUpdateData, RfqOption, RfqItem } from '@/types/services/rfq';
+import {
+	RfqFind,
+	RfqUpdateData,
+	RfqOption,
+	RfqItemFetch,
+} from '@/types/services/rfq';
 
 export const RfqApi = (instance: AxiosInstance) => ({
 	async getProjectById({
@@ -21,6 +26,23 @@ export const RfqApi = (instance: AxiosInstance) => ({
 		const response = await instance.get(url);
 		return response.data;
 	},
+	//the same as getProjectById
+	async getRfqByProject({
+		projectId,
+		page,
+		limit,
+		sortParams,
+		searchParams,
+	}: RfqFind) {
+		console.log('searchParams', searchParams);
+		const search = searchParams ? `&find=${searchParams}` : '';
+		const sort = sortParams
+			? `&sort=${encodeURIComponent(JSON.stringify(sortParams))}`
+			: '';
+		const url = `/rfq/project/${projectId}/?page=${page}&limit=${limit}${sort}${search}`;
+		const response = await instance.get(url);
+		return response.data;
+	},
 	async getProjectOne(id: number) {
 		const url = `/rfq/${id}`;
 		const response = await instance.get(url);
@@ -31,15 +53,13 @@ export const RfqApi = (instance: AxiosInstance) => ({
 		const response = await instance.patch(url, data);
 		return response;
 	},
-	async createRfqItem(data: RfqItem) {
+	async createRfqItem(data: RfqItemFetch) {
 		const dataSend = {
 			...data,
 			...(data.certifications && { certifications: data.certifications.join(',') }),
 			//hardcode
-			cover: '',
+			cover: 'https://multipliciti-app.s3.amazonaws.com/product-images/130/1230.jpg',
 		};
-
-		console.log('dataSend', dataSend);
 
 		const url = `/rfq/`;
 		const response = await instance.post(url, dataSend);

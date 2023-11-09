@@ -17,7 +17,6 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 	const [activeFilter, setActiveFilter] = useState<number[]>([]);
 	const [requestBtn, setRequestBtn] = useState<boolean>(false);
 	const inputSearchRef = useRef<HTMLInputElement | null>(null);
-
 	//toggle. Off or on filter wrapper
 	const toggleFilter = (id: number) => {
 		if (activeFilter.includes(id)) {

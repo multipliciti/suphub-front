@@ -1,8 +1,24 @@
+import { ProductItemType } from './../products/product';
+
 type SortOptions = {
 	[key: string]: 'asc' | 'desc';
 };
 
-export interface RfqItem {
+export interface Option {
+	id: number;
+	size: string;
+	quantity: number;
+	unit: string;
+	price: number;
+	type: string;
+	status: string;
+	productId: number;
+	rfqId: number;
+	product: ProductItemType;
+}
+
+export interface RfqItemFetch {
+	id?: number;
 	projectId: number;
 	subCategoryId: number;
 	productName: string;
@@ -14,6 +30,29 @@ export interface RfqItem {
 	cover?: File[];
 }
 
+export interface RfqItemGot {
+	id: number;
+	projectId: number;
+	subCategoryId: number;
+	productName: string;
+	quantity: number;
+	budget: number;
+	size: string;
+	certifications: string[];
+	additionalComments: string;
+	cover: string;
+
+	subCategory: {
+		csiCode: string;
+		id: number;
+		name: string;
+		categoryId: number;
+		updatedAt: string;
+		createdAt: string;
+	};
+	options: Option[];
+}
+
 export interface RfqFind {
 	projectId: number;
 	limit?: number;
@@ -23,9 +62,11 @@ export interface RfqFind {
 		sortDirection?: SortOptions;
 	};
 	searchText?: string;
-	searchParams?: {
-		subCategoryId?: number;
-	};
+	searchParams?:
+		| {
+				subCategoryId?: number;
+		  }
+		| string;
 }
 
 export interface RfqUpdateData {

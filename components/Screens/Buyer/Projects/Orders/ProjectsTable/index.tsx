@@ -9,8 +9,6 @@ interface PropsType {
 }
 
 export const ProjectsTable = ({ columns, data }: PropsType) => {
-	console.log('columns', columns);
-	console.log('data', data);
 	return (
 		<div className={s.wrapper}>
 			<table className={s.table}>

@@ -1,32 +1,35 @@
 'use client';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import s from './RequestManuallyRFQ.module.scss';
 import Image from 'next/image';
 import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { validateFormData } from './validation';
 //imgs
-import close_img from '@/imgs/close.svg';
-import add_img from '@/imgs/plus.svg';
-import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
 import upload_icon from '@/imgs/Buyer&Seller/upload_icon.svg';
 import { classNames } from '@/utils/classNames';
+import close_img from '@/imgs/close.svg';
+import add_img from '@/imgs/plus.svg';
+import arrow_icon from '@/imgs/arrow.svg';
+import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
 //types
-import { RfqItem } from '@/types/services/rfq';
+import { RfqItemFetch } from '@/types/services/rfq';
 //fetch
 import { Api } from '@/services';
 
+// Notes: need to finish adding image and file uploading and sending to the backend. Currently, the 'cover' property is hardcoded as a string before sending. Files are not sent at all. Attempting to send them will result in an error, as the backend is not ready, and there is no handling for them before sending.
 export const RequestManuallyRFQ = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 
-	const [formData, setFormData] = useState<RfqItem>({
+	const [formData, setFormData] = useState<RfqItemFetch>({
 		subCategoryId: 1,
 		productName: '',
 		quantity: 0,
 		projectId: 2,
 	});
-
+	const [category, setCategory] = useState<any[]>([]);
+	console.log('category', category);
 	//set certifications
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		const id = event.currentTarget.id;
@@ -44,11 +47,9 @@ export const RequestManuallyRFQ = () => {
 						certifications: newCertifications,
 					};
 				});
-
 				//clear input
 				event.currentTarget.value = '';
 			}
-
 			event.preventDefault();
 		}
 	};
@@ -101,15 +102,27 @@ export const RequestManuallyRFQ = () => {
 	};
 
 	//submit
-	const submitData = async (data: RfqItem) => {
+	const submitData = async (data: RfqItemFetch) => {
 		try {
 			await api.rfq.createRfqItem(data);
 			dispatch(setModal('submitedRFQ'));
 		} catch (error) {
-			console.error('error kfkfkfkfkkfkfkf', error);
+			console.error('error submitedRFQ', error);
 		}
 	};
 
+	const getCategory = async () => {
+		try {
+			const category = await api.product.getCategory();
+			setCategory(category);
+		} catch (error) {
+			console.error('error submitedRFQ', error);
+		}
+	};
+
+	useEffect(() => {
+		getCategory();
+	}, []);
 	return (
 		<div className={s.wrapper_layout}>
 			<div className={s.header_modal}>
@@ -130,13 +143,26 @@ export const RequestManuallyRFQ = () => {
 						<p className={s.input_title}>
 							Subcategory<span className={s.input_necessarily}>*</span>
 						</p>
-						<input
+						<span className={s.subcategory}>
+							<span className={s.subcategory_title}>Choose subcategory</span>
+							<Image src={arrow_icon} alt="arrow_icon" width={20} height={20} />
+							<span className={s.subcategory_items}>
+								{category?.map((el, ind) => {
+									return (
+										<span key={ind} className={s.subcategory_item}>
+											{el.name}
+										</span>
+									);
+								})}
+							</span>
+						</span>
+						{/* <input
 							onChange={handleValueFormData}
 							id="subCategoryId"
 							placeholder="Choose subcategory"
 							className={s.input}
 							type="number"
-						/>
+						/> */}
 					</div>
 					<div className={s.input_wrapper}>
 						<p className={s.input_title}>

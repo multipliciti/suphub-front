@@ -2,14 +2,21 @@
 import { classNames } from '@/utils/classNames';
 import s from './ProductTable.module.scss';
 import Image from 'next/image';
+import { useEffect } from 'react';
+import { useRef } from 'react';
 import chat_image from '@/imgs/Buyer&Seller/chat_icon.svg';
+import { RfqItemGot } from '@/types/services/rfq';
+import { useState } from 'react';
 
 interface TypeProps {
-	properties: any;
+	properties: RfqItemGot[];
+	compress: boolean;
 }
 
-export const ProductTable = ({ properties }: TypeProps) => {
-	console.log('properties', properties);
+export const ProductTable = ({ properties, compress }: TypeProps) => {
+	const statusTest = 'Selection needed';
+	const tableRef = useRef<HTMLTableSectionElement | null>(null);
+
 	const arrTableHead = [
 		{
 			title: 'Product',
@@ -57,10 +64,9 @@ export const ProductTable = ({ properties }: TypeProps) => {
 						))}
 					</tr>
 				</thead>
-
 				{/* tbody  */}
-				<tbody className={s.tbody}>
-					{properties.map((property: any, ind: number) => (
+				<tbody ref={tableRef} className={s.tbody}>
+					{properties.map((property: RfqItemGot, ind: number) => (
 						<tr key={ind}>
 							{/* title  */}
 							<td>
@@ -69,44 +75,57 @@ export const ProductTable = ({ properties }: TypeProps) => {
 								</label>
 							</td>
 							<td>
-								<span className={s.subtitle}>{property.items.subtitle}</span>
-								<p className={s.title}>{property.items.title}</p>
+								<span className={s.subtitle}>{property.productName}</span>
+								<p className={s.title}>{property.productName}</p>
 							</td>
 							{/* chat */}
 							<td>
-								<span className={s.chat}>
-									<Image src={chat_image} alt="chat_image" width={24} height={24} />
-									<div
-										className={classNames(
-											s.chat_sms,
-											property.items.chat > 0 && s.chat_sms_active
-										)}
-									>
-										<span className={s.chat_number}>{property.items.chat}</span>
-									</div>
-								</span>
+								<div className={s.chat_wrapper}>
+									<span className={s.chat}>
+										<Image
+											src={chat_image}
+											alt="chat_image"
+											width={24}
+											height={24}
+										/>
+										<div
+											className={classNames(
+												s.chat_sms,
+												//hardcode
+												1 > 0 && s.chat_sms_active
+											)}
+										>
+											{/* hardcode  */}
+											<span className={s.chat_number}>{1}</span>
+										</div>
+									</span>
+								</div>
 							</td>
 							{/* size  */}
-							<td className={s.size}>{property.items.size}</td>
+							<td className={s.size}>{property.size}</td>
 							{/* Quantity  */}
-							<td>{property.items.quantity}</td>
+							<td>{property.quantity}</td>
 							{/* Unit  */}
-							<td>{property.items.unit}</td>
+							<td>Unit</td>
 							{/* Status  */}
 							<td>
 								<span
 									className={classNames(
 										s.status,
-										property.items.status === 'Selection needed' && s.status_needed,
-										property.items.status === 'Sampling' && s.status_sampling,
-										property.items.status === 'Ordered' && s.status_ordered
+										compress && s.status_compress,
+										//hardcode
+										// property.status === 'Selection needed' && s.status_needed,
+										statusTest === 'Selection needed' && s.status_needed
+										// statusTestr === 'Sampling' && s.status_sampling,
+										// statusTest === 'Ordered' && s.status_ordered
 									)}
 								>
-									{property.items.status}
+									{/* {property.items.status} */}
+									Selection needed
 								</span>
 							</td>
 							{/* Unit Budget  */}
-							<td>${property.items.unitbudget}</td>
+							<td>${property.budget}</td>
 						</tr>
 					))}
 				</tbody>

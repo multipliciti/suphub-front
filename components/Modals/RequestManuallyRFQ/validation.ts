@@ -1,6 +1,6 @@
-import { RfqItem } from '@/types/services/rfq';
+import { RfqItemFetch } from '@/types/services/rfq';
 
-export function validateFormData(formData: RfqItem) {
+export function validateFormData(formData: RfqItemFetch) {
 	const { subCategoryId, productName, quantity } = formData;
 
 	const isEmpty = (str: string) => str.trim() === '';
