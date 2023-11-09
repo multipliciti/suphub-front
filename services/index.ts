@@ -2,9 +2,11 @@ import Cookies, { parseCookies } from 'nookies';
 import { UserApi } from './userApi';
 import { AuthApi } from './authService';
 import { ProductsApi } from './productsService';
+import { ProductSellerApi } from '@/services/productSellerApi';
 import { sideBarApi } from './sideBarService';
 import { ProjectApi } from './projectApi';
 import { RfqApi } from './rfqApi';
+import { CategoryApi } from './categoryApi';
 import axios from 'axios';
 import { GetServerSidePropsContext, NextPageContext } from 'next';
 import { RfqOptionApi } from '@/services/rfqOptionApi';
@@ -12,6 +14,8 @@ import { SellerCompanyApi } from '@/services/sellerCompanyApi';
 import { BuyerCompanyApi } from '@/services/buyerCompanyApi';
 import { BankUSA } from '@/services/bankUSA';
 import { BankInternational } from '@/services/bankInternational';
+import {Payment} from '@/services/payment'
+import { ProductPriceApi } from '@/services/productPriceApi';
 
 export type ApiReturnType = {
 	sendFormStepOne(): unknown;
@@ -42,6 +46,8 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		user: UserApi(instance),
 		auth: AuthApi(instance),
 		product: ProductsApi(instance),
+		productSeller: ProductSellerApi(instance),
+		productPrice: ProductPriceApi(instance),
 		sideBar: sideBarApi(instance),
 		project: ProjectApi(instance),
 		rfq: RfqApi(instance),
@@ -50,6 +56,8 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		buyerCompany: BuyerCompanyApi(instance),
 		bankUSA: BankUSA(instance),
 		bankInternational: BankInternational(instance),
+		category: CategoryApi(instance),
+		payment: Payment(instance),
 	};
 
 	return apis;

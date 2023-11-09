@@ -19,7 +19,14 @@ interface CounterState {
 		| 'bulkUpload'
 		| 'submitForReview'
 		| 'showPhoto'
-		| 'createBusinessAccount';
+		| 'createBusinessAccount'
+		| 'sellerVerificationBusinessVerification'
+		| 'sellerVerificationMembershipFee'
+		| 'sellerVerificationDepositSetUp'
+		| 'createBusinessAccount'
+		| 'sellerAddNewProduct'
+		| 'sellerProductBulkUpload'
+		| 'sellerProductUploadImage'
 	email: string;
 }
 
@@ -51,6 +58,12 @@ const modalSlice = createSlice({
 				| 'submitedRFQ'
 				| 'bulkUpload'
 				| 'createBusinessAccount'
+				| 'sellerVerificationBusinessVerification'
+				| 'sellerVerificationMembershipFee'
+				| 'sellerVerificationDepositSetUp'
+				| 'sellerAddNewProduct'
+				| 'sellerProductBulkUpload'
+				| 'sellerProductUploadImage'
 			>
 		) {
 			state.modal = action.payload;

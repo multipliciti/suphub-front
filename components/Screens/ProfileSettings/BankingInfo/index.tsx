@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import chevron_down from '@/imgs/ProfileSettings/chevron-down.svg';
 import Image from 'next/image';
 import { Api } from '@/services';
+import countries from '@/utils/countries';
 
 type PaymentType = 'Domestic bank (USA)' | 'International';
 const BankingInfo = () => {
@@ -19,41 +20,6 @@ const BankingInfo = () => {
 		useState(false);
 
 	const [vendorType, setVendorType] = useState('business');
-	const countries = [
-		'China',
-		'Hong Kong',
-		'Singapore',
-		'Taiwan',
-		'Canada',
-		'United Kingdom',
-		'Germany',
-		'France',
-		'Italy',
-		'Spain',
-		'Netherlands',
-		'Belgium',
-		'Sweden',
-		'Austria',
-		'Poland',
-		'Denmark',
-		'Ireland',
-		'Finland',
-		'Portugal',
-		'Czech Republic',
-		'Greece',
-		'Hungary',
-		'Romania',
-		'Slovakia',
-		'Bulgaria',
-		'Croatia',
-		'Slovenia',
-		'Lithuania',
-		'Latvia',
-		'Estonia',
-		'Cyprus',
-		'Malta',
-		'Luxembourg',
-	];
 	const [selectedCountry, setSelectedCountry] = useState('Select Country');
 
 	const {

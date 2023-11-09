@@ -53,3 +53,23 @@ export interface UpdateUser {
 	lastName?: string;
 	email?: string;
 }
+
+export interface PreviousValuesOfCompany {
+	wasReturnedToUser?: boolean;
+	companyInfo?: {
+		companyName?: string;
+		street?: string;
+		city?: string;
+		state?: string;
+		country?: string;
+		zipcode?: string;
+		description?: string;
+	};
+}
+
+export interface UserDataType {
+	firstName: string;
+	lastName: string;
+	email: string;
+	password: string;
+}

@@ -1,0 +1,68 @@
+.message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  gap: 12px;
+  height: 90vh;
+}
+
+.img {
+  width: 80px;
+  height: 80px;
+  &_bg {
+    display: flex;
+    width: 120px;
+    height: 120px;
+    padding: 18px;
+    justify-content: center;
+    align-items: center;
+    background: #FEEAE8;
+    border-radius: 2500px;
+  }
+  &_success {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+.title {
+  color: #0f172a;
+  text-align: center;
+
+  font-size: 28px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 36px;
+}
+
+.desc {
+  color: #64748B;
+  text-align: center;
+
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.btn {
+  display: flex;
+  padding: 16px 24px;
+  margin-top: 12px;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+
+  color: #fff;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 26px;
+
+  border-radius: 8px;
+  border: none;
+  background: #2B1694;
+
+}

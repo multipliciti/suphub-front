@@ -13,6 +13,8 @@ import buyerSidebarSlice from './slices/sideBars/buyerSidebar';
 import sellerSidebarSlice from './slices/sideBars/sellerSidebar';
 import productSlice from './slices/marketplace/product';
 import orderSlice from './slices/Order/order';
+import storefrontSlice from './slices/storefront/storefront';
+import storefrontProductsSlice from './slices/storefront/storefrontProducts';
 
 export function makeStore() {
 	return configureStore({
@@ -29,6 +31,8 @@ export function makeStore() {
 			sellerSidebarSlice,
 			productSlice,
 			orderSlice,
+			storefrontSlice,
+			storefrontProductsSlice
 		},
 	});
 }

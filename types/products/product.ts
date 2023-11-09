@@ -3,7 +3,7 @@ interface Image {
 	id: number;
 	key: string;
 	bucket: string;
-	fileUrl: string;
+	url: string | null;
 	mime: string;
 	productId: number;
 	updatedAt: string;
@@ -21,13 +21,40 @@ interface CutSheet {
 	createdAt: string;
 }
 
+export interface Price {
+	id: number;
+	minCount: number;
+	value: number;
+	productId: number;
+	updatedAt: string;
+	createdAt: string;
+}
+
+interface Subcategory {
+	id: number;
+	name: string;
+	platformCommission: number;
+}
+
+interface OptionDynamicAttribute {
+	id: number;
+	attributeId: number;
+	charValue: string | null;
+	numericValue: number | null;
+}
+
 export interface DynamicAttribute {
 	attributeId: number;
 	attributeDescription: string;
 	label: string;
 	order: number | null;
-	value: string | number | null;
+	value: string;
+	formType: "select" | 'input';
+	type: "char" | 'numeric';
+	options: OptionDynamicAttribute[];
 }
+
+export type UpdateDynamicAttribute = DynamicAttribute & { attrValueIds: number[] }
 
 export interface ProductItemType {
 	id: number;
@@ -39,6 +66,11 @@ export interface ProductItemType {
 	favorite: boolean;
 	countryOfOrigin: string;
 	leadTime: number;
+	views: number;
+	favorites: number;
+	projects: number;
+	subCategory: Subcategory;
+	prices: Price[];
 	images: Image[];
 	cutsheets: CutSheet[];
 	dynamic_attr: DynamicAttribute[];
@@ -66,5 +98,3 @@ export interface ProductItemType {
 	subCategoryId: number;
 	unitOfMeasurement: string;
 }
-
-

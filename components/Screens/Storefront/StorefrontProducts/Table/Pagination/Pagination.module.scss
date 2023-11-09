@@ -1,0 +1,60 @@
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.label {
+  line-height: 20px;
+  color: #344054;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+
+  > li {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 14px;
+    line-height: 20px;
+
+    color: #64748B;
+
+    cursor: pointer;
+
+    user-select: none;
+
+    &.arrow {
+      width: 36px;
+    }
+
+    &.arrow_left {
+      justify-content: left;
+    }
+
+    &.arrow_right {
+      justify-content: right;
+      > img {
+        rotate: 180deg;
+      }
+   }
+  }
+}
+
+.active {
+  background-color: #F1F5F9;
+  font-weight: 700;
+
+  color: #1D2939;
+}
+
+.ellipsis {
+  cursor: none;
+}
