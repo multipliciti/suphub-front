@@ -1,13 +1,12 @@
 .wrapper {
 	transition: width 0.5s ease;
 	background: #fff;
-	padding: 24px 10px;
-	padding-top: 10px;
-	height: calc(100vh - 60px);
+	padding: 10px 10px 24px;
 	position: fixed;
 	width: 0px;
 	height: 100%;
 	box-shadow: 0px 10px 25px 0px rgba(53, 53, 53, 0.12);
+	z-index: 100;
 
 	&_scroll {
 		height: 100%;
@@ -20,10 +19,7 @@
 	&_inner {
 		overflow-x: hidden;
 		transform: scaleX(-1);
-		padding-top: 18px;
-		padding-left: 15px;
-		padding-right: 15px;
-		padding-bottom: 20px;
+		padding: 18px 15px 20px;
 	}
 
 	&_scroll::-webkit-scrollbar {
@@ -70,7 +66,7 @@
 	}
 }
 
-.box_weika {
+.seller_company {
 	transition: box-shadow 0.5s ease;
 	padding: 12px 16px;
 	border-radius: 8px;
@@ -81,8 +77,11 @@
 	flex-direction: column;
 	gap: 8px;
 
+	&_logo {
+		margin-bottom: 16px;
+	}
+
 	&_title {
-		margin-top: 16px;
 		color: #0f172a;
 
 		font-size: 16px;
@@ -119,16 +118,50 @@
 		}
 	}
 
-	.unverified {
-		color: #de7a05;
+    .status {
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 18px;
 
-		font-size: 12px;
-		font-style: normal;
-		font-weight: 600;
-		line-height: 18px;
-	}
+      &_verified {
+        color: #1fbb19;
+      }
+
+      &_unverified {
+        color: #de7a05;
+      }
+    }
 }
 
 .box_weika:hover {
 	box-shadow: 0px 0px 13px 0px rgba(0, 0, 0, 0.18);
 }
+
+.toggle {
+	&_wrapper {
+		transition: transform 0.3s ease;
+		background-color: #fff;
+		height: 32px;
+		width: 32px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 500px;
+		border: 1px solid #cbd5e1;
+		box-shadow: 0px 12px 30px 0px rgba(53, 53, 53, 0.16);
+
+		position: absolute;
+		right: -15px;
+		top: 24px;
+		cursor: pointer;
+	}
+
+	&_icon {
+		opacity: 1;
+		&_active {
+			transform: rotate(180deg);
+		}
+	}
+}
+

@@ -14,8 +14,9 @@ import { SellerCompanyApi } from '@/services/sellerCompanyApi';
 import { BuyerCompanyApi } from '@/services/buyerCompanyApi';
 import { BankUSA } from '@/services/bankUSA';
 import { BankInternational } from '@/services/bankInternational';
-import {Payment} from '@/services/payment'
+import { Payment } from '@/services/payment'
 import { ProductPriceApi } from '@/services/productPriceApi';
+import { OrderApi } from '@/services/orderApi';
 
 export type ApiReturnType = {
 	sendFormStepOne(): unknown;
@@ -58,6 +59,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		bankInternational: BankInternational(instance),
 		category: CategoryApi(instance),
 		payment: Payment(instance),
+		order: OrderApi(instance)
 	};
 
 	return apis;

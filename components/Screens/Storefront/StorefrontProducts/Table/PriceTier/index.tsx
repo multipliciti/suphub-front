@@ -80,7 +80,7 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 			<tbody>
 				{prices.map((item, index) => (
 					<PriceTierItem
-						key={index + item.id + item.productId}
+						key={`${index}-${item.id}-${item.productId}`}
 						item={item}
 						platformCommission={platformCommission}
 						onDelete={() => deletePrice(item.id)}

@@ -8,6 +8,10 @@
 
 	display: flex;
 	flex-direction: column;
+
+	&_disable {
+		background-color: #F0F2FE;
+	}
 }
 
 .wrapper:hover {

@@ -4,6 +4,8 @@
 
 .table_wrapper {
   margin-bottom: 24px;
+  border: 1px solid #E7E9EF;
+  overflow-x: auto;
 
   table, th, td {
     border-collapse: collapse;
