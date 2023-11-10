@@ -93,7 +93,7 @@ export const StorefrontSidebar = () => {
 							{sellerCompany.logo && (
 								<Image
 									className={s.seller_company_logo}
-									src={sellerCompany.logo}
+									src={sellerCompany.logo?.url || ''}
 									alt="seller_company_logo"
 									width={76}
 									height={28}

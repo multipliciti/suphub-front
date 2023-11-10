@@ -4,23 +4,36 @@ export interface SellerCompany {
 	abbreviation: string;
 	website: string;
 	status: SellerCompanyStatus;
-	productCertifications: string;
-	countryProductsCertifiedFor: string;
-	businessCertifications: string[];
-	factoryCertifications: string[]
-	subscription: null;
-	planId: null;
-	companyAddressId: null;
-	companyAddress: null;
-	factoryAddressId: null;
-	factoryAddress: null;
-	logoId: null;
-	logo: null;
+
+	subscription?: string;
+	countryProductsCertifiedFor?: string;
+
+	productCertifications?: string;
+	businessCertifications?: string[];
+	factoryCertifications?: string[]
+
+	planId?: number;
+
+	companyAddressId?: number;
+	companyAddress?: Address;
+
+	factoryAddressId?: number;
+	factoryAddress?: Address;
+
+	logoId?: number;
+	logo?: Logo;
+
 	updatedAt: string;
 	createdAt: string;
 }
 
 export type SellerCompanyStatus = 'notVerified' | 'businessVerified' | 'declined' | 'verified';
+
+interface Logo {
+	id: number;
+	url: string;
+	name: string;
+}
 
 interface Address {
 	street: string;
