@@ -10,7 +10,6 @@ import favoritesProduct from './slices/favorites/products';
 import favoritesProductFilter from './slices/favorites/productsFilter';
 import authSlice from './slices/auth';
 import buyerSidebarSlice from './slices/sideBars/buyerSidebar';
-import sellerSidebarSlice from './slices/sideBars/sellerSidebar';
 import productSlice from './slices/marketplace/product';
 import orderSlice from './slices/Order/order';
 import storefrontSlice from './slices/storefront/storefront';
@@ -28,7 +27,6 @@ export function makeStore() {
 			favoritesProduct,
 			favoritesProductFilter,
 			buyerSidebarSlice,
-			sellerSidebarSlice,
 			productSlice,
 			orderSlice,
 			storefrontSlice,

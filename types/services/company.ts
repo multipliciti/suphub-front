@@ -1,3 +1,27 @@
+export interface SellerCompany {
+	id: number;
+	name: string;
+	abbreviation: string;
+	website: string;
+	status: SellerCompanyStatus;
+	productCertifications: string;
+	countryProductsCertifiedFor: string;
+	businessCertifications: string[];
+	factoryCertifications: string[]
+	subscription: null;
+	planId: null;
+	companyAddressId: null;
+	companyAddress: null;
+	factoryAddressId: null;
+	factoryAddress: null;
+	logoId: null;
+	logo: null;
+	updatedAt: string;
+	createdAt: string;
+}
+
+export type SellerCompanyStatus = 'notVerified' | 'businessVerified' | 'declined' | 'verified';
+
 interface Address {
 	street: string;
 	city: string;
