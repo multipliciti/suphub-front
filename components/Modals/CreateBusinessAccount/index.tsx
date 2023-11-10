@@ -144,8 +144,18 @@ export const CreateBusinessAccount = () => {
 		email: '',
 		password: '',
 	});
-	const onSubmitStep1 = (data: any) => {
+	const onSubmitStep1 = async(data: any) => {
 		const { firstName, lastName, email, password, confirmPassword } = data;
+
+		const isUserEmailUsed = await api.auth.checkIfEmailIsUsed(email)
+		if (isUserEmailUsed) {
+			setError1('email', {
+				type: 'manual',
+				message: 'That email is taken. Try another.'
+			})
+			return;
+		}
+
 		if (password !== confirmPassword) {
 			setError1('confirmPassword', {
 				type: 'manual',
@@ -197,14 +207,12 @@ export const CreateBusinessAccount = () => {
 				password,
 				confirmUrl: `${HOST}/confirm-email`,
 			});
-		} catch (error: any) {
-			return;
-		}
-		try {
+
 			if (selectedAccountType === 'buyer') {
 				await api.buyerCompany.register({
 					name: companyName,
 					userEmail: email,
+					website: '',
 					address: {
 						street,
 						city,
@@ -251,11 +259,11 @@ export const CreateBusinessAccount = () => {
 					<>
 						<div className={s.account_type}>
 							<div className={s.account_type_title}>Choose account type</div>
-							<button className={s.account_type_button} onClick={() => setStep(2)}>
+							<button className={s.account_type_button} onClick={() => handleAccountType('buyer')}>
 								{buyMaterialsSVG()}
 								<div className={s.account_type_button_text}>Buy Materials</div>
 							</button>
-							<button className={s.account_type_button} onClick={() => setStep(2)}>
+							<button className={s.account_type_button} onClick={() => handleAccountType('seller')}>
 								{sellMaterialsSVG()}
 								<div className={s.account_type_button_text}>Sell Materials</div>
 							</button>
@@ -725,6 +733,11 @@ export const CreateBusinessAccount = () => {
 		if (step > 1) {
 			setStep((prev: number) => prev - 1);
 		}
+	}
+
+	function handleAccountType(type: 'buyer' | 'seller') {
+		setSelectedAccountType(type)
+		handleNextStep()
 	}
 
 	function handleNextStep() {
