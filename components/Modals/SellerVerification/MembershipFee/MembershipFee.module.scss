@@ -73,11 +73,17 @@
 
 .content {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: center;
   align-self: stretch;
 
+
   &_group {
+    &_planBox {
+      width:100%;
+      justify-content: center;
+      align-content:center;
+    }
     &_switcher {
       display: flex;
       padding: 20px 24px;
@@ -89,6 +95,9 @@
 
     &_bottom {
       display: flex;
+      align-content:center;
+      justify-content: center;
+      flex-direction: column;
       padding: 0px 24px 24px 24px;
       align-items: flex-start;
       gap: 12px;
@@ -212,10 +221,18 @@
       justify-content: space-between;
       align-items: center;
       align-self: stretch;
+      gap: 8px;
 
       &_price {
         display: flex;
         align-items: flex-end;
+      }
+      &_buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        align-self: stretch;
+        gap: 4px;
       }
     }
 
