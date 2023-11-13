@@ -3,7 +3,6 @@ export interface itemInner {
 	title: string;
 }
 
-
 export interface SubCategoryItem {
 	id: number;
 	csiCode: string;
@@ -12,6 +11,7 @@ export interface SubCategoryItem {
 	updatedAt: string;
 	createdAt: string;
 }
+
 export interface CategoryItem {
 	id: number;
 	name: string;

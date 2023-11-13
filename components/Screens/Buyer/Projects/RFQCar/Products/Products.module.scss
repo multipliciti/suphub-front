@@ -3,6 +3,7 @@
 	flex-direction: column;
 	margin-top: 25px;
 	gap: 25px;
+	max-width: 100%;
 
 	.set {
 		display: flex;
@@ -10,25 +11,61 @@
 	}
 
 	.products {
+		// transition: all 0.3s ease;
 		max-width: 700px;
 		display: flex;
 		flex-grow: 1;
 		flex-direction: column;
 		margin-right: 10px;
+		position: relative;
+
+		&_compress {
+			overflow-x: auto;
+			max-width: 230px;
+		}
+
+		&_compress::-webkit-scrollbar {
+			height: 4px;
+			background-color: transparent;
+			border-radius: 1px;
+		}
+
+		&_compress::-webkit-scrollbar-thumb {
+			background: #94a3b8;
+			border-radius: 3px;
+		}
+
 		&_header {
+			max-width: 700px;
 			opacity: 0.8;
-			width: 100%;
-			min-width: 700px;
 			display: flex;
 			gap: 16px;
 			align-items: center;
+			border-radius: 4px 4px 0px 0px;
 
 			&_active {
 				opacity: 1;
 			}
 
+			&_compress {
+				max-width: 230px;
+				padding-right: 8px;
+				background-color: #2b1694;
+				position: sticky;
+				top: 0;
+				left: 0;
+			}
+
 			.arrow {
-				cursor: pointer;
+				&_toggle {
+					transition: transform 0.3s ease;
+					transform: rotate(-90deg);
+					cursor: pointer;
+
+					&_active {
+						transform: rotate(0deg);
+					}
+				}
 			}
 
 			&_toggle {
@@ -67,10 +104,19 @@
 			}
 		}
 	}
+
+	.table_wrapper {
+		border-left: 1px solid #2b1694;
+	}
 }
 
 .quotations {
 	flex-grow: 1;
+	max-width: calc(100% - 555.99px); // -products
+
+	&_compress {
+		max-width: calc(100% - 230px); // -products_compress
+	}
 
 	&_header {
 		display: flex;
@@ -85,20 +131,20 @@
 		line-height: 20px;
 	}
 
-	.pagination {
-		margin-left: auto;
-		display: flex;
-		gap: 4px;
+	// .pagination {
+	// 	margin-left: auto;
+	// 	display: flex;
+	// 	gap: 4px;
 
-		&_arrow {
-			cursor: pointer;
-			border-radius: 3.333px;
-			border: 0.625px solid #cbd5e1;
-			width: 20px;
-			height: 20px;
-			background-color: #fff;
-		}
-	}
+	// 	&_arrow {
+	// 		cursor: pointer;
+	// 		border-radius: 3.333px;
+	// 		border: 0.625px solid #cbd5e1;
+	// 		width: 20px;
+	// 		height: 20px;
+	// 		background-color: #fff;
+	// 	}
+	// }
 }
 
 .none {
@@ -109,7 +155,7 @@
 }
 
 .active {
-	transition: all 0.3s ease;
+	// transition: all 0.3s ease;
 	pointer-events: all;
 	width: auto;
 	height: auto;

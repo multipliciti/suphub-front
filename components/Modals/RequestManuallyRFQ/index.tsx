@@ -1,64 +1,67 @@
 'use client';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import s from './RequestManuallyRFQ.module.scss';
 import Image from 'next/image';
 import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { validateFormData } from './validation';
+import { categoriesToSubCategories } from '@/utils/categoriesToSubCategories';
 //imgs
-import close_img from '@/imgs/close.svg';
-import add_img from '@/imgs/plus.svg';
-import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
 import upload_icon from '@/imgs/Buyer&Seller/upload_icon.svg';
 import { classNames } from '@/utils/classNames';
+import close_img from '@/imgs/close.svg';
+import add_img from '@/imgs/plus.svg';
+import arrow_icon from '@/imgs/arrow.svg';
+import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
+//types
+import { RfqItemFetch } from '@/types/services/rfq';
+//fetch
+import { Api } from '@/services';
 
-interface formDataType {
-	subcategory: string;
-	productName: string;
-	quantity: string;
-	unitBudget: string;
-	size: string;
-	requiredCertifications: string[];
-	images: File[];
-	files: File[];
-}
-
+// Notes: need to finish adding image and file uploading and sending to the backend. Currently, the 'cover' property is hardcoded as a string before sending. Files are not sent at all. Attempting to send them will result in an error, as the backend is not ready, and there is no handling for them before sending.
 export const RequestManuallyRFQ = () => {
+	const api = Api();
 	const dispatch = useAppDispatch();
-
-	const [formData, setFormData] = useState<formDataType>({
-		subcategory: '',
+	const [formData, setFormData] = useState<RfqItemFetch>({
 		productName: '',
-		quantity: '',
-		unitBudget: '',
-		size: '',
-		requiredCertifications: [],
-		images: [],
-		files: [],
+		quantity: 0,
+		projectId: 2,
 	});
+	const [category, setCategory] = useState<any[]>([]);
+	const [chooseCategory, setChooseCategory] = useState<boolean>(false);
+	const subCategories = categoriesToSubCategories(category);
 
-	//set requiredCertifications
+	console.log('category', category);
+	console.log('subCategories', subCategories);
+	console.log('formData', formData);
+
+	// set handleKeysubCategoryId
+	const handleKeysubCategoryId = (id: number) => {
+		setFormData((prevState: RfqItemFetch) => ({
+			...prevState,
+			subCategoryId: id,
+		}));
+	};
+	//set certifications
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		const id = event.currentTarget.id;
 		const value = event.currentTarget.value;
 
-		if (
-			id === 'requiredCertifications' &&
-			(event.key === 'Enter' || event.key === 'Tab')
-		) {
+		if (id === 'certifications' && (event.key === 'Enter' || event.key === 'Tab')) {
 			if (value.trim() !== '') {
-				setFormData((prevState) => ({
-					...prevState,
-					requiredCertifications: [
-						...prevState.requiredCertifications,
+				setFormData((prevState) => {
+					const newCertifications = [
+						...(prevState.certifications || []),
 						value.trim(),
-					],
-				}));
-
+					];
+					return {
+						...prevState,
+						certifications: newCertifications,
+					};
+				});
 				//clear input
 				event.currentTarget.value = '';
 			}
-
 			event.preventDefault();
 		}
 	};
@@ -66,7 +69,10 @@ export const RequestManuallyRFQ = () => {
 	//set inputs value
 	const handleValueFormData = (event: ChangeEvent<HTMLInputElement>) => {
 		const id = event.target.id;
-		const value = event.target.value;
+		const type = event.target.type;
+		console.log('type', type);
+		const value =
+			type === 'number' ? Number(event.target.value) : event.target.value;
 
 		setFormData((prevState) => ({ ...prevState, [id]: value }));
 	};
@@ -75,7 +81,7 @@ export const RequestManuallyRFQ = () => {
 	const handleRemoveCertification = (indexToRemove: number) => {
 		setFormData((prevState) => ({
 			...prevState,
-			requiredCertifications: prevState.requiredCertifications.filter(
+			certifications: (prevState.certifications || []).filter(
 				(_, index) => index !== indexToRemove
 			),
 		}));
@@ -89,7 +95,7 @@ export const RequestManuallyRFQ = () => {
 			if (selectedFile) {
 				return {
 					...prevState,
-					images: [...prevState.images, selectedFile],
+					cover: [...(prevState.cover || []), selectedFile],
 				};
 			}
 
@@ -102,11 +108,33 @@ export const RequestManuallyRFQ = () => {
 		setFormData((prevState) => {
 			return {
 				...prevState,
-				images: prevState.images.filter((el, ind) => id !== ind),
+				cover: prevState.cover?.filter((el, ind) => id !== ind),
 			};
 		});
 	};
 
+	//submit
+	const submitData = async (data: RfqItemFetch) => {
+		try {
+			await api.rfq.createRfqItem(data);
+			dispatch(setModal('submitedRFQ'));
+		} catch (error) {
+			console.error('error submitedRFQ', error);
+		}
+	};
+
+	const getCategory = async () => {
+		try {
+			const category = await api.product.getCategory();
+			setCategory(category);
+		} catch (error) {
+			console.error('error submitedRFQ', error);
+		}
+	};
+
+	useEffect(() => {
+		getCategory();
+	}, []);
 	return (
 		<div className={s.wrapper_layout}>
 			<div className={s.header_modal}>
@@ -127,13 +155,49 @@ export const RequestManuallyRFQ = () => {
 						<p className={s.input_title}>
 							Subcategory<span className={s.input_necessarily}>*</span>
 						</p>
-						<input
-							onChange={handleValueFormData}
-							id="subcategory"
-							placeholder="Choose subcategory"
-							className={s.input}
-							type="text"
-						/>
+
+						<span
+							onClick={() => setChooseCategory(!chooseCategory)}
+							className={s.subcategory}
+						>
+							{formData.subCategoryId && (
+								<span className={s.subcategory_title}>
+									{
+										subCategories.filter(
+											(el) => el.categoryId === formData.subCategoryId
+										)[0].name
+									}
+								</span>
+							)}
+							{!formData.subCategoryId && (
+								<span className={s.subcategory_title}>Choose subcategory</span>
+							)}
+							<Image
+								className={classNames(s.arrow, chooseCategory && s.arrow_active)}
+								src={arrow_icon}
+								alt="arrow_icon"
+								width={20}
+								height={20}
+							/>
+							<span
+								className={classNames(
+									s.subcategory_items,
+									chooseCategory && s.subcategory_items_active
+								)}
+							>
+								{subCategories?.map((el, ind) => {
+									return (
+										<span
+											onClick={() => handleKeysubCategoryId(el.categoryId)}
+											key={ind}
+											className={s.subcategory_item}
+										>
+											{el.name}
+										</span>
+									);
+								})}
+							</span>
+						</span>
 					</div>
 					<div className={s.input_wrapper}>
 						<p className={s.input_title}>
@@ -156,17 +220,17 @@ export const RequestManuallyRFQ = () => {
 							id="quantity"
 							placeholder="Enter quantity"
 							className={s.input}
-							type="text"
+							type="number"
 						/>
 					</div>
 					<div className={s.input_wrapper}>
 						<p className={s.input_title}>Unit Budget (USD)</p>
 						<input
 							onChange={handleValueFormData}
-							id="unitBudget"
+							id="budget"
 							placeholder="Enter budget"
 							className={s.input}
-							type="text"
+							type="number"
 						/>
 					</div>
 					<div className={s.input_wrapper}>
@@ -176,13 +240,13 @@ export const RequestManuallyRFQ = () => {
 							id="size"
 							placeholder="Enter size"
 							className={s.input}
-							type="text"
+							type="string"
 						/>
 					</div>
 					<div className={s.input_wrapper}>
 						<p className={s.input_title}>Required Certifications</p>
-						<label className={s.tags_label} htmlFor="requiredCertifications">
-							{formData.requiredCertifications?.map((tag: string, ind: number) => {
+						<label className={s.tags_label} htmlFor="certifications">
+							{formData.certifications?.map((tag: string, ind: number) => {
 								return (
 									<span className={s.tags_item}>
 										<span>{tag}</span>
@@ -199,7 +263,7 @@ export const RequestManuallyRFQ = () => {
 							})}
 							<input
 								onKeyDown={handleKeyDown}
-								id="requiredCertifications"
+								id="certifications"
 								placeholder="Tags"
 								className={s.tags_input}
 								type="text"
@@ -240,7 +304,7 @@ export const RequestManuallyRFQ = () => {
 									height={15}
 								/>
 							</label>
-							{formData.images?.map((el, ind) => {
+							{formData.cover?.map((el, ind) => {
 								return (
 									<span key={ind} className={s.img}>
 										<span className={s.img_remove}>
@@ -301,7 +365,9 @@ export const RequestManuallyRFQ = () => {
 						s.invite,
 						validateFormData(formData) && s.invite_active
 					)}
-					onClick={() => dispatch(setModal('submitedRFQ'))}
+					onClick={() => {
+						submitData(formData);
+					}}
 				>
 					Invite suppliers to quote
 				</button>

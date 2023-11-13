@@ -11,7 +11,8 @@ interface TypeProps {
 
 export const BuyerOrder = ({ id }: TypeProps) => {
 	const img = useAppSelector((state) => state.orderSlice.img);
-
+	const ppp = useAppSelector((state) => state.storefrontSlice.subCategories);
+	console.log('ppp2', ppp);
 	//using id we will must make fetch
 	const product = {
 		status: 'Payment pending',

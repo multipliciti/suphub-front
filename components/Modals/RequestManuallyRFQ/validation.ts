@@ -1,20 +1,11 @@
-interface formDataType {
-	subcategory: string;
-	productName: string;
-	quantity: string;
-	unitBudget: string;
-	size: string;
-	requiredCertifications: string[];
-	images: File[];
-	files: File[];
-}
+import { RfqItemFetch } from '@/types/services/rfq';
 
-export function validateFormData(formData: formDataType) {
-	const { subcategory, productName, quantity } = formData;
+export function validateFormData(formData: RfqItemFetch) {
+	const { subCategoryId, productName, quantity } = formData;
 
 	const isEmpty = (str: string) => str.trim() === '';
 
-	if (isEmpty(subcategory) || isEmpty(productName) || isEmpty(quantity)) {
+	if (!subCategoryId || isEmpty(productName) || quantity <= 0) {
 		return false;
 	}
 
