@@ -1,11 +1,12 @@
 import { AxiosInstance } from 'axios';
 
-import { AddProductPriceData, UpdateProductPriceData } from '@/types/services/productPrice';
+import {
+	AddProductPriceData,
+	UpdateProductPriceData,
+} from '@/types/services/productPrice';
 import { Price } from '@/types/products/product';
 
-
 export const ProductPriceApi = (instance: AxiosInstance) => ({
-
 	async addPrice(data: AddProductPriceData) {
 		try {
 			const url = `/price`;
@@ -19,7 +20,7 @@ export const ProductPriceApi = (instance: AxiosInstance) => ({
 
 	async updatePrice(data: UpdateProductPriceData) {
 		try {
-			const { priceId, ...body } = data
+			const { priceId, ...body } = data;
 
 			const url = `/price/${priceId}`;
 			const response = await instance.patch(url, body);
@@ -39,5 +40,5 @@ export const ProductPriceApi = (instance: AxiosInstance) => ({
 			console.error('Product Seller API error:', error);
 			throw error;
 		}
-	}
+	},
 });

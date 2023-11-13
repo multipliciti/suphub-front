@@ -1,4 +1,3 @@
-
 interface Image {
 	id: number;
 	key: string;
@@ -49,12 +48,12 @@ export interface DynamicAttribute {
 	label: string;
 	order: number | null;
 	value: string;
-	formType: "select" | 'input';
-	type: "char" | 'numeric';
+	formType: 'select' | 'input';
+	type: 'char' | 'numeric';
 	options: OptionDynamicAttribute[];
 }
 
-export type UpdateDynamicAttribute = DynamicAttribute & { attrValueIds: number[] }
+export type UpdateDynamicAttribute = DynamicAttribute & { attrValueIds: number[] };
 
 export interface ProductItemType {
 	id: number;

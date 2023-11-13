@@ -13,7 +13,6 @@ import s from './StorefrontSidebar.module.scss';
 import { useEffect, useState } from 'react';
 import { Api } from '@/services';
 
-
 const BOX_ITEM_LIST = [
 	{
 		title: 'RFQ',
@@ -37,7 +36,9 @@ export const StorefrontSidebar = () => {
 
 	const isSideBar = useAppSelector((state) => state.storefrontSlice.sidebar);
 	const user = useAppSelector((state) => state.authSlice.user);
-	const sellerCompany = useAppSelector((state) => state.storefrontSlice.sellerCompany);
+	const sellerCompany = useAppSelector(
+		(state) => state.storefrontSlice.sellerCompany
+	);
 
 	const [totalSellerOrders, setTotalSellerOrders] = useState<number>();
 
@@ -49,7 +50,7 @@ export const StorefrontSidebar = () => {
 	}, [sellerCompany, user]);
 
 	const fetchSellerCompany = async () => {
-		if (!user || !user.sellerCompanyId){
+		if (!user || !user.sellerCompanyId) {
 			return;
 		}
 		try {
@@ -62,12 +63,12 @@ export const StorefrontSidebar = () => {
 	};
 
 	const fetchSellerOrders = async () => {
-	  try {
-		  const response = await api.order.getSellerOrders();
+		try {
+			const response = await api.order.getSellerOrders();
 			setTotalSellerOrders(response.total);
-	  } catch (e) {
-		  console.log('Error with fetch seller orders ', e);
-	  }
+		} catch (e) {
+			console.log('Error with fetch seller orders ', e);
+		}
 	};
 
 	if (!sellerCompany) {
@@ -76,7 +77,10 @@ export const StorefrontSidebar = () => {
 
 	return (
 		<div className={classNames(s.wrapper, isSideBar && s.wrapper_active)}>
-			<div onClick={() => dispatch(setSidebar(!isSideBar))} className={s.toggle_wrapper}>
+			<div
+				onClick={() => dispatch(setSidebar(!isSideBar))}
+				className={s.toggle_wrapper}
+			>
 				<Image
 					className={isSideBar ? s.toggle_icon : s.toggle_icon_active}
 					src={toggle_img}
@@ -97,7 +101,7 @@ export const StorefrontSidebar = () => {
 									alt="seller_company_logo"
 									width={76}
 									height={28}
-									style={{objectFit: "contain"}}
+									style={{ objectFit: 'contain' }}
 								/>
 							)}
 							<h5 className={s.seller_company_title}>{sellerCompany.name}</h5>
@@ -114,16 +118,19 @@ export const StorefrontSidebar = () => {
 							{/*	<span className={s.rating_title}>144 Reviews</span>*/}
 							{/*</div>*/}
 
-							{sellerCompany.status === 'verified'
-								? <p className={classNames(s.status, s.status_verified)}>Verified</p>
-								: <p className={classNames(s.status, s.status_unverified)}>Unverified</p>
-							}
+							{sellerCompany.status === 'verified' ? (
+								<p className={classNames(s.status, s.status_verified)}>Verified</p>
+							) : (
+								<p className={classNames(s.status, s.status_unverified)}>
+									Unverified
+								</p>
+							)}
 						</div>
 
 						<BoxItem
-							title='Orders'
+							title="Orders"
 							rating_number={totalSellerOrders?.toString() || ''}
-							days='last 30 days'
+							days="last 30 days"
 						/>
 
 						{BOX_ITEM_LIST.map((el, index) => (

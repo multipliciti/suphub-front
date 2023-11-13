@@ -2,44 +2,62 @@
 import { FC, useEffect, useState } from 'react';
 import Image from 'next/image';
 
-import { DynamicAttribute, ProductItemType, UpdateDynamicAttribute } from '@/types/products/product';
-import { setCategories, setProductIdForUploadImages } from '@/redux/slices/storefront/storefront';
+import {
+	DynamicAttribute,
+	ProductItemType,
+	UpdateDynamicAttribute,
+} from '@/types/products/product';
+import {
+	setCategories,
+	setProductIdForUploadImages,
+} from '@/redux/slices/storefront/storefront';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { categoryService } from '@/services/categoryApi';
 import { setModal } from '@/redux/slices/modal';
 import { Input } from '@/components/UI/Input';
 import { Api } from '@/services';
-import {
-	SpecificationDynamicTable
-} from '@/components/Screens/Storefront/StorefrontProductItem/General/SpecificationDynamicTable';
+import { SpecificationDynamicTable } from '@/components/Screens/Storefront/StorefrontProductItem/General/SpecificationDynamicTable';
 import { StorefrontProductPriceTier } from '@/components/Screens/Storefront/StorefrontProducts/Table/PriceTier';
 
 import s from './StorefrontProductItemGeneral.module.scss';
 
 import addIcon from '@/imgs/Buyer&Seller/SideBar/addProject.svg';
 
-
-
-type ChangedProductFields = Partial<Omit<ProductItemType, 'dynamic_attr'>>
-export type ChangeFieldFunction = <K extends keyof ProductItemType> (key: K, value: ProductItemType[K]) => void;
-export type ChangeDynamicSelectFieldFunction = (args: { attrId: number, type: DynamicAttribute['type'], value: string[] | number[] }) => void;
-export type ChangeDynamicInputFieldFunction = (args: { attrId: number, value: string }) => void;
+type ChangedProductFields = Partial<Omit<ProductItemType, 'dynamic_attr'>>;
+export type ChangeFieldFunction = <K extends keyof ProductItemType>(
+	key: K,
+	value: ProductItemType[K]
+) => void;
+export type ChangeDynamicSelectFieldFunction = (args: {
+	attrId: number;
+	type: DynamicAttribute['type'];
+	value: string[] | number[];
+}) => void;
+export type ChangeDynamicInputFieldFunction = (args: {
+	attrId: number;
+	value: string;
+}) => void;
 
 interface Props {
-	id: number
+	id: number;
 }
 
 export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 
-	const categories = useAppSelector(state => state.storefrontSlice.categories);
+	const categories = useAppSelector((state) => state.storefrontSlice.categories);
 
-	const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+	const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>(
+		'idle'
+	);
 
 	const [product, setProduct] = useState<ProductItemType>();
-	const [dynamicAttributes, setDynamicAttributes] = useState<UpdateDynamicAttribute[]>([])
-	const [changedProductFields, setChangedProductFields] = useState<ChangedProductFields>()
+	const [dynamicAttributes, setDynamicAttributes] = useState<
+		UpdateDynamicAttribute[]
+	>([]);
+	const [changedProductFields, setChangedProductFields] =
+		useState<ChangedProductFields>();
 
 	useEffect(() => {
 		if (!categories || !categories.length) {
@@ -49,39 +67,41 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 	}, []);
 
 	const fetchData = async () => {
-		setStatus('loading')
+		setStatus('loading');
 		try {
 			const response = await api.productSeller.getSellerProductById(id);
 
 			setProduct(response);
 
-			setDynamicAttributes(response.dynamic_attr.map(item => {
-				const newItem: UpdateDynamicAttribute = {...item, attrValueIds: []};
+			setDynamicAttributes(
+				response.dynamic_attr.map((item) => {
+					const newItem: UpdateDynamicAttribute = { ...item, attrValueIds: [] };
 
-				if (item.formType === 'select') {
-					const values = item.value.split(',').map(item => item.trim());
-					item.options.forEach(el => {
-						if (item.type === 'char') {
-							if (el.charValue && values.includes(el.charValue)) {
-								newItem.attrValueIds.push(el.id)
+					if (item.formType === 'select') {
+						const values = item.value.split(',').map((item) => item.trim());
+						item.options.forEach((el) => {
+							if (item.type === 'char') {
+								if (el.charValue && values.includes(el.charValue)) {
+									newItem.attrValueIds.push(el.id);
+								}
 							}
-						}
-						if (item.type === 'numeric') {
-							if (el.numericValue && values.includes(String(el.numericValue))) {
-								newItem.attrValueIds.push(el.id)
+							if (item.type === 'numeric') {
+								if (el.numericValue && values.includes(String(el.numericValue))) {
+									newItem.attrValueIds.push(el.id);
+								}
 							}
-						}
-					})
-				}
-				return newItem;
-			}));
+						});
+					}
+					return newItem;
+				})
+			);
 
 			setStatus('success');
 		} catch (e) {
 			setStatus('error');
 			console.log('Error with get product', e);
 		}
-	}
+	};
 
 	const fetchSubcategories = async () => {
 		try {
@@ -100,30 +120,30 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 			const data = {
 				...changedProductFields,
 				dynamic_attr: dynamicAttributes
-					.filter(item => item.value || item.attrValueIds.length > 0)
-					.map(item => {
+					.filter((item) => item.value || item.attrValueIds.length > 0)
+					.map((item) => {
 						if (item.formType === 'input') {
 							return {
 								attributeId: item.attributeId,
-								value: item.type === 'numeric' ? Number(item.value) : String(item.value)
-							}
+								value:
+									item.type === 'numeric' ? Number(item.value) : String(item.value),
+							};
 						}
 						if (item.formType === 'select') {
 							return {
 								attributeId: item.attributeId,
-								attrValueIds: item.attrValueIds
-							}
+								attrValueIds: item.attrValueIds,
+							};
 						}
-					})
+					}),
 			};
 
 			await api.productSeller.updateSellerProductById(product.id, data);
 			await fetchData();
-
 		} catch (e) {
 			console.log('Error with update product', e);
 		}
-	}
+	};
 
 	const onChangeField: ChangeFieldFunction = (key, value) => {
 		if (!product) {
@@ -131,47 +151,51 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 		}
 		setProduct({
 			...product,
-			[key]: value
-		})
+			[key]: value,
+		});
 		setChangedProductFields({
 			...changedProductFields,
-			[key]: value
-		})
-	}
+			[key]: value,
+		});
+	};
 
 	const onChangeDynamicInputField: ChangeDynamicInputFieldFunction = (args) => {
 		const { attrId, value } = args;
 
-		setDynamicAttributes(prevState => {
+		setDynamicAttributes((prevState) => {
 			const newDynamicAttr = [...prevState];
 
-			const findDynamicAttrFieldIndex = prevState.findIndex(item => item.attributeId === attrId);
+			const findDynamicAttrFieldIndex = prevState.findIndex(
+				(item) => item.attributeId === attrId
+			);
 
-			newDynamicAttr[findDynamicAttrFieldIndex].value = value
+			newDynamicAttr[findDynamicAttrFieldIndex].value = value;
 
 			return newDynamicAttr;
-		})
-	}
+		});
+	};
 
 	const onChangeDynamicSelectField: ChangeDynamicSelectFieldFunction = (args) => {
 		const { attrId, type, value } = args;
 
-		setDynamicAttributes(prevState => {
+		setDynamicAttributes((prevState) => {
 			const newDynamicAttr = [...prevState];
 
-			const findDynamicAttrFieldIndex = prevState.findIndex(item => item.attributeId === attrId);
+			const findDynamicAttrFieldIndex = prevState.findIndex(
+				(item) => item.attributeId === attrId
+			);
 
 			const findAttrValueIds: number[] = [];
 
-			value.forEach(item => {
-				newDynamicAttr[findDynamicAttrFieldIndex].options.forEach(el => {
+			value.forEach((item) => {
+				newDynamicAttr[findDynamicAttrFieldIndex].options.forEach((el) => {
 					if (type === 'char' && el.charValue === item) {
 						findAttrValueIds.push(el.id);
 					}
 					if (type === 'numeric' && el.numericValue === item) {
 						findAttrValueIds.push(el.id);
 					}
-				})
+				});
 			});
 			newDynamicAttr[findDynamicAttrFieldIndex].attrValueIds = findAttrValueIds;
 			return newDynamicAttr;
@@ -181,21 +205,18 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 	const showModalForUploadImages = () => {
 		dispatch(setProductIdForUploadImages(id));
 		dispatch(setModal('sellerProductUploadImage'));
-	}
+	};
 
 	if (status === 'error') {
-		return <div>Something went wrong</div>
+		return <div>Something went wrong</div>;
 	}
 
 	if (status === 'idle' || status === 'loading' || !product) {
-		return (
-			<div></div>
-		)
+		return <div></div>;
 	}
 
 	return (
 		<div className={s.wrapper}>
-
 			<table>
 				<thead>
 					<tr>
@@ -216,8 +237,11 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 						<td>Subcategory</td>
 						<td>
 							{categories && categories.length > 0 && (
-								<span style={{padding: '4px 8px'}}>
-									{categoryService.findSubcategoryNameById(categories, product.subCategoryId)}
+								<span style={{ padding: '4px 8px' }}>
+									{categoryService.findSubcategoryNameById(
+										categories,
+										product.subCategoryId
+									)}
 								</span>
 							)}
 						</td>
@@ -240,7 +264,9 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 								type="number"
 								placeholder="Enter warranty"
 								value={product.warranty}
-								onChange={(e) => onChangeField('warranty', Number(e.currentTarget.value))}
+								onChange={(e) =>
+									onChangeField('warranty', Number(e.currentTarget.value))
+								}
 							/>
 						</td>
 					</tr>
@@ -261,13 +287,10 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 										/>
 									))}
 
-									<div
-										className={s.image_upload}
-										onClick={showModalForUploadImages}
-									>
+									<div className={s.image_upload} onClick={showModalForUploadImages}>
 										<Image
 											src={addIcon}
-											alt='add_image_icon'
+											alt="add_image_icon"
 											width={24}
 											height={24}
 										/>
@@ -277,10 +300,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 						</td>
 						<td>Certification</td>
 						<td>
-							<Input
-								placeholder="Enter certification"
-								disabled
-							/>
+							<Input placeholder="Enter certification" disabled />
 						</td>
 					</tr>
 				</tbody>
@@ -308,7 +328,6 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 					Save
 				</button>
 			</div>
-
 		</div>
-	)
-}
+	);
+};

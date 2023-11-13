@@ -10,27 +10,23 @@ import { Api } from '@/services';
 
 import s from '../Form.module.scss';
 
-
 type FormValues = {
-	files: File[]
-}
+	files: File[];
+};
 
 export const SellerProductUploadImage = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 
-	const productId = useAppSelector(state => state.storefrontSlice.productIdForUploadImages);
+	const productId = useAppSelector(
+		(state) => state.storefrontSlice.productIdForUploadImages
+	);
 
 	const [files, setFiles] = useState<File[]>([]);
 
-	const {
-		register,
-		handleSubmit,
-		formState,
-		setValue
-	} = useForm<FormValues>({
+	const { register, handleSubmit, formState, setValue } = useForm<FormValues>({
 		defaultValues: {
-			files: undefined
+			files: undefined,
 		},
 		mode: 'onChange',
 	});
@@ -54,26 +50,19 @@ export const SellerProductUploadImage = () => {
 
 			setTimeout(() => {
 				window.location.reload();
-			}, 150)
-
+			}, 150);
 		} catch (e) {
 			console.log('Error with upload product images', e);
 		}
-	}
+	};
 
 	const hideModal = () => {
 		dispatch(setModal(''));
 	};
 
 	return (
-		<StorefrontAddProductModalLayout
-			title='Upload Image'
-			close={hideModal}
-		>
-			<form
-				className={s.form}
-				onSubmit={handleSubmit(onSubmit)}
-			>
+		<StorefrontAddProductModalLayout title="Upload Image" close={hideModal}>
+			<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 				<div className={s.form_row}>
 					<Dropzone
 						label="Drag your photo"
@@ -87,17 +76,13 @@ export const SellerProductUploadImage = () => {
 						setFiles={setFiles}
 						accept={{
 							'image/jpeg': [],
-							'image/png': []
+							'image/png': [],
 						}}
 					/>
 				</div>
 
 				<div className={s.form_buttons}>
-					<button
-						type="button"
-						className={s.form_cancel}
-						onClick={hideModal}
-					>
+					<button type="button" className={s.form_cancel} onClick={hideModal}>
 						Cancel
 					</button>
 
@@ -110,7 +95,6 @@ export const SellerProductUploadImage = () => {
 					</button>
 				</div>
 			</form>
-
 		</StorefrontAddProductModalLayout>
-	)
-}
+	);
+};

@@ -1,5 +1,3 @@
 export default function StorefrontOrdersPage() {
-	return (
-		<div></div>
-	)
+	return <div></div>;
 }

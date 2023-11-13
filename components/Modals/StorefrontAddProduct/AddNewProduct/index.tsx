@@ -14,29 +14,23 @@ import { Api } from '@/services';
 
 import s from '../Form.module.scss';
 
-
 type FormValues = {
-	productName: string
-	subcategory: string
-}
+	productName: string;
+	subcategory: string;
+};
 
 export const SellerAddNewProduct = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 
-	const categories = useAppSelector(state => state.storefrontSlice.categories);
+	const categories = useAppSelector((state) => state.storefrontSlice.categories);
 
 	const [subcategory, setSubcategory] = useState<string[]>([]);
 
-	const {
-		register,
-		handleSubmit,
-		formState,
-		setValue
-	} = useForm<FormValues>({
+	const { register, handleSubmit, formState, setValue } = useForm<FormValues>({
 		defaultValues: {
 			productName: '',
-			subcategory: ''
+			subcategory: '',
 		},
 		mode: 'onChange',
 	});
@@ -49,12 +43,11 @@ export const SellerAddNewProduct = () => {
 		setValue('subcategory', subcategory[0], { shouldValidate: true });
 	}, [subcategory]);
 
-
 	const onSubmit: SubmitHandler<FormValues> = async (values) => {
 		try {
 			const subCategoryId = categories?.length
 				? categoryService.findSubcategoryIdByName(categories, values.subcategory)
-				: 0
+				: 0;
 
 			const data: CreateSellerProduct = {
 				name: values.productName,
@@ -66,25 +59,24 @@ export const SellerAddNewProduct = () => {
 				minOrder: 0,
 				leadTime: 0,
 				warranty: 0,
-				dynamic_attr: []
-			}
+				dynamic_attr: [],
+			};
 			await api.productSeller.addSellerProduct(data);
 
 			hideModal();
 			refetchSellerProducts();
-
 		} catch (e) {
 			console.log('Error with add new seller product', e);
 		}
-	}
+	};
 
 	const hideModal = () => {
 		dispatch(setModal(''));
-	}
+	};
 
 	const refetchSellerProducts = () => {
 		dispatch(setStatus('refetch'));
-	}
+	};
 
 	return (
 		<StorefrontAddProductModalLayout
@@ -92,14 +84,9 @@ export const SellerAddNewProduct = () => {
 			description="Fill the form to add new product"
 			close={hideModal}
 		>
-			<form
-				className={s.form}
-				onSubmit={handleSubmit(onSubmit)}
-			>
+			<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 				<div className={s.form_row}>
-					<span>
-						Product Name:
-					</span>
+					<span>Product Name:</span>
 					<input
 						type="text"
 						placeholder="Enter Product Name"
@@ -108,12 +95,10 @@ export const SellerAddNewProduct = () => {
 				</div>
 
 				<div className={s.form_row}>
-					<span>
-						Subcategory:
-					</span>
+					<span>Subcategory:</span>
 
 					<Select
-						title='Choose Subcategory'
+						title="Choose Subcategory"
 						isMulti={false}
 						options={categories ? categoryService.getSubcategories(categories) : []}
 						value={subcategory}
@@ -122,11 +107,7 @@ export const SellerAddNewProduct = () => {
 				</div>
 
 				<div className={s.form_buttons}>
-					<button
-						type="button"
-						className={s.form_cancel}
-						onClick={hideModal}
-					>
+					<button type="button" className={s.form_cancel} onClick={hideModal}>
 						Cancel
 					</button>
 
@@ -140,5 +121,5 @@ export const SellerAddNewProduct = () => {
 				</div>
 			</form>
 		</StorefrontAddProductModalLayout>
-	)
-}
+	);
+};

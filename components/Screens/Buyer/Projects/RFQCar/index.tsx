@@ -67,14 +67,17 @@ export const RFQCar = () => {
 			});
 			const data: RfqItemGot[] = await response.result;
 
-			const groupedData: Record<string, RfqItemGot[]> = data.reduce((acc, item) => {
-				const csiCode = item.subCategory.csiCode;
-				if (!acc[csiCode]) {
-					acc[csiCode] = [];
-				}
-				acc[csiCode].push(item);
-				return acc;
-			}, {} as Record<string, RfqItemGot[]>);
+			const groupedData: Record<string, RfqItemGot[]> = data.reduce(
+				(acc, item) => {
+					const csiCode = item.subCategory.csiCode;
+					if (!acc[csiCode]) {
+						acc[csiCode] = [];
+					}
+					acc[csiCode].push(item);
+					return acc;
+				},
+				{} as Record<string, RfqItemGot[]>
+			);
 
 			const sortedData: RfqItemGot[][] = Object.values(groupedData);
 

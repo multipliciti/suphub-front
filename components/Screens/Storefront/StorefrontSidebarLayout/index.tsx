@@ -6,7 +6,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { StorefrontSidebar } from '@/components/Screens/Storefront/StorefrontSidebarLayout/StorefrontSidebar';
 
 export const StorefrontSidebarLayout: FC<PropsWithChildren> = ({ children }) => {
-	const isSidebar = useAppSelector(state => state.storefrontSlice.sidebar);
+	const isSidebar = useAppSelector((state) => state.storefrontSlice.sidebar);
 
 	return (
 		<>
@@ -20,5 +20,5 @@ export const StorefrontSidebarLayout: FC<PropsWithChildren> = ({ children }) => 
 				{children}
 			</div>
 		</>
-	)
-}
+	);
+};

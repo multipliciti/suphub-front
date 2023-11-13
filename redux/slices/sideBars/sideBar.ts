@@ -7,7 +7,7 @@ interface CounterState {
 	activeId: number;
 	parentActiveIds: number[];
 	searchQuery: string;
-	categories: CategoryItem[]
+	categories: CategoryItem[];
 }
 
 const initialState: CounterState = {
@@ -15,7 +15,7 @@ const initialState: CounterState = {
 	activeId: 1,
 	parentActiveIds: [],
 	searchQuery: '',
-	categories: []
+	categories: [],
 };
 
 const sideBarSlice = createSlice({
@@ -27,13 +27,15 @@ const sideBarSlice = createSlice({
 		},
 		setParentActiveId(state, action: PayloadAction<number>) {
 			const indexToRemove = state.parentActiveIds.indexOf(action.payload);
-			indexToRemove !== -1 ? state.parentActiveIds.splice(indexToRemove, 1) : state.parentActiveIds.push(action.payload)
+			indexToRemove !== -1
+				? state.parentActiveIds.splice(indexToRemove, 1)
+				: state.parentActiveIds.push(action.payload);
 		},
 		setActiveId(state, action: PayloadAction<number>) {
 			state.activeId = action.payload;
 		},
-		clearParentActiveId(state){
-			state.parentActiveIds = []
+		clearParentActiveId(state) {
+			state.parentActiveIds = [];
 		},
 		setSearchQuery(state, action: PayloadAction<string>) {
 			state.searchQuery = action.payload;
@@ -44,7 +46,13 @@ const sideBarSlice = createSlice({
 	},
 });
 
-export const { setSideBar, setParentActiveId, setActiveId, setSearchQuery, setCategories, clearParentActiveId } =
-	sideBarSlice.actions;
+export const {
+	setSideBar,
+	setParentActiveId,
+	setActiveId,
+	setSearchQuery,
+	setCategories,
+	clearParentActiveId,
+} = sideBarSlice.actions;
 
 export default sideBarSlice.reducer;

@@ -1,5 +1,3 @@
 export default function StorefrontRfqPage() {
-	return (
-		<div></div>
-	)
+	return <div></div>;
 }

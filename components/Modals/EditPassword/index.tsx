@@ -45,7 +45,7 @@ export const EditPassword = () => {
 	const onSubmit: SubmitHandler<any> = async (data) => {
 		const { oldPassword, newPassword, confirmPassword } = data;
 
-		const form:any = {};
+		const form: any = {};
 		form['oldPassword'] = oldPassword;
 		form['newPassword'] = newPassword;
 		if (newPassword !== confirmPassword) {
@@ -64,15 +64,15 @@ export const EditPassword = () => {
 			return;
 		}
 		try {
-			  await api.auth.updatePassword(form);
-				dispatch(setModal('passwordChanged'));
-				setHideOldPassword(true);
-				setHideNewPassword(true);
-				setHideConfirmPassword(true);
-				reset();
-		} catch (error:any) {
+			await api.auth.updatePassword(form);
+			dispatch(setModal('passwordChanged'));
+			setHideOldPassword(true);
+			setHideNewPassword(true);
+			setHideConfirmPassword(true);
+			reset();
+		} catch (error: any) {
 			const { statusCode, message } = error.response.data;
-			if (statusCode === 401 && message === "Unauthorized" ) {
+			if (statusCode === 401 && message === 'Unauthorized') {
 				setError('oldPassword', {
 					type: 'manual',
 					message: 'Old password is incorrect',

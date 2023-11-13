@@ -1,5 +1,5 @@
 type SortOptions = {
-	[key: string]: "asc" | "desc";
+	[key: string]: 'asc' | 'desc';
 };
 
 export interface ProjectFind {
