@@ -20,7 +20,7 @@ export interface Option {
 export interface RfqItemFetch {
 	id?: number;
 	projectId: number;
-	subCategoryId: number;
+	subCategoryId?: number;
 	productName: string;
 	quantity: number;
 	budget?: number;

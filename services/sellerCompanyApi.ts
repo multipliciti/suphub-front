@@ -3,6 +3,7 @@ import {
 	RegisterSellerCompany,
 	UpdateSellerCompany,
 	RemoveCertification,
+	SellerCompany,
 } from '@/types/services/company';
 
 export const SellerCompanyApi = (instance: AxiosInstance) => ({
@@ -29,7 +30,7 @@ export const SellerCompanyApi = (instance: AxiosInstance) => ({
 	async getById(id: number) {
 		try {
 			const url: string = `/seller/` + id.toString();
-			const response = await instance.get(url);
+			const response = await instance.get<SellerCompany>(url);
 			return response;
 		} catch (error) {
 			console.error('Get by id error:', error);

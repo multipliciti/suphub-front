@@ -8,7 +8,11 @@ import Image from 'next/image';
 import windows_and_door_icon from '@/imgs/Buyer&Seller/door&windows.svg';
 import star_icon from '@/imgs/Buyer&Seller/star.svg';
 
-export const SellerSidebarComponent = () => {
+interface TypeProps {
+	setActiveDisplay: (n: number) => void;
+}
+
+export const SellerSidebarComponent = ({ setActiveDisplay }: TypeProps) => {
 	const isSideBar = useAppSelector((state) => state.sellerSidebarSlice.sideBar);
 
 	const BOX_ITEM_LIST = [
@@ -64,7 +68,8 @@ export const SellerSidebarComponent = () => {
 
 						{BOX_ITEM_LIST.map((el, ind) => {
 							return (
-								<div key={ind}>
+								// toggle click
+								<div onClick={() => setActiveDisplay(ind + 1)} key={ind}>
 									<BoxItem
 										title={el.title}
 										days={el.days}

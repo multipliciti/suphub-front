@@ -11,7 +11,7 @@
 	}
 
 	.products {
-		transition: all 0.3s ease;
+		// transition: all 0.3s ease;
 		max-width: 700px;
 		display: flex;
 		flex-grow: 1;
@@ -112,7 +112,11 @@
 
 .quotations {
 	flex-grow: 1;
-	max-width: calc(100% - 230px); // -products_compress
+	max-width: calc(100% - 555.99px); // -products
+
+	&_compress {
+		max-width: calc(100% - 230px); // -products_compress
+	}
 
 	&_header {
 		display: flex;
@@ -151,7 +155,7 @@
 }
 
 .active {
-	transition: all 0.3s ease;
+	// transition: all 0.3s ease;
 	pointer-events: all;
 	width: auto;
 	height: auto;

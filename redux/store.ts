@@ -32,7 +32,7 @@ export function makeStore() {
 			productSlice,
 			orderSlice,
 			storefrontSlice,
-			storefrontProductsSlice
+			storefrontProductsSlice,
 		},
 	});
 }

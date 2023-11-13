@@ -11,7 +11,7 @@ import { GetStarted } from '@/components/Screens/Seller/Projects/GetStarted';
 export const Projects = () => {
 	const [activeDisplay, setActiveDisplay] = useState<number>(1);
 	return (
-		<IsSellerSideBarContainer>
+		<IsSellerSideBarContainer setActiveDisplay={setActiveDisplay}>
 			<div className={s.wrapper}>
 				<Nav activeDisplay={activeDisplay} setActiveDisplay={setActiveDisplay} />
 				{activeDisplay === 1 && <GetStarted />}

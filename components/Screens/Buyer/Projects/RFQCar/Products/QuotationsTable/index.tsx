@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { classNames } from '@/utils/classNames';
 import s from './QuotationsTable.module.scss';
 import Image from 'next/image';
@@ -21,6 +21,20 @@ interface TypeProps {
 export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 	const { push } = useRouter();
 	const [indexMore, setIndexMore] = useState<number>(-1);
+	const [rect, setRect] = useState<any>();
+
+	// const tbodyRef = useRef<HTMLTableSectionElement>(null);
+	const tbodyRef = useRef<HTMLTableElement>(null);
+	console.log('Координаты элемента:', rect);
+	useEffect(() => {
+		const targetElement = document.querySelector(`[data-id="${indexMore}"]`);
+
+		if (targetElement) {
+			const rect = targetElement.getBoundingClientRect();
+			setRect(rect);
+		}
+	}, [indexMore, compress]);
+
 	let maxOptionsLength = 0;
 	let maxOptionsLengthArr = [];
 
@@ -35,7 +49,25 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 	}
 
 	return (
-		<table className={classNames(s.table, compress && s.table_compress)}>
+		<table
+			ref={tbodyRef}
+			className={classNames(s.table, compress && s.table_compress)}
+		>
+			{rect && (
+				<div
+					style={{
+						top: `${rect.top + (compress ? 59 : 55)}px`,
+						left: `${rect.left}px`,
+					}}
+					className={classNames(s.more, indexMore !== -1 && s.more_active)}
+				>
+					<span className={s.more_item}>Product details</span>
+					<span className={s.more_item}>Order sample</span>
+					<span className={classNames(s.more_item, s.more_decline)}>
+						Decline offer
+					</span>
+				</div>
+			)}
 			<thead className={s.thead}>
 				<tr>
 					<th className={classNames(s.th, compress && s.th_compress)}>
@@ -62,7 +94,7 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 			<tbody className={s.tbody}>
 				{rfqs.map((el, ind) => {
 					return (
-						<tr key={ind} className={s.tr}>
+						<tr key={el.id} className={s.tr}>
 							<td className={s.td}>
 								<Image
 									className={s.eye_icon}
@@ -75,6 +107,7 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 							{el.options.map((el, ind) => {
 								return (
 									<td
+										data-id={el.id}
 										className={classNames(s.td, compress && s.td_compress)}
 										onClick={() => {
 											setIndexMore(indexMore === el.id ? -1 : el.id);
@@ -82,19 +115,6 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 										key={ind}
 									>
 										<span className={s.item}>
-											<div
-												className={classNames(
-													s.more,
-													indexMore === el.id && s.more_active
-												)}
-											>
-												<span className={s.more_item}>Product details</span>
-												<span className={s.more_item}>Order sample</span>
-												<span className={classNames(s.more_item, s.more_decline)}>
-													Decline offer
-												</span>
-											</div>
-
 											<span className={s.item_info}>
 												<span className={s.item_size}>{el.size}</span>
 												<span className={s.item_price}>${el.price}</span>

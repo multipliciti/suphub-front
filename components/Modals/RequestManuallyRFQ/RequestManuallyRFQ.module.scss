@@ -93,10 +93,17 @@
 			line-height: 20px;
 		}
 
+		.arrow {
+			transition: transform 0.3s ease;
+			&_active {
+				transform: rotate(180deg);
+			}
+		}
+
 		&_items {
 			overflow-y: auto;
-			max-height: 180px;
-			transition: background-color 0.3s ease;
+
+			transition: all 0.3s ease;
 			color: #143644;
 			font-size: 14px;
 			font-style: normal;
@@ -113,6 +120,16 @@
 			border: 1px solid #cbd5e1;
 			border-radius: 8px;
 			background-color: #fff;
+
+			pointer-events: none;
+			opacity: 0;
+			max-height: 0px;
+
+			&_active {
+				pointer-events: all;
+				opacity: 1;
+				max-height: 180px;
+			}
 		}
 
 		&_items::-webkit-scrollbar {
@@ -129,6 +146,12 @@
 		&_item {
 			cursor: pointer;
 			padding: 8px 12px;
+
+			color: #143644;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 20px;
 		}
 
 		&_item:not(:last-child) {

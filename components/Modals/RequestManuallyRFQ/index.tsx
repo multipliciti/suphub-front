@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { validateFormData } from './validation';
+import { categoriesToSubCategories } from '@/utils/categoriesToSubCategories';
 //imgs
 import upload_icon from '@/imgs/Buyer&Seller/upload_icon.svg';
 import { classNames } from '@/utils/classNames';
@@ -21,15 +22,27 @@ import { Api } from '@/services';
 export const RequestManuallyRFQ = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
-
 	const [formData, setFormData] = useState<RfqItemFetch>({
-		subCategoryId: 1,
 		productName: '',
 		quantity: 0,
 		projectId: 2,
 	});
+
+	const [chooseCategory, setChooseCategory] = useState<boolean>(false);
 	const [category, setCategory] = useState<any[]>([]);
+	const subCategories = categoriesToSubCategories(category);
+
 	console.log('category', category);
+	console.log('subCategories', subCategories);
+	console.log('formData', formData);
+
+	// set handleKeysubCategoryId
+	const handleKeysubCategoryId = (id: number) => {
+		setFormData((prevState: RfqItemFetch) => ({
+			...prevState,
+			subCategoryId: id,
+		}));
+	};
 	//set certifications
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		const id = event.currentTarget.id;
@@ -143,26 +156,49 @@ export const RequestManuallyRFQ = () => {
 						<p className={s.input_title}>
 							Subcategory<span className={s.input_necessarily}>*</span>
 						</p>
-						<span className={s.subcategory}>
-							<span className={s.subcategory_title}>Choose subcategory</span>
-							<Image src={arrow_icon} alt="arrow_icon" width={20} height={20} />
-							<span className={s.subcategory_items}>
-								{category?.map((el, ind) => {
+
+						<span
+							onClick={() => setChooseCategory(!chooseCategory)}
+							className={s.subcategory}
+						>
+							{formData.subCategoryId && (
+								<span className={s.subcategory_title}>
+									{
+										subCategories.filter(
+											(el) => el.categoryId === formData.subCategoryId
+										)[0].name
+									}
+								</span>
+							)}
+							{!formData.subCategoryId && (
+								<span className={s.subcategory_title}>Choose subcategory</span>
+							)}
+							<Image
+								className={classNames(s.arrow, chooseCategory && s.arrow_active)}
+								src={arrow_icon}
+								alt="arrow_icon"
+								width={20}
+								height={20}
+							/>
+							<span
+								className={classNames(
+									s.subcategory_items,
+									chooseCategory && s.subcategory_items_active
+								)}
+							>
+								{subCategories?.map((el, ind) => {
 									return (
-										<span key={ind} className={s.subcategory_item}>
+										<span
+											onClick={() => handleKeysubCategoryId(el.categoryId)}
+											key={ind}
+											className={s.subcategory_item}
+										>
 											{el.name}
 										</span>
 									);
 								})}
 							</span>
 						</span>
-						{/* <input
-							onChange={handleValueFormData}
-							id="subCategoryId"
-							placeholder="Choose subcategory"
-							className={s.input}
-							type="number"
-						/> */}
 					</div>
 					<div className={s.input_wrapper}>
 						<p className={s.input_title}>

@@ -10,7 +10,7 @@ export const RFQCar = () => {
 	const [stateInputs, setStateInputs] = useState({
 		search: '',
 		categories: [],
-		status: [],
+		statuses: [],
 	});
 
 	const [rfqsSorted, setRfqsSorted] = useState<RfqItemGot[][]>([]);
@@ -21,6 +21,19 @@ export const RFQCar = () => {
 				productName: { contains: stateInputs.search },
 		  }
 		: null;
+	const categoriesFilterArr =
+		stateInputs.categories.length > 0
+			? {
+					categories: { in: stateInputs.categories },
+			  }
+			: null;
+
+	const statusesFilterArr =
+		stateInputs.statuses.length > 0
+			? {
+					status: { in: stateInputs.statuses },
+			  }
+			: null;
 
 	const objFetchCategories = stateInputs.categories.map((item: any) => {
 		return {
@@ -30,6 +43,8 @@ export const RFQCar = () => {
 
 	const finalAttrObj = {
 		...(objFetchSearch && { ...objFetchSearch }),
+		...(statusesFilterArr && { ...statusesFilterArr }),
+		...(categoriesFilterArr && { ...categoriesFilterArr }),
 		// ...(objFetchCategories.length > 0 && Object.assign({}, ...objFetchCategories)),
 	};
 
@@ -41,10 +56,8 @@ export const RFQCar = () => {
 	//Converting the combinedJsonObj to JSON for the request.
 	const finalJsonString = JSON.stringify(finalAttrObj);
 
-	console.log('combinedJsonObj', finalJsonString);
-
 	const fetchData = async () => {
-		console.log('');
+		console.log('start fetchData');
 		try {
 			const response = await api.rfq.getRfqByProject({
 				page: 1,

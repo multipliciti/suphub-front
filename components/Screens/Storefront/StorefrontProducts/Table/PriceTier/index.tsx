@@ -2,7 +2,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import debounce from 'lodash.debounce';
-
 import { classNames } from '@/utils/classNames';
 import { Price } from '@/types/products/product';
 import { Api } from '@/services';
@@ -12,12 +11,11 @@ import s from './PriceTier.module.scss';
 import infoIcon from '@/imgs/Buyer&Seller/information.svg';
 import clearIcon from '@/imgs/Buyer&Seller/clear.svg';
 
-
 interface Props {
-	productId: number
-	productPrices: Price[]
-	platformCommission: number
-	titleColumn?: string
+	productId: number;
+	productPrices: Price[];
+	platformCommission: number;
+	titleColumn?: string;
 }
 
 export const StorefrontProductPriceTier: FC<Props> = (props) => {
@@ -29,8 +27,12 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 
 	const addNewPrice = async () => {
 		try {
-			const response = await api.productPrice.addPrice({ productId, value: 0, minCount: 0 });
-			setPrices(prevState => [...prevState, response]);
+			const response = await api.productPrice.addPrice({
+				productId,
+				value: 0,
+				minCount: 0,
+			});
+			setPrices((prevState) => [...prevState, response]);
 		} catch (e) {
 			console.log('Error with add product price', e);
 		}
@@ -39,7 +41,7 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 	const deletePrice = async (id: number) => {
 		try {
 			await api.productPrice.deletePrice(id);
-			setPrices(prevState => [...prevState].filter(item => item.id !== id));
+			setPrices((prevState) => [...prevState].filter((item) => item.id !== id));
 		} catch (e) {
 			console.log('Error with delete product price', e);
 		}
@@ -47,40 +49,29 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 
 	return (
 		<table className={s.table}>
-
 			<thead>
-
 				{titleColumn && (
 					<tr>
-						<th colSpan={3}>
-							Price
-						</th>
+						<th colSpan={3}>Price</th>
 					</tr>
 				)}
 
 				<tr className={classNames(titleColumn && s.reset_th_row)}>
-					<th>
-						Listing Unit Price (USD)
-					</th>
+					<th>Listing Unit Price (USD)</th>
 					<th>
 						<div className={s.earnings_label}>
 							Your Earnings (USD)
-							<Image
-								src={infoIcon}
-								alt="information_icon"
-								width={16}
-								height={16}
-							/>
+							<Image src={infoIcon} alt="information_icon" width={16} height={16} />
 						</div>
 					</th>
-					<th style={{width: 52}}/>
+					<th style={{ width: 52 }} />
 				</tr>
 			</thead>
 
 			<tbody>
 				{prices.map((item, index) => (
 					<PriceTierItem
-						key={index + item.id + item.productId}
+						key={`${index}-${item.id}-${item.productId}`}
 						item={item}
 						platformCommission={platformCommission}
 						onDelete={() => deletePrice(item.id)}
@@ -89,30 +80,29 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 
 				<tr>
 					<td colSpan={3}>
-						<button
-							className={s.add_btn}
-							onClick={addNewPrice}
-						>
+						<button className={s.add_btn} onClick={addNewPrice}>
 							Add a price tier
 						</button>
 					</td>
 				</tr>
 			</tbody>
-
 		</table>
-	)
-}
-
+	);
+};
 
 interface PriceTierItemProps {
-	item: Price
-	platformCommission: number
-	onDelete: () => void
+	item: Price;
+	platformCommission: number;
+	onDelete: () => void;
 }
-const PriceTierItem: FC<PriceTierItemProps> = ({ item, platformCommission, onDelete }) => {
+const PriceTierItem: FC<PriceTierItemProps> = ({
+	item,
+	platformCommission,
+	onDelete,
+}) => {
 	const api = Api();
 
-	const isFirstRender = useRef(true)
+	const isFirstRender = useRef(true);
 
 	const [minCount, setMinCount] = useState(item.minCount);
 	const [value, setValue] = useState(item.value);
@@ -126,7 +116,7 @@ const PriceTierItem: FC<PriceTierItemProps> = ({ item, platformCommission, onDel
 			isFirstRender.current = false;
 			return;
 		}
-		debouncedUpdate([minCount, value])
+		debouncedUpdate([minCount, value]);
 	}, [minCount, value]);
 
 	useEffect(() => {
@@ -137,11 +127,11 @@ const PriceTierItem: FC<PriceTierItemProps> = ({ item, platformCommission, onDel
 
 	const onUpdate = async (minCount: number, value: number) => {
 		try {
-			await api.productPrice.updatePrice({ priceId:item.id, minCount, value });
+			await api.productPrice.updatePrice({ priceId: item.id, minCount, value });
 		} catch (e) {
 			console.log('Error with update product price', e);
 		}
-	}
+	};
 
 	return (
 		<tr>
@@ -149,43 +139,37 @@ const PriceTierItem: FC<PriceTierItemProps> = ({ item, platformCommission, onDel
 				<div className={s.price_row}>
 					<div>QTY &gt;</div>
 					<input
-						style={{width: 60}}
+						style={{ width: 60 }}
 						placeholder={'0'}
-						type='number'
+						type="number"
 						value={minCount === 0 ? '' : minCount}
-						onChange={e => setMinCount(Number(e.target.value))}
+						onChange={(e) => setMinCount(Number(e.target.value))}
 					/>
 					<input
-						style={{width: 90}}
+						style={{ width: 90 }}
 						placeholder={'$0.00'}
-						type='number'
+						type="number"
 						value={value === 0 ? '' : value}
-						onChange={e => setValue(Number(e.target.value))}
+						onChange={(e) => setValue(Number(e.target.value))}
 					/>
 					<span>per unit</span>
 				</div>
 			</td>
 
 			<td>
-					<input
-						className={s.earnings_input}
-						type='text'
-						disabled={true}
-						placeholder={'$0.00'}
-						value={(value * (1-(platformCommission))).toFixed(2)}
-					/>
+				<input
+					className={s.earnings_input}
+					type="text"
+					disabled={true}
+					placeholder={'$0.00'}
+					value={(value * (1 - platformCommission)).toFixed(2)}
+				/>
 			</td>
 			<td>
-				<div
-					style={{cursor: 'pointer'}}
-					onClick={onDelete}
-				>
-					<Image
-						src={clearIcon}
-						alt="clear_icon"
-					/>
+				<div style={{ cursor: 'pointer' }} onClick={onDelete}>
+					<Image src={clearIcon} alt="clear_icon" />
 				</div>
 			</td>
 		</tr>
-	)
-}
+	);
+};

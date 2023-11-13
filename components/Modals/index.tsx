@@ -23,7 +23,6 @@ import { SellerAddNewProduct } from './StorefrontAddProduct/AddNewProduct';
 import { SellerProductBulkUpload } from './StorefrontAddProduct/BulkUpload';
 import { SellerProductUploadImage } from './StorefrontAddProduct/UploadImage';
 
-
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
 
