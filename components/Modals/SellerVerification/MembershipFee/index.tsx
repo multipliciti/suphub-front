@@ -19,7 +19,7 @@ export const MembershipFee = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const [hideOldPassword, setHideOldPassword] = React.useState<boolean>(true);
-  const [plans, setPlans] = React.useState<object[] | null>(null)
+  const [plans, setPlans] = React.useState<Plan[]>()
 
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST
 
@@ -54,7 +54,7 @@ export const MembershipFee = () => {
 				setPlans(response)
 			} catch (e) {
 				console.error(e)
-			};
+			}
 		}
 		fetch()
 	})
@@ -78,7 +78,7 @@ export const MembershipFee = () => {
 				</div>
 				<div className={s.content}>
 					<div className={s.content_group_bottom}>
-						{plans && plans.map((plan: Plan) => (
+						{plans && plans.map((plan) => (
 							<div className={s.content_group_planBox}>
 							<div className={s.content_group_stripe}>
 							<div className={s.content_title_group}>
