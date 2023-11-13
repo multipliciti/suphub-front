@@ -13,13 +13,12 @@ import switcher_circle from '@/imgs/Buyer&Seller/SellerVerification/switcher-cir
 import stripe_logo from '@/imgs/Buyer&Seller/SellerVerification/stripe-logo.svg';
 import { useRouter } from 'next/navigation';
 import { Plan } from '@/types/services/payment';
-
 export const MembershipFee = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const [hideOldPassword, setHideOldPassword] = React.useState<boolean>(true);
-	const [plans, setPlans] = React.useState<Plan[] | null>(null);
+	const [plans, setPlans] = React.useState<Plan[]>();
 
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
@@ -53,7 +52,7 @@ export const MembershipFee = () => {
 			}
 		};
 		fetch();
-	});
+	}, []); // Добавил зависимость, чтобы эффект сработал только при монтировании компонента
 
 	return (
 		<div className={s.wrapper}>
@@ -64,48 +63,47 @@ export const MembershipFee = () => {
 						<Image alt="Close Button" className={s.header_close} src={modal_close} />
 					</span>
 				</div>
-				<div className={s.header_description}>
-					Finish this list to verify your company
-				</div>
-			</div>
-			<div className={s.content}>
-				<div className={s.content_group_bottom}>
-					{plans &&
-						plans.map((plan: Plan) => (
-							<div className={s.content_group_planBox}>
-								<div className={s.content_group_stripe}>
-									<div className={s.content_title_group}>
-										<div className={s.content_title}>{plan.title}</div>
-										<div className={s.content_title_sub}>{plan.description}</div>
-									</div>
-									<div className={s.content_payment_group}>
-										<div className={s.content_payment_group_price}>
-											<span className={s.content_payment_price_number}>
-												${plan.amount / 100}
-											</span>
-											<span className={s.content_payment_price_month}>
-												/ {plan.interval}
+				<div className={s.content}>
+					<div className={s.content_group_bottom}>
+						{plans &&
+							plans.map((plan) => (
+								<div className={s.content_group_planBox} key={plan.id}>
+									<div className={s.content_group_stripe}>
+										<div className={s.content_title_group}>
+											<div className={s.content_title}>{plan.title}</div>
+											<div className={s.content_title_sub}>{plan.description}</div>
+										</div>
+										<div className={s.content_payment_group}>
+											<div className={s.content_payment_group_price}>
+												<span className={s.content_payment_price_number}>
+													${plan.amount / 100}
+												</span>
+												<span className={s.content_payment_price_month}>
+													/ {plan.interval}
+												</span>
+											</div>
+											<span className={s.content_payment_group_buttons}>
+												<button
+													className={s.content_payment_btn}
+													onClick={() => Subscribe(plan.id, true)}
+												>
+													<span className={s.content_payment_btn_text}>Trial</span>
+												</button>
+												<button
+													className={s.content_payment_btn}
+													onClick={() => Subscribe(plan.id, false)}
+												>
+													<span className={s.content_payment_btn_text}>
+														Pay with
+													</span>{' '}
+													<Image src={stripe_logo} alt={'stripe logo'} />
+												</button>
 											</span>
 										</div>
-										<span className={s.content_payment_group_buttons}>
-											<button
-												className={s.content_payment_btn}
-												onClick={() => Subscribe(plan.id, true)}
-											>
-												<span className={s.content_payment_btn_text}>Trial</span>
-											</button>
-											<button
-												className={s.content_payment_btn}
-												onClick={() => Subscribe(plan.id, false)}
-											>
-												<span className={s.content_payment_btn_text}>Pay with</span>{' '}
-												<Image src={stripe_logo} alt={'stripe logo'} />
-											</button>
-										</span>
 									</div>
 								</div>
-							</div>
-						))}
+							))}
+					</div>
 				</div>
 			</div>
 		</div>
