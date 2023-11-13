@@ -52,7 +52,7 @@ export const MembershipFee = () => {
 			}
 		};
 		fetch();
-	}, []); // Добавил зависимость, чтобы эффект сработал только при монтировании компонента
+	}, []);
 
 	return (
 		<div className={s.wrapper}>
