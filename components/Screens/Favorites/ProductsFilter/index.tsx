@@ -26,7 +26,7 @@ export const ProductsFilter = () => {
 					placeholder="Search product by name"
 					id="search"
 					type="text"
-					onChange={(e)=> debouncedSearch(e.target.value)}
+					onChange={(e) => debouncedSearch(e.target.value)}
 				/>
 			</label>
 			<div className={s.products_filter}>

@@ -1,9 +1,11 @@
 import { AxiosInstance } from 'axios';
 
-import { CreateSellerProduct, FindSellerProductsParams } from '@/types/services/sellerProduct';
+import {
+	CreateSellerProduct,
+	FindSellerProductsParams,
+} from '@/types/services/sellerProduct';
 import { PaginationResponse } from '@/types/pagination';
 import { ProductItemType } from '@/types/products/product';
-
 
 export const ProductSellerApi = (instance: AxiosInstance) => ({
 	async getSellerProducts(params: FindSellerProductsParams) {
@@ -11,18 +13,23 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			const { find, ...otherParams } = params;
 			const stringifyFind = JSON.stringify({
 				attr: {
-					...(find.name.contains) && { name: { contains: find.name.contains } },
-					...(find.subCategoryId.in.length) && { subCategoryId: {in: find.subCategoryId.in } }
-				}
-			})
+					...(find.name.contains && { name: { contains: find.name.contains } }),
+					...(find.subCategoryId.in.length && {
+						subCategoryId: { in: find.subCategoryId.in },
+					}),
+				},
+			});
 
 			const url = `/product-seller`;
-			const response = await instance.get<PaginationResponse<ProductItemType[]>>(url, {
-				params: {
-					...otherParams,
-					find: stringifyFind
+			const response = await instance.get<PaginationResponse<ProductItemType[]>>(
+				url,
+				{
+					params: {
+						...otherParams,
+						find: stringifyFind,
+					},
 				}
-			});
+			);
 			return response.data;
 		} catch (error) {
 			console.error('Product Seller API error:', error);
@@ -69,7 +76,10 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			formData.append('file', csvFile);
 
 			const url = `/product-seller/upload-csv`;
-			const response = await instance.post<{ error: boolean, message: string }>(url, formData);
+			const response = await instance.post<{ error: boolean; message: string }>(
+				url,
+				formData
+			);
 			return response.data;
 		} catch (error) {
 			console.error('Product Seller API error:', error);
@@ -81,9 +91,9 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 		try {
 			const formData = new FormData();
 			formData.append('productId', String(productId));
-			images.forEach(item => {
+			images.forEach((item) => {
 				formData.append('files', item);
-			})
+			});
 
 			const url = `/product-seller/upload-images`;
 			const response = await instance.post(url, formData);
@@ -92,5 +102,5 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			console.error('Product Seller API error:', error);
 			throw error;
 		}
-	}
+	},
 });

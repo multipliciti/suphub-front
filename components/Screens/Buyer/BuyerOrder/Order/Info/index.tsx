@@ -45,10 +45,10 @@ export const Info = () => {
 									ind === 0
 										? remainig_icon
 										: ind === 1
-										? paid_icon
-										: ind === 2
-										? total_icon
-										: delivery_icon
+										  ? paid_icon
+										  : ind === 2
+										    ? total_icon
+										    : delivery_icon
 								}
 								alt="icon_process"
 								width={24}

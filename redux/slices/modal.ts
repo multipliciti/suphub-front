@@ -26,7 +26,7 @@ interface CounterState {
 		| 'createBusinessAccount'
 		| 'sellerAddNewProduct'
 		| 'sellerProductBulkUpload'
-		| 'sellerProductUploadImage'
+		| 'sellerProductUploadImage';
 	email: string;
 }
 

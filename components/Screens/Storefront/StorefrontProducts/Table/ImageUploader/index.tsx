@@ -10,24 +10,25 @@ import s from './ImageUploader.module.scss';
 
 import plusImage from '@/imgs/plus.svg';
 
-
 interface Props {
-	productId: number
-	imageList: ProductItemType['images']
+	productId: number;
+	imageList: ProductItemType['images'];
 }
 
-export const StorefrontProductImageUploader: FC<Props> = ({ productId, imageList }) => {
+export const StorefrontProductImageUploader: FC<Props> = ({
+	productId,
+	imageList,
+}) => {
 	const dispatch = useAppDispatch();
 
 	const showModalForUploadImages = () => {
 		dispatch(setProductIdForUploadImages(productId));
 		dispatch(setModal('sellerProductUploadImage'));
-	}
+	};
 
 	return (
 		<div className={s.wrapper}>
-			{imageList.length > 0
-			? (
+			{imageList.length > 0 ? (
 				<Image
 					src={imageList[0].url || ''}
 					alt="product_image"
@@ -35,19 +36,11 @@ export const StorefrontProductImageUploader: FC<Props> = ({ productId, imageList
 					height={64}
 					style={{ borderRadius: 8 }}
 				/>
-				)
-			: (
-				<div
-					className={s.add_image}
-					onClick={showModalForUploadImages}
-				>
-					<Image
-						src={plusImage}
-						alt={"Upload image"}
-					/>
+			) : (
+				<div className={s.add_image} onClick={showModalForUploadImages}>
+					<Image src={plusImage} alt={'Upload image'} />
 				</div>
-				)
-			}
+			)}
 		</div>
-	)
-}
+	);
+};

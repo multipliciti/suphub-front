@@ -9,14 +9,13 @@ import open_img from '@/imgs/Marketplace/ProductFilter/open.svg';
 import close_img from '@/imgs/Marketplace/ProductFilter/close.svg';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
 
-
 interface Props {
-	title: string
-	isMulti: boolean
-	options: string[]
+	title: string;
+	isMulti: boolean;
+	options: string[];
 
-	value: string[]
-	setValue:  Dispatch<SetStateAction<string[]>>
+	value: string[];
+	setValue: Dispatch<SetStateAction<string[]>>;
 }
 
 export const Select: FC<Props> = (props) => {
@@ -28,26 +27,26 @@ export const Select: FC<Props> = (props) => {
 		const isSelected = value.includes(option);
 
 		if (isSelected) {
-			setValue(prevState => {
-				return prevState.filter(item => item !== option);
-			})
+			setValue((prevState) => {
+				return prevState.filter((item) => item !== option);
+			});
 		} else {
-			setValue(prevState => {
+			setValue((prevState) => {
 				if (isMulti) {
-					return [...prevState, option]
+					return [...prevState, option];
 				}
 				return [option];
-			})
+			});
 		}
-	}
+	};
 
 	return (
 		<div
 			className={s.wrapper}
 			onClick={(e) => {
 				e.stopPropagation();
-				setIsOpen(!isOpen)}
-			}
+				setIsOpen(!isOpen);
+			}}
 		>
 			<span
 				className={classNames(
@@ -55,12 +54,7 @@ export const Select: FC<Props> = (props) => {
 					(isMulti || (!isMulti && value.length > 0)) && s.title_selected
 				)}
 			>
-				{isMulti
-					? title
-					: value.length > 0
-						? value[0]
-						: title
-				}
+				{isMulti ? title : value.length > 0 ? value[0] : title}
 			</span>
 
 			<Image
@@ -71,29 +65,19 @@ export const Select: FC<Props> = (props) => {
 				height={20}
 			/>
 
-			<div
-				className={classNames(
-					s.menu,
-					isOpen && s.menu_active
-				)}
-			>
-				<div
-					className={s.select}
-				>
+			<div className={classNames(s.menu, isOpen && s.menu_active)}>
+				<div className={s.select}>
 					{options.map((item, index) => {
 						const isSelected = value.includes(item);
 						return (
 							<div
 								key={index + item}
-								className={classNames(
-									s.option,
-									isSelected && s.option_active
-								)}
+								className={classNames(s.option, isSelected && s.option_active)}
 								onClick={(e) => {
 									e.stopPropagation();
 									handleSelectOption(item);
 									if (!isMulti) {
-										setIsOpen(false)
+										setIsOpen(false);
 									}
 								}}
 							>
@@ -108,23 +92,16 @@ export const Select: FC<Props> = (props) => {
 									/>
 								)}
 							</div>
-						)
+						);
 					})}
 				</div>
 
 				{isMulti && (
-					<button
-						className={s.clear_btn}
-						onClick={() => setValue([])}
-					>
-						{options.length
-							? "Clear filter"
-							:	"No filters"
-						}
+					<button className={s.clear_btn} onClick={() => setValue([])}>
+						{options.length ? 'Clear filter' : 'No filters'}
 					</button>
 				)}
-
 			</div>
 		</div>
-	)
-}
+	);
+};

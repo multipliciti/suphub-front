@@ -7,7 +7,6 @@ import { setModal } from '@/redux/slices/modal';
 
 import s from './AddProductButton.module.scss';
 
-
 export const StorefrontProductAddProductButton = () => {
 	const dispatch = useAppDispatch();
 
@@ -15,30 +14,18 @@ export const StorefrontProductAddProductButton = () => {
 
 	return (
 		<div className={s.wrapper}>
-			<button
-				className={s.button}
-				onClick={() => setIsOpen(!isOpen)}
-			>
+			<button className={s.button} onClick={() => setIsOpen(!isOpen)}>
 				Add new product
 			</button>
 
-			<div
-				className={classNames(
-					s.options,
-					isOpen && s.options_active
-				)}
-			>
-				<button
-					onClick={() => dispatch(setModal('sellerAddNewProduct'))}
-				>
+			<div className={classNames(s.options, isOpen && s.options_active)}>
+				<button onClick={() => dispatch(setModal('sellerAddNewProduct'))}>
 					Add manually
 				</button>
-				<button
-					onClick={() => dispatch(setModal('sellerProductBulkUpload'))}
-				>
+				<button onClick={() => dispatch(setModal('sellerProductBulkUpload'))}>
 					Bulk upload
 				</button>
 			</div>
 		</div>
-	)
-}
+	);
+};

@@ -11,7 +11,7 @@ import { setStatusGetUser, setUser } from '@/redux/slices/auth';
 import { classNames } from '@/utils/classNames';
 import { useEffect } from 'react';
 import { Api } from '@/services';
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation';
 //imgs
 import Arrow from '@/imgs/Header/menu/Arrow.svg';
 import Calendar from '@/imgs/Header/menu/Calendar.svg';
@@ -36,7 +36,7 @@ export const Header = () => {
 	const statusGetUser = useAppSelector((state) => state.authSlice.statusGetUser);
 	const [activeLink, setActiveLink] = useState<number>(1);
 	const [menu, setMenu] = useState<boolean>(false);
-	const router = useRouter()
+	const router = useRouter();
 	const menuItems = [
 		{
 			id: 1,
@@ -48,7 +48,7 @@ export const Header = () => {
 			id: 2,
 			img: Arrow,
 			title: 'Convert to business',
-			href: '/404'
+			href: '/404',
 		},
 		{
 			id: 3,
@@ -60,8 +60,9 @@ export const Header = () => {
 			id: 4,
 			img: Calendar,
 			title: 'Book a call',
-			href: '/404'
-		}];
+			href: '/404',
+		},
+	];
 	const buttons: Button[] = [
 		{
 			id: 1,
@@ -76,8 +77,8 @@ export const Header = () => {
 		{
 			id: 3,
 			label: 'My Storefront',
-			href: '/storefront/products'
-		}
+			href: '/storefront/products',
+		},
 	];
 
 	const fetchUser = async () => {
@@ -106,7 +107,7 @@ export const Header = () => {
 			if (response) {
 				dispatch(setUser(null));
 				dispatch(setStatusGetUser('logouted'));
-				router.push('/')
+				router.push('/');
 			}
 		} catch (error: any) {}
 	};

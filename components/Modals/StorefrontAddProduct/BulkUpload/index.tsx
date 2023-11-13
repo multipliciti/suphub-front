@@ -14,17 +14,15 @@ import s from '../Form.module.scss';
 import downloadIcon from '@/imgs/Buyer&Seller/download.svg';
 import warningIcon from '@/imgs/Buyer&Seller/warning.svg';
 
-
 // Attention!
 // The reason why the code below is documented is that
 // it is not required to work with the API, but is included in the project design.
 // In the future, it may need to be returned or removed permanently!
 
-
 type FormValues = {
 	// subcategory: string
-	file: File
-}
+	file: File;
+};
 
 export const SellerProductBulkUpload = () => {
 	const api = Api();
@@ -38,15 +36,10 @@ export const SellerProductBulkUpload = () => {
 	const [successMessage, setSuccessMessage] = useState('');
 	const [isError, setIsError] = useState(false);
 
-	const {
-		register,
-		handleSubmit,
-		formState,
-		setValue
-	} = useForm<FormValues>({
+	const { register, handleSubmit, formState, setValue } = useForm<FormValues>({
 		defaultValues: {
 			// subcategory: '',
-			file: undefined
+			file: undefined,
 		},
 		mode: 'onChange',
 	});
@@ -69,7 +62,7 @@ export const SellerProductBulkUpload = () => {
 			setTimeout(() => {
 				hideModal();
 				refetchSellerProducts();
-			}, 1000)
+			}, 1000);
 		}
 	}, [successMessage]);
 
@@ -83,55 +76,40 @@ export const SellerProductBulkUpload = () => {
 		} catch (e) {
 			setIsError(true);
 		}
-	}
+	};
 
 	const handleRetry = () => {
 		setFiles([]);
 		setIsError(false);
-	}
+	};
 
 	const refetchSellerProducts = () => {
 		dispatch(setStatus('refetch'));
-	}
+	};
 
 	const hideModal = () => {
-		dispatch(setModal(''))
-	}
+		dispatch(setModal(''));
+	};
 
 	return (
-		<StorefrontAddProductModalLayout
-			title='Bulk upload'
-			close={hideModal}
-		>
+		<StorefrontAddProductModalLayout title="Bulk upload" close={hideModal}>
 			{isError && (
 				<div className={s.error_message}>
 					<div className={s.error_message_image}>
-						<Image
-							src={warningIcon}
-							alt={'warning_icon'}
-							width={40}
-							height={40}
-						/>
+						<Image src={warningIcon} alt={'warning_icon'} width={40} height={40} />
 					</div>
 					<div className={s.error_message_text}>
 						<h2>We're sorry</h2>
 						<p>Please upload the correct format of the file</p>
 					</div>
-					<button
-						className={s.error_message_button}
-						onClick={handleRetry}
-					>
+					<button className={s.error_message_button} onClick={handleRetry}>
 						Retry
 					</button>
 				</div>
 			)}
 
-
 			{!isError && (
-				<form
-					className={s.form}
-					onSubmit={handleSubmit(onSubmit)}
-				>
+				<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 					{/*<div className={s.form_row}>*/}
 					{/*<span>*/}
 					{/*	Subcategory*/}
@@ -147,32 +125,17 @@ export const SellerProductBulkUpload = () => {
 					{/*</div>*/}
 
 					<div className={s.form_row}>
-					<span>
-						Download CSV Template
-					</span>
-						<p>
-							Download CSV file and fill it with your data
-						</p>
-						<a
-							href='/bulk-upload-csv-template.csv'
-							className={s.download_btn}
-						>
-							<Image
-								src={downloadIcon}
-								alt="download_icon"
-							/>
+						<span>Download CSV Template</span>
+						<p>Download CSV file and fill it with your data</p>
+						<a href="/bulk-upload-csv-template.csv" className={s.download_btn}>
+							<Image src={downloadIcon} alt="download_icon" />
 							<span>Download CSV</span>
 						</a>
-
 					</div>
 
 					<div className={s.form_row}>
-						<span>
-							Upload CSV
-						</span>
-						<p>
-							Upload CSV to quickly import the product info
-						</p>
+						<span>Upload CSV</span>
+						<p>Upload CSV to quickly import the product info</p>
 
 						<Dropzone
 							label="Drag your .csv file"
@@ -183,25 +146,19 @@ export const SellerProductBulkUpload = () => {
 							disabled={!!successMessage}
 							setFiles={setFiles}
 							accept={{
-								"text/csv": [".csv"]
+								'text/csv': ['.csv'],
 							}}
 						/>
 					</div>
 
 					{successMessage && (
 						<div className={s.form_row}>
-							<span className={s.success_message}>
-								{successMessage}
-							</span>
+							<span className={s.success_message}>{successMessage}</span>
 						</div>
 					)}
 
 					<div className={s.form_buttons}>
-						<button
-							type="button"
-							className={s.form_cancel}
-							onClick={hideModal}
-						>
+						<button type="button" className={s.form_cancel} onClick={hideModal}>
 							Cancel
 						</button>
 
@@ -213,10 +170,8 @@ export const SellerProductBulkUpload = () => {
 							Upload
 						</button>
 					</div>
-
 				</form>
 			)}
-
 		</StorefrontAddProductModalLayout>
-	)
-}
+	);
+};

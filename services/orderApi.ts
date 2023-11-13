@@ -3,7 +3,6 @@ import { AxiosInstance } from 'axios';
 import { PaginationResponse } from '@/types/pagination';
 import { OrderSeller } from '@/types/products/order';
 
-
 export const OrderApi = (instance: AxiosInstance) => ({
 	async getSellerOrders() {
 		try {

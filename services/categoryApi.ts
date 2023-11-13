@@ -2,7 +2,6 @@ import { AxiosInstance } from 'axios';
 
 import { CategoryItem } from '@/types/sideBar';
 
-
 export const CategoryApi = (instance: AxiosInstance) => ({
 	async getCategories() {
 		try {
@@ -16,22 +15,23 @@ export const CategoryApi = (instance: AxiosInstance) => ({
 	},
 });
 
-
 export const categoryService = {
 	getSubcategories(categories: CategoryItem[]): string[] {
-
 		let subcategories: string[] = [];
 
-		categories.forEach(i => {
-			i.subCategories.forEach(j => {
-				subcategories.push(j.name)
-			})
-		})
+		categories.forEach((i) => {
+			i.subCategories.forEach((j) => {
+				subcategories.push(j.name);
+			});
+		});
 
 		return subcategories;
 	},
 
-	findSubcategoryIdByName(categories: CategoryItem[], subcategoryName: string): number {
+	findSubcategoryIdByName(
+		categories: CategoryItem[],
+		subcategoryName: string
+	): number {
 		for (let i = 0; i < categories.length; i++) {
 			let category = categories[i];
 			for (let j = 0; j < category.subCategories.length; j++) {
@@ -55,5 +55,5 @@ export const categoryService = {
 			}
 		}
 		return '';
-	}
-}
+	},
+};
