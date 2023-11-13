@@ -4,26 +4,25 @@ import { FindSellerProductsParams } from '@/types/services/sellerProduct';
 import { PaginationResponse } from '@/types/pagination';
 import { ProductItemType } from '@/types/products/product';
 
-
 interface CounterState {
-	params: FindSellerProductsParams
-	sort: {},
+	params: FindSellerProductsParams;
+	sort: {};
 	pagination: {
-		total: number
-		label: string
-	}
-	status: 'idle' | 'loading' | 'success' | 'rejected' | 'refetch'
-	result: ProductItemType[]
+		total: number;
+		label: string;
+	};
+	status: 'idle' | 'loading' | 'success' | 'rejected' | 'refetch';
+	result: ProductItemType[];
 }
 
 const initialState: CounterState = {
 	params: {
 		find: {
 			name: {
-				contains: ''
+				contains: '',
 			},
 			subCategoryId: {
-				in: []
+				in: [],
 			},
 		},
 		page: 1,
@@ -35,9 +34,8 @@ const initialState: CounterState = {
 		label: '',
 	},
 	status: 'idle',
-	result: []
+	result: [],
 };
-
 
 const storefrontCategoriesSlice = createSlice({
 	name: 'storefrontProducts',
@@ -48,7 +46,7 @@ const storefrontCategoriesSlice = createSlice({
 
 			state.pagination = {
 				total: data.totalPages,
-				label: data.pagination
+				label: data.pagination,
 			};
 			state.result = data.result;
 		},
@@ -58,22 +56,27 @@ const storefrontCategoriesSlice = createSlice({
 		setPage(state, action: PayloadAction<number>) {
 			state.params.page = action.payload;
 		},
-		setSearchFilter(state, action: PayloadAction<FindSellerProductsParams['find']['name']['contains']>) {
+		setSearchFilter(
+			state,
+			action: PayloadAction<FindSellerProductsParams['find']['name']['contains']>
+		) {
 			state.params.find.name.contains = action.payload;
 		},
-		setSubcategoryFilter(state, action: PayloadAction<FindSellerProductsParams['find']['subCategoryId']['in']>) {
+		setSubcategoryFilter(
+			state,
+			action: PayloadAction<FindSellerProductsParams['find']['subCategoryId']['in']>
+		) {
 			state.params.find.subCategoryId.in = action.payload;
-		}
+		},
 	},
 });
-
 
 export const {
 	setResult,
 	setStatus,
 	setPage,
 	setSearchFilter,
-	setSubcategoryFilter
+	setSubcategoryFilter,
 } = storefrontCategoriesSlice.actions;
 
 export default storefrontCategoriesSlice.reducer;

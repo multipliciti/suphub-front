@@ -9,12 +9,12 @@ import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
 
 interface PropsType {
-	user : User | null;
-	statusGetUser: 'pending' | 'seccess' | 'rejected' | 'logouted'
+	user: User | null;
+	statusGetUser: 'pending' | 'seccess' | 'rejected' | 'logouted';
 }
 
-export const Order = ({user, statusGetUser} : PropsType) => {
-	const dispatch = useAppDispatch()
+export const Order = ({ user, statusGetUser }: PropsType) => {
+	const dispatch = useAppDispatch();
 
 	const orderSummary = [
 		['QTY. 1+', 75],
@@ -61,11 +61,19 @@ export const Order = ({user, statusGetUser} : PropsType) => {
 	return (
 		<div className={s.container}>
 			{/* started */}
-			<div className={classNames(s.started, !user && statusGetUser !== 'pending' && s.started_active)}>
+			<div
+				className={classNames(
+					s.started,
+					!user && statusGetUser !== 'pending' && s.started_active
+				)}
+			>
 				<div className={s.convert}>
 					<h3 className={s.convert_title}>Convert to business buyer</h3>
 					<p className={s.convert_subtitle}>Become a verified buyer to trade</p>
-					<button onClick={()=> dispatch(setModal('login'))} className={s.convert_btn}>
+					<button
+						onClick={() => dispatch(setModal('login'))}
+						className={s.convert_btn}
+					>
 						Get started
 					</button>
 				</div>
@@ -85,9 +93,12 @@ export const Order = ({user, statusGetUser} : PropsType) => {
 						);
 					})}
 
-					<button className={s.btn} onClick={() => {
-						dispatch(setModal('addToRFQCart'))
-					}}>
+					<button
+						className={s.btn}
+						onClick={() => {
+							dispatch(setModal('addToRFQCart'));
+						}}
+					>
 						Add to RFQ cart
 					</button>
 				</div>

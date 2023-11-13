@@ -35,6 +35,6 @@ const favoritesProductSlice = createSlice({
 });
 
 export const { setActivePage, setProducts, setTotal, setStatus } =
-favoritesProductSlice.actions;
+	favoritesProductSlice.actions;
 
 export default favoritesProductSlice.reducer;

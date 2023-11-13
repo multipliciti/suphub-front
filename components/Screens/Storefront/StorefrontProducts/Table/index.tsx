@@ -11,24 +11,22 @@ import { StorefrontProductPriceTier } from './PriceTier';
 
 import s from './Table.module.scss';
 
-
 export const StorefrontProductsTable = () => {
-
-	const sellerProducts = useAppSelector(state => state.storefrontProductsSlice.result);
-	const status = useAppSelector(state => state.storefrontProductsSlice.status);
+	const sellerProducts = useAppSelector(
+		(state) => state.storefrontProductsSlice.result
+	);
+	const status = useAppSelector((state) => state.storefrontProductsSlice.status);
 
 	if (status === 'idle' || status === 'loading') {
-		return <div></div>
+		return <div></div>;
 	}
 
 	if (status === 'rejected') {
-		return <div>Some error</div>
+		return <div>Some error</div>;
 	}
 
 	if (!sellerProducts.length) {
-		return (
-			<StorefrontEmptyTableMessage/>
-		)
+		return <StorefrontEmptyTableMessage />;
 	}
 
 	return (
@@ -37,38 +35,21 @@ export const StorefrontProductsTable = () => {
 				<table>
 					<thead>
 						<tr>
-							<th style={{minWidth: 50, textAlign: 'center'}}>
-								ID
-							</th>
-							<th style={{minWidth: 90}}>
-								Images
-							</th>
-							<th style={{minWidth: 110, width: '100%'}}>
-								Product Name
-							</th>
-							<th style={{minWidth: 110}}>
-								Subcategory
-							</th>
-							<th style={{minWidth: 360, textAlign: 'center'}}>
-								Price tier
-							</th>
-							<th style={{minWidth: 120, textAlign: 'center'}}>
-								Performance
-							</th>
-							<th style={{minWidth: 100, textAlign: 'center'}}>
-								Status
-							</th>
-							<th style={{minWidth: 90, textAlign: 'center'}}>
-								Action
-							</th>
+							<th style={{ minWidth: 50, textAlign: 'center' }}>ID</th>
+							<th style={{ minWidth: 90 }}>Images</th>
+							<th style={{ minWidth: 110, width: '100%' }}>Product Name</th>
+							<th style={{ minWidth: 110 }}>Subcategory</th>
+							<th style={{ minWidth: 360, textAlign: 'center' }}>Price tier</th>
+							<th style={{ minWidth: 120, textAlign: 'center' }}>Performance</th>
+							<th style={{ minWidth: 100, textAlign: 'center' }}>Status</th>
+							<th style={{ minWidth: 90, textAlign: 'center' }}>Action</th>
 						</tr>
 					</thead>
 
 					<tbody>
 						{sellerProducts.map((item, index) => (
 							<tr key={index}>
-
-								<td style={{textAlign: 'center'}}></td>
+								<td style={{ textAlign: 'center' }}></td>
 
 								<td>
 									<StorefrontProductImageUploader
@@ -77,15 +58,11 @@ export const StorefrontProductsTable = () => {
 									/>
 								</td>
 
-								<td>
-									{item.name}
-								</td>
+								<td>{item.name}</td>
 
-								<td>
-									{item.subCategory?.name}
-								</td>
+								<td>{item.subCategory?.name}</td>
 
-								<td style={{padding: 0}}>
+								<td style={{ padding: 0 }}>
 									<StorefrontProductPriceTier
 										productId={item.id}
 										productPrices={item.prices}
@@ -101,13 +78,11 @@ export const StorefrontProductsTable = () => {
 									/>
 								</td>
 
-								<td style={{textAlign: 'center'}}>
-								<span className={s.status_label}>
-									Draft
-								</span>
+								<td style={{ textAlign: 'center' }}>
+									<span className={s.status_label}>Draft</span>
 								</td>
 
-								<td style={{textAlign: 'center'}}>
+								<td style={{ textAlign: 'center' }}>
 									<Link
 										href={`/storefront/product/${item.id}`}
 										className={s.action_link}
@@ -122,7 +97,6 @@ export const StorefrontProductsTable = () => {
 			</div>
 
 			<StorefrontProductPagination />
-
 		</div>
-	)
-}
+	);
+};

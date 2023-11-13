@@ -1,6 +1,5 @@
 import { FC } from 'react';
 
-
 import { DynamicAttribute, UpdateDynamicAttribute } from '@/types/products/product';
 import { Input } from '@/components/UI/Input';
 import { TableSelect } from '@/components/UI/TableSelect';
@@ -9,11 +8,10 @@ import {
 	ChangeDynamicSelectFieldFunction,
 } from '@/components/Screens/Storefront/StorefrontProductItem/General';
 
-
 interface Props {
 	dynamicAttr: UpdateDynamicAttribute[];
-	onChangeSelectField: ChangeDynamicSelectFieldFunction
-	onChangeInputField: ChangeDynamicInputFieldFunction
+	onChangeSelectField: ChangeDynamicSelectFieldFunction;
+	onChangeInputField: ChangeDynamicInputFieldFunction;
 }
 
 export const SpecificationDynamicTable: FC<Props> = (props) => {
@@ -22,7 +20,7 @@ export const SpecificationDynamicTable: FC<Props> = (props) => {
 	const renderRowsInPairs = () => {
 		const tableRows = [];
 
-		for (let i = 0; i < dynamicAttr.length; i+=2) {
+		for (let i = 0; i < dynamicAttr.length; i += 2) {
 			const leftPairItem = dynamicAttr[i];
 
 			const leftPairItemJsx = (
@@ -56,7 +54,6 @@ export const SpecificationDynamicTable: FC<Props> = (props) => {
 						</td>
 					</>
 				);
-
 			} else {
 				rightPairItemJsx = (
 					<>
@@ -75,39 +72,39 @@ export const SpecificationDynamicTable: FC<Props> = (props) => {
 		}
 
 		return tableRows;
-	}
+	};
 
 	return (
 		<table>
 			<thead>
 				<tr>
-					<th colSpan={4}>
-						Specification
-					</th>
+					<th colSpan={4}>Specification</th>
 				</tr>
 			</thead>
 
-			<tbody>
-				{renderRowsInPairs()}
-			</tbody>
+			<tbody>{renderRowsInPairs()}</tbody>
 		</table>
-	)
-}
-
-
+	);
+};
 
 interface DynamicItemProps {
-	itemAttributes: UpdateDynamicAttribute
-	onChangeSelectField: ChangeDynamicSelectFieldFunction
-	onChangeInputField: ChangeDynamicInputFieldFunction
+	itemAttributes: UpdateDynamicAttribute;
+	onChangeSelectField: ChangeDynamicSelectFieldFunction;
+	onChangeInputField: ChangeDynamicInputFieldFunction;
 }
 
-const DynamicItem: FC<DynamicItemProps> = ({ itemAttributes, onChangeSelectField, onChangeInputField }) => {
-
-	const getSelectOptions = (options: DynamicAttribute['options'], type: DynamicAttribute['type']) => {
+const DynamicItem: FC<DynamicItemProps> = ({
+	itemAttributes,
+	onChangeSelectField,
+	onChangeInputField,
+}) => {
+	const getSelectOptions = (
+		options: DynamicAttribute['options'],
+		type: DynamicAttribute['type']
+	) => {
 		const selectOptions: string[] = [];
 
-		options.forEach(item => {
+		options.forEach((item) => {
 			if (type === 'char') {
 				item.charValue && selectOptions.push(item.charValue);
 			} else if (type === 'numeric') {
@@ -117,9 +114,14 @@ const DynamicItem: FC<DynamicItemProps> = ({ itemAttributes, onChangeSelectField
 		return selectOptions;
 	};
 
-	const getSelectValues = (options: DynamicAttribute['options'], attrValueIds: number[]) => {
-		return options.filter(item => attrValueIds.includes(item.id)).map(item => String(item.charValue || item.numericValue));
-	}
+	const getSelectValues = (
+		options: DynamicAttribute['options'],
+		attrValueIds: number[]
+	) => {
+		return options
+			.filter((item) => attrValueIds.includes(item.id))
+			.map((item) => String(item.charValue || item.numericValue));
+	};
 
 	switch (itemAttributes.formType) {
 		case 'input':
@@ -128,7 +130,12 @@ const DynamicItem: FC<DynamicItemProps> = ({ itemAttributes, onChangeSelectField
 					placeholder={`Enter ${itemAttributes.label.toLowerCase()}`}
 					value={itemAttributes.value}
 					type={itemAttributes.type === 'numeric' ? 'number' : 'text'}
-					onChange={(e) => onChangeInputField({ attrId: itemAttributes.attributeId, value: e.target.value })}
+					onChange={(e) =>
+						onChangeInputField({
+							attrId: itemAttributes.attributeId,
+							value: e.target.value,
+						})
+					}
 				/>
 			);
 		case 'select':
@@ -137,9 +144,18 @@ const DynamicItem: FC<DynamicItemProps> = ({ itemAttributes, onChangeSelectField
 					placeholder={`Select ${itemAttributes.label.toLowerCase()}`}
 					isMultiple={true}
 					options={getSelectOptions(itemAttributes.options, itemAttributes.type)}
-					value={getSelectValues(itemAttributes.options, itemAttributes.attrValueIds)}
-					setValue={(value) => onChangeSelectField({attrId: itemAttributes.attributeId, type: itemAttributes.type, value})}
+					value={getSelectValues(
+						itemAttributes.options,
+						itemAttributes.attrValueIds
+					)}
+					setValue={(value) =>
+						onChangeSelectField({
+							attrId: itemAttributes.attributeId,
+							type: itemAttributes.type,
+							value,
+						})
+					}
 				/>
-			)
+			);
 	}
-}
+};

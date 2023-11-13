@@ -366,9 +366,8 @@ const SellerCompanyInfo = () => {
 			const data: RemoveCertification = {};
 			data.type = 'business';
 			data.fileIds = deletedBusinessIds;
-			const responseDeleteBusiness = await api.sellerCompany.removeCertification(
-				data
-			);
+			const responseDeleteBusiness =
+				await api.sellerCompany.removeCertification(data);
 			if (responseDeleteBusiness.status !== 200) return;
 		}
 
@@ -376,9 +375,8 @@ const SellerCompanyInfo = () => {
 			const data: RemoveCertification = {};
 			data.type = 'factory';
 			data.fileIds = deletedFactoryIds;
-			const responseDeleteFactory = await api.sellerCompany.removeCertification(
-				data
-			);
+			const responseDeleteFactory =
+				await api.sellerCompany.removeCertification(data);
 			if (responseDeleteFactory.status !== 200) return;
 		}
 
@@ -396,9 +394,8 @@ const SellerCompanyInfo = () => {
 			});
 
 			if (formDataBusiness.has('files')) {
-				const responseBusiness = await api.sellerCompany.uploadCertification(
-					formDataBusiness
-				);
+				const responseBusiness =
+					await api.sellerCompany.uploadCertification(formDataBusiness);
 				if (responseBusiness.status !== 201) {
 					return;
 				}
@@ -417,9 +414,8 @@ const SellerCompanyInfo = () => {
 			});
 
 			if (formDataFactory.has('files')) {
-				const responseFactory = await api.sellerCompany.uploadCertification(
-					formDataFactory
-				);
+				const responseFactory =
+					await api.sellerCompany.uploadCertification(formDataFactory);
 				if (responseFactory.status !== 201) {
 					return;
 				}

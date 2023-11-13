@@ -1,7 +1,3 @@
 export const StorefrontProductItemSamples = () => {
-	return (
-		<div>
-			Samples
-		</div>
-	)
-}
+	return <div>Samples</div>;
+};

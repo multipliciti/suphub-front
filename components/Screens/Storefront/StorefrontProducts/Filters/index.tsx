@@ -1,7 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import { setResult, setStatus, setSubcategoryFilter } from '@/redux/slices/storefront/storefrontProducts';
+import {
+	setResult,
+	setStatus,
+	setSubcategoryFilter,
+} from '@/redux/slices/storefront/storefrontProducts';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { categoryService } from '@/services/categoryApi';
 import { setCategories } from '@/redux/slices/storefront/storefront';
@@ -13,18 +17,16 @@ import { StorefrontProductSearchInput } from './SearchInput';
 
 import s from './StorefrontProductsFilters.module.scss';
 
-
-
 export const StorefrontProductsFilters = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 
-	const categories = useAppSelector(state => state.storefrontSlice.categories);
+	const categories = useAppSelector((state) => state.storefrontSlice.categories);
 
-	const status = useAppSelector(state => state.storefrontProductsSlice.status);
+	const status = useAppSelector((state) => state.storefrontProductsSlice.status);
 
-	const params = useAppSelector(state => state.storefrontProductsSlice.params);
-	const sort = useAppSelector(state => state.storefrontProductsSlice.sort);
+	const params = useAppSelector((state) => state.storefrontProductsSlice.params);
+	const sort = useAppSelector((state) => state.storefrontProductsSlice.sort);
 
 	const [subcategory, setSubcategory] = useState<string[]>([]);
 	const [statusFilter, setStatusFilter] = useState<string[]>([]);
@@ -78,8 +80,11 @@ export const StorefrontProductsFilters = () => {
 
 		let subcategoryIds: number[] = [];
 
-		subcategory.forEach(item => {
-			const subcategoryId = categoryService.findSubcategoryIdByName(categories, item);
+		subcategory.forEach((item) => {
+			const subcategoryId = categoryService.findSubcategoryIdByName(
+				categories,
+				item
+			);
 
 			if (!subcategoryIds.includes(subcategoryId)) {
 				subcategoryIds.push(subcategoryId);
@@ -87,12 +92,11 @@ export const StorefrontProductsFilters = () => {
 		});
 
 		dispatch(setSubcategoryFilter(subcategoryIds));
-	}
+	};
 
 	return (
 		<div className={s.wrapper}>
-
-			<StorefrontProductAddProductButton/>
+			<StorefrontProductAddProductButton />
 
 			<StorefrontProductSearchInput />
 
@@ -114,6 +118,5 @@ export const StorefrontProductsFilters = () => {
 				/>
 			</div>
 		</div>
-
-	)
-}
+	);
+};

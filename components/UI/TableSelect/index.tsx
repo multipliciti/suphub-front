@@ -9,14 +9,13 @@ import open_img from '@/imgs/Marketplace/ProductFilter/open.svg';
 import close_img from '@/imgs/Marketplace/ProductFilter/close.svg';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
 
-
-type Props =  {
-	isMultiple: boolean
-	placeholder: string
-	options: string[]
-	value: string[]
-	setValue: (value: string[]) => void
-}
+type Props = {
+	isMultiple: boolean;
+	placeholder: string;
+	options: string[];
+	value: string[];
+	setValue: (value: string[]) => void;
+};
 
 export const TableSelect: FC<Props> = (props) => {
 	const { placeholder, isMultiple, options, value, setValue } = props;
@@ -27,34 +26,26 @@ export const TableSelect: FC<Props> = (props) => {
 		const isSelected = value.includes(option);
 
 		if (isSelected) {
-			setValue(value.filter(item => item !== option));
+			setValue(value.filter((item) => item !== option));
 		} else {
 			if (isMultiple) {
 				setValue([...value, option]);
 			} else {
-				setValue([option])
+				setValue([option]);
 			}
 		}
-	}
+	};
 
 	return (
 		<div
 			className={s.wrapper}
 			onClick={(e) => {
 				e.stopPropagation();
-				setIsOpen(!isOpen)}
-			}
+				setIsOpen(!isOpen);
+			}}
 		>
-			<span
-				className={classNames(
-					s.title,
-					(value.length > 0) && s.title_selected
-				)}
-			>
-				{value.length > 0
-					? value.join(', ')
-					: placeholder
-				}
+			<span className={classNames(s.title, value.length > 0 && s.title_selected)}>
+				{value.length > 0 ? value.join(', ') : placeholder}
 			</span>
 
 			<Image
@@ -65,29 +56,19 @@ export const TableSelect: FC<Props> = (props) => {
 				height={20}
 			/>
 
-			<div
-				className={classNames(
-					s.menu,
-					isOpen && s.menu_active
-				)}
-			>
-				<div
-					className={s.select}
-				>
+			<div className={classNames(s.menu, isOpen && s.menu_active)}>
+				<div className={s.select}>
 					{options.map((item, index) => {
 						const isSelected = value.includes(item);
 						return (
 							<div
 								key={index + item}
-								className={classNames(
-									s.option,
-									isSelected && s.option_active
-								)}
+								className={classNames(s.option, isSelected && s.option_active)}
 								onClick={(e) => {
 									e.stopPropagation();
 									handleSelectOption(item);
 									if (!isMultiple) {
-										setIsOpen(false)
+										setIsOpen(false);
 									}
 								}}
 							>
@@ -103,10 +84,10 @@ export const TableSelect: FC<Props> = (props) => {
 									/>
 								)}
 							</div>
-						)
+						);
 					})}
 				</div>
 			</div>
 		</div>
-	)
-}
+	);
+};

@@ -14,7 +14,7 @@ import { SellerCompanyApi } from '@/services/sellerCompanyApi';
 import { BuyerCompanyApi } from '@/services/buyerCompanyApi';
 import { BankUSA } from '@/services/bankUSA';
 import { BankInternational } from '@/services/bankInternational';
-import { PaymentApi } from '@/services/payment'
+import { PaymentApi } from '@/services/payment';
 import { ProductPriceApi } from '@/services/productPriceApi';
 import { OrderApi } from '@/services/orderApi';
 
@@ -59,7 +59,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		bankInternational: BankInternational(instance),
 		category: CategoryApi(instance),
 		payment: PaymentApi(instance),
-		order: OrderApi(instance)
+		order: OrderApi(instance),
 	};
 
 	return apis;

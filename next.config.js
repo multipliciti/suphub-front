@@ -3,6 +3,6 @@ const nextConfig = {
 	images: {
 		domains: ['suphub-dev.s3.amazonaws.com', 'multipliciti-app.s3.amazonaws.com'],
 	},
-}
+};
 
 module.exports = nextConfig;

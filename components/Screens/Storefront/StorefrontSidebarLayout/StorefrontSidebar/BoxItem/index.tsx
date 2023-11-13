@@ -11,7 +11,7 @@ interface TypeProps {
 	trend?: 'up' | 'down';
 	days?: string;
 	interest?: string;
-	disable?: boolean
+	disable?: boolean;
 }
 export const BoxItem = ({
 	title,
@@ -19,14 +19,13 @@ export const BoxItem = ({
 	rating_number,
 	trend,
 	interest,
-	disable = false
+	disable = false,
 }: TypeProps) => {
 	return (
 		<div className={classNames(s.wrapper, disable && s.wrapper_disable)}>
 			<div className={s.header}>
 				<span className={s.header_title}>{title}</span>
 				{days && <span className={s.header_days}>{days}</span>}
-
 			</div>
 			<div className={s.rating}>
 				<span className={s.rating_number}>{rating_number}</span>
@@ -45,8 +44,8 @@ export const BoxItem = ({
 							trend === 'up' ? s.rating_interest_green : s.rating_interest_red
 						)}
 					>
-					{interest}
-				</span>
+						{interest}
+					</span>
 				)}
 			</div>
 		</div>

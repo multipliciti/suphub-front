@@ -66,19 +66,30 @@ export const SubmitForReview = () => {
 						<div className={s.content_title}>You have submitted the info</div>
 					</>
 				)}
-						<div className={s.content_text}>
-							Our team will consider your application and inform you when the
-							verification process will be done.
-						</div>
+				<div className={s.content_text}>
+					Our team will consider your application and inform you when the
+					verification process will be done.
+				</div>
 			</div>
 			<div className={s.btn_group}>
 				{step === 1 && (
 					<>
-						<button className={s.btn} onClick={closeModal}>Cancel</button>
-						<button className={classNames(s.btn, s.btn_active)} onClick={handleNextStepAndSubmit}>Submit for review</button>
+						<button className={s.btn} onClick={closeModal}>
+							Cancel
+						</button>
+						<button
+							className={classNames(s.btn, s.btn_active)}
+							onClick={handleNextStepAndSubmit}
+						>
+							Submit for review
+						</button>
 					</>
 				)}
-				{step === 2 && <button className={classNames(s.btn, s.btn_active)} onClick={closeModal}>Back to Settings</button>}
+				{step === 2 && (
+					<button className={classNames(s.btn, s.btn_active)} onClick={closeModal}>
+						Back to Settings
+					</button>
+				)}
 			</div>
 		</div>
 	);

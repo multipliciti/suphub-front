@@ -10,7 +10,7 @@ export interface SellerCompany {
 
 	productCertifications?: string;
 	businessCertifications?: string[];
-	factoryCertifications?: string[]
+	factoryCertifications?: string[];
 
 	planId?: number;
 
@@ -27,7 +27,11 @@ export interface SellerCompany {
 	createdAt: string;
 }
 
-export type SellerCompanyStatus = 'notVerified' | 'businessVerified' | 'declined' | 'verified';
+export type SellerCompanyStatus =
+	| 'notVerified'
+	| 'businessVerified'
+	| 'declined'
+	| 'verified';
 
 interface Logo {
 	id: number;

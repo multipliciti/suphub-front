@@ -1,23 +1,22 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RegisterUserType, User } from '@/types/services/auth';
 interface CounterState {
-	statusGetUser:  'pending' | 'seccess' | 'rejected' | 'logouted';
+	statusGetUser: 'pending' | 'seccess' | 'rejected' | 'logouted';
 	resetPasswordEmail: string;
-	registration : RegisterUserType;
-	user: User | null
+	registration: RegisterUserType;
+	user: User | null;
 }
 
 const initialState: CounterState = {
-
 	resetPasswordEmail: '',
-	registration : {
-		email:'',
+	registration: {
+		email: '',
 		firstName: '',
 		lastName: '',
-		password: ''
+		password: '',
 	},
 	user: null,
-	statusGetUser: 'pending'
+	statusGetUser: 'pending',
 };
 
 const authSlice = createSlice({
@@ -35,14 +34,17 @@ const authSlice = createSlice({
 			const payload = action.payload;
 			state.user = payload;
 		},
-		setStatusGetUser(state, action: PayloadAction<'pending' | 'seccess' | 'rejected' | 'logouted'>) {
+		setStatusGetUser(
+			state,
+			action: PayloadAction<'pending' | 'seccess' | 'rejected' | 'logouted'>
+		) {
 			const payload = action.payload;
 			state.statusGetUser = payload;
-		}
-
+		},
 	},
 });
 
-export const {  resetPasswordEmailSet, setRegistration, setUser, setStatusGetUser} = authSlice.actions;
+export const { resetPasswordEmailSet, setRegistration, setUser, setStatusGetUser } =
+	authSlice.actions;
 
 export default authSlice.reducer;

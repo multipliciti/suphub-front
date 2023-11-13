@@ -1,4 +1,8 @@
-export const formatUnitMeasurement = (numeric: number, decimals = 2, type: 'bytes' | 'bits' = 'bytes') => {
+export const formatUnitMeasurement = (
+	numeric: number,
+	decimals = 2,
+	type: 'bytes' | 'bits' = 'bytes'
+) => {
 	if (numeric === 0) {
 		if (type === 'bytes') {
 			return '0 Bytes';
@@ -18,7 +22,5 @@ export const formatUnitMeasurement = (numeric: number, decimals = 2, type: 'byte
 
 	const sizeName = type === 'bytes' ? sizesBytes[i] : sizesBits[i];
 
-	return (
-		parseFloat((numeric / Math.pow(k, i)).toFixed(dm)) + ' ' + sizeName
-	);
+	return parseFloat((numeric / Math.pow(k, i)).toFixed(dm)) + ' ' + sizeName;
 };

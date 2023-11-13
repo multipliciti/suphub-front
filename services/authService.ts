@@ -118,5 +118,5 @@ export const AuthApi = (instance: AxiosInstance) => ({
 				throw error;
 			}
 		}
-	}
+	},
 });
