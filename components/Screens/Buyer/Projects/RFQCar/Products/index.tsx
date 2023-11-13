@@ -1,80 +1,121 @@
 'use client';
 import s from './Products.module.scss';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { classNames } from '@/utils/classNames';
 import { ProductTable } from './ProductTable';
 import { QuotationsTable } from './QuotationsTable';
+import { truncateFileNameEnd } from '@/utils/names';
 import arrow_white from '@/imgs/Buyer&Seller/arrow_white.svg';
 import arrow_resize from '@/imgs/Buyer&Seller/arrow_resize.svg';
+import arrow_resize_active from '@/imgs/Buyer&Seller/arrow_resize_active.svg';
 import arrow_icon from '@/imgs/arrow.svg';
 import disable_arrow from '@/imgs/Buyer&Seller/disable_arrow.svg';
+import { RfqItemGot } from '@/types/services/rfq';
 
-export const Product = ({ products }: any) => {
-	console.log('products', products[0]);
+interface TypeProps {
+	rfqs: RfqItemGot[][];
+}
+
+export const Products = ({ rfqs }: TypeProps) => {
 	const [active, setActive] = useState<number>(0);
-	console.log('active', active);
+	const [compress, setCompress] = useState<boolean>(false);
 
 	return (
 		<div className={s.wrapper}>
-			{products.map((el: any, ind: number) => {
+			{rfqs.map((el: RfqItemGot[], ind: number) => {
 				return (
 					<div className={classNames(s.set)}>
-						<div className={s.products}>
-							{/* header  */}
+						<div
+							className={classNames(
+								s.products,
+								active === ind && compress && s.products_compress
+							)}
+						>
+							{/* header */}
 							<div
 								className={classNames(
 									s.products_header,
-									active === el.id && s.products_header_active
+									active === ind && s.products_header_active,
+									active === ind && compress && s.products_header_compress
 								)}
 							>
 								<div
-									onClick={() => setActive(el.id)}
+									onClick={() => setActive(ind)}
 									className={s.products_header_toggle}
 								>
 									<Image
-										className={s.arrow}
+										className={classNames(
+											s.arrow_toggle,
+											ind === active && s.arrow_toggle_active
+										)}
 										src={arrow_white}
 										alt="arrow_white"
 										width={20}
 										height={20}
 									/>
-									<p>
-										<span className={s.indificator}>{el.indificator}</span>{' '}
-										{el.category}
-									</p>
+									{compress ? (
+										<p>
+											<span className={s.indificator}>CSI</span>
+											{truncateFileNameEnd(el[0].subCategory.csiCode, 15)}
+										</p>
+									) : (
+										<p>
+											<span className={s.indificator}>CSI</span>
+											{el[0].subCategory.csiCode}
+										</p>
+									)}
 								</div>
-								<p className={s.products_header_count}>
-									<span>{el.properties.length} </span>
-									{el.properties.lendth === 1 ? 'item' : 'items'}
-								</p>
+								{active === ind ? (
+									!compress && (
+										<p className={s.products_header_count}>
+											<span>{el.length} </span>
+											{el.length === 1 ? 'item' : 'items'}
+										</p>
+									)
+								) : (
+									<p className={s.products_header_count}>
+										<span>{el.length} </span>
+										{el.length === 1 ? 'item' : 'items'}
+									</p>
+								)}
+
 								<Image
+									onClick={() => setCompress(!compress)}
 									className={classNames(
 										s.products_header_resize,
 										s.none,
-										active === el.id && s.active
+										active === ind && s.active
 									)}
-									src={arrow_resize}
+									src={compress ? arrow_resize_active : arrow_resize}
 									alt="arrow_resize"
 									width={20}
 									height={20}
 								/>
 							</div>
-
-							<span className={classNames(s.none, active === el.id && s.active)}>
-								<ProductTable properties={el.properties} />
+							<span
+								className={classNames(
+									s.none,
+									active === ind && s.active,
+									active === ind && s.table_wrapper
+								)}
+							>
+								<span>
+									<ProductTable compress={compress} properties={el} />
+								</span>
 							</span>
 						</div>
 
 						<div
 							className={classNames(
 								s.quotations,
-								active === el.id ? s.active : s.none
+								active === ind ? s.active : s.none,
+								compress && s.quotations_compress
 							)}
 						>
 							<div className={s.quotations_header}>
 								<p className={s.title}>Quotations</p>
-								<span className={s.pagination}>
+								{/* <span className={s.pagination}>
 									<span className={s.pagination_arrow}>
 										<Image
 											src={arrow_icon}
@@ -91,9 +132,9 @@ export const Product = ({ products }: any) => {
 											height={20}
 										/>
 									</span>
-								</span>
+								</span> */}
 							</div>
-							<QuotationsTable quotations={el.quotations} />
+							<QuotationsTable compress={compress} rfqs={el} />
 						</div>
 					</div>
 				);

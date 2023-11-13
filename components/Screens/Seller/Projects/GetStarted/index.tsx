@@ -15,13 +15,12 @@ import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { Api } from '@/services';
 import { useRouter } from 'next/navigation';
-import { SellerCompanyStatus } from '@/types/services/company';
 
 export const GetStarted = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
 	const router = useRouter();
-	const [status, setStatus] = useState<SellerCompanyStatus>('notVerified');
+	const [status, setStatus] = useState<'notVerified' | 'businessVerified' | 'declined' | 'verified' >('notVerified');
 	useEffect(() => {
 		try {
 			const fetch = async () => {

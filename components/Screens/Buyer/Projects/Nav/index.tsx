@@ -6,6 +6,7 @@ interface TypeProps {
 	activeDisplay: number;
 	setActiveDisplay: (n: number) => void;
 }
+
 export const Nav = ({ activeDisplay, setActiveDisplay }: TypeProps) => {
 	const navList = [
 		{

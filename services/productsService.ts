@@ -70,4 +70,10 @@ export const ProductsApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
+	async getCategory() {
+		console.log('start getCategory');
+		const url = `category`;
+		const response = await instance.get(url);
+		return response.data;
+	},
 });

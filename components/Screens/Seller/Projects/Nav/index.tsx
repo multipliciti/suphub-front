@@ -15,11 +15,11 @@ export const Nav = ({ activeDisplay, setActiveDisplay }: TypeProps) => {
 		},
 		{
 			id: 2,
-			title: 'Overview',
+			title: 'MyProducts',
 		},
 		{
 			id: 3,
-			title: 'RFQ Cart',
+			title: 'Requests',
 		},
 		{
 			id: 4,
