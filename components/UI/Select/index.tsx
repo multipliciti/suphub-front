@@ -1,6 +1,7 @@
-import { Dispatch, FC, SetStateAction, useState } from 'react';
+import { Dispatch, FC, SetStateAction, useRef, useState } from 'react';
 import Image from 'next/image';
 
+import { useClickOutside } from '@/components/Hooks/useClickOutside';
 import { classNames } from '@/utils/classNames';
 
 import s from './Select.module.scss';
@@ -23,6 +24,9 @@ export const Select: FC<Props> = (props) => {
 
 	const [isOpen, setIsOpen] = useState(false);
 
+	const wrapperRef = useRef<HTMLDivElement>(null);
+	useClickOutside(wrapperRef, () => setIsOpen(false));
+
 	const handleSelectOption = (option: string) => {
 		const isSelected = value.includes(option);
 
@@ -42,6 +46,7 @@ export const Select: FC<Props> = (props) => {
 
 	return (
 		<div
+			ref={wrapperRef}
 			className={s.wrapper}
 			onClick={(e) => {
 				e.stopPropagation();

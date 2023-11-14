@@ -60,12 +60,14 @@ const storefrontCategoriesSlice = createSlice({
 			state,
 			action: PayloadAction<FindSellerProductsParams['find']['name']['contains']>
 		) {
+			state.params.page = 1;
 			state.params.find.name.contains = action.payload;
 		},
 		setSubcategoryFilter(
 			state,
 			action: PayloadAction<FindSellerProductsParams['find']['subCategoryId']['in']>
 		) {
+			state.params.page = 1;
 			state.params.find.subCategoryId.in = action.payload;
 		},
 	},

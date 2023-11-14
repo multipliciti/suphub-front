@@ -1,6 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
+import { useClickOutside } from '@/components/Hooks/useClickOutside';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { setModal } from '@/redux/slices/modal';
@@ -12,8 +13,11 @@ export const StorefrontProductAddProductButton = () => {
 
 	const [isOpen, setIsOpen] = useState(false);
 
+	const wrapperRef = useRef<HTMLDivElement>(null);
+	useClickOutside(wrapperRef, () => setIsOpen(false));
+
 	return (
-		<div className={s.wrapper}>
+		<div ref={wrapperRef} className={s.wrapper}>
 			<button className={s.button} onClick={() => setIsOpen(!isOpen)}>
 				Add new product
 			</button>

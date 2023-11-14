@@ -18,6 +18,7 @@ import { Input } from '@/components/UI/Input';
 import { Api } from '@/services';
 import { SpecificationDynamicTable } from '@/components/Screens/Storefront/StorefrontProductItem/General/SpecificationDynamicTable';
 import { StorefrontProductPriceTier } from '@/components/Screens/Storefront/StorefrontProducts/Table/PriceTier';
+import { StorefrontProductImage } from '@/components/Screens/Storefront/StorefrontProductItem/General/ProductImage';
 
 import s from './StorefrontProductItemGeneral.module.scss';
 
@@ -202,6 +203,16 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 		});
 	};
 
+	const onDeleteImageByIndex = (index: number) => {
+		if (!product) {
+			return;
+		}
+		setProduct({
+			...product,
+			images: product.images.filter((_, idx) => idx !== index),
+		});
+	};
+
 	const showModalForUploadImages = () => {
 		dispatch(setProductIdForUploadImages(id));
 		dispatch(setModal('sellerProductUploadImage'));
@@ -274,30 +285,22 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 					<tr>
 						<td>Product images</td>
 						<td>
-							{product.images.length > 0 && (
-								<div className={s.images}>
-									{product.images.map((item, index) => (
-										<Image
-											key={item.id + index}
-											src={item.url || ''}
-											alt="image"
-											width={48}
-											height={48}
-											style={{ borderRadius: 8 }}
+							<div className={s.images}>
+								{product.images.length > 0 &&
+									product.images.map((item, index) => (
+										<StorefrontProductImage
+											key={`${item.id}-${index}`}
+											id={item.id}
+											url={item.url}
+											onDeleteImageByIndex={() => onDeleteImageByIndex(index)}
 										/>
 									))}
-
-									<div className={s.image_upload} onClick={showModalForUploadImages}>
-										<Image
-											src={addIcon}
-											alt="add_image_icon"
-											width={24}
-											height={24}
-										/>
-									</div>
+								<div className={s.image_upload} onClick={showModalForUploadImages}>
+									<Image src={addIcon} alt="add_image_icon" width={24} height={24} />
 								</div>
-							)}
+							</div>
 						</td>
+
 						<td>Certification</td>
 						<td>
 							<Input placeholder="Enter certification" disabled />

@@ -103,4 +103,15 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
+
+	async deleteImages(ids: number[]) {
+		try {
+			const url = `/product-seller/images`;
+			const response = await instance.delete(url, { data: { ids } });
+			return response.data;
+		} catch (error) {
+			console.error('Product Seller API error:', error);
+			throw error;
+		}
+	},
 });
