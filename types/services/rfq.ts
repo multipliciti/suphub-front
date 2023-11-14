@@ -61,7 +61,11 @@ export interface RfqFind {
 		id?: string;
 	};
 	searchText?: string;
-	searchParams?: string;
+	searchParams?:
+		| string
+		| {
+				subCategoryId: number;
+		  };
 }
 
 export interface RfqUpdateData {
