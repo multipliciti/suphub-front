@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import s from './ProjectsTable.module.scss';
 import { truncateFileNameEnd } from '@/utils/names';
 import { classNames } from '@/utils/classNames';
+import { Order } from '@/types/services/buyerProject';
 
 interface PropsType {
 	columns: { title: string; key: string }[];
-	data: { [key: string]: string }[];
+	data: Order[];
 }
 
 export const ProjectsTable = ({ columns, data }: PropsType) => {
 	return (
 		<div className={s.wrapper}>
 			<table className={s.table}>
-				<thead>
+				<thead className={s.thead}>
 					<tr>
 						{/* Creating Column Headings */}
 						{columns.map((column, ind) => (
@@ -24,59 +25,83 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 					{/* Creating Data Rows */}
 					{data.map((row, rowIndex) => (
 						<tr key={rowIndex}>
-							{columns.map((column, ind) => (
+							{columns.map((column, indd) => (
 								<>
-									<td className={s.td} key={ind}>
-										{/* {row[column.key]} */}
-
-										{/* Product */}
-										{column.key === 'Product' && (
+									{/* PO  */}
+									{column.key === 'PO#' && (
+										<td className={s.td}>
+											<span> {row.PO}</span>
+										</td>
+									)}
+									{/* Issue Date */}
+									{column.key === 'Issue Date' && (
+										<td className={s.td}>
+											<span>02/26/2023</span>
+										</td>
+									)}
+									{/* Issue Date */}
+									{column.key === 'Manufacturer' && (
+										<td className={s.td}>
+											<span>Example</span>
+										</td>
+									)}
+									{/* Product */}
+									{column.key === 'Product' && (
+										<td className={s.td}>
 											<span className={s.td_product}>
-												<span>{truncateFileNameEnd(row[column.key], 25)}</span>
+												<span>{truncateFileNameEnd('Product name', 25)}</span>
 												<span className={s.updates}>See updates</span>
 											</span>
-										)}
-
-										{/* Status */}
-										{column.key === 'Status' && (
+										</td>
+									)}
+									{/* Order Type */}
+									{column.key === 'Order Type' && (
+										<td className={s.td}>
+											<span className={s.td_order}>
+												<span
+													className={classNames(
+														s.dot,
+														'Purchase order' === 'Purchase order' && s.dot_blue,
+														'Sample order' === 'Sample order' && s.dot_grey
+													)}
+												></span>
+												Sample order
+											</span>
+										</td>
+									)}
+									{/* Subtotal (USD) */}
+									{column.key === 'Subtotal (USD)' && (
+										<td className={s.td}>
+											<span>${row.amount}</span>
+										</td>
+									)}
+									{/* Status */}
+									{column.key === 'Status' && (
+										<td className={s.td}>
 											<span className={s.td_wrapper_status}>
 												<span
 													className={classNames(
 														s.td_status,
 														s.td,
-														row[column.key] === 'Payment pending' &&
-															s.td_status_pending,
-														row[column.key] === 'In transit' && s.td_status_transit,
-														row[column.key] === 'In production' &&
-															s.td_status_production,
-														row[column.key] === 'PO issued' && s.td_status_issued,
-														row[column.key] === 'Delivered' && s.td_status_delivered
+														row.status === 'Payment pending' && s.td_status_pending,
+														row.status === 'In transit' && s.td_status_transit,
+														row.status === 'In production' && s.td_status_production,
+														row.status === 'PO issued' && s.td_status_issued,
+														row.status === 'Delivered' && s.td_status_delivered,
+														row.status === 'confirmed' && s.td_status_delivered
 													)}
 												>
-													{row[column.key]}
+													{row.status}
 												</span>
 											</span>
-										)}
-
-										{/* Order Type */}
-										{column.key === 'Order Type' && (
-											<span className={s.td_order}>
-												<span
-													className={classNames(
-														s.dot,
-														row[column.title] === 'Purchase order' && s.dot_blue,
-														row[column.title] === 'Sample order' && s.dot_grey
-													)}
-												></span>
-												{row[column.key]}
-											</span>
-										)}
-
-										{/* other type */}
-										{column.key !== 'Order Type' &&
-											column.key !== 'Status' &&
-											column.key !== 'Product' && <span>{row[column.key]}</span>}
-									</td>
+										</td>
+									)}
+									{/* Est.Delivery  */}
+									{column.key === 'Est.Delivery' && (
+										<td className={s.td}>
+											<span>Est.Delivery Example</span>
+										</td>
+									)}
 								</>
 							))}
 						</tr>

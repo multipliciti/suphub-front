@@ -12,30 +12,19 @@ interface TypeProps {
 	stateInputs: any;
 }
 export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
-	const [activeFilter, setActiveFilter] = useState<number[]>([]);
+	const [activeFilter, setActiveFilter] = useState<number>(-1);
 	const inputSearchRef = useRef<HTMLInputElement | null>(null);
 
-	//toggle. Off or on filter wrapper
-	const toggleFilter = (id: number) => {
-		if (activeFilter.includes(id)) {
-			setActiveFilter(activeFilter.filter((filterId) => filterId !== id));
-		} else {
-			setActiveFilter([...activeFilter, id]);
-		}
-	};
-
 	//add and remove items in store inputs (stateInputs)
-	const setVelueFilters = (key: string, item: { id: number; title: string }) => {
+	const setVelueFilters = (key: string, item: string) => {
 		const include = stateInputs[key].some(
-			(existingItem: any) => existingItem.id === item.id
+			(existingItem: any) => existingItem === item
 		);
 		//remove item from array
 		if (include) {
 			setStateInputs((prevState: any) => ({
 				...prevState,
-				[key]: prevState[key].filter(
-					(existingItem: any) => existingItem.id !== item.id
-				),
+				[key]: prevState[key].filter((existingItem: any) => existingItem !== item),
 			}));
 		}
 		//add item
@@ -46,110 +35,22 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 			}));
 		}
 	};
-	//filter items
-	const filtersArray = [
-		{
-			id: 1,
-			title: 'Manufacturer',
-			key: 'manufacturer',
-			filters: [
-				{
-					id: 1,
-					title: 'Customer name',
-				},
-				{
-					id: 2,
-					title: 'Customer name',
-				},
-				{
-					id: 3,
-					title: 'Customer name',
-				},
-				{
-					id: 4,
-					title: 'Customer name',
-				},
-				{
-					id: 5,
-					title: 'Customer name',
-				},
-				{
-					id: 6,
-					title: 'Customer name',
-				},
-				{
-					id: 7,
-					title: 'Customer name',
-				},
-				{
-					id: 8,
-					title: 'Customer name',
-				},
-				{
-					id: 9,
-					title: 'Customer name',
-				},
-				{
-					id: 10,
-					title: 'Customer name',
-				},
-			],
-		},
-		{
-			id: 2,
-			title: 'Status',
-			key: 'status',
-			filters: [
-				{
-					id: 1,
-					title: 'PO issued',
-				},
-				{
-					id: 2,
-					title: 'Payment pending',
-				},
-				{
-					id: 3,
-					title: 'In production',
-				},
-				{
-					id: 4,
-					title: 'Pre-shipment',
-				},
-				{
-					id: 5,
-					title: 'PO issued',
-				},
-				{
-					id: 6,
-					title: 'Payment pending',
-				},
-				{
-					id: 7,
-					title: 'In production',
-				},
-				{
-					id: 8,
-					title: 'Pre-shipment',
-				},
-			],
-		},
-		{
-			id: 3,
-			title: 'Order type',
-			key: 'orderType',
-			filters: [
-				{
-					id: 1,
-					title: 'Purchase order',
-				},
-				{
-					id: 2,
-					title: 'Sample order',
-				},
-			],
-		},
-	];
+
+	const statuses = {
+		confirmed: 'confirmed',
+		depositWaiting: 'depositWaiting',
+		inProduction: 'inProduction',
+		preShipment: 'preShipment',
+		shipped: 'shipped',
+		paymentWaiting: 'paymentWaiting',
+		delivered: 'delivered',
+		completed: 'completed',
+	};
+
+	const orderType = {
+		sample: 'sample',
+		product: ' product',
+	};
 
 	return (
 		<div className={s.wrapper}>
@@ -184,56 +85,98 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 				/>
 			</label>
 
-			{filtersArray.map((element, ind) => {
-				return (
-					<div
-						key={ind}
-						onClick={() => toggleFilter(element.id)}
-						className={s.filter}
-					>
-						<span className={s.filter_title}>{element.title}</span>
-						<Image
-							className={classNames(
-								s.filter_icon,
-								activeFilter.includes(element.id) && s.filter_icon_active
-							)}
-							src={arrow_icon}
-							alt="arrow_icon"
-							width={20}
-							height={20}
-						/>
+			<div
+				onClick={() => setActiveFilter(activeFilter !== 1 ? 1 : -1)}
+				className={s.filter}
+			>
+				<span className={s.filter_title}>Status</span>
+				<Image
+					className={classNames(
+						s.filter_icon,
+						activeFilter === 1 && s.filter_icon_active
+					)}
+					src={arrow_icon}
+					alt="arrow_icon"
+					width={20}
+					height={20}
+				/>
+				{/* Status filter */}
+				<div
+					className={classNames(
+						s.filter_content,
+						activeFilter === 1 && s.filter_content_active
+					)}
+				>
+					{Object.values(statuses).map((el, ind) => {
+						return (
+							<div className={s.item_wrapper}>
+								<p
+									onClick={(e) => {
+										e.stopPropagation();
+										setVelueFilters('status', el);
+									}}
+									className={classNames(
+										s.item,
+										stateInputs['status'].some(
+											(existingItem: any) => existingItem === el
+										) && s.item_active
+									)}
+									key={ind}
+								>
+									{el}
+								</p>
+							</div>
+						);
+					})}
+				</div>
+			</div>
 
-						<div
-							className={classNames(
-								s.filter_content,
-								activeFilter.includes(element.id) && s.filter_content_active
-							)}
-						>
-							{element.filters.map((el, ind) => {
-								return (
-									<div className={s.item_wrapper}>
-										<p
-											onClick={(e) => {
-												e.stopPropagation();
-												setVelueFilters(element.key, el);
-											}}
-											className={classNames(
-												s.item,
-												stateInputs[element.key].some(
-													(existingItem: any) => existingItem.id === el.id
-												) && s.item_active
-											)}
-											key={ind}
-										>
-											{el.title}
-										</p>
-									</div>
-								);
-							})}
-						</div>
-					</div>
-				);
-			})}
+			{/* Order Type filter*/}
+			<div
+				onClick={() => setActiveFilter(activeFilter !== 2 ? 2 : -1)}
+				className={s.filter}
+			>
+				<span className={s.filter_title}>Order Type</span>
+				<Image
+					className={classNames(
+						s.filter_icon,
+						activeFilter === 2 && s.filter_icon_active
+					)}
+					src={arrow_icon}
+					alt="arrow_icon"
+					width={20}
+					height={20}
+				/>
+
+				<div
+					className={classNames(
+						s.filter_content,
+						activeFilter === 2 && s.filter_content_active
+					)}
+				>
+					{Object.values(orderType).map((el, ind) => {
+						return (
+							<div className={s.item_wrapper}>
+								<p
+									onClick={(e) => {
+										e.stopPropagation();
+										setVelueFilters('orderType', el);
+									}}
+									className={classNames(
+										s.item,
+										stateInputs['orderType'].some(
+											(existingItem: any) => existingItem === el
+										) && s.item_active
+									)}
+									key={ind}
+								>
+									{el}
+								</p>
+							</div>
+						);
+					})}
+				</div>
+			</div>
 		</div>
 	);
 };

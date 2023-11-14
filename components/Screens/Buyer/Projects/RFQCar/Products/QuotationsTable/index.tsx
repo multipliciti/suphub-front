@@ -23,7 +23,6 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 	const [indexMore, setIndexMore] = useState<number>(-1);
 	const [rect, setRect] = useState<any>();
 
-	// const tbodyRef = useRef<HTMLTableSectionElement>(null);
 	const tbodyRef = useRef<HTMLTableElement>(null);
 	console.log('Координаты элемента:', rect);
 	useEffect(() => {
@@ -116,8 +115,8 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 									>
 										<span className={s.item}>
 											<span className={s.item_info}>
-												<span className={s.item_size}>{el.size}</span>
-												<span className={s.item_price}>${el.price}</span>
+												<span className={s.item_info_size}>{el.size}</span>
+												<span className={s.item_info_price}>${el.price}</span>
 											</span>
 
 											<Image

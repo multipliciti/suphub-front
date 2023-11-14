@@ -5,6 +5,7 @@ import { RFQCarFilters } from './RFQCarFilters';
 import { Products } from './Products';
 import { RfqItemGot } from '@/types/services/rfq';
 import { Api } from '@/services';
+
 export const RFQCar = () => {
 	const api = Api();
 	const [stateInputs, setStateInputs] = useState({
@@ -24,7 +25,7 @@ export const RFQCar = () => {
 	const categoriesFilterArr =
 		stateInputs.categories.length > 0
 			? {
-					categories: { in: stateInputs.categories },
+					subCategoryId: { in: stateInputs.categories },
 			  }
 			: null;
 
@@ -57,7 +58,6 @@ export const RFQCar = () => {
 	const finalJsonString = JSON.stringify(finalAttrObj);
 
 	const fetchData = async () => {
-		console.log('start fetchData');
 		try {
 			const response = await api.rfq.getRfqByProject({
 				page: 1,

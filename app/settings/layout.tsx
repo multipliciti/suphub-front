@@ -7,7 +7,6 @@ import { useRouter } from 'next/navigation';
 import { useAppSelector } from '@/redux/hooks';
 import { Api } from '@/services';
 import { useAppDispatch } from '@/redux/hooks';
-const { setModal } = require('@/redux/slices/modal');
 
 export default function SettingsLayout({ children }: { children: React.ReactNode }) {
 	const router: any = useRouter();

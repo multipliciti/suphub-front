@@ -17,6 +17,7 @@ import { BankInternational } from '@/services/bankInternational';
 import { PaymentApi } from '@/services/payment';
 import { ProductPriceApi } from '@/services/productPriceApi';
 import { OrderApi } from '@/services/orderApi';
+import { BuyerProjectApi } from './buyerProject';
 
 export type ApiReturnType = {
 	sendFormStepOne(): unknown;
@@ -55,6 +56,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		rfqOption: RfqOptionApi(instance),
 		sellerCompany: SellerCompanyApi(instance),
 		buyerCompany: BuyerCompanyApi(instance),
+		buyerProject: BuyerProjectApi(instance),
 		bankUSA: BankUSA(instance),
 		bankInternational: BankInternational(instance),
 		category: CategoryApi(instance),
