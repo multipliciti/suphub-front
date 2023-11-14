@@ -1,6 +1,7 @@
-import { FC, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import Image from 'next/image';
 
+import { useClickOutside } from '@/components/Hooks/useClickOutside';
 import { classNames } from '@/utils/classNames';
 
 import s from './TableSelect.module.scss';
@@ -22,6 +23,9 @@ export const TableSelect: FC<Props> = (props) => {
 
 	const [isOpen, setIsOpen] = useState(false);
 
+	const wrapperRef = useRef<HTMLDivElement>(null);
+	useClickOutside(wrapperRef, () => setIsOpen(false));
+
 	const handleSelectOption = (option: string) => {
 		const isSelected = value.includes(option);
 
@@ -38,6 +42,7 @@ export const TableSelect: FC<Props> = (props) => {
 
 	return (
 		<div
+			ref={wrapperRef}
 			className={s.wrapper}
 			onClick={(e) => {
 				e.stopPropagation();
