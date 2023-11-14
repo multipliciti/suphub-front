@@ -52,7 +52,7 @@ const SellerCompanyInfo = () => {
 		shouldUnregister: true,
 	});
 
-	const [companyId, setCompanyId] = useState<number>1(0);
+	const [companyId, setCompanyId] = useState<number>(0);
 
 	const [logoSrc, setLogoSrc] = useState(null);
 	const [previewLogo, setPreviewLogo] = useState<string | null>(null);
