@@ -1,3 +1,5 @@
+import { StorefrontOrders } from '@/components/Screens/Storefront/StorefrontOrders';
+
 export default function StorefrontOrdersPage() {
-	return <div></div>;
+	return <StorefrontOrders />;
 }

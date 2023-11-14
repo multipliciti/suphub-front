@@ -5,7 +5,7 @@ import { RequestTable } from './RequestTable';
 import { PaginationWrapper } from './PaginationWrapper';
 import { useState } from 'react';
 
-export const Requests = () => {
+export const StorefrontRequests = () => {
 	//store filters-inputs value
 	const [stateInputs, setStateInputs] = useState({
 		search: '',
