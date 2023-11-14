@@ -4,10 +4,10 @@ import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { setSellerCompany, setSidebar } from '@/redux/slices/storefront/storefront';
-import { BoxItem } from '@/components/Screens/Storefront/StorefrontSidebarLayout/StorefrontSidebar/BoxItem';
+import { BoxItem } from '@/components/Screens/Storefront/StorefrontLayout/StorefrontSidebarLayout/StorefrontSidebar/BoxItem';
 
 import toggle_img from '@/imgs/SideBar/toggle.svg';
-import star_icon from '@/imgs/Buyer&Seller/star.svg';
+// import star_icon from '@/imgs/Buyer&Seller/star.svg';
 
 import s from './StorefrontSidebar.module.scss';
 import { useEffect, useState } from 'react';
