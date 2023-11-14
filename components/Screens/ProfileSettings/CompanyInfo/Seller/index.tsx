@@ -52,7 +52,7 @@ const SellerCompanyInfo = () => {
 		shouldUnregister: true,
 	});
 
-	const [companyId, setCompanyId] = useState<number>(1);
+	const [companyId, setCompanyId] = useState<number>1(0);
 
 	const [logoSrc, setLogoSrc] = useState(null);
 	const [previewLogo, setPreviewLogo] = useState<string | null>(null);
@@ -255,9 +255,10 @@ const SellerCompanyInfo = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			const getCompanyId = await api.auth.getUser();
-			setCompanyId(getCompanyId.data.sellerCompanyId);
-			const response = await api.sellerCompany.getById(companyId);
+			const userResponse = await api.auth.getUser();
+			const { data: { sellerCompanyId } } = userResponse;
+			setCompanyId(sellerCompanyId);
+			const response = await api.sellerCompany.getById(sellerCompanyId);
 			const {
 				name,
 				logo,

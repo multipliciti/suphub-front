@@ -35,7 +35,7 @@ const BuyerCompanyInfo = () => {
 
 	const [logoSrc, setLogoSrc] = useState(null);
 	const [previewLogo, setPreviewLogo] = useState<string | null>(null);
-	const [companyId, setCompanyId] = useState<number>(1);
+	const [companyId, setCompanyId] = useState<number>(0);
 
 	const [submitClicked, setSubmitClicked] = useState<boolean>(false);
 
@@ -57,9 +57,11 @@ const BuyerCompanyInfo = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			const getCompanyId = await api.auth.getUser();
-			setCompanyId(getCompanyId.data.buyerCompanyId);
-			const response = await api.buyerCompany.getById(companyId);
+			const userResponse = await api.auth.getUser();
+			const { data: { buyerCompanyId } } = userResponse;
+
+			setCompanyId(buyerCompanyId);
+			const response = await api.buyerCompany.getById(buyerCompanyId);
 			const { name, logo, address } = response.data;
 			setValue('name', name ?? '');
 			setValue('street', address?.street);

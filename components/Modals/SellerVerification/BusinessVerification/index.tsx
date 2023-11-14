@@ -18,7 +18,7 @@ export const BusinessVerification = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 
-	const [companyId, setCompanyId] = useState<number>(1);
+	const [companyId, setCompanyId] = useState<number>(0);
 
 	const [addCountryInput, setAddCountryInput] = useState<string>('');
 	const [addCertificationInput, setAddCertificationInput] = useState<string>('');
@@ -221,9 +221,10 @@ export const BusinessVerification = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-		const getCompanyId = await api.auth.getUser();
-		setCompanyId(getCompanyId.data.sellerCompanyId);
-		const response = await api.sellerCompany.getById(companyId);
+		const userResponse = await api.auth.getUser();
+			const { data: { sellerCompanyId } } = userResponse;
+			setCompanyId(sellerCompanyId);
+		const response = await api.sellerCompany.getById(sellerCompanyId);
 		const {
 			businessCertifications,
 			factoryCertifications,
