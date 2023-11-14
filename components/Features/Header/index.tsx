@@ -77,7 +77,7 @@ export const Header = () => {
 		{
 			id: 3,
 			label: 'My Storefront',
-			href: '/storefront/products',
+			href: '/storefront/get-started',
 		},
 	];
 
