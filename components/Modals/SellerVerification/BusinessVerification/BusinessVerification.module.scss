@@ -268,6 +268,7 @@
     justify-content: center;
     align-items: center;
     gap: 6px;
+    cursor: pointer;
 
     border-radius: 8px;
     border: 0.5px solid var(--primary-color-purple, #2B1694);
@@ -341,9 +342,19 @@
       font-weight: 700;
       line-height: 20px;
 
+      &:disabled {
+        opacity: 100%;
+      }
+
+
       &_active {
         color: var(--new-colors-white, #FFF);
         background: #2B1694;
+
+        &:disabled {
+          opacity:25%;
+        }
+
       }
     }
   }
@@ -360,3 +371,119 @@
   line-height: 18px;
 }
 
+.upload {
+
+  &_filename {
+
+    font-weight: 400;
+    font-size: 16px;
+    font-style: normal;
+    line-height: 24px;
+
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--primary-color-medium-purple, #594D98);
+
+
+    &_size {
+      color: var(--new-grey-400, #94A3B8);
+      font-weight: 400;
+      line-height: 18px;
+      margin-top: 1px;
+      font-size: 12px;
+      font-style: normal;
+    }
+  }
+
+  &_row {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &_button {
+    display: flex;
+    max-width: 126px;
+    padding: 8px 16px 8px 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+
+    border-radius: 8px;
+    border: 0.5px solid var(--primary-color-purple, #2B1694);
+    background: var(--new-grey-0, #FFF);
+
+
+    color: var(--primary-color-purple, #2B1694);
+    font-variant-numeric: lining-nums proportional-nums;
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  &_close {
+    display: flex;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+@mixin tagStyle {
+  display: flex;
+  padding: 8px 10px 8px 12px;
+  align-items: center;
+  gap: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--primary-color-medium-blue-2-disable, #AAB3EC);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  background: var(--primary-color-light-blue-3, #E8EBFD);
+}
+
+.tag {
+  @include tagStyle;
+
+  &_add {
+    @include tagStyle;
+    padding: 8px 16px 8px 8px;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid var(--new-grey-300, #CBD5E1);
+    background: var(--new-grey-0, #FFF);
+
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 20px;
+  }
+
+  &_close {
+    width: 10px;
+    height: 10px;
+  }
+
+  &_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+    padding-left: 20px;
+    gap: 12px;
+
+
+    &_countries {
+      display: flex;
+      flex-wrap: wrap;
+
+      width: 100%;
+      gap: 8px;
+    }
+  }
+}

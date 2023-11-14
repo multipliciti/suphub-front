@@ -168,7 +168,10 @@ const BankingInfo = () => {
 					<>
 						<button
 							type={'submit'}
-							className={classNames(s.btn_send, s.btn_send_active)}
+							className={classNames(s.btn_send,
+								Boolean(!(Object.keys(errors)?.length > 0)) && s.btn_send_active)
+							}
+							disabled={Boolean(Object.keys(errors)?.length > 0)}
 						>
 							Submit for review
 						</button>
