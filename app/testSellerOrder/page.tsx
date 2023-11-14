@@ -1,4 +1,4 @@
-import { SellerOrder } from '@/components/Screens/Seller/SellerOrder';
+import { SellerOrder } from '@/components/Screens/Storefront/StorefrontOrders/SellerOrder';
 
 export default function testBuyerOrder() {
 	return (

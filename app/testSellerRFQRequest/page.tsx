@@ -1,4 +1,4 @@
-import { Request } from '@/components/Screens/Seller/QuoteDetail';
+import { Request } from '@/components/Screens/Storefront/StorefrontRequests/QuoteDetail';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {

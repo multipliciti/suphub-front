@@ -5,6 +5,10 @@ import { TabSwitcher, TabSwitcherItem } from '@/components/UI/TabSwitcher';
 
 const tabList: TabSwitcherItem[] = [
 	{
+		href: '/storefront/get-started',
+		title: 'Get Started',
+	},
+	{
 		href: '/storefront/products',
 		title: 'My Products',
 	},
@@ -13,8 +17,8 @@ const tabList: TabSwitcherItem[] = [
 		title: 'Orders',
 	},
 	{
-		href: '/storefront/rfq',
-		title: 'RFQ',
+		href: '/storefront/requests',
+		title: 'Requests',
 	},
 ];
 

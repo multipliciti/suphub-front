@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { ProjectsTable } from './ProjectsTable';
 import { PaginationWrapper } from './PaginationWrapper';
 
-export const Orders = () => {
+export const StorefrontOrders = () => {
 	//store filters-inputs value
 	const [stateInputs, setStateInputs] = useState({
 		search: '',
