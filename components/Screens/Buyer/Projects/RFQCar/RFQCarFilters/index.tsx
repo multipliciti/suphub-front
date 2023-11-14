@@ -26,7 +26,7 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 	const subCategories = categoriesToSubCategories(category);
 	console.log('stateInputs', stateInputs);
 	// Function to add and remove items in stateInputs
-	const setVelueFilters = (key: string, item: string): void => {
+	const setVelueFilters = (key: string, item: string | number): void => {
 		// Check if the item already exists in the array
 		const include = stateInputs[key]?.includes(item);
 
@@ -49,7 +49,7 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 
 	const getCategory = async () => {
 		try {
-			const category = await api.product.getCategory();
+			const category = await api.category.getCategories();
 			setCategory(category);
 		} catch (error) {
 			console.error('error submitedRFQ', error);
@@ -70,7 +70,6 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 		archived: 'archived',
 	};
 
-	console.log('subCategorieseeee', subCategories);
 
 	return (
 		<div className={s.wrapper}>
@@ -165,12 +164,12 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 								<p
 									onClick={(e) => {
 										e.stopPropagation();
-										setVelueFilters('categories', el.name);
+										setVelueFilters('categories', el.id);
 									}}
 									className={classNames(
 										s.item,
 										stateInputs['categories'].some(
-											(existingItem: any) => existingItem === el.name
+											(existingItem: any) => existingItem === el.id
 										) && s.item_active
 									)}
 									key={ind}

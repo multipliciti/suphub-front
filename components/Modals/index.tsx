@@ -22,6 +22,7 @@ import { MembershipFee } from '@/components/Modals/SellerVerification/Membership
 import { SellerAddNewProduct } from './StorefrontAddProduct/AddNewProduct';
 import { SellerProductBulkUpload } from './StorefrontAddProduct/BulkUpload';
 import { SellerProductUploadImage } from './StorefrontAddProduct/UploadImage';
+import { DisableRole } from './DisableRole';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -193,6 +194,14 @@ export const Modal = () => {
 			>
 				{modal === 'sellerProductUploadImage' && <SellerProductUploadImage />}
 			</div>
+			{/* <div
+				className={classNames(
+					s.wrapper,
+					modal === 'sellerProductUploadImage' && s.wrapper_active
+				)}
+			>
+				{modal === 'sellerProductUploadImage' && <DisableRole />}
+			</div> */}
 		</>
 	);
 };

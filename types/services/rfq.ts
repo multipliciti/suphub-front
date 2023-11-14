@@ -59,14 +59,9 @@ export interface RfqFind {
 	page?: number;
 	sortParams?: {
 		id?: string;
-		sortDirection?: SortOptions;
 	};
 	searchText?: string;
-	searchParams?:
-		| {
-				subCategoryId?: number;
-		  }
-		| string;
+	searchParams?: string;
 }
 
 export interface RfqUpdateData {
