@@ -136,7 +136,7 @@ const SellerCompanyInfo = () => {
 
 		if (
 			productCertifications.some(
-				(certification) => certification.toLowerCase() === trimmedInput
+				(certification) => certification.trim().toLowerCase() === trimmedInput
 			)
 		) {
 			setError('productCertifications', {
@@ -169,7 +169,7 @@ const SellerCompanyInfo = () => {
 
 		if (
 			countryProductsCertifiedFor.some(
-				(certification) => certification.toLowerCase() === trimmedInput
+				(certification) => certification.trim().toLowerCase() === trimmedInput
 			)
 		) {
 			setError('countryProductsCertifiedFor', {
