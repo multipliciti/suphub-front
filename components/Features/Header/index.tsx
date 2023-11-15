@@ -155,19 +155,19 @@ export const Header = () => {
 										activeLink === 3 && s.menu_btn_active
 									)}
 								>
-									<Link
+									<li
 										onClick={(e) => {
 											e.stopPropagation();
 											setActiveLink(3);
+											dispatch(setModal('createBusinessAccount'));
 										}}
 										className={classNames(
 											s.menu_btn,
 											activeLink === 3 && s.menu_btn_active
 										)}
-										href={'/'}
 									>
-										Convert to bussiness
-									</Link>
+										Convert to business
+									</li>
 								</div>
 							</li>
 							<li className={s.split}></li>
@@ -243,7 +243,14 @@ export const Header = () => {
 					<Image src={logo} alt="Logo" width={117} height={36} />
 					<div className={s.auth}>
 						<ul className={s.auth_buttons}>
-							<li className={s.selltogether}>Sell with us</li>
+							<li
+								className={s.selltogether}
+								onClick={() => {
+									dispatch(setModal('createBusinessAccount'));
+								}}
+							>
+								Sell with us
+							</li>
 							<li className={s.split_hed}></li>
 							<li
 								className={s.login}
@@ -255,7 +262,7 @@ export const Header = () => {
 							</li>
 							<li
 								onClick={() => {
-									dispatch(setModal('registration'));
+									dispatch(setModal('createBusinessAccount'));
 								}}
 								className={s.signup}
 							>
