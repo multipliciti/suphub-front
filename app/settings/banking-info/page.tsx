@@ -9,7 +9,7 @@ function Page() {
 	const router = useRouter();
 
 	useEffect(() => {
-		if (role === 'buyer') {
+		if (role !== 'seller') {
 			router.push('/settings/personal-info');
 		}
 	}, []);
