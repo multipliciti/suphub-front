@@ -70,10 +70,13 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 		}
 	},
 
-	async bulkUploadCsv(csvFile: File) {
+	async bulkUploadCsv(data: { csvFile: File; subCategoryId: number }) {
 		try {
+			const { csvFile, subCategoryId } = data;
+
 			const formData = new FormData();
 			formData.append('file', csvFile);
+			formData.append('subCategoryId', String(subCategoryId));
 
 			const url = `/product-seller/upload-csv`;
 			const response = await instance.post<{ error: boolean; message: string }>(

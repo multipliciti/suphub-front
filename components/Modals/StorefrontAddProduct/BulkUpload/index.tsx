@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { StorefrontAddProductModalLayout } from '@/components/Modals/StorefrontAddProduct/layout';
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setStatus } from '@/redux/slices/storefront/storefrontProducts';
+import { categoryService } from '@/services/categoryApi';
 import { Dropzone } from '@/components/UI/Dropzone';
 import { setModal } from '@/redux/slices/modal';
+import { Select } from '@/components/UI/Select';
 import { Api } from '@/services';
 
 import s from '../Form.module.scss';
@@ -14,13 +16,8 @@ import s from '../Form.module.scss';
 import downloadIcon from '@/imgs/Buyer&Seller/download.svg';
 import warningIcon from '@/imgs/Buyer&Seller/warning.svg';
 
-// Attention!
-// The reason why the code below is documented is that
-// it is not required to work with the API, but is included in the project design.
-// In the future, it may need to be returned or removed permanently!
-
 type FormValues = {
-	// subcategory: string
+	subcategory: string;
 	file: File;
 };
 
@@ -28,9 +25,9 @@ export const SellerProductBulkUpload = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 
-	// const categories = useAppSelector(state => state.storefrontSlice.categories);
+	const categories = useAppSelector((state) => state.storefrontSlice.categories);
 
-	// const [subcategory, setSubcategory] = useState<string[]>([]);
+	const [subcategory, setSubcategory] = useState<string[]>([]);
 	const [files, setFiles] = useState<File[]>([]);
 
 	const [successMessage, setSuccessMessage] = useState('');
@@ -38,20 +35,20 @@ export const SellerProductBulkUpload = () => {
 
 	const { register, handleSubmit, formState, setValue } = useForm<FormValues>({
 		defaultValues: {
-			// subcategory: '',
+			subcategory: '',
 			file: undefined,
 		},
 		mode: 'onChange',
 	});
 
 	useEffect(() => {
-		// register('subcategory', { required: true });
+		register('subcategory', { required: true });
 		register('file', { required: true });
 	}, [register]);
 
-	// useEffect(() => {
-	// 	setValue('subcategory', subcategory[0], { shouldValidate: true });
-	// }, [subcategory]);
+	useEffect(() => {
+		setValue('subcategory', subcategory[0], { shouldValidate: true });
+	}, [subcategory]);
 
 	useEffect(() => {
 		setValue('file', files[0], { shouldValidate: true });
@@ -68,7 +65,22 @@ export const SellerProductBulkUpload = () => {
 
 	const onSubmit: SubmitHandler<FormValues> = async (values) => {
 		try {
-			const response = await api.productSeller.bulkUploadCsv(values.file);
+			if (!categories?.length) {
+				throw new Error('Error with no categories');
+			}
+			const subCategoryId = categoryService.findSubcategoryIdByName(
+				categories,
+				values.subcategory
+			);
+
+			if (!subCategoryId) {
+				throw new Error('Error with missing subcategoryId');
+			}
+
+			const response = await api.productSeller.bulkUploadCsv({
+				csvFile: values.file,
+				subCategoryId,
+			});
 
 			if (!response.error) {
 				setSuccessMessage(response.message);
@@ -99,7 +111,7 @@ export const SellerProductBulkUpload = () => {
 						<Image src={warningIcon} alt={'warning_icon'} width={40} height={40} />
 					</div>
 					<div className={s.error_message_text}>
-						<h2>We're sorry</h2>
+						<h2>We&apos;re sorry</h2>
 						<p>Please upload the correct format of the file</p>
 					</div>
 					<button className={s.error_message_button} onClick={handleRetry}>
@@ -110,19 +122,19 @@ export const SellerProductBulkUpload = () => {
 
 			{!isError && (
 				<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
-					{/*<div className={s.form_row}>*/}
-					{/*<span>*/}
-					{/*	Subcategory*/}
-					{/*</span>*/}
+					<div className={s.form_row}>
+						<span>Subcategory</span>
 
-					{/*	<Select*/}
-					{/*		title='Choose Subcategory'*/}
-					{/*		isMulti={false}*/}
-					{/*		options={categories ? categoryService.getSubcategories(categories) : []}*/}
-					{/*		value={subcategory}*/}
-					{/*		setValue={setSubcategory}*/}
-					{/*	/>*/}
-					{/*</div>*/}
+						<Select
+							title="Choose Subcategory"
+							isMulti={false}
+							options={
+								categories ? categoryService.getSubcategories(categories) : []
+							}
+							value={subcategory}
+							setValue={setSubcategory}
+						/>
+					</div>
 
 					<div className={s.form_row}>
 						<span>Download CSV Template</span>
