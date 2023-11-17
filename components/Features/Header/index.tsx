@@ -148,28 +148,26 @@ export const Header = () => {
 					</div>
 					<nav className={s.nav}>
 						<ul className={s.nav_ul}>
-							<li>
+							<div
+								className={classNames(
+									s.menu_btn,
+									activeLink === 3 && s.menu_btn_active
+								)}
+							>
 								<div
+									onClick={(e) => {
+										e.stopPropagation();
+										setActiveLink(3);
+										dispatch(setModal('createBusinessAccount'));
+									}}
 									className={classNames(
 										s.menu_btn,
 										activeLink === 3 && s.menu_btn_active
 									)}
 								>
-									<li
-										onClick={(e) => {
-											e.stopPropagation();
-											setActiveLink(3);
-											dispatch(setModal('createBusinessAccount'));
-										}}
-										className={classNames(
-											s.menu_btn,
-											activeLink === 3 && s.menu_btn_active
-										)}
-									>
-										Convert to business
-									</li>
+									Convert to business
 								</div>
-							</li>
+							</div>
 							<li className={s.split}></li>
 							<li className={s.item_img}>
 								<Link href={'/favorites'}>
