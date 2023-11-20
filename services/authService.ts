@@ -107,16 +107,11 @@ export const AuthApi = (instance: AxiosInstance) => ({
 	},
 	async checkIfEmailIsUsed(email: string) {
 		try {
-			const url = '/auth/login';
-			await instance.post(url, { email });
+			const url = `/auth/verify-email/${email}`;
+			const response = await instance.get(url);
+			return response.data.error;
 		} catch (error: any) {
-			if (error.response && error.response.status === 500) {
-				return true;
-			} else if (error.response && error.response.status === 401) {
-				return false;
-			} else {
-				throw error;
-			}
+			throw error;
 		}
 	},
 });
