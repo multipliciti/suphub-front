@@ -1,0 +1,76 @@
+.wrapper {
+	max-width: 600px;
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+
+	> table, th, td {
+		border-spacing: 0;
+	}
+
+	> table > tbody > tr > td,
+	> table > thead > tr > th {
+		border: 1px solid #E7E9EF;
+		padding: 8px 16px;
+		text-align: left;
+	}
+
+	> table > thead > tr:last-child > td {
+		border-bottom: none;
+	}
+
+	> table > tbody > tr:not(:last-child) > td {
+		border-bottom: none;
+	}
+
+	> table > tbody > tr > td:not(:last-child) {
+		border-right: none;
+	}
+
+	table {
+		width: 100%;
+
+		font-size: 14px;
+		font-weight: 400;
+		line-height: 18px;
+		color: #334155;
+		border-radius: 8px;
+	}
+
+	thead > tr > th {
+		background-color: #F8FAFC;
+		color: #0F172A;
+		font-weight: bold;
+	}
+
+	tbody > tr > td {
+		max-width: 0;
+	}
+}
+
+.td_active {
+	background-color: #F0F2FE !important;
+	border: 1px solid #5B70F5 !important;
+}
+
+.button_save {
+	align-self: flex-start;
+
+	padding: 10px 20px;
+	height: 44px;
+	border: none;
+	outline: none;
+
+	font-size: 16px;
+	line-height: 24px;
+	background-color: #2B1694;
+	border-radius: 8px;
+	color: #ffffff;
+
+	&:disabled {
+		color: #94A3B8;
+		background-color: #E2E8F0;
+		opacity: 1;
+	}
+
+}
