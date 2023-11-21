@@ -325,7 +325,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 			<div className={s.button}>
 				<button
 					type="submit"
-					className={s.button_create}
+					className={s.button_save}
 					onClick={() => updateProduct()}
 				>
 					Save
