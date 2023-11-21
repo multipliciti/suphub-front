@@ -8,6 +8,7 @@ import { setResult, setStatus } from '@/redux/slices/projects/projects';
 import { ProjectsSearchInput } from './ProjectsSearchInput';
 import { ProjectsAddButton } from './ProjectsAddButton';
 import { setSidebar } from '@/redux/slices/projects/projectsSidebar';
+import { setProject } from '@/redux/slices/projects/projectItem';
 import { classNames } from '@/utils/classNames';
 import { ProjectsList } from './ProjectsList';
 import { Api } from '@/services';
@@ -49,11 +50,18 @@ export const ProjectsSidebar = () => {
 				if (project) {
 					router.push(`/projects/${project.id}/overview`);
 				} else {
-					router.push(`/projects/${response.result[0].id}/overview`);
+					if (response.result.length > 0) {
+						router.push(`/projects/${response.result[0].id}/overview`);
+					}
 				}
 			} else {
 				if (status === 'refetch') {
-					router.push(`/projects/${response.result[0].id}/overview`);
+					if (response.result.length > 0) {
+						router.push(`/projects/${response.result[0].id}/overview`);
+					} else {
+						dispatch(setProject(null));
+						router.push('/projects');
+					}
 				}
 			}
 			dispatch(setStatus('success'));

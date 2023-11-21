@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { useState } from 'react';
+import { isAxiosError } from 'axios';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setProjectIdForDelete } from '@/redux/slices/projects/projectsSidebar';
@@ -20,6 +21,7 @@ export const DeleteProject = () => {
 	const [fetchStatus, setFetchStatus] = useState<'idle' | 'loading' | 'error'>(
 		'idle'
 	);
+	const [errorMessage, setErrorMessage] = useState('');
 
 	const projectIdForDelete = useAppSelector(
 		(state) => state.projectsSidebar.projectIdForDelete
@@ -37,7 +39,12 @@ export const DeleteProject = () => {
 			revalidateProjects();
 			handleCloseModal();
 		} catch (e) {
-			setFetchStatus('error');
+			if (isAxiosError(e)) {
+				setErrorMessage(e.response?.data.message || '');
+				setFetchStatus('error');
+			} else {
+				setFetchStatus('error');
+			}
 		}
 	};
 
@@ -87,17 +94,21 @@ export const DeleteProject = () => {
 					<button onClick={handleCloseModal} disabled={fetchStatus === 'loading'}>
 						No, go back
 					</button>
-					<button
-						className={s.delete_btn}
-						disabled={fetchStatus === 'loading'}
-						onClick={handleDeleteProject}
-					>
-						{fetchStatus === 'loading' ? 'Loading..' : 'Yes, delete project'}
-					</button>
+					{fetchStatus !== 'error' && (
+						<button
+							className={s.delete_btn}
+							disabled={fetchStatus === 'loading'}
+							onClick={handleDeleteProject}
+						>
+							{fetchStatus === 'loading' ? 'Loading..' : 'Yes, delete project'}
+						</button>
+					)}
 				</div>
 
 				{fetchStatus === 'error' && (
-					<div className={s.main_error}>Something went wrong</div>
+					<div className={s.main_error}>
+						{errorMessage || 'Something went wrong'}
+					</div>
 				)}
 			</div>
 		</div>
