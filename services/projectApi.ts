@@ -1,5 +1,11 @@
 import { AxiosInstance } from 'axios';
-import { ProjectFind } from '@/types/services/projects';
+import {
+	CreateProjectBody,
+	FindAllProjectsParams,
+	ProjectFind,
+} from '@/types/services/projects';
+import { PaginationResponse } from '@/types/pagination';
+import { Project } from '@/types/products/project';
 
 export const ProjectApi = (instance: AxiosInstance) => ({
 	async getProject({ page, limit, sortParams, searchParams }: ProjectFind) {
@@ -20,10 +26,65 @@ export const ProjectApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async getProjectOne(id: number) {
+
+	async getAllProjects(params: FindAllProjectsParams) {
+		try {
+			const { find, ...otherParams } = params;
+			const stringifyFind = JSON.stringify({
+				...(find.name.contains && { name: { contains: find.name.contains } }),
+			});
+
+			const url = `/project`;
+			const response = await instance.get<PaginationResponse<Project[]>>(url, {
+				params: {
+					...otherParams,
+					find: stringifyFind,
+				},
+			});
+			return response.data;
+		} catch (error) {
+			console.error('Projects error:', error);
+			throw error;
+		}
+	},
+
+	async getProjectById(id: number) {
 		try {
 			const url = `/project/${id}`;
-			const response = await instance.get(url);
+			const response = await instance.get<Project>(url);
+			return response.data;
+		} catch (error) {
+			console.error('Projects error:', error);
+			throw error;
+		}
+	},
+
+	async createProject(body: CreateProjectBody) {
+		try {
+			const url = `/project`;
+			const response = await instance.post<Project>(url, body);
+			return response.data;
+		} catch (error) {
+			console.error('Projects error:', error);
+			throw error;
+		}
+	},
+
+	async updateProjectById(id: number, body: Partial<CreateProjectBody>) {
+		try {
+			const url = `/project/${id}`;
+			const response = await instance.patch<Project>(url, body);
+			return response.data;
+		} catch (error) {
+			console.error('Projects error:', error);
+			throw error;
+		}
+	},
+
+	async deleteProjectById(id: number) {
+		try {
+			const url = `/project/${id}`;
+			const response = await instance.delete(url);
 			return response.data;
 		} catch (error) {
 			console.error('Projects error:', error);

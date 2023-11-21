@@ -1,0 +1,23 @@
+.add {
+	transition: all 0.3s;
+	border: none;
+	background: transparent;
+	display: flex;
+	gap: 4px;
+	padding: 8px;
+	width: 100%;
+	border-radius: 4px;
+
+	&_title {
+		color: #2b1694;
+
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 20px;
+	}
+}
+
+.add:hover {
+	background-color: #f0f2fe;
+}

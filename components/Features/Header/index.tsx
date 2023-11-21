@@ -72,7 +72,7 @@ export const Header = () => {
 		{
 			id: 2,
 			label: 'Projects',
-			href: '/marketplace',
+			href: '/projects',
 		},
 		{
 			id: 3,

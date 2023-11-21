@@ -1,19 +1,3 @@
-export interface Project {
-	id: number;
-	name: string;
-	type: string;
-	budget: number;
-	floorArea: number;
-	street: string;
-	city: string;
-	state: string;
-	country: string;
-	zipcode: string;
-	buyerId: number;
-	updatedAt: string;
-	createdAt: string;
-}
-
 export interface RfqItem {
 	id: number;
 	productName: string;
