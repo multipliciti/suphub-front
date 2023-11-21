@@ -30,6 +30,7 @@ export const ProjectsOverview: FC<Props> = ({ id }) => {
 
 			dispatch(setStatus('success'));
 		} catch (e) {
+			dispatch(setStatus('rejected'));
 			dispatch(setProjectListStatus('refetch'));
 		}
 	};
