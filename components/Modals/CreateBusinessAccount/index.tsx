@@ -380,6 +380,7 @@ export const CreateBusinessAccount = () => {
 												message: 'Password must contain at least one number',
 											},
 										})}
+										onFocus={() => clearErrors1('confirmPassword')}
 										type={hideNewPassword ? 'password' : 'text'}
 										name="password"
 										className={s.form_password_input}
