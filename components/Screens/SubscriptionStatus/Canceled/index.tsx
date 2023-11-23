@@ -18,7 +18,10 @@ export function CancelPage() {
 					We encountered an issue with your payment for this transaction. Please try
 					again.
 				</div>
-				<button className={s.btn} onClick={() => router.push('/testSellerRFQ')}>
+				<button
+					className={s.btn}
+					onClick={() => router.push('/storefront/get-started')}
+				>
 					Back to Seller Verification
 				</button>
 			</div>

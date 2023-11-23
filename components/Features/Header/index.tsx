@@ -8,6 +8,7 @@ import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 import Link from 'next/link';
 import { useState } from 'react';
 import { setStatusGetUser, setUser } from '@/redux/slices/auth';
+import { resetStorefrontState } from '@/redux/slices/storefront/storefront';
 import { classNames } from '@/utils/classNames';
 import { useEffect } from 'react';
 import { Api } from '@/services';
@@ -107,6 +108,7 @@ export const Header = () => {
 			if (response) {
 				dispatch(setUser(null));
 				dispatch(setStatusGetUser('logouted'));
+				dispatch(resetStorefrontState());
 				router.push('/');
 			}
 		} catch (error: any) {}
