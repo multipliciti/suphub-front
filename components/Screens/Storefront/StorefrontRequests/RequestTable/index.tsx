@@ -1,12 +1,13 @@
 'use client';
 import { classNames } from '@/utils/classNames';
 import s from './RequestTable.module.scss';
+import Link from 'next/link';
+import { useAppSelector } from '@/redux/hooks';
 
-interface PropsType {
-	data: any[];
-}
-
-export const RequestTable = ({ data }: PropsType) => {
+export const RequestTable = () => {
+	const data = useAppSelector(
+		(state) => state.storefrontProjectsSellerSlice.projects
+	);
 	return (
 		<div className={s.wrapper}>
 			<table className={s.table}>
@@ -27,15 +28,23 @@ export const RequestTable = ({ data }: PropsType) => {
 					{data.map((el: any, ind: number) => {
 						return (
 							<tr key={ind}>
-								<td> {el.customer} </td>
+								<td> {el.buyer.firstName} </td>
 								<td>
 									<div className={s.rfq}>
-										<span>{el.RFQ} items</span>
-										<span className={s.rfq_detail}>View details</span>
+										<span>
+											{el.Rfq.length} {el.Rfq.length > 1 ? 'items' : 'item'}
+										</span>
+										<Link
+											className={s.rfq_detail}
+											href="/storefront/requests/[id]"
+											as={`/storefront/requests/${el.id}`}
+										>
+											View details
+										</Link>
 									</div>
 								</td>
 								<td> {el.QTY} </td>
-								<td> {el.measurement} </td>
+								<td> {el.name} </td>
 								<td> {el.budget} </td>
 								<td>
 									<span

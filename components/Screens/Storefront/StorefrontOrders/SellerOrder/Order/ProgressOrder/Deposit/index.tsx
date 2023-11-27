@@ -5,9 +5,10 @@ import { classNames } from '@/utils/classNames';
 interface PropsType {
 	activeDisplay: number[];
 	index: number;
+	status: string;
 }
 
-export const Deposit = ({ activeDisplay, index }: PropsType) => {
+export const Deposit = ({ activeDisplay, index, status }: PropsType) => {
 	return (
 		<>
 			<div
@@ -25,7 +26,9 @@ export const Deposit = ({ activeDisplay, index }: PropsType) => {
 					activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
-				<p className={s.title}>Payment pending</p>
+				<p className={classNames(s.status, status !== 'confirmed' && s.status_paid)}>
+					{status !== 'confirmed' ? 'Paid' : 'Payment pending'}
+				</p>
 			</div>
 		</>
 	);

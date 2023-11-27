@@ -79,7 +79,6 @@ export const Products = ({ rfqs }: TypeProps) => {
 										{el.length === 1 ? 'item' : 'items'}
 									</p>
 								)}
-
 								<Image
 									onClick={() => setCompress(!compress)}
 									className={classNames(
@@ -105,7 +104,6 @@ export const Products = ({ rfqs }: TypeProps) => {
 								</span>
 							</span>
 						</div>
-
 						<div
 							className={classNames(
 								s.quotations,
@@ -115,24 +113,6 @@ export const Products = ({ rfqs }: TypeProps) => {
 						>
 							<div className={s.quotations_header}>
 								<p className={s.title}>Quotations</p>
-								{/* <span className={s.pagination}>
-									<span className={s.pagination_arrow}>
-										<Image
-											src={arrow_icon}
-											alt="arrow_icon"
-											width={20}
-											height={20}
-										/>
-									</span>
-									<span className={s.pagination_arrow}>
-										<Image
-											src={arrow_icon}
-											alt="arrow_icon"
-											width={20}
-											height={20}
-										/>
-									</span>
-								</span> */}
 							</div>
 							<QuotationsTable compress={compress} rfqs={el} />
 						</div>

@@ -20,6 +20,9 @@ import { OrderApi } from '@/services/orderApi';
 import { BuyerProjectApi } from './buyerProject';
 import { SampleApi } from './sampleApi';
 
+import { SellerProjectApi } from './sellerProject';
+import { buyerOrderAPI } from './buyerOrder';
+import { sellerOrderAPI } from './sellerOrder';
 export type ApiReturnType = {
 	sendFormStepOne(): unknown;
 	auth: ReturnType<typeof AuthApi>;
@@ -55,9 +58,12 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		project: ProjectApi(instance),
 		rfq: RfqApi(instance),
 		rfqOption: RfqOptionApi(instance),
-		sellerCompany: SellerCompanyApi(instance),
 		buyerCompany: BuyerCompanyApi(instance),
 		buyerProject: BuyerProjectApi(instance),
+		sellerCompany: SellerCompanyApi(instance),
+		sellerProject: SellerProjectApi(instance),
+		buyerOrder: buyerOrderAPI(instance),
+		sellerOrder: sellerOrderAPI(instance),
 		bankUSA: BankUSA(instance),
 		bankInternational: BankInternational(instance),
 		category: CategoryApi(instance),

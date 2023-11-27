@@ -1,27 +1,45 @@
 'use client';
 import s from './BuyerOrder.module.scss';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useAppSelector } from '@/redux/hooks';
 import { InvoiceChatComponent } from './InvoiceChatComponent';
 import { Order } from './Order';
+import { Api } from '@/services';
+import { OrderInterface } from '@/types/services/Orders';
 
 interface TypeProps {
 	id: number;
 }
 
 export const BuyerOrder = ({ id }: TypeProps) => {
+	const api = Api();
 	const img = useAppSelector((state) => state.orderSlice.img);
+	const [order, setOrder] = useState<OrderInterface | null>(null);
 	//using id we will must make fetch
-	const product = {
-		status: 'Payment pending',
-		code: 'Order PO#S0983',
-		status_info: 'pending',
+
+	const getOrderById = async (id: number) => {
+		try {
+			const order: OrderInterface = await api.buyerOrder.getOrderById(id);
+			setOrder(order);
+		} catch (error) {
+			console.error('getOrderById buyer error', error);
+		}
 	};
+
+	useEffect(() => {
+		getOrderById(id);
+	}, []);
+	console.log('ordermy', order);
 
 	return (
 		<div className={s.wrapper}>
-			<Order product={product} />
-			<InvoiceChatComponent />
+			{order && (
+				<>
+					<Order order={order} />
+					<InvoiceChatComponent />
+				</>
+			)}
 		</div>
 	);
 };

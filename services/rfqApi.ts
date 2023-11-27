@@ -11,8 +11,7 @@ export const RfqApi = (instance: AxiosInstance) => ({
 		const params = new URLSearchParams();
 		page ? params.set('page', String(page)) : null;
 		limit ? params.set('limit', String(limit)) : null;
-
-		searchParams ? params.set('find', JSON.stringify(searchParams)) : null;
+		searchParams ? params.set('find', searchParams) : null;
 
 		const url = `/rfq/project/${projectId}?${params.toString()}`;
 		const response = await instance.get(url);
@@ -27,7 +26,7 @@ export const RfqApi = (instance: AxiosInstance) => ({
 		const response = await instance.get(url);
 		return response.data;
 	},
-	async getProjectOne(id: number) {
+	async getRfqOne(id: number) {
 		const url = `/rfq/${id}`;
 		const response = await instance.get(url);
 		return response.data;

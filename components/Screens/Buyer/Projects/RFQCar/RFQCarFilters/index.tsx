@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { setModal } from '@/redux/slices/modal';
+import { useClickOutside } from '@/components/Hooks/useClickOutside';
 import { categoriesToSubCategories } from '@/utils/categoriesToSubCategories';
 import Image from 'next/image';
 import search_icon from '@/imgs/search.svg';
@@ -24,7 +25,19 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 	const inputSearchRef = useRef<HTMLInputElement | null>(null);
 	const [category, setCategory] = useState<any[]>([]);
 	const subCategories = categoriesToSubCategories(category);
-	console.log('stateInputs', stateInputs);
+	const requestFilterRef = useRef<HTMLButtonElement>(null);
+	const categoriesFilterRef = useRef<HTMLDivElement>(null);
+	const statusFilterRef = useRef<HTMLDivElement>(null);
+	useClickOutside(requestFilterRef, () => {
+		setRequestBtn(false);
+	});
+	useClickOutside(categoriesFilterRef, () => {
+		setActiveFilter(-1);
+	});
+	useClickOutside(statusFilterRef, () => {
+		setActiveFilter(-1);
+	});
+
 	// Function to add and remove items in stateInputs
 	const setVelueFilters = (key: string, item: string | number): void => {
 		// Check if the item already exists in the array
@@ -70,11 +83,11 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 		archived: 'archived',
 	};
 
-
 	return (
 		<div className={s.wrapper}>
 			<span className={s.request_wrapper}>
 				<button
+					ref={requestFilterRef}
 					onClick={() => setRequestBtn(!requestBtn)}
 					className={classNames(s.request, requestBtn && s.request_active)}
 				>
@@ -137,6 +150,7 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 			</label>
 
 			<div
+				ref={categoriesFilterRef}
 				onClick={() => setActiveFilter(activeFilter !== 1 ? 1 : -1)}
 				className={s.filter}
 			>
@@ -183,6 +197,7 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 			</div>
 
 			<div
+				ref={statusFilterRef}
 				onClick={() => setActiveFilter(activeFilter !== 2 ? 2 : -1)}
 				className={s.filter}
 			>

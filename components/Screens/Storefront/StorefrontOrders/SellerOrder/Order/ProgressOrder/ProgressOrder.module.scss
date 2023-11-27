@@ -1,4 +1,5 @@
 .wrapper {
+	width: 100%;
 	display: flex;
 	flex-direction: column;
 	gap: 38px;
@@ -55,10 +56,16 @@
 		}
 
 		&_info {
+			min-height: 35px;
 			margin-top: -5px;
 			width: 100%;
 			display: flex;
 			flex-direction: column;
+			justify-content: center;
+
+			&_active {
+				justify-content: start;
+			}
 
 			&_inner {
 				width: 100%;

@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import s from './ProjectsTable.module.scss';
 import { truncateFileNameEnd } from '@/utils/names';
 import { classNames } from '@/utils/classNames';
-import { Order } from '@/types/services/buyerProject';
+import { useRouter } from 'next/navigation';
+import { Order } from '@/types/services/projects';
 
 interface PropsType {
 	columns: { title: string; key: string }[];
@@ -10,6 +11,7 @@ interface PropsType {
 }
 
 export const ProjectsTable = ({ columns, data }: PropsType) => {
+	const { push } = useRouter();
 	return (
 		<div className={s.wrapper}>
 			<table className={s.table}>
@@ -24,7 +26,7 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 				<tbody>
 					{/* Creating Data Rows */}
 					{data.map((row, rowIndex) => (
-						<tr key={rowIndex}>
+						<tr onClick={() => push(`/testBuyerOrder?id=${row.id}`)} key={rowIndex}>
 							{columns.map((column, indd) => (
 								<>
 									{/* PO  */}
@@ -83,12 +85,18 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 													className={classNames(
 														s.td_status,
 														s.td,
-														row.status === 'Payment pending' && s.td_status_pending,
-														row.status === 'In transit' && s.td_status_transit,
-														row.status === 'In production' && s.td_status_production,
-														row.status === 'PO issued' && s.td_status_issued,
-														row.status === 'Delivered' && s.td_status_delivered,
-														row.status === 'confirmed' && s.td_status_delivered
+														row.status.toLowerCase() === 'payment pending' &&
+															s.td_status_pending,
+														row.status.toLowerCase() === 'in transit' &&
+															s.td_status_transit,
+														row.status.toLowerCase() === 'in production' &&
+															s.td_status_production,
+														row.status.toLowerCase() === 'pO issued' &&
+															s.td_status_issued,
+														row.status.toLowerCase() === 'delivered' &&
+															s.td_status_delivered,
+														row.status.toLowerCase() === 'confirmed' &&
+															s.td_status_delivered
 													)}
 												>
 													{row.status}

@@ -23,5 +23,15 @@
 			color: #fff;
 			background-color: red;
 		}
+
+		&_confirmed {
+			background-color: #eaf8f6;
+			color: #0ba98a;
+		}
+
+		&_inProduction {
+			background-color: #f0f2fe;
+			color: #2b1694;
+		}
 	}
 }

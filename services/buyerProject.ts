@@ -1,8 +1,8 @@
 import { AxiosInstance } from 'axios';
-import { OrdersFind } from '@/types/services/buyerProject';
+import { FetchFind } from '@/types/services/projects';
 
 export const BuyerProjectApi = (instance: AxiosInstance) => ({
-	async getBuyerOrders({ page, limit, searchParams }: OrdersFind) {
+	async getBuyerOrders({ page, limit, searchParams }: FetchFind) {
 		try {
 			const search = searchParams ? `&find=${searchParams}` : '';
 			const url = `/order/buyer?page=${page}&limit=${limit}${search}`;
