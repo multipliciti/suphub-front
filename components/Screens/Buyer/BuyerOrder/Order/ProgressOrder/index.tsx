@@ -11,10 +11,15 @@ import { PaymentDue } from './PaymentDue';
 import { OrderDelivered } from './OrderDelivered';
 import { OrderShipped } from './OrderShipped';
 import { Feedback } from './Feedback';
+import { OrderInterface } from '@/types/services/Orders';
 import done_icon from '@/imgs/Buyer&Seller/done.svg';
 import show_details_icon from '@/imgs/Buyer&Seller/showDetails.svg';
 
-export const ProgressOrder = () => {
+interface TypeProps {
+	order: OrderInterface;
+}
+
+export const ProgressOrder = ({ order }: TypeProps) => {
 	//useRef for wrapper
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
 	//cteate useRef for everyone steps
@@ -24,7 +29,7 @@ export const ProgressOrder = () => {
 	//To re-render and recalculate the height of the progress bar
 	const [rerenderProgress, setRerenderProgress] = useState<boolean>(false);
 	const [activeDisplay, setActiveDisplay] = useState<number[]>([0]);
-	const [activeStep, setActiveStep] = useState<number>(8);
+	const [activeStep, setActiveStep] = useState<number>(1);
 	// States for wrapper height and active progress
 	const [heightWrapper, setHeightWrapper] = useState<number>(0);
 	const [heightActiveProgress, setHeightActiveProgress] = useState<number>(0);
@@ -53,7 +58,21 @@ export const ProgressOrder = () => {
 				setHeightWrapper(wrapperRef.current.offsetHeight - heightFromLowestPoint);
 			}
 		}, 300);
-	}, [activeDisplay, rerenderProgress, setRerenderProgress]);
+	}, [activeDisplay, rerenderProgress, setRerenderProgress, order]);
+
+	//update activeStep
+	useEffect(() => {
+		switch (order.status) {
+			case 'confirmed':
+				setActiveStep(2);
+				setRerenderProgress(!rerenderProgress);
+				break;
+			case 'inProduction':
+				setActiveStep(3);
+				setRerenderProgress(!rerenderProgress);
+				break;
+		}
+	}, [order]);
 
 	const setActiveDisplayFunction = (n: number) => {
 		setActiveDisplay((prevState) => {
@@ -144,7 +163,12 @@ export const ProgressOrder = () => {
 						)}
 					</span>
 
-					<div className={s.step_info}>
+					<div
+						className={classNames(
+							s.step_info,
+							activeStep >= 2 && s.step_info_active
+						)}
+					>
 						<div className={s.step_info_inner}>
 							<span
 								className={classNames(
@@ -154,26 +178,38 @@ export const ProgressOrder = () => {
 							>
 								<span>Deposit due</span>
 							</span>
-							<span
-								onClick={() => setActiveDisplayFunction(2)}
-								className={s.details}
-							>
-								<span className={s.details_title}>
-									{activeDisplay.includes(2) ? 'Hide details' : 'Show details'}
+							{activeStep >= 2 && (
+								<span
+									onClick={() => setActiveDisplayFunction(2)}
+									className={s.details}
+								>
+									<span className={s.details_title}>
+										{activeDisplay.includes(2) ? 'Hide details' : 'Show details'}
+									</span>
+									<Image
+										className={classNames(
+											s.details_icon,
+											activeDisplay.includes(2) && s.details_icon_active
+										)}
+										src={show_details_icon}
+										alt="toggle_img"
+										width={20}
+										height={20}
+									/>
 								</span>
-								<Image
-									className={classNames(
-										s.details_icon,
-										activeDisplay.includes(2) && s.details_icon_active
-									)}
-									src={show_details_icon}
-									alt="toggle_img"
-									width={20}
-									height={20}
-								/>
-							</span>
+							)}
 						</div>
-						<Deposit index={2} activeDisplay={activeDisplay} />
+						{activeStep >= 2 && (
+							<Deposit
+								status={order.status}
+								rerenderProgress={rerenderProgress}
+								setRerenderProgress={setRerenderProgress}
+								index={2}
+								price={order.amount}
+								orderId={order.id}
+								activeDisplay={activeDisplay}
+							/>
+						)}
 					</div>
 				</div>
 			</div>
@@ -201,7 +237,12 @@ export const ProgressOrder = () => {
 						)}
 					</span>
 
-					<div className={s.step_info}>
+					<div
+						className={classNames(
+							s.step_info,
+							activeStep >= 3 && s.step_info_active
+						)}
+					>
 						<div className={s.step_info_inner}>
 							<span
 								className={classNames(
@@ -211,31 +252,38 @@ export const ProgressOrder = () => {
 							>
 								<span>Production</span>
 							</span>
-							<span
-								onClick={() => setActiveDisplayFunction(3)}
-								className={s.details}
-							>
-								<span className={s.details_title}>
-									{activeDisplay.includes(3) ? 'Hide details' : 'Show details'}
-								</span>
-								<Image
-									className={classNames(
-										s.details_icon,
-										activeDisplay.includes(3) && s.details_icon_active
-									)}
-									src={show_details_icon}
-									alt="toggle_img"
-									width={20}
-									height={20}
-								/>
-							</span>
+							{activeStep >= 3 && (
+								<>
+									<span
+										onClick={() => setActiveDisplayFunction(3)}
+										className={s.details}
+									>
+										<span className={s.details_title}>
+											{activeDisplay.includes(3) ? 'Hide details' : 'Show details'}
+										</span>
+										<Image
+											className={classNames(
+												s.details_icon,
+												activeDisplay.includes(3) && s.details_icon_active
+											)}
+											src={show_details_icon}
+											alt="toggle_img"
+											width={20}
+											height={20}
+										/>
+									</span>
+								</>
+							)}
 						</div>
-						<Production
-							rerenderProgress={rerenderProgress}
-							setRerenderProgress={setRerenderProgress}
-							index={3}
-							activeDisplay={activeDisplay}
-						/>
+						{activeStep >= 3 && (
+							<Production
+								orderId={order.id}
+								rerenderProgress={rerenderProgress}
+								setRerenderProgress={setRerenderProgress}
+								index={3}
+								activeDisplay={activeDisplay}
+							/>
+						)}
 					</div>
 				</div>
 			</div>
@@ -263,7 +311,12 @@ export const ProgressOrder = () => {
 						)}
 					</span>
 
-					<div className={s.step_info}>
+					<div
+						className={classNames(
+							s.step_info,
+							activeStep >= 4 && s.step_info_active
+						)}
+					>
 						<div className={s.step_info_inner}>
 							<span
 								className={classNames(
@@ -273,26 +326,30 @@ export const ProgressOrder = () => {
 							>
 								<span>Pre-shipment inspection</span>
 							</span>
-							<span
-								onClick={() => setActiveDisplayFunction(4)}
-								className={s.details}
-							>
-								<span className={s.details_title}>
-									{activeDisplay.includes(4) ? 'Hide details' : 'Show details'}
+							{activeStep >= 4 && (
+								<span
+									onClick={() => setActiveDisplayFunction(4)}
+									className={s.details}
+								>
+									<span className={s.details_title}>
+										{activeDisplay.includes(4) ? 'Hide details' : 'Show details'}
+									</span>
+									<Image
+										className={classNames(
+											s.details_icon,
+											activeDisplay.includes(4) && s.details_icon_active
+										)}
+										src={show_details_icon}
+										alt="toggle_img"
+										width={20}
+										height={20}
+									/>
 								</span>
-								<Image
-									className={classNames(
-										s.details_icon,
-										activeDisplay.includes(4) && s.details_icon_active
-									)}
-									src={show_details_icon}
-									alt="toggle_img"
-									width={20}
-									height={20}
-								/>
-							</span>
+							)}
 						</div>
-						<PreShipmentInspection index={4} activeDisplay={activeDisplay} />
+						{activeStep >= 4 && (
+							<PreShipmentInspection index={4} activeDisplay={activeDisplay} />
+						)}
 					</div>
 				</div>
 			</div>
@@ -319,7 +376,12 @@ export const ProgressOrder = () => {
 							<Image src={done_icon} alt="done_icon" width={16} height={16} />
 						)}
 					</span>
-					<div className={s.step_info}>
+					<div
+						className={classNames(
+							s.step_info,
+							activeStep >= 5 && s.step_info_active
+						)}
+					>
 						<div className={s.step_info_inner}>
 							<span
 								className={classNames(
@@ -329,26 +391,30 @@ export const ProgressOrder = () => {
 							>
 								<span>Pre-shipment inspection</span>
 							</span>
-							<span
-								onClick={() => setActiveDisplayFunction(5)}
-								className={s.details}
-							>
-								<span className={s.details_title}>
-									{activeDisplay.includes(5) ? 'Hide details' : 'Show details'}
+							{activeStep >= 5 && (
+								<span
+									onClick={() => setActiveDisplayFunction(5)}
+									className={s.details}
+								>
+									<span className={s.details_title}>
+										{activeDisplay.includes(5) ? 'Hide details' : 'Show details'}
+									</span>
+									<Image
+										className={classNames(
+											s.details_icon,
+											activeDisplay.includes(5) && s.details_icon_active
+										)}
+										src={show_details_icon}
+										alt="toggle_img"
+										width={20}
+										height={20}
+									/>
 								</span>
-								<Image
-									className={classNames(
-										s.details_icon,
-										activeDisplay.includes(5) && s.details_icon_active
-									)}
-									src={show_details_icon}
-									alt="toggle_img"
-									width={20}
-									height={20}
-								/>
-							</span>
+							)}
 						</div>
-						<PaymentDue index={5} activeDisplay={activeDisplay} />
+						{activeStep >= 5 && (
+							<PaymentDue index={5} activeDisplay={activeDisplay} />
+						)}
 					</div>
 				</div>
 			</div>
@@ -376,7 +442,12 @@ export const ProgressOrder = () => {
 						)}
 					</span>
 
-					<div className={s.step_info}>
+					<div
+						className={classNames(
+							s.step_info,
+							activeStep >= 6 && s.step_info_active
+						)}
+					>
 						<div className={s.step_info_inner}>
 							<span
 								className={classNames(
@@ -384,28 +455,34 @@ export const ProgressOrder = () => {
 									activeStep >= 6 && s.step_title_confirmed
 								)}
 							>
-								<span>Order shipped</span>
+								<span>Payment Due</span>
 							</span>
-							<span
-								onClick={() => setActiveDisplayFunction(6)}
-								className={s.details}
-							>
-								<span className={s.details_title}>
-									{activeDisplay.includes(6) ? 'Hide details' : 'Show details'}
-								</span>
-								<Image
-									className={classNames(
-										s.details_icon,
-										activeDisplay.includes(6) && s.details_icon_active
-									)}
-									src={show_details_icon}
-									alt="toggle_img"
-									width={20}
-									height={20}
-								/>
-							</span>
+							{activeStep >= 6 && (
+								<>
+									<span
+										onClick={() => setActiveDisplayFunction(6)}
+										className={s.details}
+									>
+										<span className={s.details_title}>
+											{activeDisplay.includes(6) ? 'Hide details' : 'Show details'}
+										</span>
+										<Image
+											className={classNames(
+												s.details_icon,
+												activeDisplay.includes(6) && s.details_icon_active
+											)}
+											src={show_details_icon}
+											alt="toggle_img"
+											width={20}
+											height={20}
+										/>
+									</span>
+								</>
+							)}
 						</div>
-						<OrderShipped index={6} activeDisplay={activeDisplay} />
+						{activeStep >= 6 && (
+							<OrderShipped index={6} activeDisplay={activeDisplay} />
+						)}
 					</div>
 				</div>
 			</div>
@@ -433,7 +510,12 @@ export const ProgressOrder = () => {
 						)}
 					</span>
 
-					<div className={s.step_info}>
+					<div
+						className={classNames(
+							s.step_info,
+							activeStep >= 7 && s.step_info_active
+						)}
+					>
 						<div className={s.step_info_inner}>
 							<span
 								className={classNames(
@@ -441,28 +523,32 @@ export const ProgressOrder = () => {
 									activeStep >= 7 && s.step_title_confirmed
 								)}
 							>
-								<span>Order shipped</span>
+								<span>Order delivered </span>
 							</span>
-							<span
-								onClick={() => setActiveDisplayFunction(7)}
-								className={s.details}
-							>
-								<span className={s.details_title}>
-									{activeDisplay.includes(7) ? 'Hide details' : 'Show details'}
+							{activeStep >= 7 && (
+								<span
+									onClick={() => setActiveDisplayFunction(7)}
+									className={s.details}
+								>
+									<span className={s.details_title}>
+										{activeDisplay.includes(7) ? 'Hide details' : 'Show details'}
+									</span>
+									<Image
+										className={classNames(
+											s.details_icon,
+											activeDisplay.includes(7) && s.details_icon_active
+										)}
+										src={show_details_icon}
+										alt="toggle_img"
+										width={20}
+										height={20}
+									/>
 								</span>
-								<Image
-									className={classNames(
-										s.details_icon,
-										activeDisplay.includes(7) && s.details_icon_active
-									)}
-									src={show_details_icon}
-									alt="toggle_img"
-									width={20}
-									height={20}
-								/>
-							</span>
+							)}
 						</div>
-						<OrderDelivered index={7} activeDisplay={activeDisplay} />
+						{activeStep >= 7 && (
+							<OrderDelivered index={7} activeDisplay={activeDisplay} />
+						)}
 					</div>
 				</div>
 			</div>
@@ -490,7 +576,12 @@ export const ProgressOrder = () => {
 						)}
 					</span>
 
-					<div className={s.step_info}>
+					<div
+						className={classNames(
+							s.step_info,
+							activeStep >= 8 && s.step_info_active
+						)}
+					>
 						<div className={s.step_info_inner}>
 							<span
 								className={classNames(
@@ -498,28 +589,30 @@ export const ProgressOrder = () => {
 									activeStep >= 8 && s.step_title_confirmed
 								)}
 							>
-								<span>Order shipped</span>
+								<span>Feedback</span>
 							</span>
-							<span
-								onClick={() => setActiveDisplayFunction(8)}
-								className={s.details}
-							>
-								<span className={s.details_title}>
-									{activeDisplay.includes(8) ? 'Hide details' : 'Show details'}
+							{activeStep >= 8 && (
+								<span
+									onClick={() => setActiveDisplayFunction(8)}
+									className={s.details}
+								>
+									<span className={s.details_title}>
+										{activeDisplay.includes(8) ? 'Hide details' : 'Show details'}
+									</span>
+									<Image
+										className={classNames(
+											s.details_icon,
+											activeDisplay.includes(8) && s.details_icon_active
+										)}
+										src={show_details_icon}
+										alt="toggle_img"
+										width={20}
+										height={20}
+									/>
 								</span>
-								<Image
-									className={classNames(
-										s.details_icon,
-										activeDisplay.includes(8) && s.details_icon_active
-									)}
-									src={show_details_icon}
-									alt="toggle_img"
-									width={20}
-									height={20}
-								/>
-							</span>
+							)}
 						</div>
-						<Feedback index={8} activeDisplay={activeDisplay} />
+						{activeStep >= 8 && <Feedback index={8} activeDisplay={activeDisplay} />}
 					</div>
 				</div>
 			</div>

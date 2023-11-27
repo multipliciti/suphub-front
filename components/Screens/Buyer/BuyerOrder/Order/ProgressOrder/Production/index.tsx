@@ -3,10 +3,14 @@ import s from './Production.module.scss';
 import Image from 'next/image';
 import { classNames } from '@/utils/classNames';
 import test from '@/imgs/Product/test2.png';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Api } from '@/services';
+import { ProductionMessageInterface } from '@/types/services/Orders';
+import { formatDateString } from '@/utils/formatDateString';
 interface PropsType {
 	activeDisplay: number[];
 	index: number;
+	orderId: number;
 	rerenderProgress: boolean;
 	setRerenderProgress: (n: boolean) => void;
 }
@@ -15,30 +19,28 @@ export const Production = ({
 	index,
 	rerenderProgress,
 	setRerenderProgress,
+	orderId,
 }: PropsType) => {
+	const api = Api();
 	const [testShow, setTest] = useState<boolean>(false);
 	const [newMessage, setNewMessage] = useState<boolean>(false);
+	const [arrMessages, setArrMessages] = useState<ProductionMessageInterface[]>([]);
 	const [formData, setFormData] = useState<string>('');
 	const currentdDate = new Date().toLocaleDateString('en-GB');
-	const arrMessages = [
-		{
-			data: '01/05/2023',
-			status: 'new',
-			message: 'Production started',
-		},
-		{
-			data: '01/05/2023',
-			status: 'new',
-			message: 'Production of “Vinyl double pane fixed window” finished',
-		},
-		{
-			data: '01/05/2023',
-			status: 'new',
-			message:
-				'Production of “Vinyl double pane fixed window” finished Production of “Vinyl double pane fixed window” finished Production of “Vinyl double pane fixed window” finished Production of “Vinyl double pane fixed window” finished Production of “Vinyl double pane fixed window” finished',
-			imgs: [test, test, test, test],
-		},
-	];
+
+	const getProductionFetch = async (id: number) => {
+		try {
+			const order: ProductionMessageInterface[] =
+				await api.buyerOrder.getProductionByOrder(id);
+			setArrMessages(order);
+		} catch (error) {
+			console.error('getOrderById buyer error', error);
+		}
+	};
+
+	useEffect(() => {
+		getProductionFetch(orderId);
+	}, []);
 
 	return (
 		<>
@@ -57,22 +59,24 @@ export const Production = ({
 					activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
-				{arrMessages.map((el, ind) => {
+				{arrMessages?.map((el, ind) => {
 					return (
 						<div key={ind} className={s.block}>
 							<p className={s.status}>
-								<span className={s.status_data}>{el.data}</span>
-								<span>{el.status}</span>
+								<span className={s.status_data}>
+									{formatDateString(el.createdAt)}
+								</span>
+								<span>new</span>
 							</p>
-							<p className={s.title}>{el.message}</p>
-							{el.imgs && (
+							<p className={s.title}>{el.updates}</p>
+							{el.images.length > 0 && (
 								<div className={s.img_wrapper}>
-									{el.imgs.map((img, ind) => {
+									{el.images.map((img, ind) => {
 										return (
 											<Image
 												key={ind}
 												className={s.img_item}
-												src={test}
+												src={img}
 												alt="test"
 												width={60}
 												height={60}

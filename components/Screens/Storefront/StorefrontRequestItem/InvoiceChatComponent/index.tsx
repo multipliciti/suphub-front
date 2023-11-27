@@ -1,0 +1,31 @@
+'use client';
+import s from './InvoiceChatComponent.module.scss';
+import { Invoice } from './Invoice';
+import { Requirements } from './Requirements/Requirements';
+import { useState } from 'react';
+import { classNames } from '@/utils/classNames';
+
+//new
+export const InvoiceChatComponent = () => {
+	const [activeDisplay, setActiveDisplay] = useState<number>(1);
+	return (
+		<div className={s.wrapper}>
+			<div className={s.nav}>
+				<span
+					onClick={() => setActiveDisplay(1)}
+					className={classNames(s.nav_item, activeDisplay === 1 && s.nav_active)}
+				>
+					Quote
+				</span>
+				<span
+					onClick={() => setActiveDisplay(2)}
+					className={classNames(s.nav_item, activeDisplay === 2 && s.nav_active)}
+				>
+					Requirements
+				</span>
+			</div>
+			{activeDisplay === 1 && <Invoice />}
+			{activeDisplay === 2 && <Requirements />}
+		</div>
+	);
+};

@@ -2,6 +2,7 @@
 import s from './Filters.module.scss';
 import { useRef, useState } from 'react';
 import { classNames } from '@/utils/classNames';
+import { useClickOutside } from '@/components/Hooks/useClickOutside';
 import Image from 'next/image';
 import search_icon from '@/imgs/search.svg';
 import arrow_icon from '@/imgs/arrow.svg';
@@ -12,8 +13,16 @@ interface TypeProps {
 	stateInputs: any;
 }
 export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
+	const statusFilterRef = useRef<HTMLDivElement>(null);
+	const orderTypeRef = useRef<HTMLDivElement>(null);
 	const [activeFilter, setActiveFilter] = useState<number>(-1);
 	const inputSearchRef = useRef<HTMLInputElement | null>(null);
+	useClickOutside(statusFilterRef, () => {
+		setActiveFilter(-1);
+	});
+	useClickOutside(inputSearchRef, () => {
+		setActiveFilter(-1);
+	});
 
 	//add and remove items in store inputs (stateInputs)
 	const setVelueFilters = (key: string, item: string) => {
@@ -102,6 +111,7 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 				/>
 				{/* Status filter */}
 				<div
+					ref={statusFilterRef}
 					className={classNames(
 						s.filter_content,
 						activeFilter === 1 && s.filter_content_active
@@ -133,6 +143,7 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 
 			{/* Order Type filter*/}
 			<div
+				ref={orderTypeRef}
 				onClick={() => setActiveFilter(activeFilter !== 2 ? 2 : -1)}
 				className={s.filter}
 			>

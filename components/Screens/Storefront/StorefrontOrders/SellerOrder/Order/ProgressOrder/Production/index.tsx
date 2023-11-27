@@ -1,22 +1,19 @@
 'use client';
-import { ChangeEvent, useState } from 'react';
 import s from './Production.module.scss';
+import { ChangeEvent, useState } from 'react';
 import { classNames } from '@/utils/classNames';
+import { Api } from '@/services';
 import Image from 'next/image';
 import plus_icon from '@/imgs/Buyer&Seller/plus.svg';
 import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
+import { orderProductionInterface } from '@/types/services/Orders';
 
 interface PropsType {
 	activeDisplay: number[];
+	orderId: number;
 	index: number;
 	rerenderProgress: boolean;
 	setRerenderProgress: (n: boolean) => void;
-}
-
-interface formDataType {
-	data: string;
-	message: string;
-	photos: File[];
 }
 
 export const Production = ({
@@ -24,14 +21,16 @@ export const Production = ({
 	index,
 	rerenderProgress,
 	setRerenderProgress,
+	orderId,
 }: PropsType) => {
+	const api = Api();
 	const [testShow, setTestShow] = useState<boolean>(false);
 	const [complete, setComplete] = useState<boolean>(false);
 	const [newMessage, setNewMessage] = useState<boolean>(false);
-	const [formData, setFormData] = useState<formDataType | null>({
-		photos: [],
-		data: '',
-		message: '',
+	const [formData, setFormData] = useState<orderProductionInterface | null>({
+		images: [],
+		orderId,
+		updates: '',
 	});
 	const currentdDate = new Date().toLocaleDateString('en-GB');
 
@@ -45,7 +44,7 @@ export const Production = ({
 
 				return {
 					...prevData,
-					photos: [...prevData.photos, selectedFile],
+					images: [...prevData.images, selectedFile],
 				};
 			});
 		}
@@ -56,23 +55,43 @@ export const Production = ({
 		setFormData((prevData) => {
 			if (!prevData) return null;
 
-			const updatedPhotos = prevData.photos.filter(
+			const updatedPhotos = prevData.images.filter(
 				(_, index) => index !== indexToRemove
 			);
 
-			return { ...prevData, photos: updatedPhotos };
+			return { ...prevData, images: updatedPhotos };
 		});
 	};
 
-	// Add text message
+	// Add text updates
 	const handleAddMessage = (event: ChangeEvent<HTMLInputElement>) => {
 		const value = event.target.value;
 		setFormData((prevData) => {
 			if (!prevData) return null;
 
-			return { ...prevData, message: value };
+			return { ...prevData, updates: value };
 		});
 	};
+
+	const AddOrderProduction = async (data: orderProductionInterface) => {
+		console.log('Data before FormData:', data);
+
+		const formDataSend = new FormData();
+		// for (let i = 0; i < data.images.length; i++) {
+		// 	formDataSend.append('files', data.images[i]);
+		// }
+		formDataSend.append('orderId', data.orderId.toString());
+		formDataSend.append('updates', data.updates);
+
+		console.log('FormData:', formDataSend);
+
+		try {
+			await api.sellerOrder.orderProduction(formDataSend);
+		} catch (error) {
+			console.error('AddOrderProduction error:', error);
+		}
+	};
+
 	return (
 		<>
 			<div
@@ -95,19 +114,19 @@ export const Production = ({
 						<span className={s.data}>01/05/2023</span>
 						<span className={s.title}>Production started</span>
 					</div>
-					{/* add message */}
+					{/* add updates */}
 					<div className={classNames(s.form_none, newMessage && s.form_block)}>
 						<span className={s.data}>{currentdDate}</span>
-						<div className={s.message_wrapper}>
+						<div className={s.updates_wrapper}>
 							<input
 								onChange={handleAddMessage}
 								placeholder="Provide updates"
-								className={s.message_input}
-								name="message"
-								id="message"
+								className={s.updates_input}
+								name="updates"
+								id="updates"
 							/>
-							<div className={s.message_photo}>
-								<label className={s.message_photo_add} htmlFor="add_photo">
+							<div className={s.updates_photo}>
+								<label className={s.updates_photo_add} htmlFor="add_photo">
 									<input
 										onChange={handleAddPhoto}
 										className={s.photo_input}
@@ -118,12 +137,12 @@ export const Production = ({
 									<Image src={plus_icon} alt="plus_icon" width={24} height={24} />
 								</label>
 
-								{formData?.photos?.map((el, ind) => {
+								{formData?.images?.map((el, ind) => {
 									return (
-										<span className={s.message_photo_wrapper}>
+										<span className={s.updates_photo_wrapper}>
 											<span
 												onClick={() => handleRemovePhoto(ind)}
-												className={s.message_photo_remove}
+												className={s.updates_photo_remove}
 											>
 												<Image
 													src={remove_icon}
@@ -133,7 +152,7 @@ export const Production = ({
 												/>
 											</span>
 											<Image
-												className={s.message_photo_img}
+												className={s.updates_photo_img}
 												key={ind}
 												src={URL.createObjectURL(el)}
 												alt="Image"
@@ -147,20 +166,20 @@ export const Production = ({
 						</div>
 					</div>
 
-					{/* sent new message */}
+					{/* sent new updates */}
 					{testShow && formData && (
 						<div className={classNames(s.form_block)}>
 							<div className={s.status}>
-								<p className={s.data}>{formData.data}</p>
+								<p className={s.data}>No data</p>
 								<p className={classNames(s.status_text, s.status_gray)}>Sent</p>
 							</div>
 
 							<div className={s.sent_wrapper}>
-								<p className={s.sent_title}> {formData.message} </p>
-								<div className={s.sent_photos}>
-									{formData?.photos.map((el, ind) => (
+								<p className={s.sent_title}> {formData.updates} </p>
+								<div className={s.sent_images}>
+									{formData?.images.map((el, ind) => (
 										<Image
-											className={s.message_photo_img}
+											className={s.updates_photo_img}
 											key={ind}
 											src={URL.createObjectURL(el)}
 											alt="sent_image"
@@ -204,7 +223,7 @@ export const Production = ({
 						{testShow && !newMessage && (
 							<span className={s.waiting}>Waiting for customer approval</span>
 						)}
-						{/* new message */}
+						{/* new updates */}
 						{newMessage && !testShow && (
 							<>
 								<button
@@ -217,6 +236,7 @@ export const Production = ({
 								</button>
 								<button
 									onClick={() => {
+										if (formData) AddOrderProduction(formData);
 										setTestShow(true);
 										setNewMessage(false);
 									}}

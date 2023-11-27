@@ -1,5 +1,4 @@
 import { ReactNode } from 'react';
-
 import { TabSwitcher, TabSwitcherItem } from '@/components/UI/TabSwitcher';
 import { BackButton } from '@/components/UI/BackButton';
 

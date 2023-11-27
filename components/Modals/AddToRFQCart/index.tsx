@@ -63,7 +63,7 @@ export const AddToRFQCart = () => {
 		try {
 			const response = await api.rfq.getProjectById({
 				projectId,
-				searchParams: { subCategoryId },
+				searchParams: JSON.stringify({ subCategoryId }),
 			});
 			setRfqs(response.result);
 		} catch (error) {
@@ -76,7 +76,7 @@ export const AddToRFQCart = () => {
 		handleNextStep();
 	};
 	const postRfqOption = async (rfq: RfqItem, product: any) => {
-		await api.rfqOption.create({
+		await api.rfqOption.createOwn({
 			productId: product.id,
 			rfqId: rfq.id,
 		});

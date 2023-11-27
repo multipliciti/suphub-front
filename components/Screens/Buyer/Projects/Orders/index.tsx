@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { ProjectsTable } from './ProjectsTable';
 import { PaginationWrapper } from './PaginationWrapper';
 import { Api } from '@/services';
-import { Order } from '@/types/services/buyerProject';
+import { Order } from '@/types/services/projects';
 
 export const Orders = () => {
 	const api = Api();
@@ -18,7 +18,6 @@ export const Orders = () => {
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [orders, setOrders] = useState<Order[]>([]);
-	console.log('orders', orders);
 	const columns = [
 		{ title: 'PO#', key: 'PO#' },
 		{ title: 'Issue Date', key: 'Issue Date' },
@@ -71,66 +70,13 @@ export const Orders = () => {
 
 			setOrders(ordersGot);
 		} catch (error) {
-			console.error('error submitedRFQ', error);
+			console.error('getOrders buyer error', error);
 		}
 	};
 
 	useEffect(() => {
 		getOrders();
 	}, [stateInputs, currentPage]);
-
-	const data = [
-		{
-			'PO#': 'S0596',
-			'Issue Date': '02/26/2023',
-			Manufacturer: 'Example',
-			Product: 'Garage Door',
-			'Order Type': 'Sample order',
-			'Subtotal (USD)': '1000$',
-			Status: 'Payment pending',
-			'Est.Delivery': 'Est.Delivery',
-		},
-		{
-			'PO#': 'S0593',
-			'Issue Date': '02/26/2023',
-			Manufacturer: 'Example',
-			Product: 'Garage Door',
-			'Order Type': 'Purchase order',
-			'Subtotal (USD)': '1000$',
-			Status: 'In transit',
-			'Est.Delivery': 'Est.Delivery',
-		},
-		{
-			'PO#': 'S0593',
-			'Issue Date': '02/26/2023',
-			Manufacturer: 'Example',
-			Product: 'Garage Door mlknslkdcnasdfnlkanflknasknklnskf Door',
-			'Order Type': 'Purchase order',
-			'Subtotal (USD)': '1000$',
-			Status: 'In production',
-			'Est.Delivery': 'Est.Delivery',
-		},
-		{
-			'PO#': 'S0593',
-			'Issue Date': '02/26/2023',
-			Manufacturer: 'Example',
-			Product: 'Garage Door Garage Door mlknslkdcnasdfnlkanflknasknklnskf',
-			'Order Type': 'Purchase order',
-			'Subtotal (USD)': '1000$',
-			Status: 'PO issued',
-			'Est.Delivery': 'Est.Delivery',
-		},
-		{
-			'PO#': 'S0593',
-			'Issue Date': '02/26/2023',
-			Manufacturer: 'Example',
-			Product: 'Garage Door mlknslkdcnasdfnlkanflknasknklnskf',
-			'Order Type': 'Purchase order',
-			'Subtotal (USD)': '1000$',
-			Status: 'Delivered',
-			'Est.Delivery': 'Est.Delivery',
-		},
-	];
 
 	{
 		return (

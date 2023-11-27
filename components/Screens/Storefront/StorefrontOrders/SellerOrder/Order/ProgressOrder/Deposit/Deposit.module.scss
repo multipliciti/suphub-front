@@ -39,7 +39,7 @@
 		height: auto;
 	}
 
-	.title {
+	.status {
 		text-align: end;
 		color: red;
 
@@ -47,5 +47,9 @@
 		font-style: normal;
 		font-weight: 700;
 		line-height: 20px;
+
+		&_paid {
+			color: #00984b;
+		}
 	}
 }
