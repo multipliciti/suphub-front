@@ -21,6 +21,8 @@ export const StorefrontGetStarted = () => {
 	const [status, setStatus] = useState<
 		'notVerified' | 'businessVerified' | 'declined' | 'verified'
 	>('notVerified');
+	const [subscriptionPaid, setSubscriptionPaid] = useState<boolean>(false);
+
 	useEffect(() => {
 		try {
 			const fetch = async () => {
@@ -29,6 +31,7 @@ export const StorefrontGetStarted = () => {
 				if (!sellerCompanyId) return;
 				const res2 = await api.sellerCompany.getById(sellerCompanyId);
 				setStatus(res2.data.status);
+				setSubscriptionPaid(res2.data.subscription.paid);
 			};
 			fetch();
 		} catch (e) {
@@ -191,7 +194,7 @@ export const StorefrontGetStarted = () => {
 						<div className={s.step_title}>Membership fee</div>
 					</div>
 
-					{status === 'verified' ? (
+					{subscriptionPaid ? (
 						<button className={classNames(s.step_btn_status)}>
 							<Image src={check_done} alt={'check icon'} />
 							<div className={classNames(s.step_btn_text, s.step_btn_text_done)}>
