@@ -148,6 +148,7 @@ export const AddToRFQCart = () => {
 								)
 								.map((project: Project) => (
 									<button
+										key={project.id}
 										onClick={() =>
 											product && toRfq(project.id, product.subCategoryId)
 										}
