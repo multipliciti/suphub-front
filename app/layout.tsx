@@ -1,9 +1,11 @@
-import './../styles/globals.scss';
-import { Header } from '@/components/Features/Header';
-import { Modal } from '@/components/Modals';
 import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
+
 import { MainProvider } from '@/Provider/MainProvider';
+import { Header } from '@/components/Features/Header';
+import { Modal } from '@/components/Modals';
+
+import '@/styles/globals.scss';
 
 export const metadata: Metadata = {
 	title: 'Suphub',
@@ -25,6 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<Modal />
 					<Header />
 					<main className="main">{children}</main>
+					<div id="root-modals"></div>
 				</MainProvider>
 			</body>
 		</html>

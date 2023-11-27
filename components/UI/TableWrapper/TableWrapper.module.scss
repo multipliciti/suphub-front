@@ -1,0 +1,30 @@
+.table {
+	border: 1px solid #CBD5E1;
+	border-radius: 8px;
+	border-spacing: 0;
+
+	th, td {
+		border-right: 1px solid #CBD5E1;
+		border-bottom: 1px solid #CBD5E1;
+	}
+
+	th:last-child, td:last-child  {
+		border-right: none;
+	}
+
+	tr:last-child td {
+		border-bottom: none;
+	}
+
+	th, td {
+		padding: 8px 16px;
+		color: #0F172A;
+		font-size: 14px;
+		line-height: 18px;
+	}
+
+	th {
+		font-weight: bold;
+		text-align: start;
+	}
+}

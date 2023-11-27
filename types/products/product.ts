@@ -1,13 +1,4 @@
-interface Image {
-	id: number;
-	key: string;
-	bucket: string;
-	url: string | null;
-	mime: string;
-	productId: number;
-	updatedAt: string;
-	createdAt: string;
-}
+import { ImageType } from '@/types/products/image';
 
 interface CutSheet {
 	id: number;
@@ -70,7 +61,7 @@ export interface ProductItemType {
 	projects: number;
 	subCategory: Subcategory;
 	prices: Price[];
-	images: Image[];
+	images: ImageType[];
 	cutsheets: CutSheet[];
 	dynamic_attr: DynamicAttribute[];
 	containerQty20ft: string;

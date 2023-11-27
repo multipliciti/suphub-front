@@ -1,0 +1,28 @@
+.button {
+	padding: 8px 16px;
+
+	text-align: start;
+	color: #2B1694;
+	font-size: 14px;
+	line-height: 20px;
+
+	background-color: #ffffff;
+	border: 1px solid #2B1694;
+	border-radius: 8px;
+
+	outline: none;
+
+	&_text {
+		border: none;
+		padding: 0;
+	}
+
+	&_outlined {
+
+	}
+
+	&_contained {
+		color: #ffffff;
+		background-color: #2B1694;
+	}
+}

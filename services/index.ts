@@ -18,6 +18,7 @@ import { PaymentApi } from '@/services/payment';
 import { ProductPriceApi } from '@/services/productPriceApi';
 import { OrderApi } from '@/services/orderApi';
 import { BuyerProjectApi } from './buyerProject';
+import { SampleApi } from './sampleApi';
 
 export type ApiReturnType = {
 	sendFormStepOne(): unknown;
@@ -62,6 +63,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		category: CategoryApi(instance),
 		payment: PaymentApi(instance),
 		order: OrderApi(instance),
+		sample: SampleApi(instance),
 	};
 
 	return apis;
