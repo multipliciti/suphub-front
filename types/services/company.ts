@@ -1,3 +1,15 @@
+interface Subscription {
+	id: number;
+	type: string;
+	trialCountProduct: null | number;
+	stripeSubscriptionId: null | string;
+	paid: boolean;
+	sellerCompanyId: number;
+	planId: number;
+	createdAt: string;
+	updatedAt: string;
+}
+
 export interface SellerCompany {
 	id: number;
 	name: string;
@@ -5,7 +17,7 @@ export interface SellerCompany {
 	website: string;
 	status: SellerCompanyStatus;
 
-	subscription?: string;
+	subscription: Subscription;
 	countryProductsCertifiedFor?: string;
 
 	productCertifications?: string;

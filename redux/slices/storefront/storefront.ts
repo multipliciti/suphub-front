@@ -37,7 +37,7 @@ const storefrontSlice = createSlice({
 			state.productIdForUploadImages = action.payload;
 		},
 		resetStorefrontState(state) {
-			state = initialState;
+			return initialState;
 		},
 	},
 });
