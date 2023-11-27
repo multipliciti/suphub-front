@@ -284,7 +284,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 
 					<tr>
 						<td>Product images</td>
-						<td>
+						<td colSpan={3}>
 							<div className={s.images}>
 								{product.images.length > 0 &&
 									product.images.map((item, index) => (
@@ -299,11 +299,6 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 									<Image src={addIcon} alt="add_image_icon" width={24} height={24} />
 								</div>
 							</div>
-						</td>
-
-						<td>Certification</td>
-						<td>
-							<Input placeholder="Enter certification" disabled />
 						</td>
 					</tr>
 				</tbody>
