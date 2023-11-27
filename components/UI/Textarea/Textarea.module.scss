@@ -1,0 +1,16 @@
+.textarea {
+	width: 100%;
+
+	overflow: hidden;
+	resize: none;
+	outline: none;
+	border: none;
+
+	&::placeholder {
+		color: #CBD5E1;
+	}
+
+	&:disabled {
+		background-color: transparent;
+	}
+}
