@@ -38,3 +38,27 @@ export interface CreateProjectBody {
 		zipcode: string;
 	};
 }
+
+export interface FetchFind {
+	limit?: number;
+	page?: number;
+	sortParams?: {
+		id?: string;
+		sortDirection?: SortOptions;
+	};
+	searchText?: string;
+	searchParams?: string;
+}
+export interface Order {
+	id: number;
+	status: string;
+	type: string;
+	amount: number;
+	shipmentAmount: number;
+	PO: string;
+	buyerCompanyId: number;
+	sellerCompanyId: number;
+	estDate: string;
+	updatedAt: string;
+	createdAt: string;
+}
