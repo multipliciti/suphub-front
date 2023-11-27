@@ -8,6 +8,7 @@ import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 import Link from 'next/link';
 import { useState } from 'react';
 import { setStatusGetUser, setUser } from '@/redux/slices/auth';
+import { resetStorefrontState } from '@/redux/slices/storefront/storefront';
 import { classNames } from '@/utils/classNames';
 import { useEffect } from 'react';
 import { Api } from '@/services';
@@ -72,12 +73,12 @@ export const Header = () => {
 		{
 			id: 2,
 			label: 'Projects',
-			href: '/marketplace',
+			href: '/projects',
 		},
 		{
 			id: 3,
 			label: 'My Storefront',
-			href: '/storefront/products',
+			href: '/storefront/get-started',
 		},
 	];
 
@@ -107,6 +108,7 @@ export const Header = () => {
 			if (response) {
 				dispatch(setUser(null));
 				dispatch(setStatusGetUser('logouted'));
+				dispatch(resetStorefrontState());
 				router.push('/');
 			}
 		} catch (error: any) {}
@@ -148,28 +150,26 @@ export const Header = () => {
 					</div>
 					<nav className={s.nav}>
 						<ul className={s.nav_ul}>
-							<li>
+							<div
+								className={classNames(
+									s.menu_btn,
+									activeLink === 3 && s.menu_btn_active
+								)}
+							>
 								<div
+									onClick={(e) => {
+										e.stopPropagation();
+										setActiveLink(3);
+										dispatch(setModal('createBusinessAccount'));
+									}}
 									className={classNames(
 										s.menu_btn,
 										activeLink === 3 && s.menu_btn_active
 									)}
 								>
-									<Link
-										onClick={(e) => {
-											e.stopPropagation();
-											setActiveLink(3);
-										}}
-										className={classNames(
-											s.menu_btn,
-											activeLink === 3 && s.menu_btn_active
-										)}
-										href={'/'}
-									>
-										Convert to bussiness
-									</Link>
+									Convert to business
 								</div>
-							</li>
+							</div>
 							<li className={s.split}></li>
 							<li className={s.item_img}>
 								<Link href={'/favorites'}>
@@ -243,7 +243,14 @@ export const Header = () => {
 					<Image src={logo} alt="Logo" width={117} height={36} />
 					<div className={s.auth}>
 						<ul className={s.auth_buttons}>
-							<li className={s.selltogether}>Sell with us</li>
+							<li
+								className={s.selltogether}
+								onClick={() => {
+									dispatch(setModal('createBusinessAccount'));
+								}}
+							>
+								Sell with us
+							</li>
 							<li className={s.split_hed}></li>
 							<li
 								className={s.login}
@@ -255,7 +262,7 @@ export const Header = () => {
 							</li>
 							<li
 								onClick={() => {
-									dispatch(setModal('registration'));
+									dispatch(setModal('createBusinessAccount'));
 								}}
 								className={s.signup}
 							>

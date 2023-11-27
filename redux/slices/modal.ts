@@ -1,32 +1,32 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+type ModalType =
+	| ''
+	| 'login'
+	| 'forgotPassword'
+	| 'checkEmail'
+	| 'reset sucsess'
+	| 'registration'
+	| 'verifyEmail'
+	| 'addToRFQCart'
+	| 'editPassword'
+	| 'passwordChanged'
+	| 'submitForReview'
+	| 'showPhoto'
+	| 'addRequestManually'
+	| 'submitedRFQ'
+	| 'bulkUpload'
+	| 'createBusinessAccount'
+	| 'sellerVerificationBusinessVerification'
+	| 'sellerVerificationMembershipFee'
+	| 'sellerVerificationDepositSetUp'
+	| 'sellerAddNewProduct'
+	| 'sellerProductBulkUpload'
+	| 'sellerProductUploadImage'
+	| 'deleteProject';
+
 interface CounterState {
-	modal:
-		| ''
-		| 'login'
-		| 'forgotPassword'
-		| 'checkEmail'
-		| 'reset sucsess'
-		| 'registration'
-		| 'verifyEmail'
-		| 'addToRFQCart'
-		| 'editPassword'
-		| 'passwordChanged'
-		| 'submitForReview'
-		| 'showPhoto'
-		| 'addRequestManually'
-		| 'submitedRFQ'
-		| 'bulkUpload'
-		| 'submitForReview'
-		| 'showPhoto'
-		| 'createBusinessAccount'
-		| 'sellerVerificationBusinessVerification'
-		| 'sellerVerificationMembershipFee'
-		| 'sellerVerificationDepositSetUp'
-		| 'createBusinessAccount'
-		| 'sellerAddNewProduct'
-		| 'sellerProductBulkUpload'
-		| 'sellerProductUploadImage';
+	modal: ModalType;
 	email: string;
 }
 
@@ -39,33 +39,7 @@ const modalSlice = createSlice({
 	name: 'modal',
 	initialState,
 	reducers: {
-		setModal(
-			state,
-			action: PayloadAction<
-				| 'login'
-				| 'forgotPassword'
-				| ''
-				| 'checkEmail'
-				| 'reset sucsess'
-				| 'registration'
-				| 'verifyEmail'
-				| 'addToRFQCart'
-				| 'editPassword'
-				| 'passwordChanged'
-				| 'submitForReview'
-				| 'showPhoto'
-				| 'addRequestManually'
-				| 'submitedRFQ'
-				| 'bulkUpload'
-				| 'createBusinessAccount'
-				| 'sellerVerificationBusinessVerification'
-				| 'sellerVerificationMembershipFee'
-				| 'sellerVerificationDepositSetUp'
-				| 'sellerAddNewProduct'
-				| 'sellerProductBulkUpload'
-				| 'sellerProductUploadImage'
-			>
-		) {
+		setModal(state, action: PayloadAction<ModalType>) {
 			state.modal = action.payload;
 		},
 		setEmail(state, action: PayloadAction<string>) {

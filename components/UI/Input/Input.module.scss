@@ -16,12 +16,13 @@
     background-color: transparent;
   }
 
-  &:focus {
-    border: 1px solid #755CF1;
-  }
-
   &_border {
     border: 1px solid #CBD5E1;
   }
 
+  &_focus_border {
+    &:focus {
+      border: 1px solid #755CF1;
+    }
+  }
 }

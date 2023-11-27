@@ -11,13 +11,14 @@
 	display: flex;
 	flex-direction: column;
 	padding: 20px 24px;
-	background-color: var(--new-grey-50, #f8fafc);
+	background-color: #F8FAFC;
 	border-radius: 12px 12px 0 0;
 	justify-content: space-between;
 	align-items: flex-start;
 	align-self: stretch;
 	width: 100%;
 	gap: 4px;
+
 
 	&_row {
 		display: flex;
@@ -26,7 +27,7 @@
 	}
 
 	&_title {
-		color: var(--new-grey-900, #0f172a);
+		color: #0F172A;
 		font-size: 18px;
 		font-style: normal;
 		font-weight: 700;
@@ -34,7 +35,7 @@
 	}
 
 	&_description {
-		color: var(--new-grey-600, #475569);
+		color:  #475569;
 		font-size: 14px;
 		font-style: normal;
 		font-weight: 400;
@@ -67,7 +68,7 @@
 .separator {
 	align-self: stretch;
 	height: 1px;
-	background-color: #e2e8f0;
+	background-color: #E2E8F0;
 }
 
 .content {
@@ -76,11 +77,12 @@
 	justify-content: center;
 	align-self: stretch;
 
+
 	&_group {
 		&_planBox {
-			width: 100%;
+			width:392px;
 			justify-content: center;
-			align-content: center;
+			align-content:center;
 		}
 		&_switcher {
 			display: flex;
@@ -93,10 +95,10 @@
 
 		&_bottom {
 			display: flex;
-			align-content: center;
+			align-content:center;
 			justify-content: center;
 			flex-direction: column;
-			padding: 0px 24px 24px 24px;
+			padding: 24px 24px 24px 24px;
 			align-items: flex-start;
 			gap: 12px;
 			align-self: stretch;
@@ -111,13 +113,13 @@
 			gap: 16px;
 			flex: 1 0 0;
 			border-radius: 8px;
-			border: 1px solid var(--new-grey-200, #e2e8f0);
-			background: var(--new-grey-50, #f8fafc);
+			border: 1px solid #E2E8F0;
+			background: #F8FAFC
 		}
 	}
 
 	&_title {
-		color: var(--new-grey-900, #0f172a);
+		color: #0F172A;
 
 		font-size: 18px;
 		font-style: normal;
@@ -125,7 +127,7 @@
 		line-height: 24px;
 
 		&_sub {
-			color: var(--new-grey-600, #475569);
+			color: #475569;
 
 			font-size: 14px;
 			font-style: normal;
@@ -162,7 +164,7 @@
 			-webkit-user-drag: none;
 			flex-shrink: 0;
 			border-radius: 20px;
-			background: #2b1694;
+			background: #2B1694;
 			justify-content: flex-start;
 		}
 
@@ -178,6 +180,7 @@
 		&_left {
 			justify-content: flex-start;
 			transition: transform 0.2s ease;
+
 		}
 
 		&_right {
@@ -186,8 +189,7 @@
 		}
 
 		&_text {
-			color: var(--new-grey-900, #0f172a);
-
+			color:  #0F172A;
 			font-size: 14px;
 			font-style: normal;
 			font-weight: 400;
@@ -200,10 +202,10 @@
 			align-items: flex-start;
 			gap: 10px;
 			border-radius: 8px;
-			background: var(--primary-color-light-blue-2, #f0f2fe);
+			background: #F0F2FE;
 
 			&_text {
-				color: var(--primary-color-purple, #2b1694);
+				color: #2B1694;
 				font-size: 12px;
 				font-style: normal;
 				font-weight: 600;
@@ -235,7 +237,7 @@
 
 		&_price {
 			&_number {
-				color: var(--new-grey-900, #0f172a);
+				color: #0F172A;
 				font-size: 28px;
 				font-style: normal;
 				font-weight: 700;
@@ -252,18 +254,20 @@
 		}
 
 		&_btn {
+			width:100%;
 			display: flex;
 			padding: 8px 20px;
 			justify-content: center;
 			align-items: center;
 			gap: 4px;
+			max-width:144px;
 
 			border-radius: 8px;
-			background: #6461fc;
+			background: #6461FC;
 			border: none;
 
 			&_text {
-				color: var(--new-colors-white, #fff);
+				color: #FFF;
 
 				font-size: 14px;
 				font-style: normal;
@@ -272,4 +276,20 @@
 			}
 		}
 	}
+}
+
+.halfWidth {
+	width : 50%;
+	display:flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.alignEnd {
+	align-items:flex-end;
+}
+
+.flex {
+	width:100%;
+	display:flex;
 }

@@ -5,6 +5,9 @@
   height: 600px;
   border-radius: 12px;
   background: #fff;
+  &_close{
+    cursor: pointer;
+  }
 }
 
 
@@ -124,7 +127,6 @@
         display: flex;
         justify-content: flex-end;
         align-items: flex-end;
-        cursor: pointer;
         padding: 8px;
 
         width: 100%;

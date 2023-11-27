@@ -69,14 +69,20 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 			</thead>
 
 			<tbody>
-				{prices.map((item, index) => (
-					<PriceTierItem
-						key={`${index}-${item.id}-${item.productId}`}
-						item={item}
-						platformCommission={platformCommission}
-						onDelete={() => deletePrice(item.id)}
-					/>
-				))}
+				{prices &&
+					prices.length > 0 &&
+					prices
+						.toSorted((a, b) =>
+							a.minCount === 0 ? 1 : b.minCount === 0 ? -1 : a.minCount - b.minCount
+						)
+						.map((item, index) => (
+							<PriceTierItem
+								key={`${index}-${item.id}-${item.productId}`}
+								item={item}
+								platformCommission={platformCommission}
+								onDelete={() => deletePrice(item.id)}
+							/>
+						))}
 
 				<tr>
 					<td colSpan={3}>

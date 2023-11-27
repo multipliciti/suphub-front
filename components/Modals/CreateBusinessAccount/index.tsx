@@ -380,6 +380,7 @@ export const CreateBusinessAccount = () => {
 												message: 'Password must contain at least one number',
 											},
 										})}
+										onFocus={() => clearErrors1('confirmPassword')}
 										type={hideNewPassword ? 'password' : 'text'}
 										name="password"
 										className={s.form_password_input}
@@ -806,12 +807,18 @@ export const CreateBusinessAccount = () => {
 			{step === 3 && <h3 className={s.content_top_bar_text}>Step 2/2</h3>}
 
 			<div
-				onClick={closeModal}
 				className={
 					step === 1 ? s.content_top_bar_close_to_right : s.content_top_bar_close
 				}
 			>
-				<Image src={modal_close} alt="modal_close" width={14} height={14} />
+				<Image
+					onClick={closeModal}
+					src={modal_close}
+					className={s.modal_close}
+					alt="modal_close"
+					width={14}
+					height={14}
+				/>
 			</div>
 		</div>
 	);

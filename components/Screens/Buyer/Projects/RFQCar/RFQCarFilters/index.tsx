@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { setModal } from '@/redux/slices/modal';
+import { useClickOutside } from '@/components/Hooks/useClickOutside';
 import { categoriesToSubCategories } from '@/utils/categoriesToSubCategories';
 import Image from 'next/image';
 import search_icon from '@/imgs/search.svg';
@@ -24,9 +25,21 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 	const inputSearchRef = useRef<HTMLInputElement | null>(null);
 	const [category, setCategory] = useState<any[]>([]);
 	const subCategories = categoriesToSubCategories(category);
-	console.log('stateInputs', stateInputs);
+	const requestFilterRef = useRef<HTMLButtonElement>(null);
+	const categoriesFilterRef = useRef<HTMLDivElement>(null);
+	const statusFilterRef = useRef<HTMLDivElement>(null);
+	useClickOutside(requestFilterRef, () => {
+		setRequestBtn(false);
+	});
+	useClickOutside(categoriesFilterRef, () => {
+		setActiveFilter(-1);
+	});
+	useClickOutside(statusFilterRef, () => {
+		setActiveFilter(-1);
+	});
+
 	// Function to add and remove items in stateInputs
-	const setVelueFilters = (key: string, item: string): void => {
+	const setVelueFilters = (key: string, item: string | number): void => {
 		// Check if the item already exists in the array
 		const include = stateInputs[key]?.includes(item);
 
@@ -49,7 +62,7 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 
 	const getCategory = async () => {
 		try {
-			const category = await api.product.getCategory();
+			const category = await api.category.getCategories();
 			setCategory(category);
 		} catch (error) {
 			console.error('error submitedRFQ', error);
@@ -70,12 +83,11 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 		archived: 'archived',
 	};
 
-	console.log('subCategorieseeee', subCategories);
-
 	return (
 		<div className={s.wrapper}>
 			<span className={s.request_wrapper}>
 				<button
+					ref={requestFilterRef}
 					onClick={() => setRequestBtn(!requestBtn)}
 					className={classNames(s.request, requestBtn && s.request_active)}
 				>
@@ -138,6 +150,7 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 			</label>
 
 			<div
+				ref={categoriesFilterRef}
 				onClick={() => setActiveFilter(activeFilter !== 1 ? 1 : -1)}
 				className={s.filter}
 			>
@@ -165,12 +178,12 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 								<p
 									onClick={(e) => {
 										e.stopPropagation();
-										setVelueFilters('categories', el.name);
+										setVelueFilters('categories', el.id);
 									}}
 									className={classNames(
 										s.item,
 										stateInputs['categories'].some(
-											(existingItem: any) => existingItem === el.name
+											(existingItem: any) => existingItem === el.id
 										) && s.item_active
 									)}
 									key={ind}
@@ -184,6 +197,7 @@ export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 			</div>
 
 			<div
+				ref={statusFilterRef}
 				onClick={() => setActiveFilter(activeFilter !== 2 ? 2 : -1)}
 				className={s.filter}
 			>

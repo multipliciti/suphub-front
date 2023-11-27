@@ -6,12 +6,21 @@ import s from './Input.module.scss';
 
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
 	withBorder?: boolean;
+	withFocusBorder?: boolean;
 }
 
-export const Input: FC<Props> = ({ withBorder = false, ...props }) => {
+export const Input: FC<Props> = ({
+	withBorder = false,
+	withFocusBorder = true,
+	...props
+}) => {
 	return (
 		<input
-			className={classNames(s.input, withBorder && s.input_border)}
+			className={classNames(
+				s.input,
+				withBorder && s.input_border,
+				withFocusBorder && s.input_focus_border
+			)}
 			{...props}
 		/>
 	);

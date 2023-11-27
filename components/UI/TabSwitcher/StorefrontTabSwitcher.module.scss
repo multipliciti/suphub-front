@@ -8,12 +8,12 @@
 }
 
 .link {
-  position: relative;
-  padding: 0 16px;
+  display: flex;
+  justify-content: center;
   height: 100%;
-
-  color: #0F172A;
-  text-decoration: none;
+  position: relative;
+  gap: 8px;
+  padding: 0 16px;
 
   &:not(:last-child)::after {
     content: '';
@@ -29,5 +29,16 @@
   &_active {
     font-weight: bolder;
     border-bottom: 3px solid #2B1694;
+  }
+
+  &_text {
+    height: 100%;
+    text-decoration: none;
+    color: #0F172A;
+
+    &_blocked {
+      color: #64748B;
+      user-select: none;
+    }
   }
 }

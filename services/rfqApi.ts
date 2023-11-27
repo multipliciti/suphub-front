@@ -7,43 +7,26 @@ import {
 } from '@/types/services/rfq';
 
 export const RfqApi = (instance: AxiosInstance) => ({
-	async getProjectById({
-		projectId,
-		page,
-		limit,
-		sortParams,
-		searchParams,
-	}: RfqFind) {
+	async getProjectById({ projectId, page, limit, searchParams }: RfqFind) {
 		const params = new URLSearchParams();
 		page ? params.set('page', String(page)) : null;
 		limit ? params.set('limit', String(limit)) : null;
-		sortParams
-			? params.set('sort', encodeURIComponent(JSON.stringify(sortParams)))
-			: null;
-		searchParams ? params.set('find', JSON.stringify(searchParams)) : null;
+		searchParams ? params.set('find', searchParams) : null;
 
 		const url = `/rfq/project/${projectId}?${params.toString()}`;
 		const response = await instance.get(url);
 		return response.data;
 	},
 	//the same as getProjectById
-	async getRfqByProject({
-		projectId,
-		page,
-		limit,
-		sortParams,
-		searchParams,
-	}: RfqFind) {
+	async getRfqByProject({ projectId, page, limit, searchParams }: RfqFind) {
 		console.log('searchParams', searchParams);
 		const search = searchParams ? `&find=${searchParams}` : '';
-		const sort = sortParams
-			? `&sort=${encodeURIComponent(JSON.stringify(sortParams))}`
-			: '';
-		const url = `/rfq/project/${projectId}/?page=${page}&limit=${limit}${sort}${search}`;
+
+		const url = `/rfq/project/${projectId}/?page=${page}&limit=${limit}${search}`;
 		const response = await instance.get(url);
 		return response.data;
 	},
-	async getProjectOne(id: number) {
+	async getRfqOne(id: number) {
 		const url = `/rfq/${id}`;
 		const response = await instance.get(url);
 		return response.data;

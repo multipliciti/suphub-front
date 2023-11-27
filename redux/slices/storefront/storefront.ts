@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { CategoryItem, SubCategoryItem } from '@/types/sideBar';
+import { CategoryItem } from '@/types/sideBar';
 import { SellerCompany } from '@/types/services/company';
 
 interface CounterState {
@@ -36,6 +36,9 @@ const storefrontSlice = createSlice({
 		) {
 			state.productIdForUploadImages = action.payload;
 		},
+		resetStorefrontState(state) {
+			return initialState;
+		},
 	},
 });
 
@@ -44,6 +47,7 @@ export const {
 	setSellerCompany,
 	setCategories,
 	setProductIdForUploadImages,
+	resetStorefrontState,
 } = storefrontSlice.actions;
 
 export default storefrontSlice.reducer;

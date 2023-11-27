@@ -1,5 +1,4 @@
 import { AxiosInstance } from 'axios';
-
 import { CategoryItem } from '@/types/sideBar';
 
 export const CategoryApi = (instance: AxiosInstance) => ({

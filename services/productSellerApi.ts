@@ -70,10 +70,13 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 		}
 	},
 
-	async bulkUploadCsv(csvFile: File) {
+	async bulkUploadCsv(data: { csvFile: File; subCategoryId: number }) {
 		try {
+			const { csvFile, subCategoryId } = data;
+
 			const formData = new FormData();
 			formData.append('file', csvFile);
+			formData.append('subCategoryId', String(subCategoryId));
 
 			const url = `/product-seller/upload-csv`;
 			const response = await instance.post<{ error: boolean; message: string }>(
@@ -97,6 +100,17 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 
 			const url = `/product-seller/upload-images`;
 			const response = await instance.post(url, formData);
+			return response.data;
+		} catch (error) {
+			console.error('Product Seller API error:', error);
+			throw error;
+		}
+	},
+
+	async deleteImages(ids: number[]) {
+		try {
+			const url = `/product-seller/images`;
+			const response = await instance.delete(url, { data: { ids } });
 			return response.data;
 		} catch (error) {
 			console.error('Product Seller API error:', error);

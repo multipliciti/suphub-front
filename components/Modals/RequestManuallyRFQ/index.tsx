@@ -32,10 +32,6 @@ export const RequestManuallyRFQ = () => {
 	const [category, setCategory] = useState<any[]>([]);
 	const subCategories = categoriesToSubCategories(category);
 
-	console.log('category', category);
-	console.log('subCategories', subCategories);
-	console.log('formData', formData);
-
 	// set handleKeysubCategoryId
 	const handleKeysubCategoryId = (id: number) => {
 		setFormData((prevState: RfqItemFetch) => ({
@@ -126,7 +122,7 @@ export const RequestManuallyRFQ = () => {
 
 	const getCategory = async () => {
 		try {
-			const category = await api.product.getCategory();
+			const category = await api.category.getCategories();
 			setCategory(category);
 		} catch (error) {
 			console.error('error submitedRFQ', error);
@@ -189,7 +185,7 @@ export const RequestManuallyRFQ = () => {
 								{subCategories?.map((el, ind) => {
 									return (
 										<span
-											onClick={() => handleKeysubCategoryId(el.categoryId)}
+											onClick={() => handleKeysubCategoryId(el.id)}
 											key={ind}
 											className={s.subcategory_item}
 										>

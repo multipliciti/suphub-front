@@ -1,0 +1,25 @@
+.wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	position: relative;
+}
+
+.delete_button {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 25px;
+	height: 25px;
+	transform: translate(25%, -50%);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 100%;
+	background-color: #E7E9EF;
+
+	&:hover {
+		cursor: pointer;
+	}
+}

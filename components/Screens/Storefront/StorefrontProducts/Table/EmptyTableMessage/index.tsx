@@ -26,7 +26,7 @@ export const StorefrontEmptyTableMessage = () => {
 			<h2 className={s.title}>You have no active listings yet</h2>
 
 			<div className={s.text}>
-				You don't have any projects yet. To create your project specification,
+				You don&apos;t have any projects yet. To create your project specification,
 				compare, order products, create your first project.
 			</div>
 

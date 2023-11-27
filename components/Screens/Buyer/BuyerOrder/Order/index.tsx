@@ -1,17 +1,18 @@
 'use client';
 import s from './Order.module.scss';
-import { classNames } from '@/utils/classNames';
 import { StatusOrder } from './StatusOrder';
 import { Info } from './Info';
 import Image from 'next/image';
 import back_btn from '@/imgs/Buyer&Seller/back_btn.svg';
 import { ProgressOrder } from './ProgressOrder';
+import { OrderInterface } from '@/types/services/Orders';
 
-interface Product {
-	product: any;
+interface TypeProps {
+	order: OrderInterface;
 }
 
-export const Order = ({ product }: Product) => {
+export const Order = ({ order }: TypeProps) => {
+	console.log('order', order);
 	return (
 		<div className={s.wrapper}>
 			<button className={s.btn_back}>
@@ -19,13 +20,9 @@ export const Order = ({ product }: Product) => {
 				<span className={s.btn_text}>Back</span>
 			</button>
 
-			<StatusOrder
-				code={product.code}
-				status_info={product.status_info}
-				status={product.status}
-			/>
-			<Info />
-			<ProgressOrder />
+			<StatusOrder code={order.PO} status={order.status} />
+			<Info price={order.amount} />
+			<ProgressOrder order={order} />
 		</div>
 	);
 };

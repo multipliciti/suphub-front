@@ -6,7 +6,8 @@ import { setModal } from '@/redux/slices/modal';
 import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { Api } from '@/services';
-import { Project, RfqItem } from '@/types/products/rfq';
+import { RfqItem } from '@/types/products/rfq';
+import { Project } from '@/types/products/project';
 import search_img from '@/imgs/Marketplace/search.svg';
 import modal_close from '@/imgs/close.svg';
 import back_btn from '@/imgs/Modal/back_btn_add_to_rfq.svg';
@@ -62,7 +63,7 @@ export const AddToRFQCart = () => {
 		try {
 			const response = await api.rfq.getProjectById({
 				projectId,
-				searchParams: { subCategoryId },
+				searchParams: JSON.stringify({ subCategoryId }),
 			});
 			setRfqs(response.result);
 		} catch (error) {
@@ -75,7 +76,7 @@ export const AddToRFQCart = () => {
 		handleNextStep();
 	};
 	const postRfqOption = async (rfq: RfqItem, product: any) => {
-		await api.rfqOption.create({
+		await api.rfqOption.createOwn({
 			productId: product.id,
 			rfqId: rfq.id,
 		});
