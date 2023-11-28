@@ -9,18 +9,17 @@ import { Overview } from './Overview';
 import { RFQCar } from './RFQCar';
 
 export const Projects = () => {
-	const [activeDisplay, setActiveDisplay] = useState<number>(3);
-	const [sideBarRequestDetail, setSideBarRequestDetail] = useState<boolean>(true);
+	const [activeDisplay, setActiveDisplay] = useState<number>(2);
 	return (
 		<IsBuyerSideBarContainer>
-			{/* <IsBuyerSideBarRequestDetail sideBarRequestDetail={sideBarRequestDetail}> */}
-			<div className={s.wrapper}>
-				<Nav activeDisplay={activeDisplay} setActiveDisplay={setActiveDisplay} />
-				{activeDisplay === 1 && <Overview />}
-				{activeDisplay === 2 && <RFQCar />}
-				{activeDisplay === 3 && <Orders />}
-			</div>
-			{/* </IsBuyerSideBarRequestDetail> */}
+			<IsBuyerSideBarRequestDetail>
+				<div className={s.wrapper}>
+					<Nav activeDisplay={activeDisplay} setActiveDisplay={setActiveDisplay} />
+					{activeDisplay === 1 && <Overview />}
+					{activeDisplay === 2 && <RFQCar />}
+					{activeDisplay === 3 && <Orders />}
+				</div>
+			</IsBuyerSideBarRequestDetail>
 		</IsBuyerSideBarContainer>
 	);
 };

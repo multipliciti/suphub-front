@@ -2,11 +2,11 @@
 import { classNames } from '@/utils/classNames';
 import s from './ProductTable.module.scss';
 import Image from 'next/image';
-import { useEffect } from 'react';
 import { useRef } from 'react';
 import chat_image from '@/imgs/Buyer&Seller/chat_icon.svg';
 import { RfqItemGot } from '@/types/services/rfq';
-import { useState } from 'react';
+import { setRfqId } from '@/redux/slices/sideBars/sideBarRequestDetail';
+import { useAppDispatch } from '@/redux/hooks';
 
 interface TypeProps {
 	properties: RfqItemGot[];
@@ -14,6 +14,7 @@ interface TypeProps {
 }
 
 export const ProductTable = ({ properties, compress }: TypeProps) => {
+	const dispatch = useAppDispatch();
 	const statusTest = 'Selection needed';
 	const tableRef = useRef<HTMLTableSectionElement | null>(null);
 
@@ -76,7 +77,12 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 							</td>
 							<td>
 								<span className={s.subtitle}>{property.productName}</span>
-								<p className={s.title}>{property.productName}</p>
+								<p
+									onClick={() => dispatch(setRfqId(property.id))}
+									className={s.title}
+								>
+									{property.productName}
+								</p>
 							</td>
 							{/* chat */}
 							<td>

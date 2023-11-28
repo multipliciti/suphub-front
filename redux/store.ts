@@ -19,6 +19,7 @@ import storefrontProjectsSellerSlice from './slices/storefront/storefrontProject
 import projectsSlice from './slices/projects/projects';
 import projectsSidebar from './slices/projects/projectsSidebar';
 import projectItemSlice from './slices/projects/projectItem';
+import sideBarRequestDetailSlice from './slices/sideBars/sideBarRequestDetail';
 
 export function makeStore() {
 	return configureStore({
@@ -41,6 +42,7 @@ export function makeStore() {
 			projectsSlice,
 			projectsSidebar,
 			projectItemSlice,
+			sideBarRequestDetailSlice,
 		},
 	});
 }
