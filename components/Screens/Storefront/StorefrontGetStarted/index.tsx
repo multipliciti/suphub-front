@@ -31,7 +31,9 @@ export const StorefrontGetStarted = () => {
 				if (!sellerCompanyId) return;
 				const res2 = await api.sellerCompany.getById(sellerCompanyId);
 				setStatus(res2.data.status);
-				setSubscriptionPaid(res2.data.subscription.paid);
+				if (res2.data.subscription !== null) {
+					setSubscriptionPaid(res2.data.subscription.paid);
+				}
 			};
 			fetch();
 		} catch (e) {

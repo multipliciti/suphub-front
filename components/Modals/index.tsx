@@ -72,7 +72,7 @@ export const Modal = () => {
 					modal === 'addToRFQCart' && s.wrapper_active
 				)}
 			>
-				<AddToRFQCart />
+				{modal === 'addToRFQCart' && <AddToRFQCart />}
 			</div>
 			<div
 				className={classNames(
@@ -80,8 +80,7 @@ export const Modal = () => {
 					modal === 'editPassword' && s.wrapper_active
 				)}
 			>
-				<EditPassword />
-				{modal === 'addToRFQCart' && <AddToRFQCart />}
+				{modal === 'editPassword' && <EditPassword />}
 			</div>
 
 			<div
