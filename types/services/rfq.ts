@@ -38,7 +38,7 @@ export interface RfqItemGot {
 	quantity: number;
 	budget: number;
 	size: string;
-	certifications: string[];
+	certifications: string;
 	additionalComments: string;
 	cover: string;
 
