@@ -23,6 +23,7 @@ import { SellerAddNewProduct } from './StorefrontAddProduct/AddNewProduct';
 import { SellerProductBulkUpload } from './StorefrontAddProduct/BulkUpload';
 import { SellerProductUploadImage } from './StorefrontAddProduct/UploadImage';
 import { DeleteProject } from '@/components/Modals/Projects/DeleteProject';
+import { WarningTrialCanBeUsedOnce } from '@/components/Modals/WarningTrialCanBeUsedOnce';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -157,6 +158,15 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'sellerVerificationMembershipFee' && <MembershipFee />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'warningTrialCanBeUsedOnce' && s.wrapper_active
+				)}
+			>
+				{modal === 'warningTrialCanBeUsedOnce' && <WarningTrialCanBeUsedOnce />}
 			</div>
 			<div
 				className={classNames(

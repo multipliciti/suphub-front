@@ -20,6 +20,7 @@ type ModalType =
 	| 'sellerVerificationBusinessVerification'
 	| 'sellerVerificationMembershipFee'
 	| 'sellerVerificationDepositSetUp'
+	| 'warningTrialCanBeUsedOnce'
 	| 'sellerAddNewProduct'
 	| 'sellerProductBulkUpload'
 	| 'sellerProductUploadImage'
