@@ -1,15 +1,12 @@
 'use client';
 import s from './MembershipFee.module.scss';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { classNames } from '@/utils/classNames';
 import { Api } from '@/services';
 import modal_close from '@/imgs/close.svg';
-import switcher from '@/imgs/Buyer&Seller/SellerVerification/switcher.svg';
-import switcher_circle from '@/imgs/Buyer&Seller/SellerVerification/switcher-circle.svg';
 import stripe_logo from '@/imgs/Buyer&Seller/SellerVerification/stripe-logo.svg';
 import { useRouter } from 'next/navigation';
 import { Plan } from '@/types/services/payment';
@@ -18,12 +15,9 @@ export const MembershipFee = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 	const router = useRouter();
-	const [hideOldPassword, setHideOldPassword] = React.useState<boolean>(true);
 	const [plans, setPlans] = React.useState<Plan[]>();
 
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
-
-	const { handleSubmit } = useForm();
 
 	const closeModal = () => {
 		dispatch(setModal(''));
@@ -39,7 +33,7 @@ export const MembershipFee = () => {
 			});
 			if (res.url) router.push(res.url);
 		} catch (e) {
-			console.error(e);
+			dispatch(setModal('warningTrialCanBeUsedOnce'));
 		}
 	};
 
@@ -69,8 +63,8 @@ export const MembershipFee = () => {
 			<div className={s.content}>
 				<div className={s.content_group_bottom}>
 					{plans &&
-						plans.map((plan) => (
-							<div className={s.content_group_planBox}>
+						plans.map((plan, id) => (
+							<div className={s.content_group_planBox} key={id}>
 								<div className={s.content_group_stripe}>
 									<div className={s.content_title_group}>
 										<div className={s.content_title}>{plan.title}</div>
