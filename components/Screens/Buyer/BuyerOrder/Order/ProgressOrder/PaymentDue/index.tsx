@@ -1,13 +1,42 @@
 'use client';
 import s from './PaymentDue.module.scss';
 import { classNames } from '@/utils/classNames';
+import { useRouter } from 'next/navigation';
+import { Api } from '@/services';
 
 interface PropsType {
 	activeDisplay: number[];
 	index: number;
+	orderId: number;
+	activeStep: number;
 }
 
-export const PaymentDue = ({ activeDisplay, index }: PropsType) => {
+export const PaymentDue = ({
+	activeDisplay,
+	index,
+	orderId,
+	activeStep,
+}: PropsType) => {
+	const { push } = useRouter();
+	const api = Api();
+
+	const fetchOrderPay = async () => {
+		const data = {
+			orderId,
+			amount: 1000,
+			type: 'remaining',
+			//hardcode
+			successUrl: 'http://localhost:8080/testBuyerOrder',
+			cancelUrl: 'http://localhost:8080/testBuyerOrder',
+		};
+
+		try {
+			const response = await api.buyerOrder.orderPay(data);
+			push(response.data.url);
+		} catch (error) {
+			console.error('fetchOrderPay error:', error);
+		}
+	};
 	return (
 		<>
 			<div
@@ -25,11 +54,18 @@ export const PaymentDue = ({ activeDisplay, index }: PropsType) => {
 					activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
-				<p className={s.title}>
-					To authorize shipment, please pay remaining balance
-				</p>
+				{activeStep <= 5 && (
+					<>
+						<p className={s.title}>
+							To authorize shipment, please pay remaining balance
+						</p>
 
-				<button className={s.btn}>Pay $3,244.50</button>
+						<button onClick={() => fetchOrderPay()} className={s.btn}>
+							Pay $3,244.50
+						</button>
+					</>
+				)}
+				{activeStep > 5 && <p className={s.paid}>Paid</p>}
 			</div>
 		</>
 	);

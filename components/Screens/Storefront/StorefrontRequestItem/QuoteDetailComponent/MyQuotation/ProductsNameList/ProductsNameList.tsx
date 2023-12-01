@@ -30,7 +30,9 @@ export const ProductsNameList = ({
 		: null;
 
 	const finalAttrObj = {
-		...(objFetchSearch && { ...objFetchSearch }),
+		attr: {
+			...(objFetchSearch && { ...objFetchSearch }),
+		},
 	};
 
 	//Converting the combinedJsonObj to JSON for the request.

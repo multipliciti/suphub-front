@@ -1,28 +1,61 @@
 'use client';
-import { ChangeEvent, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { setPhotoShow } from '@/redux/slices/Order/order';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { setModal } from '@/redux/slices/modal';
 import Image from 'next/image';
 import s from './PreShipmentInspection.module.scss';
-import test from '@/imgs/Marketplace/Products/Product_test.png';
+import { Delivery } from '@/types/services/Orders';
+import { Api } from '@/services';
 
 interface PropsType {
+	delivery: Delivery | null;
+	orderId: number;
+	rerenderProgress: boolean;
+	setRerenderProgress: (n: boolean) => void;
 	activeDisplay: number[];
+	activeStep: number;
 	index: number;
 }
 
-export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
+export const PreShipmentInspection = ({
+	activeDisplay,
+	activeStep,
+	index,
+	delivery,
+	orderId,
+	rerenderProgress,
+	setRerenderProgress,
+}: PropsType) => {
 	const dispatch = useAppDispatch();
-	const photos = [test, test, test, test];
-	const [testShow, setTestShow] = useState<boolean>(false);
+	const { push } = useRouter();
+	const api = Api();
 
 	const optionsArr = [
-		{ id: 1, title: 'Air', value: 'Air', active: false },
-		{ id: 2, title: 'Ocean', value: 'Ocean', active: true },
-		{ id: 3, title: 'Truck', value: 'Truck', active: false },
+		{ id: 1, title: 'Air', value: 'air', active: false },
+		{ id: 2, title: 'Ocean', value: 'ocean', active: true },
+		{ id: 3, title: 'Truck', value: 'truck', active: false },
 	];
+
+	const fetchOrderPay = async () => {
+		const data = {
+			orderId,
+			amount: delivery?.amount ? delivery?.amount : 0,
+			type: 'delivery',
+			//hardcode
+			successUrl: 'http://localhost:8080/testBuyerOrder',
+			cancelUrl: 'http://localhost:8080/testBuyerOrder',
+		};
+
+		try {
+			const response = await api.buyerOrder.orderPay(data);
+			push(response.data.url);
+		} catch (error) {
+			console.error('fetchOrderPay error:', error);
+		}
+	};
 
 	return (
 		<>
@@ -42,108 +75,127 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 				)}
 			>
 				<span className={s.data}>01/05/2023</span>
-
-				<form className={s.form}>
-					{/* choice type */}
-					<div className={s.form_chapter}>
-						<div className={s.block}>
-							<h5 className={s.title}>Freight type</h5>
-						</div>
-						<div className={classNames(s.block, s.options)}>
-							{optionsArr.map((option, ind) => {
-								return (
-									<span
-										key={ind}
-										className={classNames(
-											s.options_type,
-											option.active && s.options_type_active
-										)}
-									>
-										{option.title}
-									</span>
-								);
-							})}
-						</div>
-					</div>
-					{/* input amount */}
-					<div className={s.form_chapter}>
-						<div className={s.block}>
-							<h5 className={s.title}>Shipment invoice amount</h5>
-							<p className={s.subtitle}>If invoice included shipment, please skip</p>
-						</div>
-						<div className={s.block}>
-							<p className={s.price}>500$</p>
-						</div>
-					</div>
-					{/* pdf */}
-					<div className={s.form_chapter}>
-						<div className={s.block}>
-							<h5 className={s.title}>Upload documents</h5>
-							<p className={s.subtitle}>Bill of lading or other freight document</p>
-						</div>
-						<div className={classNames(s.block, s.pdf)}>
-							<div className={s.pdf_description}>
-								<>
-									<span className={s.pdf_title}>File_Name.pdf</span>
-									<span className={s.pdf_size}>6.9 Mb</span>
-								</>
+				{delivery && (
+					<form className={s.form}>
+						{/* choice type */}
+						<div className={s.form_chapter}>
+							<div className={s.block}>
+								<h5 className={s.title}>Freight type</h5>
+							</div>
+							<div className={classNames(s.block, s.options)}>
+								{optionsArr.map((option, ind) => {
+									return (
+										<span
+											key={ind}
+											className={classNames(
+												s.options_type,
+												option.value === delivery.type && s.options_type_active
+											)}
+										>
+											{option.title}
+										</span>
+									);
+								})}
 							</div>
 						</div>
-					</div>
-					{/* Images */}
-					<div className={s.form_chapter}>
-						<div className={s.block}>
-							<h5 className={s.title}>Upload images</h5>
+						{/* input amount */}
+						<div className={s.form_chapter}>
+							<div className={s.block}>
+								<h5 className={s.title}>Shipment invoice amount</h5>
+								<p className={s.subtitle}>
+									If invoice included shipment, please skip
+								</p>
+							</div>
+							<div className={s.block}>
+								<p className={s.price}>{delivery.amount}$</p>
+							</div>
 						</div>
-						<div className={classNames(s.block, s.photo)}>
-							{photos?.map((image, ind) => {
-								return (
-									<span className={s.photo_wrapper}>
-										<Image
-											onClick={() => {
-												dispatch(setPhotoShow(image));
-												dispatch(setModal('showPhoto'));
-											}}
-											className={s.photo_img}
-											key={ind}
-											src={image}
-											alt="Image"
-											width={60}
-											height={60}
-										/>
-									</span>
-								);
-							})}
-						</div>
-					</div>
-
-					<div className={s.buttons}>
-						{testShow && (
+						{/* pdf */}
+						{delivery && delivery.documents && delivery.documents.length > 0 && (
 							<>
-								<div className={s.status}>
-									<span className={s.status_paid}>Shipment paid</span>
-									<span
-										onClick={() => setTestShow(!testShow)}
-										className={s.status_approved}
-									>
-										Milestone approved
-									</span>
+								<div className={s.form_chapter}>
+									<div className={s.block}>
+										<h5 className={s.title}>Upload documents</h5>
+										<p className={s.subtitle}>
+											Bill of lading or other freight document
+										</p>
+									</div>
+									<div className={classNames(s.block, s.pdf)}>
+										<div className={s.pdf_description}>
+											{delivery.documents.map((file, ind: number) => {
+												return (
+													<>
+														<a
+															className={s.pdf_link}
+															href="https://suphub-dev.s3.amazonaws.com/order-uploads/3/1e223d30-b3c8-4330-ae43-5346cb92266a.pdf"
+															download
+														>
+															{file.name}
+														</a>
+													</>
+												);
+											})}
+										</div>
+									</div>
 								</div>
 							</>
 						)}
-
-						{!testShow && (
-							<>
-								<button onClick={() => setTestShow(!testShow)} className={s.paid}>
-									Pay $500.00
-								</button>
-								<button onClick={() => setTestShow(!testShow)} className={s.send}>
-									Approve
-								</button>
-							</>
+						{/* Images */}
+						{delivery.images.length > 0 && (
+							<div className={s.form_chapter}>
+								<div className={s.block}>
+									<h5 className={s.title}>Upload images</h5>
+								</div>
+								<div className={classNames(s.block, s.photo)}>
+									{delivery.images.map((image: any, ind) => {
+										return (
+											<span className={s.photo_wrapper}>
+												<Image
+													onClick={() => {
+														dispatch(setPhotoShow(image.url));
+														dispatch(setModal('showPhoto'));
+													}}
+													className={s.photo_img}
+													key={ind}
+													src={image.url}
+													alt="Image"
+													width={60}
+													height={60}
+												/>
+											</span>
+										);
+									})}
+								</div>
+							</div>
 						)}
-					</div>
-				</form>
+
+						<div className={s.buttons}>
+							{activeStep >= 5 && (
+								<>
+									<div className={s.status}>
+										<span className={s.status_paid}>Shipment paid</span>
+									</div>
+								</>
+							)}
+
+							{activeStep < 5 && (
+								<>
+									<button
+										onClick={(event) => {
+											event.preventDefault();
+											if (delivery) {
+												fetchOrderPay();
+											}
+										}}
+										className={s.paid}
+									>
+										Pay ${delivery?.amount}
+									</button>
+								</>
+							)}
+						</div>
+					</form>
+				)}
 			</div>
 		</>
 	);

@@ -22,6 +22,7 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 	const [indexMore, setIndexMore] = useState<number>(-1);
 	const [rect, setRect] = useState<any>();
 	const tHeadRef = useRef<HTMLTableSectionElement>(null);
+
 	useEffect(() => {
 		const targetElement = document.querySelector(`[data-id="${indexMore}"]`);
 
@@ -30,6 +31,7 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 			setRect(rect);
 		}
 	}, [indexMore, compress]);
+
 	console.log('rfqs', rfqs);
 
 	// const handleMouseEnter = (id: number) => {
@@ -59,8 +61,8 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 				{rect && (
 					<div
 						style={{
-							top: `${rect.top + (compress ? 59 : 55)}px`,
-							left: `${rect.left}px`,
+							top: `${rect.top + (compress ? -35 : -40)}px`,
+							left: `${rect.left - (compress ? 100 : 263)}px`,
 						}}
 						className={classNames(s.more, indexMore !== -1 && s.more_active)}
 					>
@@ -104,7 +106,7 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 					{rfqs.map((el, ind) => {
 						return (
 							<tr key={el.id} className={s.tr}>
-								<td className={s.td} style={{ maxHeight: '55px' }}>
+								<td className={classNames(s.td, compress && s.td_compress)}>
 									<Image
 										className={s.eye_icon}
 										src={eye_icon}
@@ -159,14 +161,12 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 													width={20}
 													height={20}
 												/>
-
 												<Image
 													src={purchase_icon}
 													alt="purchase_icon"
 													width={20}
 													height={20}
 												/>
-
 												<Image
 													className={s.icons_more}
 													src={more_icon}

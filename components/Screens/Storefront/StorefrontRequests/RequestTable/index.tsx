@@ -3,6 +3,8 @@ import { classNames } from '@/utils/classNames';
 import s from './RequestTable.module.scss';
 import Link from 'next/link';
 import { useAppSelector } from '@/redux/hooks';
+import { formatDateString } from '@/utils/formatDateString';
+import { truncateFileNameEnd } from '@/utils/names';
 
 export const RequestTable = () => {
 	const data = useAppSelector(
@@ -13,11 +15,10 @@ export const RequestTable = () => {
 			<table className={s.table}>
 				<thead className={s.thead}>
 					<tr>
+						<th>Data</th>
 						<th>Customer</th>
 						<th>RFQ Items</th>
 						<th>QTY.</th>
-						<th>Measurement</th>
-						<th>Budget</th>
 						<th>Status</th>
 						<th>Ship to</th>
 					</tr>
@@ -28,12 +29,11 @@ export const RequestTable = () => {
 					{data.map((el: any, ind: number) => {
 						return (
 							<tr key={ind}>
+								<td> {formatDateString(el.createdAt)} </td>
 								<td> {el.buyer.firstName} </td>
 								<td>
 									<div className={s.rfq}>
-										<span>
-											{el.Rfq.length} {el.Rfq.length > 1 ? 'items' : 'item'}
-										</span>
+										<span>{truncateFileNameEnd(el.name, 40)}</span>
 										<Link
 											className={s.rfq_detail}
 											href="/storefront/requests/[id]"
@@ -43,9 +43,9 @@ export const RequestTable = () => {
 										</Link>
 									</div>
 								</td>
-								<td> {el.QTY} </td>
-								<td> {el.name} </td>
-								<td> {el.budget} </td>
+								<td>
+									{el.Rfq.reduce((sum: 0, el: any) => sum + (el.budget || 0), 0)}
+								</td>
 								<td>
 									<span
 										className={classNames(
@@ -53,10 +53,10 @@ export const RequestTable = () => {
 											el.status === 'Sampling' && s.status_sampling
 										)}
 									>
-										{el.status}
+										{el.status} Null
 									</span>
 								</td>
-								<td> {el.shipTo} </td>
+								<td> {el.shipTo} Null </td>
 							</tr>
 						);
 					})}

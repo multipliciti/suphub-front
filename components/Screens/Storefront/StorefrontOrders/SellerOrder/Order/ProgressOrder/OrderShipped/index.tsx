@@ -3,6 +3,8 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { classNames } from '@/utils/classNames';
 import s from './OrderShipped.module.scss';
 import Image from 'next/image';
+import { Delivery } from '@/types/services/Orders';
+import { Api } from '@/services';
 import { truncateFileName } from '@/utils/names';
 import pdf_upload_2 from '@/imgs/Buyer&Seller/pdf_upload_2.svg';
 import close_icon from '@/imgs/close.svg';
@@ -10,6 +12,7 @@ import close_icon from '@/imgs/close.svg';
 interface PropsType {
 	activeDisplay: number[];
 	index: number;
+	deliveryId: number | null;
 }
 
 interface formDataType {
@@ -18,7 +21,8 @@ interface formDataType {
 	file: File | null;
 }
 
-export const OrderShipped = ({ activeDisplay, index }: PropsType) => {
+export const OrderShipped = ({ activeDisplay, index, deliveryId }: PropsType) => {
+	const api = Api();
 	const [formData, setFormData] = useState<formDataType>({
 		carrier: '',
 		traking: '',
@@ -59,6 +63,22 @@ export const OrderShipped = ({ activeDisplay, index }: PropsType) => {
 			...prevData,
 			file: null,
 		}));
+	};
+
+	const fetchDeliveryTracking = async () => {
+		const formDataSend = new FormData();
+		formDataSend.append('id', String(deliveryId));
+		formDataSend.append('carrier', formData.carrier);
+		formDataSend.append('trackingNumber', formData.traking);
+		if (formData.file !== null) {
+			formDataSend.append('bill', formData.file);
+		}
+		//fetch
+		try {
+			await api.sellerOrder.orderDeliveryAddtracking(formDataSend);
+		} catch (error) {
+			console.error('changeStatusPreShipment error:', error);
+		}
 	};
 
 	return (
@@ -102,7 +122,7 @@ export const OrderShipped = ({ activeDisplay, index }: PropsType) => {
 							id="traking"
 							placeholder="Add tracking number"
 							className={s.form_input}
-							type="text"
+							type="number"
 						/>
 						{/* if not have file */}
 						{!formData.file && (
@@ -122,7 +142,6 @@ export const OrderShipped = ({ activeDisplay, index }: PropsType) => {
 						{/* {if have file} */}
 						{formData?.file && (
 							<div className={s.file_have}>
-								{/* <Image src={pdf_icon} alt="pdf_icon" width={24} height={24} /> */}
 								<p className={s.file_have_title}>{truncateFileName(fileName, 40)}</p>
 								<Image
 									onClick={() => handleRemoveFile()}
@@ -135,7 +154,12 @@ export const OrderShipped = ({ activeDisplay, index }: PropsType) => {
 							</div>
 						)}
 					</div>
-					<button className={classNames(s.btn, formData.carrier && s.btn_active)}>
+					<button
+						onClick={() => {
+							fetchDeliveryTracking();
+						}}
+						className={classNames(s.btn, formData.carrier && s.btn_active)}
+					>
 						Complete shipment
 					</button>
 				</div>

@@ -1,15 +1,37 @@
 'use client';
 import { classNames } from '@/utils/classNames';
 import s from './OrderDelivered.module.scss';
+import { Api } from '@/services';
 import { useState } from 'react';
 
 interface PropsType {
+	orderId: number;
 	activeDisplay: number[];
 	index: number;
+	activeStep: number;
+	setActiveStep: (n: number) => void;
 }
 
-export const OrderDelivered = ({ activeDisplay, index }: PropsType) => {
-	const [testShow, setTestShow] = useState<boolean>(false);
+export const OrderDelivered = ({
+	orderId,
+	activeDisplay,
+	index,
+	setActiveStep,
+	activeStep,
+}: PropsType) => {
+	const api = Api();
+
+	const changeStatusCompleted = async () => {
+		try {
+			await api.sellerOrder.changeStatus({
+				id: orderId,
+				status: 'completed',
+			});
+			setActiveStep(8);
+		} catch (error) {
+			console.error('changeStatusCompleted error:', error);
+		}
+	};
 	return (
 		<>
 			<div
@@ -27,17 +49,19 @@ export const OrderDelivered = ({ activeDisplay, index }: PropsType) => {
 					activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
-				{testShow && (
+				{activeStep > 7 && (
 					<div className={s.info}>
 						<span className={s.info_data}>01/05/2023</span>
 						<span className={s.info_title}>Order is delivered</span>
 					</div>
 				)}
 
-				{!testShow && (
+				{activeStep <= 7 && (
 					<div className={s.wrapper_inner}>
 						<button
-							onClick={() => setTestShow(true)}
+							onClick={() => {
+								changeStatusCompleted();
+							}}
 							className={s.wrapper_inner_btn}
 						>
 							Mark as delivered

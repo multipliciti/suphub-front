@@ -4,10 +4,11 @@ import { classNames } from '@/utils/classNames';
 
 interface PropsType {
 	activeDisplay: number[];
+	activeStep: number;
 	index: number;
 }
 
-export const PaymentDue = ({ activeDisplay, index }: PropsType) => {
+export const PaymentDue = ({ activeDisplay, index, activeStep }: PropsType) => {
 	return (
 		<>
 			<div
@@ -25,7 +26,8 @@ export const PaymentDue = ({ activeDisplay, index }: PropsType) => {
 					activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
-				<p className={s.status}>Payment pending</p>
+				{activeStep <= 5 && <p className={s.status}>Payment pending</p>}
+				{activeStep > 5 && <p className={s.status_paid}>Paid</p>}
 			</div>
 		</>
 	);

@@ -17,7 +17,8 @@ export const StatusOrder = ({ code, status }: PropsType) => {
 					s.info_status,
 					status === 'pending' && s.info_status_pending,
 					status === 'confirmed' && s.info_status_confirmed,
-					status === 'inProduction' && s.info_status_inProduction
+					status === 'inProduction' && s.info_status_inProduction,
+					status === 'preShipment' && s.info_status_preShipment
 				)}
 			>
 				{status}

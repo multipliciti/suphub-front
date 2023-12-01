@@ -13,18 +13,39 @@ export const StorefrontRequests = () => {
 	//store filters-inputs value
 	const [stateInputs, setStateInputs] = useState({
 		search: '',
-		manufacturer: [],
-		status: [],
-		orderType: [],
+		type: [],
 	});
-
+	console.log('stateInputs', stateInputs);
 	const [currentPage, setCurrentPage] = useState<number>(1);
-	const getProjects = async () => {
+
+	// create fetch objs
+	const objFetchSearch = stateInputs.search
+		? {
+				name: { contains: stateInputs.search },
+		  }
+		: null;
+
+	const typeFilterArr =
+		stateInputs.type.length > 0
+			? {
+					type: { in: stateInputs.type },
+			  }
+			: null;
+
+	const finalAttrObj = {
+		...(objFetchSearch && { ...objFetchSearch }),
+		...(typeFilterArr && { ...typeFilterArr }),
+	};
+
+	//Converting the combinedJsonObj to JSON for the request.
+	const finalJsonString = JSON.stringify(finalAttrObj);
+
+	const getProjects = async (finalJsonString: string) => {
 		try {
 			const response = await api.sellerProject.getSellerProjects({
 				page: currentPage,
 				limit: 12,
-				searchParams: JSON.stringify({}),
+				searchParams: finalJsonString,
 			});
 			const projects = response.result;
 			dispatch(setProjects(projects));
@@ -34,8 +55,8 @@ export const StorefrontRequests = () => {
 	};
 
 	useEffect(() => {
-		getProjects();
-	}, []);
+		getProjects(finalJsonString);
+	}, [stateInputs, currentPage]);
 
 	{
 		return (

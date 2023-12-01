@@ -5,9 +5,10 @@ import s from './OrderDelivered.module.scss';
 interface PropsType {
 	activeDisplay: number[];
 	index: number;
+	activeStep: number;
 }
 
-export const OrderDelivered = ({ activeDisplay, index }: PropsType) => {
+export const OrderDelivered = ({ activeDisplay, index, activeStep }: PropsType) => {
 	return (
 		<>
 			<div
@@ -25,10 +26,19 @@ export const OrderDelivered = ({ activeDisplay, index }: PropsType) => {
 					activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
-				<div className={s.info}>
-					<span className={s.info_data}>01/05/2023</span>
-					<span className={s.info_title}>Order is delivered</span>
-				</div>
+				{activeStep <= 7 && (
+					<div className={s.info}>
+						<span className={s.info_data}>01/05/2023</span>
+						<span className={s.info_title}>Order is delivering...</span>
+					</div>
+				)}
+
+				{activeStep > 7 && (
+					<div className={s.info}>
+						<span className={s.info_data}>01/05/2023</span>
+						<span className={s.info_title}>Order is delivered</span>
+					</div>
+				)}
 			</div>
 		</>
 	);

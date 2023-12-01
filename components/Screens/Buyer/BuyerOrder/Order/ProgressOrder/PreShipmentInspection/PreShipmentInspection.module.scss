@@ -48,7 +48,6 @@
 		font-weight: 400;
 		line-height: 20px;
 	}
-
 	.form {
 		display: flex;
 		flex-direction: column;
@@ -125,7 +124,7 @@
 				justify-content: space-between !important;
 				flex-direction: row !important;
 
-				&_title {
+				&_link {
 					cursor: pointer;
 					margin-right: 4px;
 					color: #594d98;
@@ -158,26 +157,13 @@
 				}
 			}
 		}
+
 		.buttons {
 			gap: 12px;
 			display: flex;
 			justify-content: flex-end;
 			border-top: solid 1px #e2e8f0;
 			padding-top: 16px;
-
-			.send {
-				border: none;
-				padding: 8px 20px;
-				border-radius: 8px;
-				background: #2b1694;
-
-				color: #fff;
-
-				font-size: 14px;
-				font-style: normal;
-				font-weight: 700;
-				line-height: 20px;
-			}
 
 			.paid {
 				padding: 8px 20px;
@@ -197,15 +183,7 @@
 				align-items: center;
 				gap: 12px;
 				&_paid {
-					color: #755cf1;
-					font-size: 14px;
-					font-style: normal;
-					font-weight: 700;
-					line-height: 20px;
-				}
-
-				&_approved {
-					color: #076553;
+					color: #00984b;
 					font-size: 14px;
 					font-style: normal;
 					font-weight: 700;
