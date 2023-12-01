@@ -6,7 +6,7 @@ import { Products } from './Products';
 import { RfqItemGot } from '@/types/services/rfq';
 import { Api } from '@/services';
 
-export const RFQCar = () => {
+export const ProjectsRFQCart = () => {
 	const api = Api();
 	const [stateInputs, setStateInputs] = useState({
 		search: '',

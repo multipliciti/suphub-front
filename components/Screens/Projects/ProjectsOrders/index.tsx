@@ -6,7 +6,7 @@ import { PaginationWrapper } from './PaginationWrapper';
 import { Api } from '@/services';
 import { Order } from '@/types/services/projects';
 
-export const Orders = () => {
+export const ProjectsOrders = () => {
 	const api = Api();
 	//store filters-inputs value
 	const [stateInputs, setStateInputs] = useState({
