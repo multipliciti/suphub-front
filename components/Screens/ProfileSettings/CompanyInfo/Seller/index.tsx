@@ -1,6 +1,5 @@
 'use client';
 import s from '../CompanyInfoStyle.module.scss';
-import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import React, { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -256,7 +255,9 @@ const SellerCompanyInfo = () => {
 	useEffect(() => {
 		const fetch = async () => {
 			const userResponse = await api.auth.getUser();
-			const { data: { sellerCompanyId } } = userResponse;
+			const {
+				data: { sellerCompanyId },
+			} = userResponse;
 			setCompanyId(sellerCompanyId);
 			const response = await api.sellerCompany.getById(sellerCompanyId);
 			const {
@@ -609,8 +610,8 @@ const SellerCompanyInfo = () => {
 				<div className={s.row}>
 					<p className={s.title}>Products certified for</p>
 					<div className={s.tag_wrapper_countries}>
-						{countryProductsCertifiedFor.map((product) => (
-							<div className={s.tag}>
+						{countryProductsCertifiedFor.map((product, index) => (
+							<div className={s.tag} key={index}>
 								<p>{product}</p>
 								<Image
 									alt="close"
@@ -656,8 +657,8 @@ const SellerCompanyInfo = () => {
 				<div className={s.row}>
 					<p className={s.title}>Product certifications</p>
 					<div className={s.tag_wrapper}>
-						{productCertifications.map((product) => (
-							<div className={s.tag}>
+						{productCertifications.map((product, index) => (
+							<div className={s.tag} key={index}>
 								<p>{product}</p>
 								<Image
 									alt={'Add product Certification'}

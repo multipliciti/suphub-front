@@ -35,7 +35,6 @@ export const BusinessVerification = () => {
 		[]
 	);
 
-
 	const [
 		initiallyFetchedBusinessCertificationFiles,
 		setInitiallyFetchedBusinessCertificationFiles,
@@ -45,22 +44,22 @@ export const BusinessVerification = () => {
 		setInitiallyFetchedFactoryCertificationFiles,
 	] = useState<any>([]);
 
-	const [isBusinessCertificationChecked, setIsBusinessCertificationChecked ] = useState<boolean>(false)
-	const [isFactoryCertificationChecked, setIsFactoryCertificationChecked] = useState<boolean>(false)
-	const [isProductCertificationsChecked, setIsProductCertificationsChecked] = useState<boolean>(false)
-
+	const [isBusinessCertificationChecked, setIsBusinessCertificationChecked] =
+		useState<boolean>(false);
+	const [isFactoryCertificationChecked, setIsFactoryCertificationChecked] =
+		useState<boolean>(false);
+	const [isProductCertificationsChecked, setIsProductCertificationsChecked] =
+		useState<boolean>(false);
 
 	const [submitClicked, setSubmitClicked] = useState<boolean>(false);
 
 	const {
 		register,
 		handleSubmit,
-		setValue,
-		getValues,
 		setError,
 		reset,
 		clearErrors,
-		formState: { errors, touchedFields },
+		formState: { errors },
 	} = useForm({
 		defaultValues: {
 			businessCertification: [],
@@ -73,7 +72,7 @@ export const BusinessVerification = () => {
 		shouldUnregister: true,
 	});
 
-	function shorterString(inputString:string) {
+	function shorterString(inputString: string) {
 		const maxLength = 37;
 
 		if (inputString.length > maxLength) {
@@ -84,7 +83,6 @@ export const BusinessVerification = () => {
 
 		return inputString;
 	}
-
 
 	const handleAddCertification = () => {
 		const trimmedInput = addCertificationInput.trim().toLowerCase();
@@ -122,7 +120,7 @@ export const BusinessVerification = () => {
 	const handleAddCountryCertification = () => {
 		const trimmedInput = addCountryInput.trim().toLowerCase();
 
-		console.log(trimmedInput, countryProductsCertifiedFor)
+		console.log(trimmedInput, countryProductsCertifiedFor);
 
 		if (
 			countryProductsCertifiedFor.some(
@@ -210,9 +208,6 @@ export const BusinessVerification = () => {
 		);
 	};
 
-
-
-
 	const closeModal = () => {
 		dispatch(setModal(''));
 		dispatch(setModal(''));
@@ -221,37 +216,40 @@ export const BusinessVerification = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-		const userResponse = await api.auth.getUser();
-			const { data: { sellerCompanyId } } = userResponse;
+			const userResponse = await api.auth.getUser();
+			const {
+				data: { sellerCompanyId },
+			} = userResponse;
 			setCompanyId(sellerCompanyId);
-		const response = await api.sellerCompany.getById(sellerCompanyId);
-		const {
-			businessCertifications,
-			factoryCertifications,
-			countryProductsCertifiedFor,
-			productCertifications,
-		} = response.data;
+			const response = await api.sellerCompany.getById(sellerCompanyId);
+			const {
+				businessCertifications,
+				factoryCertifications,
+				countryProductsCertifiedFor,
+				productCertifications,
+			} = response.data;
 
-		setIsBusinessCertificationChecked(!!businessCertifications?.length);
-		setIsFactoryCertificationChecked(!!factoryCertifications?.length);
-		setIsProductCertificationsChecked(
-			!!countryProductsCertifiedFor?.length || !!productCertifications?.length);
+			setIsBusinessCertificationChecked(!!businessCertifications?.length);
+			setIsFactoryCertificationChecked(!!factoryCertifications?.length);
+			setIsProductCertificationsChecked(
+				!!countryProductsCertifiedFor?.length || !!productCertifications?.length
+			);
 
-		setInitiallyFetchedBusinessCertificationFiles(businessCertifications || []);
-		setInitiallyFetchedFactoryCertificationFiles(factoryCertifications || []);
-		setBusinessCertificationFiles(businessCertifications || []);
-		setFactoryCertificationFiles(factoryCertifications || []);
-		setProductsCertifiedFor(
-			countryProductsCertifiedFor ? countryProductsCertifiedFor.split(',') : []
-		);
-		setProductCertifications(
-			productCertifications ? productCertifications.split(',') : []);
+			setInitiallyFetchedBusinessCertificationFiles(businessCertifications || []);
+			setInitiallyFetchedFactoryCertificationFiles(factoryCertifications || []);
+			setBusinessCertificationFiles(businessCertifications || []);
+			setFactoryCertificationFiles(factoryCertifications || []);
+			setProductsCertifiedFor(
+				countryProductsCertifiedFor ? countryProductsCertifiedFor.split(',') : []
+			);
+			setProductCertifications(
+				productCertifications ? productCertifications.split(',') : []
+			);
+		};
+		fetch();
+	}, []);
 
-	};
-	fetch();
-}, []);
-
-	const onSubmit: SubmitHandler<any> = async (data) => {
+	const onSubmit: SubmitHandler<any> = async () => {
 		setSubmitClicked(true);
 		const form: UpdateSellerCompany = {};
 
@@ -286,16 +284,14 @@ export const BusinessVerification = () => {
 			if (file && file?.id && !businessCertificationIds.has(file?.id)) {
 				deletedBusinessIds.push(file.id);
 			}
-		})
-
+		});
 
 		if ((deletedFactoryIds ?? []).length > 0) {
 			const data: RemoveCertification = {};
 			data.type = 'factory';
 			data.fileIds = deletedFactoryIds;
-			const responseDeleteFactory = await api.sellerCompany.removeCertification(
-				data
-			);
+			const responseDeleteFactory =
+				await api.sellerCompany.removeCertification(data);
 			if (responseDeleteFactory.status !== 200) return;
 		}
 
@@ -303,9 +299,8 @@ export const BusinessVerification = () => {
 			const data: RemoveCertification = {};
 			data.type = 'business';
 			data.fileIds = deletedBusinessIds;
-			const responseDeleteBusiness = await api.sellerCompany.removeCertification(
-				data
-			);
+			const responseDeleteBusiness =
+				await api.sellerCompany.removeCertification(data);
 			if (responseDeleteBusiness.status !== 200) return;
 		}
 
@@ -324,9 +319,8 @@ export const BusinessVerification = () => {
 			});
 
 			if (formDataFactory.has('files')) {
-				const responseFactory = await api.sellerCompany.uploadCertification(
-					formDataFactory
-				);
+				const responseFactory =
+					await api.sellerCompany.uploadCertification(formDataFactory);
 				if (responseFactory.status !== 201) {
 					return;
 				}
@@ -345,9 +339,8 @@ export const BusinessVerification = () => {
 			});
 
 			if (formDataBusiness.has('files')) {
-				const responseBusiness = await api.sellerCompany.uploadCertification(
-					formDataBusiness
-				);
+				const responseBusiness =
+					await api.sellerCompany.uploadCertification(formDataBusiness);
 				if (responseBusiness.status !== 201) {
 					return;
 				}
@@ -357,7 +350,6 @@ export const BusinessVerification = () => {
 		setSubmitClicked(false);
 		window.location.reload();
 	};
-
 
 	return (
 		<div className={s.wrapper}>
@@ -410,9 +402,11 @@ export const BusinessVerification = () => {
 								id={'businessCertifications'}
 								checked={isBusinessCertificationChecked}
 							/>
-							{isBusinessCertificationChecked && <div className={s.radio_image}>
-								<Image src={check_icon} alt={'Check icon'} />
-							</div>}
+							{isBusinessCertificationChecked && (
+								<div className={s.radio_image}>
+									<Image src={check_icon} alt={'Check icon'} />
+								</div>
+							)}
 						</div>
 						<div className={s.content_file_upload_group}>
 							<div className={s.content_title_group}>
@@ -429,18 +423,18 @@ export const BusinessVerification = () => {
 										<div className={s.upload_filename}>
 											{file?.name ? shorterString(file.name) : 'File Name Missing'}
 											<span className={s.upload_filename_size}>
-											{file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0} Mb
-										</span>
+												{file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0} Mb
+											</span>
 										</div>
 										<span
 											onClick={() => handleRemoveBusinessCertificationFiles(index)}
 										>
-										<Image
-											src={big_cross}
-											alt={'big_cross'}
-											className={s.upload_close}
-										/>
-									</span>
+											<Image
+												src={big_cross}
+												alt={'big_cross'}
+												className={s.upload_close}
+											/>
+										</span>
 									</div>
 								))}
 
@@ -478,9 +472,11 @@ export const BusinessVerification = () => {
 								id={'factoryCertifications'}
 								checked={isFactoryCertificationChecked}
 							/>
-							{isFactoryCertificationChecked && <div className={s.radio_image}>
-								<Image src={check_icon} alt={'Check icon'} />
-							</div>}
+							{isFactoryCertificationChecked && (
+								<div className={s.radio_image}>
+									<Image src={check_icon} alt={'Check icon'} />
+								</div>
+							)}
 						</div>
 						<div className={s.content_file_upload_group}>
 							<div className={s.content_title_group}>
@@ -495,16 +491,18 @@ export const BusinessVerification = () => {
 										<div className={s.upload_filename}>
 											{file?.name ? shorterString(file.name) : 'File Name Missing'}
 											<span className={s.upload_filename_size}>
-											{file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0} Mb
-										</span>
+												{file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0} Mb
+											</span>
 										</div>
-										<span onClick={() => handleRemoveFactoryCertificationFiles(index)}>
-										<Image
-											src={big_cross}
-											alt={'big_cross'}
-											className={s.upload_close}
-										/>
-									</span>
+										<span
+											onClick={() => handleRemoveFactoryCertificationFiles(index)}
+										>
+											<Image
+												src={big_cross}
+												alt={'big_cross'}
+												className={s.upload_close}
+											/>
+										</span>
 									</div>
 								))}
 							<label htmlFor={'factoryFileInput'}>
@@ -541,9 +539,11 @@ export const BusinessVerification = () => {
 								id={'productsCertifications'}
 								checked={isProductCertificationsChecked}
 							/>
-							{isProductCertificationsChecked && <div className={s.radio_image}>
-								<Image src={check_icon} alt={'Check icon'} />
-							</div>}
+							{isProductCertificationsChecked && (
+								<div className={s.radio_image}>
+									<Image src={check_icon} alt={'Check icon'} />
+								</div>
+							)}
 						</div>
 						<div className={s.content_product_certifications_group}>
 							<div className={s.content_title_group}>
@@ -588,8 +588,8 @@ export const BusinessVerification = () => {
 									</div>
 								)}
 								<div className={s.tag_wrapper_countries}>
-									{productCertifications.map((product) => (
-										<div className={s.tag}>
+									{productCertifications.map((product, index) => (
+										<div className={s.tag} key={index}>
 											<p>{product}</p>
 											<Image
 												alt={'Add product Certification'}
@@ -600,7 +600,6 @@ export const BusinessVerification = () => {
 										</div>
 									))}
 								</div>
-
 							</div>
 							<div className={s.content_input_group}>
 								<p className={s.content_title_small}>
@@ -642,17 +641,17 @@ export const BusinessVerification = () => {
 									</div>
 								)}
 								<div className={s.tag_wrapper_countries}>
-								{countryProductsCertifiedFor.map((product) => (
-									<div className={s.tag}>
-										<p>{product}</p>
-										<Image
-											alt="close"
-											className={s.tag_close}
-											src={modal_close}
-											onClick={() => handleRemoveCountryCertification(product)}
-										/>
-									</div>
-								))}
+									{countryProductsCertifiedFor.map((product, index) => (
+										<div className={s.tag} key={index}>
+											<p>{product}</p>
+											<Image
+												alt="close"
+												className={s.tag_close}
+												src={modal_close}
+												onClick={() => handleRemoveCountryCertification(product)}
+											/>
+										</div>
+									))}
 								</div>
 							</div>
 						</div>
@@ -673,7 +672,8 @@ export const BusinessVerification = () => {
 						<button
 							className={classNames(
 								s.bottom_button_send,
-								Boolean(!(Object.keys(errors)?.length > 0)) && s.bottom_button_send_active
+								Boolean(!(Object.keys(errors)?.length > 0)) &&
+									s.bottom_button_send_active
 							)}
 							disabled={Boolean(Object.keys(errors)?.length > 0) || submitClicked}
 						>
