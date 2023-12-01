@@ -1,8 +1,13 @@
 'use client';
 import { ChangeEvent, useState } from 'react';
 import { classNames } from '@/utils/classNames';
+import { useAppDispatch } from '@/redux/hooks';
+import { setPhotoShow } from '@/redux/slices/Order/order';
+import { setModal } from '@/redux/slices/modal';
+import { Api } from '@/services';
 import Image from 'next/image';
 import s from './PreShipmentInspection.module.scss';
+import { Delivery } from '@/types/services/Orders';
 import pdf_upload_icon from '@/imgs/Buyer&Seller/pdf_upload.svg';
 import plus_icon from '@/imgs/Buyer&Seller/plus.svg';
 import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
@@ -10,30 +15,37 @@ import done_icon from '@/imgs/Buyer&Seller/done.svg';
 
 interface PropsType {
 	activeDisplay: number[];
+	orderId: number;
 	index: number;
+	rerenderProgress: boolean;
+	setRerenderProgress: (n: boolean) => void;
+	activeStep: number;
 }
 
 interface formDataType {
-	input: string;
-	file: File | null;
+	amount: string;
+	files: File[];
 	photos: File[];
-	types: number[];
+	type: string;
 }
 
-export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
+export const PreShipmentInspection = ({
+	activeDisplay,
+	index,
+	orderId,
+	activeStep,
+	rerenderProgress,
+	setRerenderProgress,
+}: PropsType) => {
+	const dispatch = useAppDispatch();
+	const api = Api();
 	const [formData, setFormData] = useState<formDataType>({
-		file: null,
+		files: [],
 		photos: [],
-		types: [],
-		input: '',
+		type: '',
+		amount: '',
 	});
-
-	// size to mb
-	const fileSizeInMegabytes = formData.file
-		? (formData.file.size / (1024 * 1024)).toFixed(1)
-		: 0;
-
-	const [testShow, setTestShow] = useState<boolean>(false);
+	const [approved, setApproved] = useState<boolean>(false);
 
 	// add photo
 	const handleAddPhoto = (event: ChangeEvent<HTMLInputElement>) => {
@@ -68,30 +80,36 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 		if (selectedFile) {
 			setFormData((prevData) => ({
 				...prevData,
-				file: selectedFile,
+				files: [...prevData?.files, selectedFile],
 			}));
 		}
 	};
 
 	const handleAddInputValue = (event: ChangeEvent<HTMLInputElement>) => {
-		setFormData((prevData) => ({ ...prevData, input: event.target.value }));
+		setFormData((prevData) => ({ ...prevData, amount: event.target.value }));
 	};
 
-	const handleAddTypes = (id: number) => {
-		setFormData((prevData) => ({ ...prevData, types: [...prevData.types, id] }));
+	const handleAddTypes = (type: string) => {
+		setFormData((prevData) => ({ ...prevData, type }));
+	};
 
-		const selected = formData.types.includes(id);
-		if (selected)
-			setFormData((prevData) => ({
-				...prevData,
-				types: prevData.types.filter((el) => el !== id),
-			}));
+	const postOrdeDelivery = async (data: formDataType) => {
+		const formDataSend = new FormData();
+		formDataSend.append('orderId', orderId.toString());
+		formDataSend.append('amount', data.amount.toString());
+		formDataSend.append('type', data.type);
+
+		try {
+			const data = await api.sellerOrder.orderDelivery(formDataSend);
+		} catch (error) {
+			console.error('postOrdeDelivery error:', error);
+		}
 	};
 
 	const optionsArr = [
-		{ id: 1, title: 'Air', value: 'Air' },
-		{ id: 2, title: 'Ocean', value: 'Ocean' },
-		{ id: 3, title: 'Truck', value: 'Truck' },
+		{ id: 1, title: 'Air', value: 'air' },
+		{ id: 2, title: 'Ocean', value: 'ocean' },
+		{ id: 3, title: 'Truck', value: 'truck' },
 	];
 
 	return (
@@ -123,12 +141,12 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 							{optionsArr.map((option, index) => {
 								return (
 									<span
-										onClick={() => handleAddTypes(option.id)}
+										onClick={() => handleAddTypes(option.value)}
 										key={index}
 										className={classNames(
 											classNames(
 												s.options_type,
-												formData.types.includes(option.id) && s.options_type_active
+												formData.type === option.value && s.options_type_active
 											)
 										)}
 									>
@@ -136,8 +154,7 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 										<span
 											className={classNames(
 												s.options_checkbox,
-												formData.types.includes(option.id) &&
-													s.options_checkbox_active
+												formData.type === option.value && s.options_checkbox_active
 											)}
 										>
 											<Image
@@ -161,9 +178,9 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 						<div className={s.block}>
 							<input
 								onChange={handleAddInputValue}
-								placeholder="Placeholder"
+								placeholder="Amount"
 								className={s.input_amount}
-								type="text"
+								type="number"
 							/>
 						</div>
 					</div>
@@ -174,11 +191,19 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 							<p className={s.subtitle}>Bill of lading or other freight document</p>
 						</div>
 						<div className={classNames(s.block, s.pdf)}>
-							<div className={s.pdf_description}>
-								{formData.file && (
+							<div className={s.pdf_files}>
+								{formData.files.length > 0 && (
 									<>
-										<span className={s.pdf_title}>{formData.file.name}</span>
-										<span className={s.pdf_size}>{fileSizeInMegabytes} Mb</span>
+										{formData.files.map((el: File, ind) => {
+											return (
+												<span key={ind} className={s.pdf_files_item}>
+													<span className={s.pdf_title}>{el.name}</span>
+													<span className={s.pdf_size}>
+														{(el.size / (1024 * 1024)).toFixed(3)} Mb
+													</span>
+												</span>
+											);
+										})}
 									</>
 								)}
 							</div>
@@ -233,6 +258,10 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 											/>
 										</span>
 										<Image
+											onClick={() => {
+												dispatch(setPhotoShow(URL.createObjectURL(el)));
+												dispatch(setModal('showPhoto'));
+											}}
 											className={s.photo_img}
 											key={ind}
 											src={URL.createObjectURL(el)}
@@ -247,22 +276,36 @@ export const PreShipmentInspection = ({ activeDisplay, index }: PropsType) => {
 					</div>
 
 					<div className={s.buttons}>
-						{testShow && (
+						{/* {activeStep >= 5 && (
 							<>
 								<div className={s.status}>
 									<span className={s.status_paid}>Shipment paid</span>
 									<span
-										onClick={() => setTestShow(!testShow)}
+										onClick={() => setApproved(!approved)}
 										className={s.status_approved}
 									>
 										Milestone approved
 									</span>
 								</div>
 							</>
+						)} */}
+
+						{activeStep >= 5 && (
+							<>
+								<div className={s.status}>
+									<span className={s.status_paid}>Shipment paid</span>
+								</div>
+							</>
 						)}
 
-						{!testShow && (
-							<button onClick={() => setTestShow(!testShow)} className={s.send}>
+						{activeStep < 5 && (
+							<button
+								onClick={() => {
+									postOrdeDelivery(formData);
+									setApproved(!approved);
+								}}
+								className={s.send}
+							>
 								Send for approval
 							</button>
 						)}

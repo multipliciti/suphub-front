@@ -2,11 +2,17 @@
 import s from './Production.module.scss';
 import { ChangeEvent, useState } from 'react';
 import { classNames } from '@/utils/classNames';
+import { useAppDispatch } from '@/redux/hooks';
+import { setPhotoShow } from '@/redux/slices/Order/order';
+import { setModal } from '@/redux/slices/modal';
+import { useEffect } from 'react';
 import { Api } from '@/services';
+import { formatDateString } from '@/utils/formatDateString';
+import { orderProductionInterface } from '@/types/services/Orders';
+import { ProductionItem } from '@/types/services/Orders';
 import Image from 'next/image';
 import plus_icon from '@/imgs/Buyer&Seller/plus.svg';
 import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
-import { orderProductionInterface } from '@/types/services/Orders';
 
 interface PropsType {
 	activeDisplay: number[];
@@ -14,6 +20,7 @@ interface PropsType {
 	index: number;
 	rerenderProgress: boolean;
 	setRerenderProgress: (n: boolean) => void;
+	productionArr: ProductionItem[] | null;
 }
 
 export const Production = ({
@@ -21,8 +28,10 @@ export const Production = ({
 	index,
 	rerenderProgress,
 	setRerenderProgress,
+	productionArr,
 	orderId,
 }: PropsType) => {
+	const dispatch = useAppDispatch();
 	const api = Api();
 	const [testShow, setTestShow] = useState<boolean>(false);
 	const [complete, setComplete] = useState<boolean>(false);
@@ -73,16 +82,26 @@ export const Production = ({
 		});
 	};
 
+	const changeStatusPreShipment = async (orderId: number, status: string) => {
+		try {
+			await api.sellerOrder.changeStatus({
+				id: orderId,
+				status,
+			});
+			setComplete(true);
+		} catch (error) {
+			console.error('changeStatusPreShipment error:', error);
+		}
+	};
+
 	const AddOrderProduction = async (data: orderProductionInterface) => {
 		console.log('Data before FormData:', data);
-
 		const formDataSend = new FormData();
-		// for (let i = 0; i < data.images.length; i++) {
-		// 	formDataSend.append('files', data.images[i]);
-		// }
+		for (let i = 0; i < data.images.length; i++) {
+			formDataSend.append('files', data.images[i]);
+		}
 		formDataSend.append('orderId', data.orderId.toString());
 		formDataSend.append('updates', data.updates);
-
 		console.log('FormData:', formDataSend);
 
 		try {
@@ -102,7 +121,6 @@ export const Production = ({
 			>
 				<p>01/05/2023</p>
 			</div>
-
 			<div
 				className={classNames(
 					s.wrapper,
@@ -114,6 +132,34 @@ export const Production = ({
 						<span className={s.data}>01/05/2023</span>
 						<span className={s.title}>Production started</span>
 					</div>
+					{productionArr?.map((el: ProductionItem, ind: number) => {
+						return (
+							<div key={ind} className={s.form_block}>
+								<span className={s.data}>{formatDateString(el.createdAt)}</span>
+								<span className={s.title}>{el.updates}</span>
+								<span className={s.imgs}>
+									{el.images.length > 0 &&
+										el.images.map((img: any, ind: number) => {
+											return (
+												<Image
+													onClick={() => {
+														dispatch(setPhotoShow(img.url));
+														dispatch(setModal('showPhoto'));
+													}}
+													className={s.img}
+													key={ind}
+													src={img.url}
+													alt="img"
+													width={50}
+													height={50}
+												/>
+											);
+										})}
+								</span>
+							</div>
+						);
+					})}
+
 					{/* add updates */}
 					<div className={classNames(s.form_none, newMessage && s.form_block)}>
 						<span className={s.data}>{currentdDate}</span>
@@ -152,6 +198,10 @@ export const Production = ({
 												/>
 											</span>
 											<Image
+												onClick={() => {
+													dispatch(setPhotoShow(URL.createObjectURL(el)));
+													dispatch(setModal('showPhoto'));
+												}}
 												className={s.updates_photo_img}
 												key={ind}
 												src={URL.createObjectURL(el)}
@@ -210,7 +260,9 @@ export const Production = ({
 									+ Add an update
 								</button>
 								<button
-									onClick={() => setComplete(true)}
+									onClick={() => {
+										changeStatusPreShipment(orderId, 'productionCompleted');
+									}}
 									className={classNames(
 										s.buttons_production,
 										complete && s.buttons_production_disable
@@ -229,6 +281,7 @@ export const Production = ({
 								<button
 									onClick={() => {
 										setNewMessage(false);
+										setRerenderProgress(!rerenderProgress);
 									}}
 									className={s.buttons_cansel}
 								>

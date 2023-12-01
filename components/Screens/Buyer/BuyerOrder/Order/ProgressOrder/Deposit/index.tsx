@@ -1,8 +1,9 @@
 'use client';
 import s from './Deposit.module.scss';
 import { classNames } from '@/utils/classNames';
-import { OrderPaymentInterface } from '@/types/services/Orders';
+// import { OrderPaymentInterface } from '@/types/services/Orders';
 import { Api } from '@/services';
+import { useRouter } from 'next/navigation';
 
 interface PropsType {
 	activeDisplay: number[];
@@ -24,20 +25,24 @@ export const Deposit = ({
 	setRerenderProgress,
 }: PropsType) => {
 	const api = Api();
-	const priceInner = Math.floor(price / 3);
+	const priceInner = Math.floor(price / 4);
+	const { push } = useRouter();
 
-	const fetchPayDeposit = async (id: number, price: number) => {
-		if (status === 'confirmed') {
-			try {
-				await api.buyerOrder.orderPayment({
-					orderId: id,
-					sum: price,
-					type: 'deposit',
-				});
-				setRerenderProgress(!rerenderProgress);
-			} catch (error) {
-				console.error('fetchPayDeposit seller error', error);
-			}
+	const fetchOrderPay = async () => {
+		const data = {
+			orderId,
+			amount: priceInner,
+			type: 'deposit',
+			//hardcode
+			successUrl: 'http://localhost:8080/testBuyerOrder',
+			cancelUrl: 'http://localhost:8080/testBuyerOrder',
+		};
+
+		try {
+			const response = await api.buyerOrder.orderPay(data);
+			push(response.data.url);
+		} catch (error) {
+			console.error('fetchOrderPay error:', error);
 		}
 	};
 
@@ -59,10 +64,7 @@ export const Deposit = ({
 				)}
 			>
 				<p className={s.title}>To start production pay Deposit</p>
-				<button
-					onClick={() => fetchPayDeposit(orderId, priceInner)}
-					className={s.btn}
-				>
+				<button onClick={() => fetchOrderPay()} className={s.btn}>
 					Pay ${priceInner} now
 				</button>
 			</div>

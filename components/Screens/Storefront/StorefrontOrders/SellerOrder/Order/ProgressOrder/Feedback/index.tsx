@@ -1,14 +1,19 @@
 'use client';
 import s from './Feedback.module.scss';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { classNames } from '@/utils/classNames';
+import { FeedbackInterface } from '@/types/services/Orders';
+import { Api } from '@/services';
 import star_rate from '@/imgs/Buyer&Seller/star_rate.svg';
 import star_rate_active from '@/imgs/Buyer&Seller/star_rate_active.svg';
 
 interface PropsType {
+	orderId: number;
 	activeDisplay: number[];
 	index: number;
+	buyerFeedback: FeedbackInterface | null;
+	sellerFeedback: FeedbackInterface | null;
 }
 
 interface forDataTupe {
@@ -16,12 +21,19 @@ interface forDataTupe {
 	feedback: string;
 }
 
-export const Feedback = ({ activeDisplay, index }: PropsType) => {
+export const Feedback = ({
+	orderId,
+	activeDisplay,
+	index,
+	buyerFeedback,
+	sellerFeedback,
+}: PropsType) => {
+	const api = Api();
 	const [formData, setFormData] = useState<forDataTupe>({
 		rate: 0,
 		feedback: '',
 	});
-	const [testShow, setTestShow] = useState<boolean>(false);
+	const [feedback, setFeedback] = useState<boolean>(false);
 
 	//add text
 	const handleAddInputValue = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -29,11 +41,32 @@ export const Feedback = ({ activeDisplay, index }: PropsType) => {
 			return { ...prevState, feedback: e.target.value };
 		});
 	};
-
+	//add rate
 	const handleAddRate = (n: number) => {
 		setFormData((prevState) => {
 			return { ...prevState, rate: n };
 		});
+	};
+
+	useEffect(() => {
+		//if I have olready sent my feedback
+		if (sellerFeedback) {
+			setFeedback(true);
+		}
+	});
+
+	//post feedback
+	const patchFeedback = async () => {
+		try {
+			await api.buyerOrder.orderFeedback({
+				id: orderId,
+				stars: formData.rate,
+				message: formData.feedback,
+			});
+			setFeedback(true);
+		} catch (error) {
+			console.error('patchFeedback error:', error);
+		}
 	};
 
 	return (
@@ -50,7 +83,7 @@ export const Feedback = ({ activeDisplay, index }: PropsType) => {
 			<div
 				className={classNames(
 					s.wrapper,
-					!testShow && activeDisplay.includes(index) && s.wrapper_active
+					!feedback && activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
 				{/* when should we write a review and send it to the backend */}
@@ -82,7 +115,11 @@ export const Feedback = ({ activeDisplay, index }: PropsType) => {
 				></textarea>
 
 				<button
-					onClick={() => setTestShow(true)}
+					onClick={() => {
+						if (formData.rate > 0) {
+							patchFeedback();
+						}
+					}}
 					className={classNames(s.rate_btn, formData.rate > 0 && s.rate_btn_active)}
 				>
 					Submit feedback
@@ -93,48 +130,52 @@ export const Feedback = ({ activeDisplay, index }: PropsType) => {
 			<div
 				className={classNames(
 					s.wrapper,
-					testShow && activeDisplay.includes(index) && s.wrapper_active
+					feedback && activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
 				<div className={classNames(s.feedback_done)}>
-					{/* my  */}
-					<div className={classNames(s.feedback_item, s.feedback_my)}>
-						<p>You gave a feedback:</p>
-						<div className={s.feedback_rate}>
-							{Array.from({ length: 5 }, (_, index) => (
-								<Image
-									key={index}
-									src={index < formData.rate ? star_rate_active : star_rate}
-									alt="star_rate"
-									width={32}
-									height={32}
-								/>
-							))}
+					{/* my (seller)  */}
+					{sellerFeedback && (
+						<div className={classNames(s.feedback_item, s.feedback_my)}>
+							<p>You gave a feedback:</p>
+							<div className={s.feedback_rate}>
+								{Array.from({ length: sellerFeedback.stars }, (_, index) => (
+									<Image
+										key={index}
+										src={index < formData.rate ? star_rate_active : star_rate}
+										alt="star_rate"
+										width={32}
+										height={32}
+									/>
+								))}
+							</div>
+							{sellerFeedback.message && (
+								<p className={classNames(s.feedback_message, s.feedback_message_my)}>
+									{sellerFeedback.message}
+								</p>
+							)}
 						</div>
-						<p className={classNames(s.feedback_message, s.feedback_message_my)}>
-							{formData.feedback}
-						</p>
-					</div>
-					{/* another humen */}
-					<div className={s.feedback_item}>
-						<p>You received a feedback:</p>
-						<div className={s.feedback_rate}>
-							{Array.from({ length: 5 }, (_, index) => (
-								<Image
-									key={index}
-									src={index < 5 ? star_rate_active : star_rate}
-									alt="star_rate"
-									width={32}
-									height={32}
-								/>
-							))}
+					)}
+					{/* another humen ( buyer ) */}
+					{buyerFeedback && (
+						<div className={s.feedback_item}>
+							<p>You received a feedback:</p>
+							<div className={s.feedback_rate}>
+								{Array.from({ length: buyerFeedback.stars }, (_, index) => (
+									<Image
+										key={index}
+										src={index < 5 ? star_rate_active : star_rate}
+										alt="star_rate"
+										width={32}
+										height={32}
+									/>
+								))}
+							</div>
+							{buyerFeedback.message && (
+								<p className={s.feedback_message}>{buyerFeedback.message}</p>
+							)}
 						</div>
-						<p className={s.feedback_message}>
-							Example feedback paragraph goes here Example feedback paragraph goes
-							here Example feedback paragraph goes here Example feedback paragraph
-							goes here. Xao is the best!
-						</p>
-					</div>
+					)}
 				</div>
 			</div>
 		</>

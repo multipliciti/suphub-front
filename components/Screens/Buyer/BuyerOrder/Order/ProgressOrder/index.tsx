@@ -58,7 +58,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 				setHeightWrapper(wrapperRef.current.offsetHeight - heightFromLowestPoint);
 			}
 		}, 300);
-	}, [activeDisplay, rerenderProgress, setRerenderProgress, order]);
+	}, [activeDisplay, rerenderProgress, setRerenderProgress, order, activeStep]);
 
 	//update activeStep
 	useEffect(() => {
@@ -71,8 +71,33 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 				setActiveStep(3);
 				setRerenderProgress(!rerenderProgress);
 				break;
+			case 'productionCompleted':
+				setActiveStep(3);
+				setRerenderProgress(!rerenderProgress);
+				break;
+			case 'preShipment':
+				setActiveStep(4);
+				setRerenderProgress(!rerenderProgress);
+				break;
+			case 'shipped':
+				setActiveStep(5);
+				setRerenderProgress(!rerenderProgress);
+				break;
+			case 'paymentWaiting':
+				setActiveStep(6);
+				setRerenderProgress(!rerenderProgress);
+				break;
+			case 'delivered':
+				setActiveStep(7);
+				setRerenderProgress(!rerenderProgress);
+				break;
+			case 'completed':
+				setActiveStep(8);
+				setRerenderProgress(!rerenderProgress);
+				break;
 		}
 	}, [order]);
+	console.log('ldldldl');
 
 	const setActiveDisplayFunction = (n: number) => {
 		setActiveDisplay((prevState) => {
@@ -277,10 +302,14 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 3 && (
 							<Production
+								productionArr={order.production ? order.production : null}
+								status={order.status}
 								orderId={order.id}
 								rerenderProgress={rerenderProgress}
+								setActiveStep={setActiveStep}
 								setRerenderProgress={setRerenderProgress}
 								index={3}
+								activeStep={activeStep}
 								activeDisplay={activeDisplay}
 							/>
 						)}
@@ -348,7 +377,15 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 							)}
 						</div>
 						{activeStep >= 4 && (
-							<PreShipmentInspection index={4} activeDisplay={activeDisplay} />
+							<PreShipmentInspection
+								activeStep={activeStep}
+								delivery={order.delivery ?? null}
+								orderId={order.id}
+								rerenderProgress={rerenderProgress}
+								setRerenderProgress={setRerenderProgress}
+								index={4}
+								activeDisplay={activeDisplay}
+							/>
 						)}
 					</div>
 				</div>
@@ -389,7 +426,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 									activeStep >= 5 && s.step_title_confirmed
 								)}
 							>
-								<span>Pre-shipment inspection</span>
+								<span>Payment Due</span>
 							</span>
 							{activeStep >= 5 && (
 								<span
@@ -413,7 +450,12 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 							)}
 						</div>
 						{activeStep >= 5 && (
-							<PaymentDue index={5} activeDisplay={activeDisplay} />
+							<PaymentDue
+								activeStep={activeStep}
+								orderId={order.id}
+								index={5}
+								activeDisplay={activeDisplay}
+							/>
 						)}
 					</div>
 				</div>
@@ -455,7 +497,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 									activeStep >= 6 && s.step_title_confirmed
 								)}
 							>
-								<span>Payment Due</span>
+								<span>Order shipped</span>
 							</span>
 							{activeStep >= 6 && (
 								<>
@@ -481,7 +523,11 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 							)}
 						</div>
 						{activeStep >= 6 && (
-							<OrderShipped index={6} activeDisplay={activeDisplay} />
+							<OrderShipped
+								delivery={order.delivery ?? null}
+								index={6}
+								activeDisplay={activeDisplay}
+							/>
 						)}
 					</div>
 				</div>
@@ -547,7 +593,13 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 							)}
 						</div>
 						{activeStep >= 7 && (
-							<OrderDelivered index={7} activeDisplay={activeDisplay} />
+							<OrderDelivered
+								orderId={order.id}
+								activeStep={activeStep}
+								index={7}
+								activeDisplay={activeDisplay}
+								setActiveStep={setActiveStep}
+							/>
 						)}
 					</div>
 				</div>
@@ -612,7 +664,15 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 								</span>
 							)}
 						</div>
-						{activeStep >= 8 && <Feedback index={8} activeDisplay={activeDisplay} />}
+						{activeStep >= 8 && (
+							<Feedback
+								orderId={order.id}
+								buyerFeedback={order.buyerFeedback}
+								sellerFeedback={order.sellerFeedback}
+								index={8}
+								activeDisplay={activeDisplay}
+							/>
+						)}
 					</div>
 				</div>
 			</div>

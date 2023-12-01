@@ -1,13 +1,16 @@
 'use client';
 import { classNames } from '@/utils/classNames';
+import { Delivery } from '@/types/services/Orders';
 import s from './OrderShipped.module.scss';
 
 interface PropsType {
 	activeDisplay: number[];
 	index: number;
+	delivery: Delivery | null;
 }
 
-export const OrderShipped = ({ activeDisplay, index }: PropsType) => {
+export const OrderShipped = ({ activeDisplay, index, delivery }: PropsType) => {
+	console.log('delivery', delivery);
 	return (
 		<>
 			<div
@@ -30,15 +33,25 @@ export const OrderShipped = ({ activeDisplay, index }: PropsType) => {
 						<span className={s.info_data}>01/05/2023</span>
 						<p className={s.info_title}>Preparing for shipment</p>
 					</div>
-
-					<div className={s.info}>
-						<span className={s.info_data}>01/05/2023</span>
-						<p className={s.info_title}>
-							Order has shipped. Carrier: <span>Ocean Freight.</span> Tracking number
-							<span className={s.info_got}> #9400650065600 </span>
-							Bill of lading <span className={s.info_got}>Download</span>
-						</p>
-					</div>
+					{/* //   */}
+					{delivery && (
+						<div className={s.info}>
+							<span className={s.info_data}>01/05/2023</span>
+							<p className={s.info_title}>
+								Order has shipped. Carrier: <span>Ocean Freight.</span> Tracking
+								number
+								<span className={s.info_got}> {delivery.trackingNumber} </span>
+								Bill of lading
+								{delivery.bill ? (
+									<a download href={delivery.bill.url} className={s.info_got}>
+										<span> Download</span>
+									</a>
+								) : (
+									<span className={s.info_got}>No File Available</span>
+								)}
+							</p>
+						</div>
+					)}
 				</div>
 			</div>
 		</>

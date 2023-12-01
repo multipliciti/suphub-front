@@ -22,7 +22,6 @@
 
 .wrapper {
 	width: 100%;
-	max-width: 707px;
 	background-color: #fff;
 	border-radius: 8px;
 	box-shadow: 4px 6px 12px 0px rgba(184, 191, 198, 0.16);
@@ -60,6 +59,23 @@
 		display: flex;
 		gap: 80px;
 
+		&_data {
+			color: #6f848c;
+
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 20px;
+		}
+
+		&_title {
+			color: #143644;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: 20px;
+		}
+
 		.status {
 			display: flex;
 			flex-direction: column;
@@ -85,6 +101,8 @@
 		}
 
 		.title {
+			display: block;
+			max-width: 100px;
 			color: #143644;
 			font-size: 14px;
 			font-style: normal;
@@ -102,8 +120,7 @@
 				display: flex;
 				gap: 8px;
 				flex-wrap: wrap;
-				min-width: 130px;
-				max-width: 200px;
+				max-width: 300px;
 			}
 		}
 

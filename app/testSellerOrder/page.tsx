@@ -3,7 +3,7 @@ import { SellerOrder } from '@/components/Screens/Storefront/StorefrontOrders/Se
 export default function testBuyerOrder() {
 	return (
 		<>
-			<SellerOrder id={1} />
+			<SellerOrder id={3} />
 		</>
 	);
 }

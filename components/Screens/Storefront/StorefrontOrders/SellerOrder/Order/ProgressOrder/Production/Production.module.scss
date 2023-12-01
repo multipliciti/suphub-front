@@ -1,11 +1,9 @@
 .data {
 	&_wrapper {
 		opacity: 0;
-
 		max-width: 0px;
 		max-height: 0px;
 		pointer-events: none;
-
 		color: #64748b;
 
 		font-size: 12px;
@@ -69,9 +67,10 @@
 			pointer-events: all;
 			opacity: 1;
 			display: flex;
-			gap: 80px;
+			align-items: center;
 
 			.data {
+				width: 110px;
 				color: #6f848c;
 
 				font-size: 14px;
@@ -81,12 +80,25 @@
 			}
 
 			.title {
+				width: 200px;
 				color: #143644;
 
 				font-size: 14px;
 				font-style: normal;
 				font-weight: 400;
 				line-height: 20px;
+			}
+
+			.imgs {
+				display: flex;
+				gap: 8px;
+				flex-wrap: wrap;
+
+				.img {
+					cursor: pointer;
+					border-radius: 4px;
+					border: 1px solid #d0d3df;
+				}
 			}
 
 			.updates {
