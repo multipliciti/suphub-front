@@ -1,4 +1,4 @@
-import { Feedback } from './../../components/Screens/Storefront/StorefrontOrders/SellerOrder/Order/ProgressOrder/Feedback/index';
+import { Feedback } from '../../components/Screens/Storefront/StorefrontSellerOrderItem/Order/ProgressOrder/Feedback/index';
 export interface ProductionItem {
 	id: number;
 	updates: string;

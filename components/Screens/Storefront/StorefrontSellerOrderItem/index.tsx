@@ -1,6 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
-import s from './SellerOrder.module.scss';
+import s from './StorefrontSellerOrderItem.module.scss';
 import { InvoiceChatComponent } from './InvoiceChatComponent';
 import { Order } from './Order';
 import { Api } from '@/services';
@@ -10,7 +10,7 @@ interface TypeProps {
 	id: number;
 }
 
-export const SellerOrder = ({ id }: TypeProps) => {
+export const StorefrontSellerOrderItem = ({ id }: TypeProps) => {
 	const api = Api();
 	const [order, setOrder] = useState<OrderInterface | null>(null);
 
