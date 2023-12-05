@@ -1,4 +1,7 @@
+import { GetServerSidePropsContext, NextPageContext } from 'next';
 import Cookies, { parseCookies } from 'nookies';
+import axios from 'axios';
+
 import { UserApi } from './userApi';
 import { AuthApi } from './authService';
 import { ProductsApi } from './productsService';
@@ -7,8 +10,6 @@ import { sideBarApi } from './sideBarService';
 import { ProjectApi } from './projectApi';
 import { RfqApi } from './rfqApi';
 import { CategoryApi } from './categoryApi';
-import axios from 'axios';
-import { GetServerSidePropsContext, NextPageContext } from 'next';
 import { RfqOptionApi } from '@/services/rfqOptionApi';
 import { SellerCompanyApi } from '@/services/sellerCompanyApi';
 import { BuyerCompanyApi } from '@/services/buyerCompanyApi';
@@ -19,10 +20,11 @@ import { ProductPriceApi } from '@/services/productPriceApi';
 import { OrderApi } from '@/services/orderApi';
 import { BuyerProjectApi } from './buyerProject';
 import { SampleApi } from './sampleApi';
-
 import { SellerProjectApi } from './sellerProject';
 import { buyerOrderAPI } from './buyerOrder';
 import { sellerOrderAPI } from './sellerOrder';
+import { CartApi } from '@/services/cartApi';
+
 export type ApiReturnType = {
 	sendFormStepOne(): unknown;
 	auth: ReturnType<typeof AuthApi>;
@@ -70,6 +72,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		payment: PaymentApi(instance),
 		order: OrderApi(instance),
 		sample: SampleApi(instance),
+		cart: CartApi(instance),
 	};
 
 	return apis;

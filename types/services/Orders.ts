@@ -73,3 +73,11 @@ export interface OrderInterface {
 	sellerFeedback: FeedbackInterface | null;
 	buyerFeedback: FeedbackInterface | null;
 }
+
+export interface OrderCreateBody {
+	type: string;
+	PO: string;
+	shipmentAmount: number;
+	estDate: string;
+	cartElementIds: number[];
+}

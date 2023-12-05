@@ -1,0 +1,56 @@
+.wrapper {
+	padding-bottom: 24px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	gap: 24px;
+}
+
+.image {
+	position: relative;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 128px;
+	height: 128px;
+
+	border-radius: 100%;
+	background-color: #F0F2FE;
+
+	&_checkmark {
+		position: absolute;
+		right: 20%;
+		bottom: 20%;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 25px;
+		height: 25px;
+
+		border-radius: 100%;
+		background-color: #0BA98A;
+	}
+}
+
+.info {
+	text-align: center;
+
+	> h3 {
+		font-size: 24px;
+		line-height: 32px;
+		font-weight: bold;
+		color: #020617
+	}
+
+	> p {
+		margin-top: 8px;
+
+		font-size: 16px;
+		line-height: 24px;
+		color: #64748B
+	}
+}
