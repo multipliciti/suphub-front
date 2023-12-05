@@ -1,0 +1,40 @@
+.wrapper {
+	border: 1px solid #E7E9EF;
+	border-radius: 4px;
+
+	height: 28px;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	> button, input {
+		height: 100%;
+		background-color: transparent;
+		outline: none;
+		border: none;
+	}
+
+	> button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		min-width: 28px;
+
+		cursor: pointer;
+	}
+
+	> input {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 64px;
+		width: 100%;
+
+		text-align: center;
+
+		border-left: 1px solid #E7E9EF;
+		border-right: 1px solid #E7E9EF;
+	}
+}

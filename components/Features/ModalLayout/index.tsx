@@ -4,18 +4,26 @@ import Image from 'next/image';
 import s from './ModalLayout.module.scss';
 
 import closeIcon from '@/imgs/Buyer&Seller/close.svg';
+import { classNames } from '@/utils/classNames';
 
 interface Props {
 	title: string;
-	description?: string;
 	onHide: () => void;
+	description?: string;
+	size?: 's' | 'm';
 }
 
 export const ModalLayout: FC<PropsWithChildren<Props>> = (props) => {
-	const { children, title, description, onHide } = props;
+	const { children, title, description, size = 's', onHide } = props;
 
 	return (
-		<div className={s.wrapper}>
+		<div
+			className={classNames(
+				s.wrapper,
+				size === 's' && s.wrapper_s,
+				size === 'm' && s.wrapper_m
+			)}
+		>
 			<div className={s.header}>
 				<h2>
 					{title}

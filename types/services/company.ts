@@ -59,6 +59,23 @@ interface Address {
 	zipcode: string;
 }
 
+export interface BuyerCompany {
+	id: number;
+
+	name: string;
+	website: string;
+	EIN: string;
+
+	logoId: number | null;
+	logo: Logo | null;
+
+	addressId: number | null;
+	address: Address | null;
+
+	updatedAt: string;
+	createdAt: string;
+}
+
 export interface RegisterBuyerCompany {
 	name: string;
 	website?: string;

@@ -1,6 +1,10 @@
 .button {
 	padding: 8px 16px;
 
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
 	text-align: start;
 	color: #2B1694;
 	font-size: 14px;
@@ -11,6 +15,13 @@
 	border-radius: 8px;
 
 	outline: none;
+
+	&:disabled {
+		color: #B3BEC3;
+		background-color: #E8EBED;
+		border: none;
+		opacity: 1;
+	}
 
 	&_text {
 		border: none;

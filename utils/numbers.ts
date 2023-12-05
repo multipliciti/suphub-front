@@ -24,3 +24,10 @@ export const formatUnitMeasurement = (
 
 	return parseFloat((numeric / Math.pow(k, i)).toFixed(dm)) + ' ' + sizeName;
 };
+
+export const formatNumberAsCurrency = (num: number) => {
+	return new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: 'USD',
+	}).format(num);
+};
