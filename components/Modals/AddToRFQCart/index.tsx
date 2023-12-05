@@ -3,7 +3,6 @@ import s from './AddToRFQCart.module.scss';
 import Image from 'next/image';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
-import Link from 'next/link';
 import React, { useState, useEffect } from 'react';
 import { Api } from '@/services';
 import { RfqItem } from '@/types/products/rfq';
@@ -39,6 +38,11 @@ export const AddToRFQCart = () => {
 	const [step, setStep] = useState<number>(INITIAL_STEP);
 	const [rfqs, setRfqs] = useState<RfqItem[]>([]);
 	const [selectedRfqs, setSelectedRfqs] = useState<Record<number, boolean>>({});
+	const [refreshable, setRefreshable] = useState<number>(0);
+	const [selectedProjectId, setSelectedProjectId] = useState<number>(0);
+	const refresh = () => {
+		setRefreshable((prev) => prev + 1);
+	};
 
 	const handleNextStep = () => {
 		setStep((prevStep) => prevStep + 1);
@@ -59,11 +63,11 @@ export const AddToRFQCart = () => {
 		setSelectedRfqs({});
 	};
 
-	const fetchRfq = async (projectId: number, subCategoryId: number) => {
+	const fetchRfq = async (projectId: number) => {
 		try {
 			const response = await api.rfq.getProjectById({
 				projectId,
-				searchParams: JSON.stringify({ subCategoryId }),
+				searchParams: JSON.stringify({ subCategoryId: product?.subCategoryId }),
 			});
 			setRfqs(response.result);
 		} catch (error) {
@@ -71,8 +75,9 @@ export const AddToRFQCart = () => {
 		}
 	};
 
-	const toRfq = (projectId: number, subCategoryId: number) => {
-		fetchRfq(projectId, subCategoryId);
+	const toRfq = (projectId: number) => {
+		fetchRfq(projectId);
+		setSelectedProjectId(projectId);
 		handleNextStep();
 	};
 	const postRfqOption = async (rfq: RfqItem, product: any) => {
@@ -81,6 +86,45 @@ export const AddToRFQCart = () => {
 			rfqId: rfq.id,
 		});
 		setSelectedRfqs({ ...selectedRfqs, [rfq.id]: true });
+	};
+
+	const handleCreateProject = async () => {
+		try {
+			await api.project.createProject({
+				name: 'New Project',
+				type: 'custom',
+				budget: 0,
+				floorArea: 0,
+				address: {
+					street: '',
+					city: '',
+					state: '',
+					country: '',
+					zipcode: '',
+				},
+			});
+			refresh();
+		} catch (e) {
+			console.log('Error with create new project ', e);
+		}
+	};
+
+	const handleCreateRfq = async () => {
+		try {
+			await api.rfq.createRfqItem({
+				projectId: selectedProjectId,
+				subCategoryId: product?.subCategoryId,
+				productName: 'Empty Product',
+				quantity: 50,
+				budget: 1000,
+				size: '36x39',
+				certifications: ['AED', 'DDC'],
+				additionalComments: 'Some Additional comment',
+			});
+			fetchRfq(selectedProjectId);
+		} catch (e) {
+			console.log('Error with create new rfq ', e);
+		}
 	};
 
 	useEffect(() => {
@@ -104,7 +148,7 @@ export const AddToRFQCart = () => {
 		return () => {
 			window.removeEventListener('popstate', handlePopState);
 		};
-	}, []);
+	}, [refreshable]);
 
 	return (
 		<div className={s.wrapper}>
@@ -149,9 +193,7 @@ export const AddToRFQCart = () => {
 								.map((project: Project) => (
 									<button
 										key={project.id}
-										onClick={() =>
-											product && toRfq(project.id, product.subCategoryId)
-										}
+										onClick={() => product && toRfq(project.id)}
 										className={s.btnItem}
 									>
 										<p>{project.name}</p>
@@ -163,17 +205,10 @@ export const AddToRFQCart = () => {
 										/>
 									</button>
 								))}
-							<Link href="/404" className="noUnderline">
-								<button onClick={() => ''} className={s.btnAdd}>
-									Create a new project
-									<Image
-										src={white_arrow}
-										alt="white_arrow"
-										width={20}
-										height={20}
-									/>
-								</button>
-							</Link>
+							<button onClick={handleCreateProject} className={s.btnAdd}>
+								Create a new project
+								<Image src={white_arrow} alt="white_arrow" width={20} height={20} />
+							</button>
 						</>
 					)}
 
@@ -183,8 +218,9 @@ export const AddToRFQCart = () => {
 								.filter((rfq) =>
 									rfq.productName.toLowerCase().includes(searchQuery.toLowerCase())
 								)
-								.map((rfq: RfqItem) => (
+								.map((rfq: RfqItem, index) => (
 									<button
+										key={index}
 										onClick={() => postRfqOption(rfq, product)}
 										disabled={selectedRfqs[rfq.id]}
 										className={s.btnItem}
@@ -198,27 +234,23 @@ export const AddToRFQCart = () => {
 										/>
 									</button>
 								))}
-							<Link href="/404" className="noUnderline">
-								<button
-									onClick={() => {
-										closeModal();
-									}}
-									className={s.btnAdd}
-									disabled={Boolean(Object.keys(selectedRfqs).length)}
-								>
-									Add to a new empty product request
-									<Image
-										src={
-											Boolean(Object.keys(selectedRfqs).length)
-												? plus_sign
-												: plus_sign_white
-										}
-										alt="white_plus_sign"
-										width={20}
-										height={20}
-									/>
-								</button>
-							</Link>
+							<button
+								onClick={handleCreateRfq}
+								className={s.btnAdd}
+								disabled={Boolean(Object.keys(selectedRfqs).length)}
+							>
+								Add to a new empty product request
+								<Image
+									src={
+										Boolean(Object.keys(selectedRfqs).length)
+											? plus_sign
+											: plus_sign_white
+									}
+									alt="white_plus_sign"
+									width={20}
+									height={20}
+								/>
+							</button>
 						</>
 					)}
 				</div>
