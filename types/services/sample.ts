@@ -1,7 +1,7 @@
 import { Sample } from '@/types/products/sample';
 
 export interface SampleCreate
-	extends Omit<Sample, 'id' | 'createdAt' | 'updatedAt'> {}
+	extends Omit<Sample, 'id' | 'quantity' | 'createdAt' | 'updatedAt'> {}
 
 export interface SampleUpdate
 	extends Partial<
