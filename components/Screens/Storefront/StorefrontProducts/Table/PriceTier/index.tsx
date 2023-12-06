@@ -2,6 +2,8 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import debounce from 'lodash.debounce';
+
+import { TableWrapper } from '@/components/UI/TableWrapper';
 import { classNames } from '@/utils/classNames';
 import { Price } from '@/types/products/product';
 import { Api } from '@/services';
@@ -15,11 +17,13 @@ interface Props {
 	productId: number;
 	productPrices: Price[];
 	platformCommission: number;
+	viewType: 'inside' | 'separate';
 	titleColumn?: string;
 }
 
 export const StorefrontProductPriceTier: FC<Props> = (props) => {
-	const { productId, productPrices, platformCommission, titleColumn } = props;
+	const { productId, productPrices, platformCommission, viewType, titleColumn } =
+		props;
 
 	const api = Api();
 
@@ -48,7 +52,13 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 	};
 
 	return (
-		<table className={s.table}>
+		<TableWrapper
+			className={classNames(
+				s.table,
+				viewType === 'separate' && s.table_separete,
+				viewType === 'inside' && s.table_inside
+			)}
+		>
 			<thead>
 				{titleColumn && (
 					<tr>
@@ -64,7 +74,7 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 							<Image src={infoIcon} alt="information_icon" width={16} height={16} />
 						</div>
 					</th>
-					<th style={{ width: 52 }} />
+					<th />
 				</tr>
 			</thead>
 
@@ -92,7 +102,7 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 					</td>
 				</tr>
 			</tbody>
-		</table>
+		</TableWrapper>
 	);
 };
 
@@ -173,7 +183,7 @@ const PriceTierItem: FC<PriceTierItemProps> = ({
 			</td>
 			<td>
 				<div style={{ cursor: 'pointer' }} onClick={onDelete}>
-					<Image src={clearIcon} alt="clear_icon" />
+					<Image src={clearIcon} alt="clear_icon" width={16} height={16} />
 				</div>
 			</td>
 		</tr>

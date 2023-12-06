@@ -26,22 +26,25 @@ export interface confirmEmailType {
 
 export interface User {
 	id: number;
-	username: string | null;
+
 	email: string;
-	token: string;
-	firstName: string;
-	lastName: string;
-	phone: string | null;
 	emailVerified: boolean;
-	verificationCode: string | null;
-	passwordResetCode: string | null;
-	role: string | null;
-	lastSignedIn: string | null;
+	role: UserRole;
+
+	username?: string;
+	firstName?: string;
+	lastName?: string;
+	phone?: string;
+	lastSignedIn?: string;
+
 	sellerCompanyId: number | null;
 	buyerCompanyId: number | null;
+
 	createdAt: string;
 	updatedAt: string;
 }
+
+export type UserRole = 'user' | 'buyer' | 'seller' | 'admin';
 
 export interface NewPassword {
 	oldPassword: string;

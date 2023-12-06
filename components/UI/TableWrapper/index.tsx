@@ -1,9 +1,18 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC, PropsWithChildren, TableHTMLAttributes } from 'react';
+
+import { classNames } from '@/utils/classNames';
 
 import s from './TableWrapper.module.scss';
 
-interface Props {}
+interface Props extends TableHTMLAttributes<HTMLTableElement> {}
 
-export const TableWrapper: FC<PropsWithChildren<Props>> = ({ children }) => {
-	return <table className={s.table}>{children}</table>;
+export const TableWrapper: FC<PropsWithChildren<Props>> = ({
+	children,
+	...props
+}) => {
+	return (
+		<table className={classNames(s.table, props.className && props.className)}>
+			{children}
+		</table>
+	);
 };
