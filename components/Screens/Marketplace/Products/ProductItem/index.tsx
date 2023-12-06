@@ -104,7 +104,7 @@ export const ProductItem = (props: ProductItemType) => {
 								fill="white"
 							/>
 						</svg>
-						<span className={s.add_text}>Add to RFQ cart</span>
+						<span className={s.add_text}>Add to project</span>
 					</button>
 					<Image className={s.img} src={test2} alt="img" width={244} height={212} />
 				</div>
@@ -118,7 +118,7 @@ export const ProductItem = (props: ProductItemType) => {
 
 					{properties.map((el: any, ind: number) => {
 						return (
-							<div className={s.p}>
+							<div className={s.p} key={ind}>
 								<p
 									className={classNames(
 										s.row_wrapper,

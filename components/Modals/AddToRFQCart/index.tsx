@@ -15,6 +15,7 @@ import white_arrow from '@/imgs/Modal/arrow_right_white.svg';
 import plus_sign from '@/imgs/Modal/plus_sign.svg';
 import plus_sign_white from '@/imgs/Modal/plus_sign_white.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
+import { classNames } from '@/utils/classNames';
 
 export const AddToRFQCart = () => {
 	const dispatch = useAppDispatch();
@@ -40,6 +41,8 @@ export const AddToRFQCart = () => {
 	const [selectedRfqs, setSelectedRfqs] = useState<Record<number, boolean>>({});
 	const [refreshable, setRefreshable] = useState<number>(0);
 	const [selectedProjectId, setSelectedProjectId] = useState<number>(0);
+	const [addingProjectOrRfqInProgress, setAddingProjectOrRfqInProgress] =
+		useState<boolean>(false);
 	const refresh = () => {
 		setRefreshable((prev) => prev + 1);
 	};
@@ -89,6 +92,7 @@ export const AddToRFQCart = () => {
 	};
 
 	const handleCreateProject = async () => {
+		setAddingProjectOrRfqInProgress(true);
 		try {
 			await api.project.createProject({
 				name: 'New Project',
@@ -110,6 +114,7 @@ export const AddToRFQCart = () => {
 	};
 
 	const handleCreateRfq = async () => {
+		setAddingProjectOrRfqInProgress(true);
 		try {
 			await api.rfq.createRfqItem({
 				projectId: selectedProjectId,
@@ -121,9 +126,11 @@ export const AddToRFQCart = () => {
 				certifications: ['AED', 'DDC'],
 				additionalComments: 'Some Additional comment',
 			});
-			fetchRfq(selectedProjectId);
+			await fetchRfq(selectedProjectId);
+			setAddingProjectOrRfqInProgress(false);
 		} catch (e) {
 			console.log('Error with create new rfq ', e);
+			setAddingProjectOrRfqInProgress(false);
 		}
 	};
 
@@ -135,6 +142,7 @@ export const AddToRFQCart = () => {
 			} catch (error) {
 				console.error('Error fetching categories:', error);
 			}
+			setAddingProjectOrRfqInProgress(false);
 		};
 
 		const handlePopState = () => {
@@ -205,6 +213,11 @@ export const AddToRFQCart = () => {
 										/>
 									</button>
 								))}
+							{addingProjectOrRfqInProgress && (
+								<button className={classNames(s.btnItem, s.btnItemLoading)}>
+									<p>Creating...</p>
+								</button>
+							)}
 							<button onClick={handleCreateProject} className={s.btnAdd}>
 								Create a new project
 								<Image src={white_arrow} alt="white_arrow" width={20} height={20} />
@@ -234,6 +247,11 @@ export const AddToRFQCart = () => {
 										/>
 									</button>
 								))}
+							{addingProjectOrRfqInProgress && (
+								<button className={classNames(s.btnItem, s.btnItemLoading)}>
+									<p>Creating...</p>
+								</button>
+							)}
 							<button
 								onClick={handleCreateRfq}
 								className={s.btnAdd}
