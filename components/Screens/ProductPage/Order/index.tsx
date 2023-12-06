@@ -99,14 +99,14 @@ export const Order = ({ user, statusGetUser }: PropsType) => {
 							dispatch(setModal('addToRFQCart'));
 						}}
 					>
-						Add to RFQ cart
+						Add to project
 					</button>
 				</div>
 			</div>
 
 			{simples.map((el: any, ind: number) => {
 				return (
-					<div>
+					<div key={ind}>
 						<Simple
 							exemples={exempels}
 							id={el.id}
