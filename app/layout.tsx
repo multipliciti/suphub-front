@@ -24,10 +24,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<body className={lato.className}>
 				<MainProvider>
-					<Modal />
 					<Header />
 					<main className="main">{children}</main>
-					<div id="root-modals"></div>
+					<div id="root-modals">
+						<Modal />
+					</div>
 				</MainProvider>
 			</body>
 		</html>

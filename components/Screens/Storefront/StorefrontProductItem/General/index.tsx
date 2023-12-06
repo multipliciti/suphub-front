@@ -308,6 +308,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 				productId={product.id}
 				productPrices={product.prices}
 				platformCommission={product.subCategory.platformCommission}
+				viewType="separate"
 				titleColumn="Price"
 			/>
 

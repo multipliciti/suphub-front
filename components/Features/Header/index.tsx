@@ -7,7 +7,12 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 import Link from 'next/link';
 import { useState } from 'react';
-import { setStatusGetUser, setUser } from '@/redux/slices/auth';
+import {
+	setBuyerCompany,
+	setSellerCompany,
+	setStatusGetUser,
+	setUser,
+} from '@/redux/slices/auth';
 import { resetStorefrontState } from '@/redux/slices/storefront/storefront';
 import { classNames } from '@/utils/classNames';
 import { useEffect } from 'react';
@@ -84,17 +89,39 @@ export const Header = () => {
 
 	const fetchUser = async () => {
 		try {
-			const responce = await api.auth.getUser();
+			const { data } = await api.auth.getUser();
 
-			if (responce.data) {
-				const user = responce.data;
-				dispatch(setStatusGetUser('seccess'));
-				dispatch(setUser(user));
+			if (data.role === 'seller' && data.sellerCompanyId) {
+				await fetchSellerCompany(data.sellerCompanyId);
+			} else if (data.role === 'buyer' && data.buyerCompanyId) {
+				console.log('here');
+				await fetchBuyerCompany(data.buyerCompanyId);
 			}
+
+			dispatch(setStatusGetUser('seccess'));
+			dispatch(setUser(data));
 		} catch (error) {
 			dispatch(setStatusGetUser('rejected'));
 			dispatch(setUser(null));
 			console.error('Error fetching user data:', error);
+		}
+	};
+
+	const fetchSellerCompany = async (sellerCompanyId: number) => {
+		try {
+			const response = await api.sellerCompany.getById(sellerCompanyId);
+			dispatch(setSellerCompany(response.data));
+		} catch (e) {
+			dispatch(setSellerCompany(null));
+		}
+	};
+
+	const fetchBuyerCompany = async (buyerCompanyId: number) => {
+		try {
+			const response = await api.buyerCompany.getById(buyerCompanyId);
+			dispatch(setBuyerCompany(response.data));
+		} catch (e) {
+			dispatch(setBuyerCompany(null));
 		}
 	};
 
