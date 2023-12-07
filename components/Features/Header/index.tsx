@@ -94,7 +94,6 @@ export const Header = () => {
 			if (data.role === 'seller' && data.sellerCompanyId) {
 				await fetchSellerCompany(data.sellerCompanyId);
 			} else if (data.role === 'buyer' && data.buyerCompanyId) {
-				console.log('here');
 				await fetchBuyerCompany(data.buyerCompanyId);
 			}
 
