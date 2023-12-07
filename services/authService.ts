@@ -5,6 +5,7 @@ import {
 	RecoveryType,
 	confirmEmailType,
 	NewPassword,
+	User,
 } from '@/types/services/auth';
 import { LoginDto } from '@/types/services/auth';
 
@@ -88,7 +89,7 @@ export const AuthApi = (instance: AxiosInstance) => ({
 	async getUser() {
 		try {
 			const url = '/auth/get-user';
-			const response = await instance.post(url);
+			const response = await instance.post<User>(url);
 			return response;
 		} catch (error) {
 			console.error('Error getUser:', error);

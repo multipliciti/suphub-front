@@ -1,5 +1,9 @@
 import { AxiosInstance } from 'axios';
-import { RegisterBuyerCompany, UpdateBuyerCompany } from '@/types/services/company';
+import {
+	BuyerCompany,
+	RegisterBuyerCompany,
+	UpdateBuyerCompany,
+} from '@/types/services/company';
 
 export const BuyerCompanyApi = (instance: AxiosInstance) => ({
 	async register(data: RegisterBuyerCompany) {
@@ -25,7 +29,7 @@ export const BuyerCompanyApi = (instance: AxiosInstance) => ({
 	async getById(id: number) {
 		try {
 			const url = `/buyer/` + id.toString();
-			const response = await instance.get(url);
+			const response = await instance.get<BuyerCompany>(url);
 			return response;
 		} catch (error) {
 			console.error('Get by id error:', error);

@@ -34,8 +34,18 @@ export const ProductItem = (props: ProductItemType) => {
 
 	const properties = [
 		['MOQ', props.moq ? `${props.moq} units` : '-'],
-		['Lead time (weeks)', props.leadTime ? `${props.leadTime} days` : '-'],
-		['Warranty', props.warranty ? `${props.warranty} month` : '-'],
+		[
+			'Factory lead time',
+			props.leadTime
+				? `${props.leadTime} ${props.leadTime === 1 ? 'week' : 'weeks'} `
+				: '-',
+		],
+		[
+			'Warranty',
+			props.warranty
+				? `${props.warranty} ${props.warranty === 1 ? 'year' : 'years'}`
+				: '-',
+		],
 		['Certification', certification ? `${certification}` : '-'],
 		['Width', width ? `${width}"` : '-'],
 		['Heigth', heigth ? `${heigth}"` : '-'],
@@ -104,7 +114,7 @@ export const ProductItem = (props: ProductItemType) => {
 								fill="white"
 							/>
 						</svg>
-						<span className={s.add_text}>Add to RFQ cart</span>
+						<span className={s.add_text}>Add to project</span>
 					</button>
 					<Image className={s.img} src={test2} alt="img" width={244} height={212} />
 				</div>
@@ -118,7 +128,7 @@ export const ProductItem = (props: ProductItemType) => {
 
 					{properties.map((el: any, ind: number) => {
 						return (
-							<div className={s.p}>
+							<div key={ind} className={s.p}>
 								<p
 									className={classNames(
 										s.row_wrapper,

@@ -1,3 +1,5 @@
+import { ImageType } from '@/types/products/image';
+
 interface Subscription {
 	id: number;
 	type: string;
@@ -8,6 +10,23 @@ interface Subscription {
 	planId: number;
 	createdAt: string;
 	updatedAt: string;
+}
+
+export interface BuyerCompany {
+	id: number;
+	name: string;
+
+	website?: string;
+	EIN?: string;
+
+	addressId?: number;
+	address?: Address | null;
+
+	logoId?: number;
+	logo?: ImageType | null;
+
+	updatedAt: string;
+	createdAt: string;
 }
 
 export interface SellerCompany {

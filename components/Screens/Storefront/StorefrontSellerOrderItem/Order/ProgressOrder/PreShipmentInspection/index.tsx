@@ -245,7 +245,7 @@ export const PreShipmentInspection = ({
 
 							{formData.photos?.map((el, ind) => {
 								return (
-									<span className={s.photo_wrapper}>
+									<span key={ind} className={s.photo_wrapper}>
 										<span
 											onClick={() => handleRemovePhoto(ind)}
 											className={s.photo_remove}

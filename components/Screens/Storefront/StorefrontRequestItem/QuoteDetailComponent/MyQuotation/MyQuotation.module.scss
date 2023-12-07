@@ -2,7 +2,7 @@
 	display: block;
 	padding: 10px 35px;
 	padding-bottom: 0px;
-	overflow: scroll;
+	overflow-y: scroll;
 	height: calc(
 		100vh - 60px - 44px - 43px - 56px
 	); // -header - back - nav - MyQuotation footer - MyQuotation footer margin

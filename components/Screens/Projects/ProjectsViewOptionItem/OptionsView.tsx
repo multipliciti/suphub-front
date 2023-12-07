@@ -15,7 +15,6 @@ type TypeProps = {
 export const OptionsView = ({ id }: TypeProps) => {
 	const api = Api();
 	const [options, setOptions] = useState<Option[]>([]);
-
 	const fetchDetOptions = async (projectId: number) => {
 		try {
 			const response = await api.rfqOption.getOptionsByRfqId(projectId);
@@ -25,6 +24,7 @@ export const OptionsView = ({ id }: TypeProps) => {
 		}
 	};
 
+	console.log('options', options);
 	useEffect(() => {
 		fetchDetOptions(id);
 	}, []);
@@ -35,9 +35,7 @@ export const OptionsView = ({ id }: TypeProps) => {
 				<Link className={s.header_link} href="/testBuyerRFQ" as={`/testBuyerRFQ`}>
 					<BackButton />
 				</Link>
-
 				<span className={s.header_close}></span>
-
 				<span className={s.header_title}>Compare - Fixed Window</span>
 			</div>
 			<div className={s.table_container}>
@@ -49,7 +47,7 @@ export const OptionsView = ({ id }: TypeProps) => {
 								<tr>
 									<th>Options</th>
 									{options.map((el: any, ind: number) => {
-										return <th>option {ind + 1}</th>;
+										return <th key={ind}>option {ind + 1}</th>;
 									})}
 								</tr>
 							</thead>
@@ -62,6 +60,7 @@ export const OptionsView = ({ id }: TypeProps) => {
 										return (
 											<td key={ind}>
 												<Image
+													className={s.img}
 													src={testProduct}
 													alt="testProduct"
 													width={160}

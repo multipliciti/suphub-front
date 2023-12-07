@@ -2,13 +2,19 @@
   display: flex;
   flex-direction: column;
 
-  width: 440px;
-
   border-radius: 12px;
   background-color: #ffffff;
   border: 1px solid #CBD5E1;
 
   font-size: 14px;
+
+  &_s {
+    width: 440px;
+  }
+
+  &_m {
+    width: 600px;
+  }
 }
 
 .header {

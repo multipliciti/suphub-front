@@ -1,0 +1,63 @@
+.wrapper {
+	display: flex;
+	flex-direction: column;
+
+	overflow-x: auto;
+}
+
+.header {
+	padding: 6px 12px;
+
+	display: flex;
+	align-items: center;
+	gap: 16px;
+
+	background-color: #F7F8F9;
+	border-radius: 4px;
+
+	color: #143644;
+
+	&_checkbox {
+		width: 20px;
+		height: 20px;
+		border-radius: 4px;
+		outline: 1px solid #E7E9EF;
+	}
+
+	&_subtotal {
+		margin-left: auto;
+
+		font-size: 12px;
+		line-height: 18px;
+		color: #58707A;
+	}
+
+	&_btn {
+		> button {
+			height: 28px;
+
+			line-height: 20px;
+			font-size: 14px;
+			font-weight: bold;
+		}
+	}
+}
+
+.table {
+	border-spacing: 0;
+	th, td {
+		padding: 8px 16px;
+		border-bottom: 1px solid #CBD5E1;
+		color: #0F172A;
+		font-size: 14px;
+		line-height: 18px;
+		text-align: center;
+	}
+
+	th {
+		color: #94A3B8;
+		font-weight: normal;
+		white-space: nowrap;
+		width: 0;
+	}
+}

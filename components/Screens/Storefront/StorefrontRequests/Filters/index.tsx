@@ -100,7 +100,7 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 				>
 					{Object.values(typesFilter).map((el, ind) => {
 						return (
-							<div className={s.item_wrapper}>
+							<div key={ind} className={s.item_wrapper}>
 								<p
 									onClick={(e) => {
 										e.stopPropagation();

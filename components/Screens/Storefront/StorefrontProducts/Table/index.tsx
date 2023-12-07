@@ -2,7 +2,7 @@
 import Link from 'next/link';
 
 import { useAppSelector } from '@/redux/hooks';
-
+import { TableWrapper } from '@/components/UI/TableWrapper';
 import { StorefrontProductImageUploader } from './ImageUploader';
 import { StorefrontProductPerformance } from './Performance';
 import { StorefrontEmptyTableMessage } from './EmptyTableMessage';
@@ -32,7 +32,7 @@ export const StorefrontProductsTable = () => {
 	return (
 		<div className={s.wrapper}>
 			<div className={s.table_wrapper}>
-				<table>
+				<TableWrapper className={s.table}>
 					<thead>
 						<tr>
 							<th style={{ minWidth: 50, textAlign: 'center' }}>ID</th>
@@ -67,6 +67,7 @@ export const StorefrontProductsTable = () => {
 										productId={item.id}
 										productPrices={item.prices}
 										platformCommission={item.subCategory.platformCommission}
+										viewType="inside"
 									/>
 								</td>
 
@@ -93,7 +94,7 @@ export const StorefrontProductsTable = () => {
 							</tr>
 						))}
 					</tbody>
-				</table>
+				</TableWrapper>
 			</div>
 
 			<StorefrontProductPagination />

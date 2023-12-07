@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
 
-import { MainProvider } from '@/Provider/MainProvider';
+import { MainProvider } from '@/components/Providers';
 import { Header } from '@/components/Features/Header';
 import { Modal } from '@/components/Modals';
 
@@ -24,10 +24,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 		<html lang="en">
 			<body className={lato.className}>
 				<MainProvider>
-					<Modal />
 					<Header />
 					<main className="main">{children}</main>
-					<div id="root-modals"></div>
+					<div id="root-modals">
+						<Modal />
+					</div>
 				</MainProvider>
 			</body>
 		</html>

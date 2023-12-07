@@ -63,6 +63,9 @@ export const StorefrontSidebar = () => {
 	};
 
 	const fetchSellerOrders = async () => {
+		if (!user || !user.sellerCompanyId) {
+			return;
+		}
 		try {
 			const response = await api.order.getSellerOrders();
 			setTotalSellerOrders(response.total);

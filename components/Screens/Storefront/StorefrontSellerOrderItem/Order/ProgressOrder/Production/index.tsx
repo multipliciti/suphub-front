@@ -185,7 +185,7 @@ export const Production = ({
 
 								{formData?.images?.map((el, ind) => {
 									return (
-										<span className={s.updates_photo_wrapper}>
+										<span key={ind} className={s.updates_photo_wrapper}>
 											<span
 												onClick={() => handleRemovePhoto(ind)}
 												className={s.updates_photo_remove}

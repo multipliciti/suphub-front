@@ -27,7 +27,7 @@ export const RequestList = ({ item }: TypeProps) => {
 				<tbody className={s.tbody}>
 					{item.Rfq.map((el: any, ind: number) => {
 						return (
-							<tr className={s.tr}>
+							<tr key={ind} className={s.tr}>
 								<td className={s.td}>
 									<span>{el.productName}</span>
 									<Image
