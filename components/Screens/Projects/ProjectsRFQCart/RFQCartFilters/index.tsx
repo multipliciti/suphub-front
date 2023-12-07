@@ -1,5 +1,5 @@
 'use client';
-import s from './RFQCarFilters.module.scss';
+import s from './RFQCartFilters.module.scss';
 import { Api } from '@/services';
 import { useRef, useState, useEffect } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
@@ -17,7 +17,7 @@ interface TypeProps {
 	stateInputs: any;
 }
 
-export const RFQCarFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
+export const RFQCartFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 	const [activeFilter, setActiveFilter] = useState<number>(-1);

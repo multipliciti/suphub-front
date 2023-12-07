@@ -4,6 +4,7 @@ import { truncateFileNameEnd } from '@/utils/names';
 import { classNames } from '@/utils/classNames';
 import { useRouter } from 'next/navigation';
 import { Order } from '@/types/services/projects';
+import Link from 'next/link';
 
 interface PropsType {
 	columns: { title: string; key: string }[];
@@ -26,7 +27,7 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 				<tbody>
 					{/* Creating Data Rows */}
 					{data.map((row, rowIndex) => (
-						<tr onClick={() => push(`/testBuyerOrder?id=${row.id}`)} key={rowIndex}>
+						<tr onClick={() => push(`/projects/order/${row.id}`)} key={rowIndex}>
 							{columns.map((column, indd) => (
 								<>
 									{/* PO  */}

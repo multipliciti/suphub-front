@@ -24,6 +24,7 @@ export const Deposit = ({
 	rerenderProgress,
 	setRerenderProgress,
 }: PropsType) => {
+	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 	const api = Api();
 	const priceInner = Math.floor(price / 4);
 	const { push } = useRouter();
@@ -33,9 +34,8 @@ export const Deposit = ({
 			orderId,
 			amount: priceInner,
 			type: 'deposit',
-			//hardcode
-			successUrl: 'http://localhost:8080/testBuyerOrder',
-			cancelUrl: 'http://localhost:8080/testBuyerOrder',
+			successUrl: `${HOST}/projects/order/${orderId}`,
+			cancelUrl: `${HOST}/projects/order/${orderId}`,
 		};
 
 		try {

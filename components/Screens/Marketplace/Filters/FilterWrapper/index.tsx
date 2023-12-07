@@ -42,7 +42,6 @@ export const FilterWrapper = ({ itemProps }: Props) => {
 					{countSelected !== undefined ? `(${countSelected} selected)` : ''}
 				</span>
 			</div>
-
 			<div className={s.content}>
 				{options.map((el, ind) => {
 					return (
@@ -56,7 +55,6 @@ export const FilterWrapper = ({ itemProps }: Props) => {
 					);
 				})}
 			</div>
-
 			<div className={s.select}>
 				<button
 					onClick={() => {

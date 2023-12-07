@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { NoResult } from './NoResult';
-import { RFQCarFilters } from './RFQCarFilters';
+import { RFQCartFilters } from './RFQCartFilters';
 import { Products } from './Products';
 import { RfqItemGot } from '@/types/services/rfq';
 import { Api } from '@/services';
@@ -99,7 +99,7 @@ export const ProjectsRFQCart = () => {
 	{
 		return (
 			<div>
-				<RFQCarFilters stateInputs={stateInputs} setStateInputs={setStateInputs} />
+				<RFQCartFilters stateInputs={stateInputs} setStateInputs={setStateInputs} />
 				{rfqsSorted.length < 1 ? <NoResult /> : <Products rfqs={rfqsSorted} />}
 			</div>
 		);

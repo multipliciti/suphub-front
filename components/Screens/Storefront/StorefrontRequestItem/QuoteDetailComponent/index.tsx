@@ -33,9 +33,10 @@ export const QuoteDetailComponent = ({ item }: TypeProps) => {
 			{/* //content  */}
 			<div className={s.content}>
 				<div className={s.nav}>
-					{navList.map((el) => {
+					{navList.map((el, ind) => {
 						return (
 							<span
+								key={ind}
 								onClick={() => setActiveDispaly(el.id)}
 								className={classNames(
 									s.nav_item,

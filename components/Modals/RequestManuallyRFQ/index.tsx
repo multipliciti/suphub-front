@@ -245,7 +245,7 @@ export const RequestManuallyRFQ = () => {
 						<label className={s.tags_label} htmlFor="certifications">
 							{formData.certifications?.map((tag: string, ind: number) => {
 								return (
-									<span className={s.tags_item}>
+									<span key={ind} className={s.tags_item}>
 										<span>{tag}</span>
 										<Image
 											onClick={() => handleRemoveCertification(ind)}

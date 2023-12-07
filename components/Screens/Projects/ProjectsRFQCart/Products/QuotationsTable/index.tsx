@@ -31,7 +31,6 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 			setRect(rect);
 		}
 	}, [indexMore, compress]);
-
 	console.log('rfqs', rfqs);
 
 	// const handleMouseEnter = (id: number) => {
@@ -61,18 +60,14 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 				{rect && (
 					<div
 						style={{
-							top: `${rect.top + (compress ? -35 : -40)}px`,
-							left: `${rect.left - (compress ? 100 : 263)}px`,
+							top: `${rect.top + (compress ? 55 : 52)}px`,
+							left: `${rect.left - (compress ? 0 : 0)}px`,
 						}}
 						className={classNames(s.more, indexMore !== -1 && s.more_active)}
 					>
-						<Link
-							href={`storefront/options/${rfqs[0].projectId}`}
-							className={s.more_item}
-						>
+						<Link href={`/projects/options/${indexMore}`} className={s.more_item}>
 							Product details
 						</Link>
-						<span></span>
 						<span className={s.more_item}>Order sample</span>
 						<span className={classNames(s.more_item, s.more_decline)}>
 							Decline offer

@@ -1,23 +1,20 @@
 .wrapper {
 	display: flex;
 	justify-content: space-between;
-	// position: fixed;
 }
 
 .auth {
 	display: flex;
 	flex-direction: row;
 	color: #cbd5e1;
-	/* Body/b1 Semibold */
 
 	font-size: 16px;
 	font-style: normal;
 	font-weight: 600;
-	line-height: 24px; /* 150% */
+	line-height: 24px;
 }
 
 .auth_buttons {
-	font-family: 'Lato', sans-serif;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -108,7 +105,6 @@
 			right: -4px;
 			top: 27px;
 			position: absolute;
-			height: 308px;
 			width: 203px;
 
 			border-radius: 8px;
@@ -117,6 +113,7 @@
 
 			.header {
 				display: flex;
+				align-items: center;
 				padding: 10px 12px;
 				gap: 12px;
 				border-bottom: 1px solid #e7e9ef;

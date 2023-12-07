@@ -38,8 +38,18 @@ export const AboutProduct = ({ product }: PropsType) => {
 		?.value;
 	const properties = [
 		['Min. Order Quantity', product.moq ? `${product.moq} units` : '-'],
-		['Factory lead time', product.leadTime ? `${product.leadTime} days` : '-'],
-		['Warranty', product.warranty ? `${product.warranty} month` : '-'],
+		[
+			'Factory lead time',
+			product.leadTime
+				? `${product.leadTime} ${product.leadTime === 1 ? 'week' : 'weeks'} `
+				: '-',
+		],
+		[
+			'Warranty',
+			product.warranty
+				? `${product.warranty} ${product.warranty === 1 ? 'year' : 'years'}`
+				: '-',
+		],
 		['Certification', certification ? `${certification}` : '-'],
 		[
 			'Country of origin',

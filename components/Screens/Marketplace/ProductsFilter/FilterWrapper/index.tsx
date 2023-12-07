@@ -222,6 +222,7 @@ export const FilterWrapper = (props: TypeProps) => {
 						{items?.map((el, ind) => {
 							return (
 								<div
+									key={ind}
 									onClick={(e) => {
 										e.stopPropagation();
 										handleSelectChange(el.value.toString());

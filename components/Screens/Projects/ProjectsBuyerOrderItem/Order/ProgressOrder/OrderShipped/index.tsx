@@ -40,14 +40,19 @@ export const OrderShipped = ({ activeDisplay, index, delivery }: PropsType) => {
 							<p className={s.info_title}>
 								Order has shipped. Carrier: <span>Ocean Freight.</span> Tracking
 								number
-								<span className={s.info_got}> {delivery.trackingNumber} </span>
+								{delivery?.trackingNumber &&
+								delivery?.trackingNumber.toString().length > 0 ? (
+									<span className={s.info_got}> {delivery.trackingNumber} </span>
+								) : (
+									<span className={s.info_got}> (not number) </span>
+								)}
 								Bill of lading
 								{delivery.bill ? (
 									<a download href={delivery.bill.url} className={s.info_got}>
 										<span> Download</span>
 									</a>
 								) : (
-									<span className={s.info_got}>No File Available</span>
+									<span className={s.info_got}> No File Available</span>
 								)}
 							</p>
 						</div>
