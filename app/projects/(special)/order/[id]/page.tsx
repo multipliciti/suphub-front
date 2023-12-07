@@ -1,5 +1,10 @@
-import { BuyerOrder } from '@/components/Screens/Projects/ProjectsBuyerOrderItem';
+import { ProjectsBuyerOrderItem } from '@/components/Screens/Projects/ProjectsBuyerOrderItem';
 
-export default function ProjectsOrderItem() {
-	return <BuyerOrder id={3} />;
+interface Props {
+	params: {
+		id: number;
+	};
+}
+export default function ProjectsOrderItem({ params: { id } }: Props) {
+	return <ProjectsBuyerOrderItem id={id} />;
 }

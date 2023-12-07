@@ -104,7 +104,7 @@ export const ProductItem = (props: ProductItemType) => {
 
 					{properties.map((el: any, ind: number) => {
 						return (
-							<div className={s.p}>
+							<div key={ind} className={s.p}>
 								<p
 									className={classNames(
 										s.row_wrapper,

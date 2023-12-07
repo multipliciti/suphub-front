@@ -17,6 +17,7 @@ export const PaymentDue = ({
 	orderId,
 	activeStep,
 }: PropsType) => {
+	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 	const { push } = useRouter();
 	const api = Api();
 
@@ -25,9 +26,8 @@ export const PaymentDue = ({
 			orderId,
 			amount: 1000,
 			type: 'remaining',
-			//hardcode
-			successUrl: 'http://localhost:8080/testBuyerOrder',
-			cancelUrl: 'http://localhost:8080/testBuyerOrder',
+			successUrl: `${HOST}/projects/order/${orderId}`,
+			cancelUrl: `${HOST}/projects/order/${orderId}`,
 		};
 
 		try {

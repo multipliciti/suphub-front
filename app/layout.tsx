@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Lato } from 'next/font/google';
 
-import { MainProvider } from '@/Provider/MainProvider';
+import { MainProvider } from '@/components/Providers';
 import { Header } from '@/components/Features/Header';
 import { Modal } from '@/components/Modals';
 

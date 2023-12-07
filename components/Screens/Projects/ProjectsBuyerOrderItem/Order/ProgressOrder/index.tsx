@@ -23,7 +23,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 	//useRef for wrapper
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
 	//cteate useRef for everyone steps
-	const stepRefs = Array.from({ length: 8 }, (_, index) =>
+	const stepRefs = Array.from({ length: 8 }, (_) =>
 		useRef<HTMLDivElement | null>(null)
 	);
 	//To re-render and recalculate the height of the progress bar
@@ -381,8 +381,6 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 								activeStep={activeStep}
 								delivery={order.delivery ?? null}
 								orderId={order.id}
-								rerenderProgress={rerenderProgress}
-								setRerenderProgress={setRerenderProgress}
 								index={4}
 								activeDisplay={activeDisplay}
 							/>

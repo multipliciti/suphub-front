@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import s from './ProjectsTable.module.scss';
+import Link from 'next/link';
 import { classNames } from '@/utils/classNames';
 import { truncateFileNameEnd } from '@/utils/names';
 import { Order } from '@/types/services/projects';
@@ -11,6 +12,7 @@ interface PropsType {
 
 export const ProjectsTable = ({ columns, data }: PropsType) => {
 	console.log('data', data);
+	console.log('columns', columns);
 	return (
 		<div className={s.wrapper}>
 			<table className={s.table}>
@@ -51,7 +53,12 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 										<td className={s.td}>
 											<span className={s.td_product}>
 												<span>{truncateFileNameEnd('Product name', 25)}</span>
-												<span className={s.updates}>See updates</span>
+												<Link
+													href={`/storefront/order/${row.id}`}
+													className={s.updates}
+												>
+													See updates
+												</Link>
 											</span>
 										</td>
 									)}

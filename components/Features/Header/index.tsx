@@ -6,16 +6,11 @@ import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 import Link from 'next/link';
-import { useState } from 'react';
-import {
-	setBuyerCompany,
-	setSellerCompany,
-	setStatusGetUser,
-	setUser,
-} from '@/redux/slices/auth';
+import { useState, useRef } from 'react';
+import { setStatusGetUser, setUser } from '@/redux/slices/auth';
 import { resetStorefrontState } from '@/redux/slices/storefront/storefront';
 import { classNames } from '@/utils/classNames';
-import { useEffect } from 'react';
+import { useClickOutside } from '@/components/Hooks/useClickOutside';
 import { Api } from '@/services';
 import { useRouter } from 'next/navigation';
 //imgs
@@ -39,10 +34,14 @@ export const Header = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.authSlice.user);
-	const statusGetUser = useAppSelector((state) => state.authSlice.statusGetUser);
+	const menuRef = useRef<HTMLDivElement | null>(null);
 	const [activeLink, setActiveLink] = useState<number>(1);
 	const [menu, setMenu] = useState<boolean>(false);
 	const router = useRouter();
+	useClickOutside(menuRef, () => {
+		setMenu(false);
+	});
+
 	const menuItems = [
 		{
 			id: 1,
@@ -69,7 +68,22 @@ export const Header = () => {
 			href: '/404',
 		},
 	];
-	const buttons: Button[] = [
+	console.log('user', user);
+
+	const buttonsSeller: Button[] = [
+		{
+			id: 1,
+			label: 'Marketplace',
+			href: '/marketplace',
+		},
+		{
+			id: 2,
+			label: 'My Storefront',
+			href: '/storefront/get-started',
+		},
+	];
+
+	const buttonsBuyer: Button[] = [
 		{
 			id: 1,
 			label: 'Marketplace',
@@ -80,53 +94,7 @@ export const Header = () => {
 			label: 'Projects',
 			href: '/projects',
 		},
-		{
-			id: 3,
-			label: 'My Storefront',
-			href: '/storefront/get-started',
-		},
 	];
-
-	const fetchUser = async () => {
-		try {
-			const { data } = await api.auth.getUser();
-
-			if (data.role === 'seller' && data.sellerCompanyId) {
-				await fetchSellerCompany(data.sellerCompanyId);
-			} else if (data.role === 'buyer' && data.buyerCompanyId) {
-				await fetchBuyerCompany(data.buyerCompanyId);
-			}
-
-			dispatch(setStatusGetUser('seccess'));
-			dispatch(setUser(data));
-		} catch (error) {
-			dispatch(setStatusGetUser('rejected'));
-			dispatch(setUser(null));
-			console.error('Error fetching user data:', error);
-		}
-	};
-
-	const fetchSellerCompany = async (sellerCompanyId: number) => {
-		try {
-			const response = await api.sellerCompany.getById(sellerCompanyId);
-			dispatch(setSellerCompany(response.data));
-		} catch (e) {
-			dispatch(setSellerCompany(null));
-		}
-	};
-
-	const fetchBuyerCompany = async (buyerCompanyId: number) => {
-		try {
-			const response = await api.buyerCompany.getById(buyerCompanyId);
-			dispatch(setBuyerCompany(response.data));
-		} catch (e) {
-			dispatch(setBuyerCompany(null));
-		}
-	};
-
-	useEffect(() => {
-		if (statusGetUser !== 'logouted') fetchUser();
-	}, []);
 
 	const fetchLogOut = async () => {
 		try {
@@ -147,33 +115,68 @@ export const Header = () => {
 					<div className={s.menu}>
 						<Image src={modal_logo} alt="modal_logo" width={32} height={35} />
 
-						<div className={s.buttons}>
-							{buttons.map((button, index) => (
-								<div
-									key={index}
-									className={classNames(
-										s.menu_btn,
-										activeLink === button.id && s.menu_btn_active
-									)}
-								>
-									<Link
-										onClick={(e) => {
-											e.stopPropagation();
-											setActiveLink(button.id);
-										}}
-										href={button.href}
+						{/* // if user.role === 'seller'  */}
+						{user.role === 'seller' && (
+							<div className={s.buttons}>
+								{buttonsSeller.map((button, index) => (
+									<div
+										key={index}
 										className={classNames(
 											s.menu_btn,
 											activeLink === button.id && s.menu_btn_active
 										)}
-										key={button.id}
 									>
-										{button.label}
-									</Link>
-								</div>
-							))}
-						</div>
+										<Link
+											onClick={(e) => {
+												e.stopPropagation();
+												setActiveLink(button.id);
+											}}
+											href={button.href}
+											className={classNames(
+												s.menu_btn,
+												activeLink === button.id && s.menu_btn_active
+											)}
+											key={button.id}
+										>
+											{button.label}
+										</Link>
+									</div>
+								))}
+							</div>
+						)}
+
+						{/* // if user.role === 'buyer'  */}
+						{user.role === 'buyer' && (
+							<div className={s.buttons}>
+								{buttonsBuyer.map((button, index) => (
+									<div
+										key={index}
+										className={classNames(
+											s.menu_btn,
+											activeLink === button.id && s.menu_btn_active
+										)}
+									>
+										<Link
+											onClick={(e) => {
+												e.stopPropagation();
+												setActiveLink(button.id);
+											}}
+											href={button.href}
+											className={classNames(
+												s.menu_btn,
+												activeLink === button.id && s.menu_btn_active
+											)}
+											key={button.id}
+										>
+											{button.label}
+										</Link>
+									</div>
+								))}
+							</div>
+						)}
 					</div>
+
+					{/* // nav  */}
 					<nav className={s.nav}>
 						<ul className={s.nav_ul}>
 							<div
@@ -222,12 +225,12 @@ export const Header = () => {
 									width={24}
 									height={24}
 								/>
-								{menu && (
-									<div className={s.menu}>
+								{menu && user && (
+									<div ref={menuRef} className={s.menu}>
 										<div className={s.header}>
 											<Image src={avatartest} alt="avatar" width={36} height={36} />
 											<div className={s.header_info}>
-												<span className={s.header_info_name}>{user.firstName} </span>
+												<span className={s.header_info_name}>{user.firstName}</span>
 												<span className={s.header_info_person}>Personal</span>
 											</div>
 										</div>

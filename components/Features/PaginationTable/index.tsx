@@ -15,11 +15,25 @@ export const PaginationTable = ({
 }: PropsType) => {
 	return (
 		<div className={s.wrapper}>
-			<span className={classNames(s.page, s.active)}>{currentPage} </span>
-			<span className={s.page}>...</span>
-			<span onClick={() => setActivePage(totalPages)} className={s.page}>
-				{totalPages}
-			</span>
+			{currentPage !== 1 && (
+				<>
+					<span onClick={() => setActivePage(1)} className={s.page}>
+						1
+					</span>
+					<span className={s.page}>...</span>
+				</>
+			)}
+			{/* //  */}
+			<span className={classNames(s.page, s.active)}>{currentPage}</span>
+			{/* //  */}
+			{totalPages !== currentPage && (
+				<>
+					<span className={s.page}>...</span>
+					<span onClick={() => setActivePage(totalPages)} className={s.page}>
+						{totalPages}
+					</span>
+				</>
+			)}
 		</div>
 	);
 };

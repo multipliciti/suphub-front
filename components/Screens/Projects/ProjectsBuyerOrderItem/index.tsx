@@ -1,5 +1,5 @@
 'use client';
-import s from './BuyerOrder.module.scss';
+import s from './ProjectsBuyerOrderItem.module.scss';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useAppSelector } from '@/redux/hooks';
@@ -12,7 +12,7 @@ interface TypeProps {
 	id: number;
 }
 
-export const BuyerOrder = ({ id }: TypeProps) => {
+export const ProjectsBuyerOrderItem = ({ id }: TypeProps) => {
 	const api = Api();
 	const img = useAppSelector((state) => state.orderSlice.img);
 	const [order, setOrder] = useState<OrderInterface | null>(null);

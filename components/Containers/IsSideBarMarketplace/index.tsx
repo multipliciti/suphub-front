@@ -3,7 +3,11 @@ import { classNames } from '@/utils/classNames';
 import { useAppSelector } from '@/redux/hooks';
 import { Sidebar } from '@/components/Features/MarketplaceSidebar';
 
-export const IsSideBarContainer = ({ children }: { children: React.ReactNode }) => {
+export const IsSideBarMarketplace = ({
+	children,
+}: {
+	children: React.ReactNode;
+}) => {
 	const isSideBar = useAppSelector((state) => state.sideBarSlice.sideBar);
 
 	return (

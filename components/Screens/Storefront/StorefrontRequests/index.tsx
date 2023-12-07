@@ -1,5 +1,5 @@
 'use client';
-import s from './Requests.module.scss';
+import s from './StorefrontRequests.module.scss';
 import { Filters } from './Filters';
 import { RequestTable } from './RequestTable';
 import { PaginationWrapper } from './PaginationWrapper';

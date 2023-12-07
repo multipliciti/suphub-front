@@ -1,4 +1,4 @@
-import { SellerOrder } from '@/components/Screens/Storefront/StorefrontOrders/SellerOrder';
+import { StorefrontSellerOrderItem } from '@/components/Screens/Storefront/StorefrontSellerOrderItem';
 
 interface Props {
 	params: {
@@ -7,5 +7,5 @@ interface Props {
 }
 
 export default function StorefrontOrderItem({ params: { id } }: Props) {
-	return <SellerOrder id={3} />;
+	return <StorefrontSellerOrderItem id={id} />;
 }

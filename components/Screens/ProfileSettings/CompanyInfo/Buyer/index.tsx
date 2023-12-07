@@ -58,7 +58,9 @@ const BuyerCompanyInfo = () => {
 	useEffect(() => {
 		const fetch = async () => {
 			const userResponse = await api.auth.getUser();
-			const { data: { buyerCompanyId } } = userResponse;
+			const {
+				data: { buyerCompanyId },
+			} = userResponse;
 
 			setCompanyId(buyerCompanyId);
 			const response = await api.buyerCompany.getById(buyerCompanyId);

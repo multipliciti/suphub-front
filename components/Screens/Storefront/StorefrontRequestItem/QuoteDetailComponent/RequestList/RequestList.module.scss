@@ -1,12 +1,28 @@
 .wrapper {
 	display: block;
+	padding: 10px 35px;
+	padding-bottom: 0px;
+	overflow-y: scroll;
+	height: calc(
+		100vh - 60px - 44px - 43px - 56px
+	); // -header - back - nav - MyQuotation footer - MyQuotation footer margin
+}
+
+.wrapper::-webkit-scrollbar {
+	width: 4px;
+	background-color: transparent;
+	border-radius: 5px;
+}
+
+.wrapper::-webkit-scrollbar-thumb {
+	background: #94a3b8;
+	border-radius: 3px;
 }
 
 .table {
 	width: 100%;
 	border-collapse: separate;
 	border-spacing: 5px;
-	padding: 25px 35px;
 	font-size: 18px;
 	text-align: left;
 

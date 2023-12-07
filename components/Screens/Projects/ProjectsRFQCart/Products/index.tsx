@@ -25,7 +25,7 @@ export const Products = ({ rfqs }: TypeProps) => {
 		<div className={s.wrapper}>
 			{rfqs.map((el: RfqItemGot[], ind: number) => {
 				return (
-					<div className={classNames(s.set)}>
+					<div key={ind} className={classNames(s.set)}>
 						<div
 							className={classNames(
 								s.products,

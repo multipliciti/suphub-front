@@ -13,8 +13,6 @@ import { Api } from '@/services';
 interface PropsType {
 	delivery: Delivery | null;
 	orderId: number;
-	rerenderProgress: boolean;
-	setRerenderProgress: (n: boolean) => void;
 	activeDisplay: number[];
 	activeStep: number;
 	index: number;
@@ -26,9 +24,8 @@ export const PreShipmentInspection = ({
 	index,
 	delivery,
 	orderId,
-	rerenderProgress,
-	setRerenderProgress,
 }: PropsType) => {
+	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 	const dispatch = useAppDispatch();
 	const { push } = useRouter();
 	const api = Api();
@@ -44,11 +41,9 @@ export const PreShipmentInspection = ({
 			orderId,
 			amount: delivery?.amount ? delivery?.amount : 0,
 			type: 'delivery',
-			//hardcode
-			successUrl: 'http://localhost:8080/testBuyerOrder',
-			cancelUrl: 'http://localhost:8080/testBuyerOrder',
+			successUrl: `${HOST}/projects/order/${orderId}`,
+			cancelUrl: `${HOST}/projects/order/${orderId}`,
 		};
-
 		try {
 			const response = await api.buyerOrder.orderPay(data);
 			push(response.data.url);
@@ -124,15 +119,14 @@ export const PreShipmentInspection = ({
 										<div className={s.pdf_description}>
 											{delivery.documents.map((file, ind: number) => {
 												return (
-													<>
-														<a
-															className={s.pdf_link}
-															href="https://suphub-dev.s3.amazonaws.com/order-uploads/3/1e223d30-b3c8-4330-ae43-5346cb92266a.pdf"
-															download
-														>
-															{file.name}
-														</a>
-													</>
+													<a
+														key={ind}
+														className={s.pdf_link}
+														href="https://suphub-dev.s3.amazonaws.com/order-uploads/3/1e223d30-b3c8-4330-ae43-5346cb92266a.pdf"
+														download
+													>
+														{file.name}
+													</a>
 												);
 											})}
 										</div>
@@ -149,7 +143,7 @@ export const PreShipmentInspection = ({
 								<div className={classNames(s.block, s.photo)}>
 									{delivery.images.map((image: any, ind) => {
 										return (
-											<span className={s.photo_wrapper}>
+											<span key={ind} className={s.photo_wrapper}>
 												<Image
 													onClick={() => {
 														dispatch(setPhotoShow(image.url));
