@@ -55,7 +55,7 @@ export const StorefrontSidebar = () => {
 									alt="seller_company_logo"
 									width={76}
 									height={28}
-									style={{ objectFit: 'contain' }}
+									style={{ objectFit: 'cover' }}
 								/>
 							)}
 							<h5 className={s.seller_company_title}>{sellerCompany.name}</h5>
