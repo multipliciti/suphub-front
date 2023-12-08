@@ -68,7 +68,6 @@ export const Header = () => {
 			href: '/404',
 		},
 	];
-	console.log('user', user);
 
 	const buttonsSeller: Button[] = [
 		{
@@ -105,7 +104,7 @@ export const Header = () => {
 				dispatch(resetStorefrontState());
 				router.push('/');
 			}
-		} catch (error: any) {}
+		} catch (error) {}
 	};
 
 	return (

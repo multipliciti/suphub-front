@@ -1,9 +1,9 @@
 'use client';
 import s from '../GeneralSettingsStyle.module.scss';
-import { setModal, setEmail } from '@/redux/slices/modal';
+import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import modal_password from '@/imgs/Modal/pasword.svg';
@@ -12,7 +12,6 @@ import { Api } from '@/services';
 
 const PersonalInfo = () => {
 	const dispatch = useAppDispatch();
-	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
 	const api = Api();
 
@@ -32,11 +31,15 @@ const PersonalInfo = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
+			// TODO
+			// Unnecessary user request
+			// Needs to be refactored!
+
 			const response = await api.auth.getUser();
 			const { firstName, lastName, email, id } = response.data;
-			setValue('firstName', firstName);
-			setValue('lastName', lastName);
-			setValue('email', email);
+			setValue('firstName', firstName || '');
+			setValue('lastName', lastName || '');
+			setValue('email', email || '');
 			setUserId(id);
 		};
 		fetch();

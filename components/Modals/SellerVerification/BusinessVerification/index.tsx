@@ -220,6 +220,14 @@ export const BusinessVerification = () => {
 			const {
 				data: { sellerCompanyId },
 			} = userResponse;
+
+			if (!sellerCompanyId) {
+				// TODO
+				// Created a check due to typescript errors
+				// Needs to be refactored!
+				return;
+			}
+
 			setCompanyId(sellerCompanyId);
 			const response = await api.sellerCompany.getById(sellerCompanyId);
 			const {

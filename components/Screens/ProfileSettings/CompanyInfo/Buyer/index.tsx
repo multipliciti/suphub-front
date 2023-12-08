@@ -62,15 +62,22 @@ const BuyerCompanyInfo = () => {
 				data: { buyerCompanyId },
 			} = userResponse;
 
+			if (!buyerCompanyId) {
+				// TODO
+				// Created a check due to typescript errors
+				// Needs to be refactored!
+				return;
+			}
+
 			setCompanyId(buyerCompanyId);
 			const response = await api.buyerCompany.getById(buyerCompanyId);
 			const { name, logo, address } = response.data;
 			setValue('name', name ?? '');
-			setValue('street', address?.street);
-			setValue('city', address?.city);
-			setValue('state', address?.state);
-			setValue('country', address?.country);
-			setValue('zipCode', address?.zipcode);
+			setValue('street', address?.street || '');
+			setValue('city', address?.city || '');
+			setValue('state', address?.state || '');
+			setValue('country', address?.country || '');
+			setValue('zipCode', address?.zipcode || '');
 			setPreviewLogo(logo ? logo.url : null);
 		};
 		fetch();
