@@ -66,11 +66,34 @@
 	}
 }
 
+.box {
+	transition: box-shadow 0.5s ease;
+	padding: 12px 16px;
+	border-radius: 8px;
+	border: 0.5px solid #CBD5E1;
+	box-shadow: 0 5px 20px 0 rgba(53, 53, 53, 0.08);
+
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+
+	cursor: pointer;
+
+	&:hover {
+		box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.18);
+	}
+
+	&_disable {
+		background-color: #F0F2FE;
+	}
+
+}
+
 .seller_company {
 	transition: box-shadow 0.5s ease;
 	padding: 12px 16px;
 	border-radius: 8px;
-	border: 0.5px solid #cbd5e1;
+	border: 0.5px solid #CBD5E1;
 	box-shadow: 0 5px 20px 0 rgba(53, 53, 53, 0.08);
 
 	display: flex;
@@ -89,49 +112,56 @@
 		font-weight: 700;
 		line-height: 20px;
 	}
+}
 
-	.rating {
-		display: flex;
-		align-items: center;
+.rating {
+	display: flex;
+	align-items: center;
+	gap: 4px;
 
-		&_number {
-			margin-right: 4px;
-			color: #475569;
+	white-space: nowrap;
+	overflow: hidden;
 
-			font-size: 12px;
-			font-style: normal;
-			font-weight: 700;
-			line-height: 18px;
-		}
+	&_number {
+		color: #475569;
 
-		&_star {
-			margin-right: 8px;
-		}
-
-		&_title {
-			color: #475569;
-
-			font-size: 12px;
-			font-style: normal;
-			font-weight: 400;
-			line-height: 18px;
-		}
+		font-size: 12px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 18px;
 	}
 
-    .status {
-      font-size: 12px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 18px;
+	&_star {
+		margin-right: 4px;
+	}
 
-      &_verified {
-        color: #1fbb19;
-      }
+	&_title {
+		display: flex;
+		align-items: center;
+		gap: 4px;
 
-      &_unverified {
-        color: #de7a05;
-      }
-    }
+		color: #475569;
+
+		font-size: 12px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 18px;
+	}
+}
+
+.status {
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 18px;
+
+	&_verified {
+		color: #1fbb19;
+	}
+
+	&_unverified {
+		color: #de7a05;
+	}
 }
 
 .box_weika:hover {

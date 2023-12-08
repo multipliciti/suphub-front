@@ -35,10 +35,10 @@ export interface SellerCompany {
 	abbreviation: string;
 	website: string;
 	status: SellerCompanyStatus;
-
 	subscription: Subscription;
-	countryProductsCertifiedFor?: string;
+	statistics: SellerCompanyStatistics;
 
+	countryProductsCertifiedFor?: string;
 	productCertifications?: string;
 	businessCertifications?: string[];
 	factoryCertifications?: string[];
@@ -56,6 +56,21 @@ export interface SellerCompany {
 
 	updatedAt: string;
 	createdAt: string;
+}
+
+interface SellerCompanyStatistics {
+	orders: SellerCompanyStatisticsItem;
+	GMV: SellerCompanyStatisticsItem;
+	RFQ: SellerCompanyStatisticsItem;
+	feedbacks: {
+		value: number | null;
+		reviews: number;
+	};
+}
+
+interface SellerCompanyStatisticsItem {
+	value: number;
+	progress: null;
 }
 
 export type SellerCompanyStatus =

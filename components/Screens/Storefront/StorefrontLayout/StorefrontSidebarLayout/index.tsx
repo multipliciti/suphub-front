@@ -7,9 +7,7 @@ import { StorefrontSidebar } from '@/components/Screens/Storefront/StorefrontLay
 
 export const StorefrontSidebarLayout: FC<PropsWithChildren> = ({ children }) => {
 	const isSidebar = useAppSelector((state) => state.storefrontSlice.sidebar);
-	const sellerCompany = useAppSelector(
-		(state) => state.storefrontSlice.sellerCompany
-	);
+	const sellerCompany = useAppSelector((state) => state.authSlice.sellerCompany);
 
 	return (
 		<>
