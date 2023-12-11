@@ -99,13 +99,6 @@ export const AddToRFQCart = () => {
 				type: 'custom',
 				budget: 0,
 				floorArea: 0,
-				address: {
-					street: '',
-					city: '',
-					state: '',
-					country: '',
-					zipcode: '',
-				},
 			});
 			refresh();
 		} catch (e) {
@@ -116,16 +109,12 @@ export const AddToRFQCart = () => {
 	const handleCreateRfq = async () => {
 		setAddingProjectOrRfqInProgress(true);
 		try {
-			await api.rfq.createRfqItem({
-				projectId: selectedProjectId,
-				subCategoryId: product?.subCategoryId,
-				productName: 'Empty Product',
-				quantity: 50,
-				budget: 1000,
-				size: '36x39',
-				certifications: ['AED', 'DDC'],
-				additionalComments: 'Some Additional comment',
-			});
+			if (product?.subCategory) {
+				await api.rfq.createEmptyRfqItem({
+					subCategoryId: product.subCategoryId,
+					projectId: selectedProjectId,
+				});
+			}
 			await fetchRfq(selectedProjectId);
 			setAddingProjectOrRfqInProgress(false);
 		} catch (e) {

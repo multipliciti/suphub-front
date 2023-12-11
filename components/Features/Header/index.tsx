@@ -6,7 +6,7 @@ import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 import Link from 'next/link';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { setStatusGetUser, setUser } from '@/redux/slices/auth';
 import { resetStorefrontState } from '@/redux/slices/storefront/storefront';
 import { classNames } from '@/utils/classNames';
@@ -34,8 +34,11 @@ export const Header = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.authSlice.user);
+	const sellerCompany = useAppSelector((state) => state.authSlice.sellerCompany);
+	const buyerCompany = useAppSelector((state) => state.authSlice.buyerCompany);
 	const menuRef = useRef<HTMLDivElement | null>(null);
 	const [activeLink, setActiveLink] = useState<number>(1);
+	const [logoSrc, setLogoSrc] = useState(avatartest);
 	const [menu, setMenu] = useState<boolean>(false);
 	const router = useRouter();
 	useClickOutside(menuRef, () => {
@@ -95,10 +98,31 @@ export const Header = () => {
 		},
 	];
 
+	const displayRole = () => {
+		switch (user?.role) {
+			case 'buyer':
+				return 'Buyer';
+			case 'seller':
+				return 'Seller';
+			default:
+				return 'Personal';
+		}
+	};
+
+	const handleLogo = () => {
+		let company;
+		const role = user?.role;
+		if (role === 'seller') company = sellerCompany;
+		else if (role === 'buyer') company = buyerCompany;
+		else return;
+		if (company?.logo?.url) setLogoSrc(company?.logo.url);
+	};
+
 	const fetchLogOut = async () => {
 		try {
 			const response = await api.auth.logout();
 			if (response) {
+				setLogoSrc(avatartest);
 				dispatch(setUser(null));
 				dispatch(setStatusGetUser('logouted'));
 				dispatch(resetStorefrontState());
@@ -107,6 +131,10 @@ export const Header = () => {
 		} catch (error) {}
 	};
 
+	useEffect(() => {
+		handleLogo();
+	}, [user, sellerCompany, buyerCompany]);
+
 	return (
 		<header className={`header_container ${s.header}`}>
 			{user && (
@@ -114,7 +142,6 @@ export const Header = () => {
 					<div className={s.menu}>
 						<Image src={modal_logo} alt="modal_logo" width={32} height={35} />
 
-						{/* // if user.role === 'seller'  */}
 						{user.role === 'seller' && (
 							<div className={s.buttons}>
 								{buttonsSeller.map((button, index) => (
@@ -144,7 +171,6 @@ export const Header = () => {
 							</div>
 						)}
 
-						{/* // if user.role === 'buyer'  */}
 						{user.role === 'buyer' && (
 							<div className={s.buttons}>
 								{buttonsBuyer.map((button, index) => (
@@ -219,7 +245,7 @@ export const Header = () => {
 										setMenu(!menu);
 									}}
 									className={s.avatar}
-									src={avatartest}
+									src={logoSrc}
 									alt="avatar"
 									width={24}
 									height={24}
@@ -227,10 +253,16 @@ export const Header = () => {
 								{menu && user && (
 									<div ref={menuRef} className={s.menu}>
 										<div className={s.header}>
-											<Image src={avatartest} alt="avatar" width={36} height={36} />
+											<Image
+												src={logoSrc}
+												alt="avatar"
+												className={s.avatar_menu}
+												width={36}
+												height={36}
+											/>
 											<div className={s.header_info}>
 												<span className={s.header_info_name}>{user.firstName}</span>
-												<span className={s.header_info_person}>Personal</span>
+												<span className={s.header_info_person}>{displayRole()}</span>
 											</div>
 										</div>
 

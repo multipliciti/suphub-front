@@ -81,7 +81,7 @@
 
   &_element {
     display: flex;
-    padding: 2px 0px;
+    padding: 2px 0;
     align-items: flex-start;
     gap: 10px;
   }
@@ -131,6 +131,8 @@
   align-items: flex-start;
   gap: 16px;
   align-self: stretch;
+  max-height:70vh;
+  overflow-y: auto;
 
   &_file_upload_group {
     display: flex;
