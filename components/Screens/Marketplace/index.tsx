@@ -111,7 +111,7 @@ export const Marketplace = () => {
 			});
 			dispatch(setProducts(response.result));
 			dispatch(setTotal(response.total));
-			dispatch(setStatus('seccess'));
+			dispatch(setStatus('success'));
 			setTotalPages(response.totalPages < 1 ? 1 : response.totalPages);
 		} catch (error) {
 			console.error('Error:', error);

@@ -10,7 +10,6 @@ interface PropsType {
 }
 
 export const OrderShipped = ({ activeDisplay, index, delivery }: PropsType) => {
-	console.log('delivery', delivery);
 	return (
 		<>
 			<div

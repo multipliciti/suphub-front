@@ -41,7 +41,7 @@ export const Products = ({ rfqs }: TypeProps) => {
 								)}
 							>
 								<div
-									onClick={() => setActive(ind)}
+									onClick={() => setActive(active === ind ? -1 : ind)}
 									className={s.products_header_toggle}
 								>
 									<Image

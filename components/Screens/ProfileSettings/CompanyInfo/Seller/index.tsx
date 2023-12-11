@@ -11,6 +11,7 @@ import file_icon from '@/imgs/ProfileSettings/file_icon.svg';
 import Image from 'next/image';
 import { Api } from '@/services';
 import { RemoveCertification, UpdateSellerCompany } from '@/types/services/company';
+import { useAppSelector } from '@/redux/hooks';
 
 const SellerCompanyInfo = () => {
 	const api = Api();
@@ -51,7 +52,7 @@ const SellerCompanyInfo = () => {
 		shouldUnregister: true,
 	});
 
-	const [companyId, setCompanyId] = useState<number>(0);
+	const sellerCompany = useAppSelector((state) => state.authSlice.sellerCompany);
 
 	const [logoSrc, setLogoSrc] = useState(null);
 	const [previewLogo, setPreviewLogo] = useState<string | null>(null);
@@ -254,24 +255,16 @@ const SellerCompanyInfo = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			const userResponse = await api.auth.getUser();
-			const {
-				data: { sellerCompanyId },
-			} = userResponse;
-			setCompanyId(sellerCompanyId);
-			const response = await api.sellerCompany.getById(sellerCompanyId);
-			const {
-				name,
-				logo,
-				businessCertifications,
-				factoryCertifications,
-				countryProductsCertifiedFor,
-				productCertifications,
-				companyAddress,
-				factoryAddress,
-			} = response.data;
+			const name = sellerCompany?.name;
+			const logo = sellerCompany?.logo;
+			const businessCertifications = sellerCompany?.businessCertifications;
+			const factoryCertifications = sellerCompany?.factoryCertifications;
+			const countryProductsCertifiedFor = sellerCompany?.countryProductsCertifiedFor;
+			const productCertifications = sellerCompany?.productCertifications;
+			const companyAddress = sellerCompany?.companyAddress;
+			const factoryAddress = sellerCompany?.factoryAddress;
 
-			setValue('name', name);
+			setValue('name', name ?? '');
 			setValue('companyStreet', companyAddress?.street ?? '');
 			setValue('companyCity', companyAddress?.city ?? '');
 			setValue('companyState', companyAddress?.state ?? '');
@@ -327,8 +320,10 @@ const SellerCompanyInfo = () => {
 			form['factoryAddress'] = factoryAddress;
 		}
 
-		const responseForm = await api.sellerCompany.update(companyId, form);
-		if (responseForm.status !== 200) return;
+		if (sellerCompany?.id) {
+			const responseForm = await api.sellerCompany.update(sellerCompany?.id, form);
+			if (responseForm.status !== 200) return;
+		}
 
 		if (logoSrc) {
 			const formData = new FormData();

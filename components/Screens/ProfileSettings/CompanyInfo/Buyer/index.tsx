@@ -7,6 +7,7 @@ import logo_placeholder from '@/imgs/ProfileSettings/logo_placeholder.svg';
 import Image from 'next/image';
 import { Api } from '@/services';
 import { UpdateBuyerCompany } from '@/types/services/company';
+import { useAppSelector } from '@/redux/hooks';
 
 const BuyerCompanyInfo = () => {
 	const api = Api();
@@ -33,10 +34,10 @@ const BuyerCompanyInfo = () => {
 		shouldUnregister: true,
 	});
 
+	const buyerCompany = useAppSelector((state) => state.authSlice.buyerCompany);
+
 	const [logoSrc, setLogoSrc] = useState(null);
 	const [previewLogo, setPreviewLogo] = useState<string | null>(null);
-	const [companyId, setCompanyId] = useState<number>(0);
-
 	const [submitClicked, setSubmitClicked] = useState<boolean>(false);
 
 	const handleLogoChange = (event: React.ChangeEvent<any>) => {
@@ -57,20 +58,15 @@ const BuyerCompanyInfo = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			const userResponse = await api.auth.getUser();
-			const {
-				data: { buyerCompanyId },
-			} = userResponse;
-
-			setCompanyId(buyerCompanyId);
-			const response = await api.buyerCompany.getById(buyerCompanyId);
-			const { name, logo, address } = response.data;
+			const name = buyerCompany?.name;
+			const address = buyerCompany?.address;
+			const logo = buyerCompany?.logo;
 			setValue('name', name ?? '');
-			setValue('street', address?.street);
-			setValue('city', address?.city);
-			setValue('state', address?.state);
-			setValue('country', address?.country);
-			setValue('zipCode', address?.zipcode);
+			setValue('street', address?.street || '');
+			setValue('city', address?.city || '');
+			setValue('state', address?.state || '');
+			setValue('country', address?.country || '');
+			setValue('zipCode', address?.zipcode || '');
 			setPreviewLogo(logo ? logo.url : null);
 		};
 		fetch();
@@ -91,8 +87,10 @@ const BuyerCompanyInfo = () => {
 		form['name'] = data.name;
 		form['address'] = address;
 
-		const responseForm = await api.buyerCompany.update(companyId, form);
-		if (responseForm.status !== 200) return;
+		if (buyerCompany?.id) {
+			const responseForm = await api.buyerCompany.update(buyerCompany?.id, form);
+			if (responseForm.status !== 200) return;
+		}
 
 		if (logoSrc) {
 			const formData: any = new FormData();

@@ -9,7 +9,7 @@ const initialState: CounterState = {
 };
 
 const sideBarRequestDetailSlice = createSlice({
-	name: 'sellerSidebar',
+	name: 'sideBarRequestDetailSlice',
 	initialState,
 	reducers: {
 		setRfqId(state, action: PayloadAction<number>) {

@@ -120,7 +120,7 @@ export const Products = ({ products, status, filtersEmpty }: ProductsPropsType) 
 			</div>
 			{status === 'pendung' && <div> Loading...</div>}
 			{status === 'rejected' && <div> Error! </div>}
-			{products && products.length < 1 && status === 'seccess' && (
+			{products && products.length < 1 && status === 'success' && (
 				<NoResults filtersEmpty={filtersEmpty} />
 			)}
 			<div className={s.products}>

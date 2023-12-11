@@ -125,10 +125,10 @@ export const Products = (props: ProductsPropsType) => {
 
 			{status === 'pending' && <div> Loading...</div>}
 			{status === 'rejected' && <div> Error! </div>}
-			{products && products.length < 1 && status === 'seccess' && (
+			{products && products.length < 1 && status === 'success' && (
 				<NoResults filtersEmpty={filtersEmpty} />
 			)}
-			{products && status === 'seccess' && (
+			{products && status === 'success' && (
 				<div className={classNames(s.products, isSideBar && s.products_sidebar)}>
 					{products.map((el, ind) => (
 						<div key={ind} className={s.products_item}>

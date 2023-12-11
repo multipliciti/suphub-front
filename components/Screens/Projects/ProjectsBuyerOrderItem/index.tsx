@@ -30,7 +30,6 @@ export const ProjectsBuyerOrderItem = ({ id }: TypeProps) => {
 	useEffect(() => {
 		getOrderById(id);
 	}, []);
-	console.log('ordermy', order);
 
 	return (
 		<div className={s.wrapper}>

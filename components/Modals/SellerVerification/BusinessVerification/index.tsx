@@ -12,13 +12,13 @@ import file_icon from '@/imgs/ProfileSettings/file_icon.svg';
 import check_icon from '@/imgs/Buyer&Seller/SellerVerification/radio-button-check.svg';
 import { RemoveCertification, UpdateSellerCompany } from '@/types/services/company';
 import big_cross from '@/imgs/ProfileSettings/big_cross.svg';
-import plus_sign from '@/imgs/ProfileSettings/plus_sign.svg';
+import { useAppSelector } from '@/redux/hooks';
 
 export const BusinessVerification = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 
-	const [companyId, setCompanyId] = useState<number>(0);
+	const sellerCompany = useAppSelector((state) => state.authSlice.sellerCompany);
 
 	const [addCountryInput, setAddCountryInput] = useState<string>('');
 	const [addCertificationInput, setAddCertificationInput] = useState<string>('');
@@ -44,12 +44,10 @@ export const BusinessVerification = () => {
 		setInitiallyFetchedFactoryCertificationFiles,
 	] = useState<any>([]);
 
-	const [isBusinessCertificationChecked, setIsBusinessCertificationChecked] =
-		useState<boolean>(false);
-	const [isFactoryCertificationChecked, setIsFactoryCertificationChecked] =
-		useState<boolean>(false);
-	const [isProductCertificationsChecked, setIsProductCertificationsChecked] =
-		useState<boolean>(false);
+	const isBusinessCertificationChecked = !!businessCertificationFiles?.length;
+	const isFactoryCertificationChecked = !!factoryCertificationFiles?.length;
+	const isProductCertificationsChecked =
+		!!countryProductsCertifiedFor?.length || !!productCertifications?.length;
 
 	const [submitClicked, setSubmitClicked] = useState<boolean>(false);
 
@@ -216,24 +214,10 @@ export const BusinessVerification = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
-			const userResponse = await api.auth.getUser();
-			const {
-				data: { sellerCompanyId },
-			} = userResponse;
-			setCompanyId(sellerCompanyId);
-			const response = await api.sellerCompany.getById(sellerCompanyId);
-			const {
-				businessCertifications,
-				factoryCertifications,
-				countryProductsCertifiedFor,
-				productCertifications,
-			} = response.data;
-
-			setIsBusinessCertificationChecked(!!businessCertifications?.length);
-			setIsFactoryCertificationChecked(!!factoryCertifications?.length);
-			setIsProductCertificationsChecked(
-				!!countryProductsCertifiedFor?.length || !!productCertifications?.length
-			);
+			const businessCertifications = sellerCompany?.businessCertifications;
+			const factoryCertifications = sellerCompany?.factoryCertifications;
+			const countryProductsCertifiedFor = sellerCompany?.countryProductsCertifiedFor;
+			const productCertifications = sellerCompany?.productCertifications;
 
 			setInitiallyFetchedBusinessCertificationFiles(businessCertifications || []);
 			setInitiallyFetchedFactoryCertificationFiles(factoryCertifications || []);
@@ -256,8 +240,10 @@ export const BusinessVerification = () => {
 		form['countryProductsCertifiedFor'] = countryProductsCertifiedFor.join(',');
 		form['productCertifications'] = productCertifications.join(',');
 
-		const responseForm = await api.sellerCompany.update(companyId, form);
-		if (responseForm.status !== 200) return;
+		if (sellerCompany?.id) {
+			const responseForm = await api.sellerCompany.update(sellerCompany?.id, form);
+			if (responseForm.status !== 200) return;
+		}
 
 		const deletedFactoryIds: number[] = [];
 		const deletedBusinessIds: number[] = [];
@@ -567,16 +553,11 @@ export const BusinessVerification = () => {
 											setAddCertificationInput(e.target.value);
 										}}
 										onKeyDown={(e) => {
-											if (e.key === 'Enter') {
+											if (e.key === 'Enter' || e.key === ' ') {
 												e.preventDefault();
 												handleAddCertification();
 											}
 										}}
-									/>
-									<Image
-										alt={'add product'}
-										src={plus_sign}
-										onClick={handleAddCountryCertification}
 									/>
 								</label>
 								{errors.productCertifications && (
@@ -620,16 +601,11 @@ export const BusinessVerification = () => {
 											setAddCountryInput(e.target.value);
 										}}
 										onKeyDown={(e) => {
-											if (e.key === 'Enter') {
+											if (e.key === 'Enter' || e.key === ' ') {
 												e.preventDefault();
 												handleAddCountryCertification();
 											}
 										}}
-									/>
-									<Image
-										alt={'add product'}
-										src={plus_sign}
-										onClick={handleAddCountryCertification}
 									/>
 								</label>
 								{errors.countryProductsCertifiedFor && (

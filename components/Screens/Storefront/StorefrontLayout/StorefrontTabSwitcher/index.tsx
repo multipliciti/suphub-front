@@ -26,9 +26,7 @@ const tabList: TabSwitcherItem[] = [
 ];
 
 export const StorefrontTabSwitcher = () => {
-	const sellerCompany = useAppSelector(
-		(state) => state.storefrontSlice.sellerCompany
-	);
+	const sellerCompany = useAppSelector((state) => state.authSlice.sellerCompany);
 
 	const tabs =
 		!sellerCompany || sellerCompany.status !== 'verified'

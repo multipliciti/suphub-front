@@ -20,7 +20,12 @@
 	.tbody {
 		tr {
 			cursor: pointer;
+			height: 55px;
 		}
+		tr:first-child {
+			padding-left: 10px;
+		}
+
 		color: #020617;
 		font-variant-numeric: lining-nums proportional-nums;
 		font-size: 14px;
@@ -28,34 +33,38 @@
 		font-weight: 400;
 		line-height: 20px;
 
-		.title {
-			display: inline-block;
-			width: 100%;
-			text-align: left;
-			overflow: hidden;
-			color: #020617;
-			text-overflow: ellipsis;
-			white-space: nowrap;
-			font-size: 14px;
-			font-style: normal;
-			font-weight: 400;
-			line-height: 18px;
-		}
+		.description {
+			margin-top: -18px;
 
-		.title:hover {
-			color: #755cf1;
-			text-decoration: underline;
-		}
+			.title {
+				// display: inline-block;
+				// width: 100%;
+				// text-align: left;
+				overflow: hidden;
+				color: #020617;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				font-size: 14px;
+				font-style: normal;
+				font-weight: 400;
+				line-height: 18px;
+			}
 
-		.subtitle {
-			display: inline-block;
-			width: 100%;
-			text-align: left;
-			color: #94a3b8;
-			font-size: 10px;
-			font-style: normal;
-			font-weight: 400;
-			line-height: 10px;
+			.title:hover {
+				color: #755cf1;
+				text-decoration: underline;
+			}
+
+			.subtitle {
+				// display: inline-block;
+				// width: 100%;
+				// text-align: left;
+				color: #94a3b8;
+				font-size: 10px;
+				font-style: normal;
+				font-weight: 400;
+				line-height: 10px;
+			}
 		}
 
 		.chat {

@@ -86,17 +86,17 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 													className={classNames(
 														s.td_status,
 														s.td,
-														row.status.toLowerCase() === 'payment pending' &&
+														row.status.toLowerCase() === 'depositWaiting' &&
 															s.td_status_pending,
 														row.status.toLowerCase() === 'in transit' &&
 															s.td_status_transit,
-														row.status.toLowerCase() === 'in production' &&
+														row.status.toLowerCase() === 'inProduction' &&
 															s.td_status_production,
 														row.status.toLowerCase() === 'pO issued' &&
 															s.td_status_issued,
 														row.status.toLowerCase() === 'delivered' &&
 															s.td_status_delivered,
-														row.status.toLowerCase() === 'confirmed' &&
+														row.status.toLowerCase() === 'completed' &&
 															s.td_status_delivered
 													)}
 												>

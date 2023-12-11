@@ -97,7 +97,6 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 				break;
 		}
 	}, [order]);
-	console.log('ldldldl');
 
 	const setActiveDisplayFunction = (n: number) => {
 		setActiveDisplay((prevState) => {
@@ -449,6 +448,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 5 && (
 							<PaymentDue
+								price={order.amount}
 								activeStep={activeStep}
 								orderId={order.id}
 								index={5}
