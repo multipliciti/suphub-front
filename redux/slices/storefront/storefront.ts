@@ -30,17 +30,10 @@ const storefrontSlice = createSlice({
 		) {
 			state.productIdForUploadImages = action.payload;
 		},
-		resetStorefrontState() {
-			return initialState;
-		},
 	},
 });
 
-export const {
-	setSidebar,
-	setCategories,
-	setProductIdForUploadImages,
-	resetStorefrontState,
-} = storefrontSlice.actions;
+export const { setSidebar, setCategories, setProductIdForUploadImages } =
+	storefrontSlice.actions;
 
 export default storefrontSlice.reducer;
