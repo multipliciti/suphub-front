@@ -14,12 +14,13 @@ export interface Option {
 	status: string;
 	productId: number;
 	rfqId: number;
+
 	product: ProductItemType;
 }
 
 export interface RfqItemFetch {
 	id?: number;
-	projectId: number;
+	projectId: string;
 	subCategoryId?: number;
 	productName: string;
 	quantity: number;
@@ -28,6 +29,7 @@ export interface RfqItemFetch {
 	certifications?: string[];
 	additionalComments?: string;
 	cover?: File[];
+	files?: File[];
 }
 export interface RfqEmptyItem {
 	projectId: number;

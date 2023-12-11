@@ -4,7 +4,7 @@ import { BuyerCompany, SellerCompany } from '@/types/services/company';
 import { RegisterUserType, User } from '@/types/services/auth';
 
 interface CounterState {
-	statusGetUser: 'pending' | 'seccess' | 'rejected' | 'logouted';
+	statusGetUser: 'pending' | 'success' | 'rejected' | 'logouted';
 	resetPasswordEmail: string;
 	registration: RegisterUserType;
 	user: User | null;
@@ -47,7 +47,7 @@ const authSlice = createSlice({
 		},
 		setStatusGetUser(
 			state,
-			action: PayloadAction<'pending' | 'seccess' | 'rejected' | 'logouted'>
+			action: PayloadAction<'pending' | 'success' | 'rejected' | 'logouted'>
 		) {
 			state.statusGetUser = action.payload;
 		},

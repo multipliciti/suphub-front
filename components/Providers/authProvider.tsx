@@ -24,7 +24,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
 				await fetchBuyerCompany(data.buyerCompanyId);
 			}
 
-			dispatch(setStatusGetUser('seccess'));
+			dispatch(setStatusGetUser('success'));
 			dispatch(setUser(data));
 		} catch (errorResponse) {
 			dispatch(setStatusGetUser('rejected'));

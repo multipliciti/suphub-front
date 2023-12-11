@@ -1,6 +1,7 @@
 .wrapper {
 	z-index: 1000;
 	width: 100vw;
+	max-height: 100vh;
 	backdrop-filter: blur(1px);
 	background-color: rgba(20, 54, 68, 0.35);
 

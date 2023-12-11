@@ -5,7 +5,7 @@ interface initialStateType {
 	products: ProductItemType[];
 	activePage: number;
 	total: number;
-	status: 'pending' | 'seccess' | 'rejected';
+	status: 'pending' | 'success' | 'rejected';
 }
 
 const initialState: initialStateType = {
@@ -28,7 +28,7 @@ const marketplaceProduct = createSlice({
 		setTotal(state, action: PayloadAction<number>) {
 			state.total = action.payload;
 		},
-		setStatus(state, action: PayloadAction<'pending' | 'seccess' | 'rejected'>) {
+		setStatus(state, action: PayloadAction<'pending' | 'success' | 'rejected'>) {
 			state.status = action.payload;
 		},
 	},

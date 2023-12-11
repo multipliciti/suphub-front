@@ -11,8 +11,6 @@ interface PropsType {
 }
 
 export const ProjectsTable = ({ columns, data }: PropsType) => {
-	console.log('data', data);
-	console.log('columns', columns);
 	return (
 		<div className={s.wrapper}>
 			<table className={s.table}>
@@ -91,12 +89,12 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 													className={classNames(
 														s.td_status,
 														s.td,
-														row.status === 'Payment pending' && s.td_status_pending,
+														row.status === 'depositWaiting' && s.td_status_pending,
 														row.status === 'In transit' && s.td_status_transit,
-														row.status === 'In production' && s.td_status_production,
+														row.status === 'inProduction' && s.td_status_production,
 														row.status === 'PO issued' && s.td_status_issued,
-														row.status === 'Delivered' && s.td_status_delivered,
-														row.status === 'confirmed' && s.td_status_delivered
+														row.status === 'delivered' && s.td_status_delivered,
+														row.status === 'completed' && s.td_status_delivered
 													)}
 												>
 													{row.status}

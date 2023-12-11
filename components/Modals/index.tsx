@@ -24,6 +24,7 @@ import { SellerProductBulkUpload } from './StorefrontAddProduct/BulkUpload';
 import { SellerProductUploadImage } from './StorefrontAddProduct/UploadImage';
 import { DeleteProject } from '@/components/Modals/Projects/DeleteProject';
 import { WarningTrialCanBeUsedOnce } from '@/components/Modals/WarningTrialCanBeUsedOnce';
+import { SelectSamples } from './SelectSamples/SelectSamples';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -211,6 +212,15 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'deleteProject' && <DeleteProject />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'selectSamples' && s.wrapper_active
+				)}
+			>
+				{modal === 'selectSamples' && <SelectSamples />}
 			</div>
 		</>
 	);

@@ -13,7 +13,6 @@ export const Specs = () => {
 	const id = useAppSelector((state) => state.sideBarRequestDetailSlice.rfqId);
 
 	const fetchGetRfq = async (id: number) => {
-		console.log('start getOrders');
 		try {
 			const response = await api.rfq.getRfqOne(id);
 			setData(response);
@@ -23,7 +22,7 @@ export const Specs = () => {
 	};
 
 	useEffect(() => {
-		fetchGetRfq(id);
+		if (id !== -1) fetchGetRfq(id);
 	}, [id]);
 
 	return (

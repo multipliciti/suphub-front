@@ -11,7 +11,6 @@ type TypeProps = {
 
 //not table
 export const RequestList = ({ item }: TypeProps) => {
-	console.log('item', item);
 	return (
 		<div className={s.wrapper}>
 			<table className={s.table}>

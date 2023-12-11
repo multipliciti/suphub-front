@@ -7,7 +7,6 @@ import { Api } from '@/services';
 
 export const DisableRole: React.FC = () => {
 	const user = useAppSelector((state) => state.authSlice.user);
-	console.log('user', user);
 	return (
 		<LayoutModal>
 			<div className={s.wrapper}></div>

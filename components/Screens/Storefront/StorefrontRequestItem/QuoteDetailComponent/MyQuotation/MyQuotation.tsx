@@ -34,7 +34,6 @@ export const MyQuotation = ({ item }: TypeProps) => {
 
 	//Already changed data after some entered data.
 	const [dataArr, setDataArr] = useState<any[]>(initialState);
-	console.log('dataArr', dataArr);
 	//function that changes data dataArr
 	const handleChangeDataArr = (ind: number, key: string, value: any) => {
 		console.log('clicked handleChangeDataArr');

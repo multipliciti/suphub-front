@@ -24,7 +24,6 @@ export const OptionsView = ({ id }: TypeProps) => {
 		}
 	};
 
-	console.log('options', options);
 	useEffect(() => {
 		fetchDetOptions(id);
 	}, []);

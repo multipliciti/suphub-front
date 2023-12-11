@@ -1,9 +1,7 @@
 'use client';
+import { useState } from 'react';
 import s from './AboutProduct.module.scss';
 import Image from 'next/image';
-import test1 from '@/imgs/Product/ImageTest1.png';
-import test2 from '@/imgs/Product/test2.png';
-import { useState } from 'react';
 import { TableComponent } from './Table';
 import { classNames } from '@/utils/classNames';
 import { ProductItemType } from '@/types/products/product';
@@ -14,7 +12,7 @@ interface PropsType {
 
 export const AboutProduct = ({ product }: PropsType) => {
 	const [activeImg, setActiveImg] = useState<number>(1);
-	const { dynamic_attr } = product;
+	const { dynamic_attr, images } = product;
 	const shipmentPackaging = [
 		{
 			label: 'packaging',
@@ -38,12 +36,7 @@ export const AboutProduct = ({ product }: PropsType) => {
 		?.value;
 	const properties = [
 		['Min. Order Quantity', product.moq ? `${product.moq} units` : '-'],
-		[
-			'Factory lead time',
-			product.leadTime
-				? `${product.leadTime} ${product.leadTime === 1 ? 'week' : 'weeks'} `
-				: '-',
-		],
+		['Lead time (weeks)', product.leadTime ? `${product.leadTime} ` : '-'],
 		[
 			'Warranty',
 			product.warranty
@@ -57,27 +50,13 @@ export const AboutProduct = ({ product }: PropsType) => {
 		],
 	];
 
-	const images = [
-		{
-			img: test1,
-			id: 1,
-		},
-		{
-			img: test2,
-			id: 2,
-		},
-	];
-	const activeImgRender = images.find((el) => {
-		return el.id === activeImg;
-	});
-
 	return (
 		<div>
 			<div className={s.product}>
 				<div className={s.product_images}>
 					<Image
 						className={s.product_images_img}
-						src={activeImgRender?.img || ''}
+						src={images[activeImg].url ?? ''}
 						alt="product"
 						width={420}
 						height={420}
@@ -86,13 +65,13 @@ export const AboutProduct = ({ product }: PropsType) => {
 						{images.map((el, ind) => {
 							return (
 								<Image
-									onClick={() => setActiveImg(el.id)}
+									onClick={() => setActiveImg(ind)}
 									key={ind}
 									className={classNames(
 										s.chose_img,
-										el.id === activeImg && s.chose_img_active
+										ind === activeImg && s.chose_img_active
 									)}
-									src={el.img}
+									src={el.url ?? ''}
 									alt="product"
 									width={80}
 									height={80}

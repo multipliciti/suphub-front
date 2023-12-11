@@ -9,6 +9,7 @@ interface PropsType {
 	index: number;
 	orderId: number;
 	activeStep: number;
+	price: number;
 }
 
 export const PaymentDue = ({
@@ -16,15 +17,15 @@ export const PaymentDue = ({
 	index,
 	orderId,
 	activeStep,
+	price,
 }: PropsType) => {
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 	const { push } = useRouter();
 	const api = Api();
-
 	const fetchOrderPay = async () => {
 		const data = {
 			orderId,
-			amount: 1000,
+			amount: Math.round((price * 3) / 4),
 			type: 'remaining',
 			successUrl: `${HOST}/projects/order/${orderId}`,
 			cancelUrl: `${HOST}/projects/order/${orderId}`,

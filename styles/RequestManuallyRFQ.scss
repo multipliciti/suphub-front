@@ -1,0 +1,31 @@
+.have_files_container {
+	margin: 10px 0px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.have_files_item {
+	width: min-content;
+	max-width: 350px;
+	padding: 6px 8px;
+	border-radius: 4px;
+	background: #e7e9ef;
+
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+
+.file_haves_title {
+	color: #143644;
+
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: 18px;
+}
+
+.file_haves_close {
+	cursor: pointer;
+}

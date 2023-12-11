@@ -15,15 +15,7 @@ interface PropsType {
 	setRerenderProgress: (b: boolean) => void;
 }
 
-export const Deposit = ({
-	activeDisplay,
-	index,
-	orderId,
-	price,
-	status,
-	rerenderProgress,
-	setRerenderProgress,
-}: PropsType) => {
+export const Deposit = ({ activeDisplay, index, orderId, price }: PropsType) => {
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 	const api = Api();
 	const priceInner = Math.floor(price / 4);

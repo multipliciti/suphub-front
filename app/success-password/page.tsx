@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { ResetPassword } from '@/components/Screens/ResetPassword';
 import { Success } from '@/components/Screens/ResetPassword/Success';
 
 export const metadata: Metadata = {

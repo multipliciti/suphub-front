@@ -8,11 +8,13 @@ import { Api } from '@/services';
 import { truncateFileName } from '@/utils/names';
 import pdf_upload_2 from '@/imgs/Buyer&Seller/pdf_upload_2.svg';
 import close_icon from '@/imgs/close.svg';
+import order from '@/redux/slices/Order/order';
 
 interface PropsType {
 	activeDisplay: number[];
 	index: number;
 	deliveryId: number | null;
+	orderId: number;
 }
 
 interface formDataType {
@@ -21,7 +23,12 @@ interface formDataType {
 	file: File | null;
 }
 
-export const OrderShipped = ({ activeDisplay, index, deliveryId }: PropsType) => {
+export const OrderShipped = ({
+	activeDisplay,
+	index,
+	deliveryId,
+	orderId,
+}: PropsType) => {
 	const api = Api();
 	const [formData, setFormData] = useState<formDataType>({
 		carrier: '',
@@ -73,9 +80,9 @@ export const OrderShipped = ({ activeDisplay, index, deliveryId }: PropsType) =>
 		if (formData.file !== null) {
 			formDataSend.append('bill', formData.file);
 		}
-		//fetch
 		try {
 			await api.sellerOrder.orderDeliveryAddtracking(formDataSend);
+			await api.sellerOrder.changeStatus({ id: orderId, status: 'delivered' });
 		} catch (error) {
 			console.error('changeStatusPreShipment error:', error);
 		}

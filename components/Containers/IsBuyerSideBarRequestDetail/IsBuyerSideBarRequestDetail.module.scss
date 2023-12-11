@@ -5,7 +5,8 @@
 .sidebar {
 	transition: all 0.3s ease;
 	position: absolute;
-	top: -32px; // -padding
+	position: fixed;
+	top: 0px;
 	right: -32px; //-hadding
 	height: 0px;
 	width: 0px;
@@ -15,7 +16,6 @@
 
 	&_active {
 		width: 500px;
-		height: calc(100vh - 60px); //-header ;
 		opacity: 1;
 		z-index: 100;
 	}
@@ -25,7 +25,8 @@
 	}
 
 	&_wrapper {
-		height: 100%;
+		height: 100vh;
+		background-color: #fff;
 		position: relative;
 		padding: 14px 32px 0px;
 		display: flex;
@@ -85,7 +86,6 @@
 	}
 
 	.update {
-		position: sticky;
 		bottom: 0;
 		margin-top: auto;
 		padding: 16px;
