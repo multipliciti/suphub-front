@@ -105,7 +105,7 @@ export const FavoritesComponents = () => {
 			setTotalPages(5);
 			dispatch(setProducts(response.result));
 			dispatch(setTotal(response.total));
-			dispatch(setStatus('seccess'));
+			dispatch(setStatus('success'));
 		} catch (error) {
 			dispatch(setStatus('rejected'));
 		}

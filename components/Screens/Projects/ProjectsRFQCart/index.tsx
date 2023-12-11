@@ -1,18 +1,27 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+
 import { NoResult } from './NoResult';
 import { RFQCartFilters } from './RFQCartFilters';
 import { Products } from './Products';
 import { RfqItemGot } from '@/types/services/rfq';
 import { Api } from '@/services';
+import { IsBuyerSideBarRequestDetail } from '@/components/Containers/IsBuyerSideBarRequestDetail/IsBuyerSideBarRequestDetail';
 
 export const ProjectsRFQCart = () => {
+	const pathname = usePathname();
 	const api = Api();
 	const [stateInputs, setStateInputs] = useState({
 		search: '',
 		categories: [],
 		statuses: [],
 	});
+
+	//get projectId from url
+	const path = pathname;
+	const match = path.match(/\/projects\/(\d+)\/rfq/);
+	const projectId = match && match[1];
 
 	const [rfqsSorted, setRfqsSorted] = useState<RfqItemGot[][]>([]);
 
@@ -46,12 +55,6 @@ export const ProjectsRFQCart = () => {
 		...(objFetchSearch && { ...objFetchSearch }),
 		...(statusesFilterArr && { ...statusesFilterArr }),
 		...(categoriesFilterArr && { ...categoriesFilterArr }),
-		// ...(objFetchCategories.length > 0 && Object.assign({}, ...objFetchCategories)),
-	};
-
-	//Combining two objects into one request object
-	const combinedJsonObj = {
-		attr: finalAttrObj,
 	};
 
 	//Converting the combinedJsonObj to JSON for the request.
@@ -62,7 +65,7 @@ export const ProjectsRFQCart = () => {
 			const response = await api.rfq.getRfqByProject({
 				page: 1,
 				limit: 10,
-				projectId: 2,
+				projectId: Number(projectId),
 				searchParams: finalJsonString,
 			});
 			const data: RfqItemGot[] = await response.result;
@@ -91,16 +94,18 @@ export const ProjectsRFQCart = () => {
 		fetchData();
 	}, [stateInputs]);
 
-	// Вызываем fetchData для загрузки данных
-	useEffect(() => {
-		fetchData();
-	}, []);
-
 	{
 		return (
 			<div>
-				<RFQCartFilters stateInputs={stateInputs} setStateInputs={setStateInputs} />
-				{rfqsSorted.length < 1 ? <NoResult /> : <Products rfqs={rfqsSorted} />}
+				<IsBuyerSideBarRequestDetail>
+					<>
+						<RFQCartFilters
+							stateInputs={stateInputs}
+							setStateInputs={setStateInputs}
+						/>
+						{rfqsSorted.length < 1 ? <NoResult /> : <Products rfqs={rfqsSorted} />}
+					</>
+				</IsBuyerSideBarRequestDetail>
 			</div>
 		);
 	}

@@ -76,13 +76,15 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 								</label>
 							</td>
 							<td>
-								<span className={s.subtitle}>{property.productName}</span>
-								<p
-									onClick={() => dispatch(setRfqId(property.id))}
-									className={s.title}
-								>
-									{property.productName}
-								</p>
+								<div className={s.description}>
+									<span className={s.subtitle}>{property.productName}</span>
+									<p
+										onClick={() => dispatch(setRfqId(property.id))}
+										className={s.title}
+									>
+										{property.productName}
+									</p>
+								</div>
 							</td>
 							{/* chat */}
 							<td>

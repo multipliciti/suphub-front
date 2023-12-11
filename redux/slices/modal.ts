@@ -24,7 +24,8 @@ type ModalType =
 	| 'sellerAddNewProduct'
 	| 'sellerProductBulkUpload'
 	| 'sellerProductUploadImage'
-	| 'deleteProject';
+	| 'deleteProject'
+	| 'selectSamples';
 
 interface CounterState {
 	modal: ModalType;

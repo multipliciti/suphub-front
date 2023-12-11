@@ -95,14 +95,12 @@ export const Production = ({
 	};
 
 	const AddOrderProduction = async (data: orderProductionInterface) => {
-		console.log('Data before FormData:', data);
 		const formDataSend = new FormData();
 		for (let i = 0; i < data.images.length; i++) {
 			formDataSend.append('files', data.images[i]);
 		}
 		formDataSend.append('orderId', data.orderId.toString());
 		formDataSend.append('updates', data.updates);
-		console.log('FormData:', formDataSend);
 
 		try {
 			await api.sellerOrder.orderProduction(formDataSend);

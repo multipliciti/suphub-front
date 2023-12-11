@@ -12,13 +12,15 @@ import test2 from '@/imgs/Product/test2.png';
 import { Api } from '@/services';
 import { useEffect, useState } from 'react';
 import { setModal } from '@/redux/slices/modal';
+import { truncateFileNameEnd } from '@/utils/names';
 
 export const ProductItem = (props: ProductItemType) => {
 	const { push } = useRouter();
 	const user = useAppSelector((state) => state.authSlice.user);
 
 	const dispatch = useAppDispatch();
-	const { name, id, dynamic_attr, unitPrice, favorite } = props;
+	const { name, id, dynamic_attr, unitPrice, favorite, images } = props;
+
 	const [favoriteStar, setFavoriteStar] = useState<boolean>(false);
 
 	const certification = dynamic_attr.find((el: any) => el.label === 'Certification')
@@ -34,12 +36,7 @@ export const ProductItem = (props: ProductItemType) => {
 
 	const properties = [
 		['MOQ', props.moq ? `${props.moq} units` : '-'],
-		[
-			'Factory lead time',
-			props.leadTime
-				? `${props.leadTime} ${props.leadTime === 1 ? 'week' : 'weeks'} `
-				: '-',
-		],
+		['Lead time (weeks)', props.leadTime ? `${props.leadTime}` : '-'],
 		[
 			'Warranty',
 			props.warranty
@@ -116,14 +113,20 @@ export const ProductItem = (props: ProductItemType) => {
 						</svg>
 						<span className={s.add_text}>Add to project</span>
 					</button>
-					<Image className={s.img} src={test2} alt="img" width={244} height={212} />
+					<Image
+						className={s.img}
+						src={images[0].url ?? ''}
+						alt="img"
+						width={244}
+						height={212}
+					/>
 				</div>
 
 				<div className={s.description_wrapper}>
 					<h1 className={s.title}> {name} </h1>
 					<h2 className={s.price}>
 						<span className={s.price}>${unitPrice}</span>
-						<span className={s.price_format}>/ Unit</span>
+						<span className={s.price_format}>/Unit</span>
 					</h2>
 
 					{properties.map((el: any, ind: number) => {
@@ -137,7 +140,9 @@ export const ProductItem = (props: ProductItemType) => {
 									key={ind}
 								>
 									<span className={classNames(s.row_key, s.text)}>{el[0]}</span>
-									<span className={classNames(s.row_value, s.text)}>{el[1]}</span>
+									<span className={classNames(s.row_value, s.text)}>
+										{truncateFileNameEnd(el[1], 19)}
+									</span>
 								</p>
 							</div>
 						);

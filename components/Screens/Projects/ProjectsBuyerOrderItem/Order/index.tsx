@@ -12,7 +12,6 @@ interface TypeProps {
 }
 
 export const Order = ({ order }: TypeProps) => {
-	console.log('order', order);
 	return (
 		<div className={s.wrapper}>
 			<button className={s.btn_back}>

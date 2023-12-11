@@ -1,33 +1,42 @@
 'use client';
 import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useAppDispatch } from '@/redux/hooks';
+import { usePathname } from 'next/navigation';
 import s from './RequestManuallyRFQ.module.scss';
 import Image from 'next/image';
 import { setModal } from '@/redux/slices/modal';
-import { useAppDispatch } from '@/redux/hooks';
 import { validateFormData } from './validation';
 import { categoriesToSubCategories } from '@/utils/categoriesToSubCategories';
+import { classNames } from '@/utils/classNames';
 //imgs
 import upload_icon from '@/imgs/Buyer&Seller/upload_icon.svg';
-import { classNames } from '@/utils/classNames';
 import close_img from '@/imgs/close.svg';
 import add_img from '@/imgs/plus.svg';
 import arrow_icon from '@/imgs/arrow.svg';
 import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
+import close_icon from '@/imgs/close.svg';
 //types
 import { RfqItemFetch } from '@/types/services/rfq';
 //fetch
 import { Api } from '@/services';
+import { truncateFileName } from '@/utils/names';
 
 // Notes: need to finish adding image and file uploading and sending to the backend. Currently, the 'cover' property is hardcoded as a string before sending. Files are not sent at all. Attempting to send them will result in an error, as the backend is not ready, and there is no handling for them before sending.
 export const RequestManuallyRFQ = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
+	const pathname = usePathname();
+
+	//get projectId from url
+	const path = pathname;
+	const [, , projectId] = path.split('/');
+
 	const [formData, setFormData] = useState<RfqItemFetch>({
 		productName: '',
 		quantity: 0,
-		projectId: 2,
+		projectId,
+		files: [],
 	});
-
 	const [chooseCategory, setChooseCategory] = useState<boolean>(false);
 	const [category, setCategory] = useState<any[]>([]);
 	const subCategories = categoriesToSubCategories(category);
@@ -67,7 +76,6 @@ export const RequestManuallyRFQ = () => {
 	const handleValueFormData = (event: ChangeEvent<HTMLInputElement>) => {
 		const id = event.target.id;
 		const type = event.target.type;
-		console.log('type', type);
 		const value =
 			type === 'number' ? Number(event.target.value) : event.target.value;
 
@@ -110,13 +118,62 @@ export const RequestManuallyRFQ = () => {
 		});
 	};
 
+	//handleAddFiles
+	const handleAddFiles = (event: ChangeEvent<HTMLInputElement>) => {
+		const selectedFile = event.target.files && event.target.files[0];
+
+		setFormData((prevState) => {
+			if (selectedFile) {
+				return {
+					...prevState,
+					files: [...(prevState.files || []), selectedFile],
+				};
+			}
+
+			return prevState;
+		});
+	};
+
+	//handleRemoveFile
+	const handleRemoveFile = (id: number) => {
+		setFormData((prevState) => {
+			return {
+				...prevState,
+				files: prevState.files?.filter((el, ind) => id !== ind),
+			};
+		});
+	};
+
 	//submit
 	const submitData = async (data: RfqItemFetch) => {
 		try {
-			await api.rfq.createRfqItem(data);
+			const formDataSend = new FormData();
+			formDataSend.append('projectId', data.projectId);
+			formDataSend.append('size', String(data.size));
+			formDataSend.append('budget', String(data.budget));
+			formDataSend.append('subCategoryId', String(data.subCategoryId));
+			formDataSend.append('productName', data.productName);
+			if (data.files && data.files.length > 0) {
+				for (let i = 0; i < data.files.length; i++) {
+					formDataSend.append('documents', data.files[i]);
+				}
+			}
+
+			data.certifications &&
+				formDataSend.append('certifications', data.certifications.join(' '));
+			if (data.cover && data.cover.length > 0) {
+				for (let i = 0; i < data.cover.length; i++) {
+					formDataSend.append('images', data.cover[i]);
+				}
+			}
+			if (data.additionalComments) {
+				formDataSend.append('additionalComments', data.additionalComments);
+			}
+
+			await api.rfq.createRfqItem(formDataSend);
 			dispatch(setModal('submitedRFQ'));
 		} catch (error) {
-			console.error('error submitedRFQ', error);
+			console.error('error submit RFQ', error);
 		}
 	};
 
@@ -125,13 +182,14 @@ export const RequestManuallyRFQ = () => {
 			const category = await api.category.getCategories();
 			setCategory(category);
 		} catch (error) {
-			console.error('error submitedRFQ', error);
+			console.error('error submit get category RFQ', error);
 		}
 	};
 
 	useEffect(() => {
 		getCategory();
 	}, []);
+
 	return (
 		<div className={s.wrapper_layout}>
 			<div className={s.header_modal}>
@@ -146,7 +204,7 @@ export const RequestManuallyRFQ = () => {
 				</span>
 			</div>
 
-			<div className={s.form}>
+			<form className={s.form}>
 				<div className={s.inputs}>
 					<div className={s.input_wrapper}>
 						<p className={s.input_title}>
@@ -159,11 +217,9 @@ export const RequestManuallyRFQ = () => {
 						>
 							{formData.subCategoryId && (
 								<span className={s.subcategory_title}>
-									{
-										subCategories.filter(
-											(el) => el.categoryId === formData.subCategoryId
-										)[0].name
-									}
+									{subCategories.filter(
+										(el) => el.categoryId === formData.subCategoryId
+									)[0]?.name || 'Undefined'}
 								</span>
 							)}
 							{!formData.subCategoryId && (
@@ -326,6 +382,30 @@ export const RequestManuallyRFQ = () => {
 							})}
 						</div>
 					</div>
+
+					{/* if have files  */}
+					<div className="have_files_container">
+						{formData.files &&
+							formData.files.length > 0 &&
+							formData.files.map((el, ind) => {
+								return (
+									<div key={ind} className="have_files_item">
+										<p className="file_haves_title">
+											{truncateFileName(el.name, 40)}
+										</p>
+										<Image
+											onClick={() => handleRemoveFile(ind)}
+											className="file_have_close"
+											src={close_icon}
+											alt="close_icon"
+											width={15}
+											height={15}
+										/>
+									</div>
+								);
+							})}
+					</div>
+
 					{/* files */}
 					<div className={s.files}>
 						<p className={s.files_title}>Upload files</p>
@@ -344,6 +424,7 @@ export const RequestManuallyRFQ = () => {
 								className={s.files_input}
 								id="file"
 								type="file"
+								onChange={handleAddFiles}
 							/>
 							<p className={s.description}>
 								Drag your .csv file or <span className={s.browse}>browse</span> to
@@ -352,7 +433,7 @@ export const RequestManuallyRFQ = () => {
 						</label>
 					</div>
 				</div>
-			</div>
+			</form>
 			<div className={s.buttons}>
 				<button onClick={() => dispatch(setModal(''))} className={s.cancel}>
 					Cancel

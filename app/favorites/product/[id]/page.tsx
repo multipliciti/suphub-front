@@ -9,7 +9,7 @@ type PropsType = {
 export default function ProductPage({ params: { id } }: PropsType) {
 	return (
 		<div>
-			<ProductPageComponent backLink={'/favorites'} id={Number(id)} />
+			<ProductPageComponent id={Number(id)} />
 		</div>
 	);
 }

@@ -20,6 +20,7 @@ interface PropsType {
 	setRerenderProgress: (n: boolean) => void;
 	productionArr: ProductionItem[] | null;
 }
+
 export const Production = ({
 	activeDisplay,
 	index,

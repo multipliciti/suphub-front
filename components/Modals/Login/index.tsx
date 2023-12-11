@@ -64,7 +64,7 @@ export const Login: React.FC = () => {
 
 				if (user) {
 					dispatch(setUser(user));
-					dispatch(setStatusGetUser('seccess'));
+					dispatch(setStatusGetUser('success'));
 					dispatch(setModal(''));
 					if (searchParams.get('id') && searchParams.get('token')) {
 						push('/marketplace');

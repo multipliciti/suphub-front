@@ -10,7 +10,7 @@ import { setModal } from '@/redux/slices/modal';
 
 interface PropsType {
 	user: User | null;
-	statusGetUser: 'pending' | 'seccess' | 'rejected' | 'logouted';
+	statusGetUser: 'pending' | 'success' | 'rejected' | 'logouted';
 }
 
 export const Order = ({ user, statusGetUser }: PropsType) => {
@@ -80,14 +80,14 @@ export const Order = ({ user, statusGetUser }: PropsType) => {
 			</div>
 
 			<div className={s.order}>
-				<div className={s.header}>Order summary</div>
+				<div className={s.header}>Order Price</div>
 				<div className={s.price}>
 					{orderSummary.map((el, ind) => {
 						return (
 							<p key={ind} className={s.price_row}>
 								<span className={s.price_row_key}> {el[0]}</span>
 								<span className={s.price_row_value}>
-									{el[1]} <span className={s.unit}>/ unit</span>
+									${el[1]} <span className={s.unit}>/ unit</span>
 								</span>
 							</p>
 						);

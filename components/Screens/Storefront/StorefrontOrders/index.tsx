@@ -3,7 +3,6 @@ import { Filters } from './Filters';
 import { useEffect, useState } from 'react';
 import { ProjectsTable } from './ProjectsTable';
 import { PaginationWrapper } from './PaginationWrapper';
-import { StorefrontProductPagination } from '../StorefrontProducts/Table/Pagination';
 import { Api } from '@/services';
 import { Order } from '@/types/services/projects';
 
@@ -60,7 +59,6 @@ export const StorefrontOrders = () => {
 	const finalJsonString = JSON.stringify(finalAttrObj);
 
 	const getOrders = async () => {
-		console.log('start getOrders');
 		try {
 			const orders = await api.sellerProject.getSellerOrders({
 				page: currentPage,
@@ -89,7 +87,6 @@ export const StorefrontOrders = () => {
 					setActivePage={setCurrentPage}
 					totalPages={20}
 				/>
-				<StorefrontProductPagination />
 			</div>
 		);
 	}

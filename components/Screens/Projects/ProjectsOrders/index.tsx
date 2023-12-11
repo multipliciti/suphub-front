@@ -59,7 +59,6 @@ export const ProjectsOrders = () => {
 	const finalJsonString = JSON.stringify(finalAttrObj);
 
 	const getOrders = async () => {
-		console.log('start getOrders');
 		try {
 			const orders = await api.buyerProject.getBuyerOrders({
 				page: currentPage,

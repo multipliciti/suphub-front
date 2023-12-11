@@ -514,6 +514,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 6 && (
 							<OrderShipped
+								orderId={order.id}
 								deliveryId={
 									order.delivery && order.delivery.id ? order.delivery.id : null
 								}
