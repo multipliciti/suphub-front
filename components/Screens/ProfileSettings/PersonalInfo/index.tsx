@@ -9,9 +9,11 @@ import Image from 'next/image';
 import modal_password from '@/imgs/Modal/pasword.svg';
 import pencil from '@/imgs/ProfileSettings/pencil.svg';
 import { Api } from '@/services';
+import { useAppSelector } from '@/redux/hooks';
 
 const PersonalInfo = () => {
 	const dispatch = useAppDispatch();
+	const user = useAppSelector((state) => state.authSlice.user);
 
 	const api = Api();
 
@@ -27,20 +29,11 @@ const PersonalInfo = () => {
 		shouldUnregister: true,
 	});
 
-	const [userId, setUserId] = useState<number>(1);
-
 	useEffect(() => {
 		const fetch = async () => {
-			// TODO
-			// Unnecessary user request
-			// Needs to be refactored!
-
-			const response = await api.auth.getUser();
-			const { firstName, lastName, email, id } = response.data;
-			setValue('firstName', firstName || '');
-			setValue('lastName', lastName || '');
-			setValue('email', email || '');
-			setUserId(id);
+			setValue('firstName', user?.firstName || '');
+			setValue('lastName', user?.lastName || '');
+			setValue('email', user?.email || '');
 		};
 		fetch();
 	}, []);
@@ -51,8 +44,10 @@ const PersonalInfo = () => {
 		form['firstName'] = firstName;
 		form['lastName'] = lastName;
 		form['email'] = email;
-		const response = await api.user.update(userId, form);
-		if (response.status !== 200) return;
+		if (user?.id) {
+			const response = await api.user.update(user.id, form);
+			if (response.status !== 200) return;
+		}
 		window.location.reload();
 	};
 

@@ -30,7 +30,7 @@ export interface CreateProjectBody {
 	type: ProjectType;
 	budget: number;
 	floorArea: number;
-	address: {
+	address?: {
 		street: string;
 		city: string;
 		state: string;

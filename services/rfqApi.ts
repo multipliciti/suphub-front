@@ -2,8 +2,8 @@ import { AxiosInstance } from 'axios';
 import {
 	RfqFind,
 	RfqUpdateData,
-	RfqOption,
 	RfqItemFetch,
+	RfqEmptyItem,
 } from '@/types/services/rfq';
 
 export const RfqApi = (instance: AxiosInstance) => ({
@@ -46,6 +46,16 @@ export const RfqApi = (instance: AxiosInstance) => ({
 
 		const url = `/rfq/`;
 		const response = await instance.post(url, dataSend);
+		return response;
+	},
+	async createEmptyRfqItem(data: RfqEmptyItem) {
+		const formData = new FormData();
+		formData.append('projectId', data.projectId.toString());
+		formData.append('subCategoryId', data.subCategoryId.toString());
+		formData.append('productName', 'Empty Product');
+
+		const url = '/rfq/';
+		const response = await instance.post(url, formData);
 		return response;
 	},
 });

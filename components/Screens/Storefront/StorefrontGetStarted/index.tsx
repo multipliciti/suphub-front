@@ -6,10 +6,7 @@ import React, { useEffect, useState } from 'react';
 import shield_done from '@/imgs/Buyer&Seller/SellerVerification/shield-done.svg';
 import time_title_in_review_icon from '@/imgs/Buyer&Seller/SellerVerification/time-title-in-review.svg';
 import alert_icon from '@/imgs/Buyer&Seller/SellerVerification/alert-icon.svg';
-import time_in_review_icon from '@/imgs/Buyer&Seller/SellerVerification/time-in-review.svg';
 import check_done from '@/imgs/Buyer&Seller/SellerVerification/check-done.svg';
-import briefcase from '@/imgs/Buyer&Seller/SellerVerification/briefcase.svg';
-import dollarCircle from '@/imgs/Buyer&Seller/SellerVerification/dollar-circle.svg';
 import creditCardOutcome from '@/imgs/Buyer&Seller/SellerVerification/credit-card-outcome.svg';
 import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
@@ -111,9 +108,9 @@ export const StorefrontGetStarted = () => {
 					)}
 					{status === 'verified' && (
 						<>
-							<div className={s.main_title}>Congratulation</div>
+							<div className={s.main_title}>Congratulations!</div>
 							<div className={s.main_text}>
-								Your verification did pass our review.
+								You are now a verified business account.
 							</div>
 						</>
 					)}

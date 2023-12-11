@@ -1,8 +1,10 @@
 import { ImageType } from '@/types/products/image';
 
-interface Subscription {
+export type SubscriptionType = 'none' | 'trial' | 'full';
+
+export interface Subscription {
 	id: number;
-	type: string;
+	type: SubscriptionType;
 	trialCountProduct: null | number;
 	stripeSubscriptionId: null | string;
 	paid: boolean;

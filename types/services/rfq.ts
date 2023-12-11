@@ -29,6 +29,10 @@ export interface RfqItemFetch {
 	additionalComments?: string;
 	cover?: File[];
 }
+export interface RfqEmptyItem {
+	projectId: number;
+	subCategoryId: number;
+}
 
 export interface RfqItemGot {
 	id: number;

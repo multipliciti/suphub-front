@@ -231,7 +231,6 @@ export const DepositSetUp = () => {
 						</p>
 					)}
 					<div className={s.separator} />
-
 					{selectedCountry === 'United States' ? (
 						<div className={s.content_group}>
 							<div className={s.content_input_group}>
