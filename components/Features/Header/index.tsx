@@ -1,18 +1,20 @@
 'use client';
-import Image from 'next/image';
-import '@/styles/globals.scss';
-import s from './Header.module.scss';
-import { setModal } from '@/redux/slices/modal';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import modal_logo from '@/imgs/Modal/Modal_logo.svg';
-import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
-import { setStatusGetUser, setUser } from '@/redux/slices/auth';
-import { resetStorefrontState } from '@/redux/slices/storefront/storefront';
-import { classNames } from '@/utils/classNames';
-import { useClickOutside } from '@/components/Hooks/useClickOutside';
-import { Api } from '@/services';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setStatusGetUser, setUser } from '@/redux/slices/auth';
+import { useClickOutside } from '@/components/Hooks/useClickOutside';
+import { classNames } from '@/utils/classNames';
+import { resetState } from '@/redux/reducers';
+import { setModal } from '@/redux/slices/modal';
+import { Api } from '@/services';
+
+import s from './Header.module.scss';
+import '@/styles/globals.scss';
+
 //imgs
 import Arrow from '@/imgs/Header/menu/Arrow.svg';
 import Calendar from '@/imgs/Header/menu/Calendar.svg';
@@ -23,6 +25,7 @@ import LogOut from '@/imgs/Header/LogOut.svg';
 import star_img from '@/imgs/Header/Star.svg';
 import notifacation_img from '@/imgs/Header/Notification.svg';
 import avatartest from '@/imgs/Header/AvatarsTest.svg';
+import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 
 interface Button {
 	id: number;
@@ -120,14 +123,15 @@ export const Header = () => {
 
 	const fetchLogOut = async () => {
 		try {
-			const response = await api.auth.logout();
-			if (response) {
-				setLogoSrc(avatartest);
-				dispatch(setUser(null));
-				dispatch(setStatusGetUser('logouted'));
-				dispatch(resetStorefrontState());
-				router.push('/');
-			}
+			await api.auth.logout();
+
+			setLogoSrc(avatartest);
+
+			dispatch(setUser(null));
+			dispatch(resetState());
+			dispatch(setStatusGetUser('logouted'));
+
+			router.push('/');
 		} catch (error) {}
 	};
 
