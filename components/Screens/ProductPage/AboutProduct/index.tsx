@@ -56,13 +56,13 @@ export const AboutProduct = ({ product }: PropsType) => {
 				<div className={s.product_images}>
 					<Image
 						className={s.product_images_img}
-						src={images[activeImg].url ?? ''}
+						src={images[activeImg]?.url ?? ''}
 						alt="product"
 						width={420}
 						height={420}
 					/>
 					<div className={s.product_images_chose}>
-						{images.map((el, ind) => {
+						{images?.map((el, ind) => {
 							return (
 								<Image
 									onClick={() => setActiveImg(ind)}

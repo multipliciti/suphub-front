@@ -11,6 +11,7 @@ import { classNames } from '@/utils/classNames';
 import { resetState } from '@/redux/reducers';
 import { setModal } from '@/redux/slices/modal';
 import { Api } from '@/services';
+import { buttonsSeller, buttonsBuyer, regularUser, logOutUser } from './Buttons';
 
 import s from './Header.module.scss';
 import '@/styles/globals.scss';
@@ -72,32 +73,6 @@ export const Header = () => {
 			img: Calendar,
 			title: 'Book a call',
 			href: '/404',
-		},
-	];
-
-	const buttonsSeller: Button[] = [
-		{
-			id: 1,
-			label: 'Marketplace',
-			href: '/marketplace',
-		},
-		{
-			id: 2,
-			label: 'My Storefront',
-			href: '/storefront/get-started',
-		},
-	];
-
-	const buttonsBuyer: Button[] = [
-		{
-			id: 1,
-			label: 'Marketplace',
-			href: '/marketplace',
-		},
-		{
-			id: 2,
-			label: 'Projects',
-			href: '/projects',
 		},
 	];
 

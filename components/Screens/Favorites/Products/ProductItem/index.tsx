@@ -14,7 +14,7 @@ import { Api } from '@/services';
 export const ProductItem = (props: ProductItemType) => {
 	const { push } = useRouter();
 	const [favoriteStar, setFavoriteStar] = useState<boolean>(true);
-	const { name, id, unitPrice, dynamic_attr, favorite } = props;
+	const { name, id, unitPrice, dynamic_attr, favorite, images } = props;
 
 	const certification = dynamic_attr.find((el: any) => el.label === 'Certification')
 		?.value;
@@ -76,7 +76,13 @@ export const ProductItem = (props: ProductItemType) => {
 							height={20}
 						/>
 					</div>
-					<Image className={s.img} src={test2} alt="img" width={244} height={212} />
+					<Image
+						className={s.img}
+						src={images[0]?.url ?? ''}
+						alt="img"
+						width={244}
+						height={212}
+					/>
 					<button className={s.add}>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
