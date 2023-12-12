@@ -130,7 +130,7 @@ export const FavoritesComponents = () => {
 				<Pagination
 					setActivePage={setActivePageFunction}
 					buttons={true}
-					totalPages={totalPages}
+					totalPages={4}
 					currentPage={activePage}
 				/>
 			</div>

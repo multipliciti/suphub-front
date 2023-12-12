@@ -1,16 +1,18 @@
 'use client';
 import s from './Products.module.scss';
 import { useAppSelector } from '@/redux/hooks';
+import Image from 'next/image';
+import { useRef, useState } from 'react';
+
 import { useAppDispatch } from '@/redux/hooks';
 import { ProductItem } from './ProductItem';
 import { ProductItemType } from '@/types/products/product';
 import { NoResults } from '../NoResults';
-import { useState } from 'react';
 import { classNames } from '@/utils/classNames';
-import Image from 'next/image';
+import { setSortDirection } from '@/redux/slices/favorites/productsFilter';
+import { useClickOutside } from '@/components/Hooks/useClickOutside';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
 import close_img from '@/imgs/Marketplace/ProductFilter/close.svg';
-import { setSortDirection } from '@/redux/slices/favorites/productsFilter';
 
 interface ProductsPropsType {
 	products: ProductItemType[] | undefined;
@@ -23,8 +25,13 @@ export const Products = ({ products, status, filtersEmpty }: ProductsPropsType) 
 	const activeTitle = useAppSelector(
 		(state) => state.favoritesProductFilter.activeTitle
 	);
+	const sortRef = useRef(null);
 	const [sctiveSort, setActiveSort] = useState<number>(-1);
 	const [showSort, setShowSort] = useState<boolean>(false);
+
+	useClickOutside(sortRef, () => {
+		setShowSort(false);
+	});
 
 	const arrSort = [
 		{
@@ -81,7 +88,7 @@ export const Products = ({ products, status, filtersEmpty }: ProductsPropsType) 
 						width={20}
 						height={20}
 					/>
-					<div className={s.sort_wrapper}>
+					<div ref={sortRef} className={s.sort_wrapper}>
 						{showSort &&
 							arrSort.map((el, ind) => {
 								return (

@@ -1,5 +1,7 @@
 'use client';
 import s from './Products.module.scss';
+import Image from 'next/image';
+import { useRef } from 'react';
 import { useAppSelector } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { useState } from 'react';
@@ -7,9 +9,9 @@ import { ProductItem } from './ProductItem';
 import { ProductItemType } from '@/types/products/product';
 import { useAppDispatch } from '@/redux/hooks';
 import { setSortDirection } from '@/redux/slices/marketplace/productsFilter';
+import { useClickOutside } from '@/components/Hooks/useClickOutside';
 //imgs
 import { NoResults } from '../NoResults';
-import Image from 'next/image';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
 import close_img from '@/imgs/Marketplace/ProductFilter/close.svg';
 
@@ -27,8 +29,13 @@ export const Products = (props: ProductsPropsType) => {
 	const activeTitle = useAppSelector(
 		(state) => state.marketplaceProductFilter.activeTitle
 	);
+	const sortRef = useRef(null);
 	const [sctiveSort, setActiveSort] = useState<number>(-1);
 	const [showSort, setShowSort] = useState<boolean>(false);
+
+	useClickOutside(sortRef, () => {
+		setShowSort(false);
+	});
 
 	const arrSort = [
 		{
@@ -85,7 +92,7 @@ export const Products = (props: ProductsPropsType) => {
 						width={20}
 						height={20}
 					/>
-					<div className={s.sort_wrapper}>
+					<div ref={sortRef} className={s.sort_wrapper}>
 						{showSort &&
 							arrSort.map((el, ind) => {
 								return (

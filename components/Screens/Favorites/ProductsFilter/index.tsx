@@ -1,11 +1,13 @@
 'use client';
+import Image from 'next/image';
+import { useRef } from 'react';
+import { useAppSelector, useAppDispatch } from '@/redux/hooks';
+
+import debounce from 'lodash.debounce';
 import s from './ProductsFilter.module.scss';
 import search_img from '@/imgs/Marketplace/search.svg';
-import Image from 'next/image';
-import { useAppSelector, useAppDispatch } from '@/redux/hooks';
-import { FilterWrapper } from './FilterWrapper';
-import debounce from 'lodash.debounce';
 import { searchProducts } from '@/redux/slices/favorites/productsFilter';
+import { FilterWrapper } from './FilterWrapper';
 
 export const ProductsFilter = () => {
 	const dispatch = useAppDispatch();

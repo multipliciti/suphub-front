@@ -7,59 +7,43 @@
 	margin-bottom: 34px;
 
 	.btn {
-		max-height: 40px;
 		display: flex;
-		align-items: center;
-		padding: 10px 16px 10px 10px;
-		justify-content: center;
-		align-items: center;
 		gap: 6px;
-
+		background-color: transparent;
+		align-items: center;
+		padding: 10px 16px;
 		border-radius: 8px;
 		border: 1px solid #cbd5e1;
-		background: transparent;
 
-		opacity: 0;
-		pointer-events: none;
+		color: #334155;
+		font-variant-numeric: lining-nums proportional-nums;
 
-		&_text {
-			margin-top: -4px;
-			display: flex;
-			align-items: center;
-			color: #334155;
-
-			font-size: 14px;
-			font-style: normal;
-			font-weight: 700;
-			line-height: 1px;
-		}
-
-		&_active {
-			pointer-events: all;
-			opacity: 1;
+		&_disable {
+			pointer-events: none;
 		}
 	}
 
 	.pagination {
 		display: flex;
 		align-items: center;
+		gap: 2px;
 
-		.page {
+		.step {
+			cursor: pointer;
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			padding: 10px;
+			border-radius: 8px;
+			min-width: 40px;
+			min-height: 40px;
 
 			color: #64748b;
 			text-align: center;
+			font-variant-numeric: lining-nums proportional-nums;
 
-			font-size: 14px;
-			font-style: normal;
-			font-weight: 600;
-			line-height: 20px;
-			min-width: 40px;
-			border-radius: 8px;
-			cursor: pointer;
-
-			&_active {
-				background-color: #f1f5f9;
+			&_current {
+				background: #f1f5f9;
 				color: #0f172a;
 			}
 		}

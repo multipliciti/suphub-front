@@ -2,19 +2,21 @@
 import s from './FilterWrapper.module.scss';
 import Image from 'next/image';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+
 import {
 	updateMinProducts,
 	updateMaxproducts,
 	updateSelectedItemsProsuct,
 } from '@/redux/slices/favorites/productsFilter';
+import { classNames } from '@/utils/classNames';
+import { ProductFilterItem } from '@/types/products/productFilters';
+import debounce from 'lodash.debounce';
+
 //img
 import close_img from '@/imgs/Marketplace/ProductFilter/close.svg';
 import open_img from '@/imgs/Marketplace/ProductFilter/open.svg';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
-import { classNames } from '@/utils/classNames';
-import { ProductFilterItem } from '@/types/products/productFilters';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import debounce from 'lodash.debounce';
 
 interface TypeProps {
 	item: ProductFilterItem;
@@ -24,6 +26,7 @@ export const FilterWrapper = (props: TypeProps) => {
 	const dispatch = useAppDispatch();
 	const { title, items, type, key, min, max } = props.item;
 	const [open, setOpen] = useState<boolean>(false);
+	const filterWrapperRef = useRef<HTMLDivElement | null>(null);
 	const minInputRef = useRef<HTMLInputElement | null>(null);
 	const maxInputRef = useRef<HTMLInputElement | null>(null);
 	const startResetInputsValue = useAppSelector(

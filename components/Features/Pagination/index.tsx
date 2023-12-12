@@ -19,51 +19,10 @@ export const Pagination = ({
 	buttons,
 	setActivePage,
 }: PropsType) => {
-	const pageNumbersRender = (): number[] => {
-		// Determine the maximum number of displayed pages and the number of pages around the current page
-		const maxDisplayedPages = 5;
-		const pagesAroundCurrent = Math.floor((maxDisplayedPages - 1) / 2);
-
-		// Calculate the starting page, taking into account the number of pages around the current page
-		let startPage = Math.max(1, currentPage - pagesAroundCurrent);
-
-		// Calculate the ending page, considering the maximum number of displayed pages
-		let endPage = Math.min(totalPages, startPage + maxDisplayedPages - 1);
-
-		// If the ending page reaches the total number of pages, shift the starting page backward
-		if (endPage === totalPages) {
-			startPage = Math.max(1, totalPages - maxDisplayedPages + 1);
-		}
-
-		// Create an array of displayed pages from the starting page to the ending page
-		let renderedPages: number[] = Array.from(
-			// Calculate the number of displayed buttons
-			{ length: endPage - startPage },
-			(_, index) => startPage + index
-		);
-
-		// If the starting page is greater than 2, add "1" and "..." before the first displayed page
-		if (startPage > 2) {
-			renderedPages = [1, -1, ...renderedPages.slice(1)];
-		}
-		// If the starting page is 2, add "1" before the first displayed page
-		else if (startPage === 2) {
-			renderedPages = [1, ...renderedPages];
-		}
-
-		return renderedPages;
-	};
-
 	return (
 		<div className={s.wrapper}>
-			<button
-				onClick={() => {
-					if (currentPage !== 1) {
-						setActivePage(currentPage - 1);
-					}
-				}}
-				className={classNames(s.btn, buttons && s.btn_active)}
-			>
+			{/* prev btn  */}
+			<button onClick={() => setActivePage(currentPage - 1)} className={s.btn}>
 				<Image
 					className={s.img}
 					src={arrow_left}
@@ -71,38 +30,35 @@ export const Pagination = ({
 					width={20}
 					height={20}
 				/>
-				<span className={s.btn_text}>prev</span>
+				<span className={s.btn_text}>Back</span>
 			</button>
+			{/* pagination */}
 
 			<div className={s.pagination}>
-				{pageNumbersRender().map((pageNumber) => (
-					<span
-						key={pageNumber}
-						onClick={() => setActivePage(pageNumber)}
-						className={classNames(
-							s.page,
-							pageNumber === currentPage && s.page_active
-						)}
-					>
-						{pageNumber === -1 ? '...' : pageNumber}
-					</span>
-				))}
-				{currentPage > 1 && <span className={s.page}>...</span>}
-				<span className={s.page} onClick={() => setActivePage(totalPages)}>
-					{totalPages}
-				</span>
+				{currentPage !== 1 && (
+					<>
+						<span onClick={() => setActivePage(1)} className={s.step}>
+							1
+						</span>
+						<span className={s.page}>...</span>
+					</>
+				)}
+				<span className={classNames(s.step, s.step_current)}>{currentPage}</span>
+				{totalPages !== currentPage && (
+					<>
+						<span className={s.page}>...</span>
+						<span onClick={() => setActivePage(totalPages)} className={s.step}>
+							{totalPages}
+						</span>
+					</>
+				)}
 			</div>
-
+			{/* next btn  */}
 			<button
-				onClick={() => {
-					if (currentPage !== totalPages) {
-						setActivePage(currentPage + 1);
-					}
-				}}
-				className={classNames(s.btn, buttons && s.btn_active)}
+				onClick={() => setActivePage(currentPage + 1)}
+				className={classNames(s.btn, currentPage === totalPages && s.btn_disable)}
 			>
-				<span className={s.btn_text}>next</span>
-
+				<span className={s.btn_text}>Next</span>
 				<Image
 					className={s.img}
 					src={arrow_rigth}
