@@ -62,7 +62,7 @@ export const StorefrontSidebar = () => {
 
 							<div className={s.rating}>
 								<span className={s.rating_number}>
-									{sellerCompany?.statistics?.feedbacks.value?.toFixed(1) || 0}
+									{sellerCompany.statistics.feedbacks.value?.toFixed(1) || 0}
 								</span>
 								<Image
 									className={s.rating_star}
