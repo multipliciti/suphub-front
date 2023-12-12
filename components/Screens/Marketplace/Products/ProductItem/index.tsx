@@ -115,7 +115,7 @@ export const ProductItem = (props: ProductItemType) => {
 					</button>
 					<Image
 						className={s.img}
-						src={images[0].url ?? ''}
+						src={images[0]?.url ?? ''}
 						alt="img"
 						width={244}
 						height={212}
