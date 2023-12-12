@@ -7,12 +7,10 @@ import { setModal } from '@/redux/slices/modal';
 import { Api } from '@/services';
 import Image from 'next/image';
 import s from './PreShipmentInspection.module.scss';
-import { Delivery } from '@/types/services/Orders';
 import pdf_upload_icon from '@/imgs/Buyer&Seller/pdf_upload.svg';
 import plus_icon from '@/imgs/Buyer&Seller/plus.svg';
 import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
 import done_icon from '@/imgs/Buyer&Seller/done.svg';
-import { Done } from '../Done';
 
 interface PropsType {
 	activeDisplay: number[];

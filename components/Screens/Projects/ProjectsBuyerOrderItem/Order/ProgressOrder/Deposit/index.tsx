@@ -1,11 +1,12 @@
 'use client';
 import s from './Deposit.module.scss';
 import { classNames } from '@/utils/classNames';
-// import { OrderPaymentInterface } from '@/types/services/Orders';
+import { formatDateString } from '@/utils/formatDateString';
 import { Api } from '@/services';
 import { useRouter } from 'next/navigation';
 
 interface PropsType {
+	date: string;
 	activeDisplay: number[];
 	index: number;
 	price: number;
@@ -15,7 +16,13 @@ interface PropsType {
 	setRerenderProgress: (b: boolean) => void;
 }
 
-export const Deposit = ({ activeDisplay, index, orderId, price }: PropsType) => {
+export const Deposit = ({
+	activeDisplay,
+	index,
+	orderId,
+	price,
+	date,
+}: PropsType) => {
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 	const api = Api();
 	const priceInner = Math.floor(price / 4);
@@ -46,7 +53,7 @@ export const Deposit = ({ activeDisplay, index, orderId, price }: PropsType) => 
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div
