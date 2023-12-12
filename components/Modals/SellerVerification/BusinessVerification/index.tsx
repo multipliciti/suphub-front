@@ -366,8 +366,10 @@ export const BusinessVerification = () => {
 								id={'companyDetails'}
 								checked={true}
 							/>
-							<div className={s.radio_image}>
-								<Image src={check_icon} alt={'Check icon'} />
+							<div className={s.radio_image_wrapper}>
+								<div className={s.radio_image}>
+									<Image src={check_icon} alt={'Check icon'} />
+								</div>
 							</div>
 						</div>
 						<div className={s.content_product_certifications_group}>
@@ -389,8 +391,10 @@ export const BusinessVerification = () => {
 								checked={isBusinessCertificationChecked}
 							/>
 							{isBusinessCertificationChecked && (
-								<div className={s.radio_image}>
-									<Image src={check_icon} alt={'Check icon'} />
+								<div className={s.radio_image_wrapper}>
+									<div className={s.radio_image}>
+										<Image src={check_icon} alt={'Check icon'} />
+									</div>
 								</div>
 							)}
 						</div>
@@ -459,8 +463,10 @@ export const BusinessVerification = () => {
 								checked={isFactoryCertificationChecked}
 							/>
 							{isFactoryCertificationChecked && (
-								<div className={s.radio_image}>
-									<Image src={check_icon} alt={'Check icon'} />
+								<div className={s.radio_image_wrapper}>
+									<div className={s.radio_image}>
+										<Image src={check_icon} alt={'Check icon'} />
+									</div>
 								</div>
 							)}
 						</div>
@@ -526,8 +532,10 @@ export const BusinessVerification = () => {
 								checked={isProductCertificationsChecked}
 							/>
 							{isProductCertificationsChecked && (
-								<div className={s.radio_image}>
-									<Image src={check_icon} alt={'Check icon'} />
+								<div className={s.radio_image_wrapper}>
+									<div className={s.radio_image}>
+										<Image src={check_icon} alt={'Check icon'} />
+									</div>
 								</div>
 							)}
 						</div>
