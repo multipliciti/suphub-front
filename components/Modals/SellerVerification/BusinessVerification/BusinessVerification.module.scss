@@ -83,7 +83,6 @@
     display: flex;
     padding: 2px 0;
     align-items: flex-start;
-    gap: 10px;
   }
 
   &_element:hover {
@@ -102,6 +101,11 @@
     border-radius: 10px;
     padding: 3px;
     cursor: default;
+    transform: translateX(-20px);
+
+    &_wrapper {
+      position: relative;
+    }
   }
 
   &_btn {
@@ -131,7 +135,7 @@
   align-items: flex-start;
   gap: 16px;
   align-self: stretch;
-  max-height:70vh;
+  max-height: 70vh;
   overflow-y: auto;
 
   &_file_upload_group {
@@ -354,7 +358,7 @@
         background: #2B1694;
 
         &:disabled {
-          opacity:25%;
+          opacity: 25%;
         }
 
       }
