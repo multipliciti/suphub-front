@@ -105,8 +105,8 @@ export const ProductItem = (props: ProductItemType) => {
 							fill="none"
 						>
 							<path
-								fill-rule="evenodd"
-								clip-rule="evenodd"
+								fillRule="evenodd"
+								clipRule="evenodd"
 								d="M10.75 4.25C11.1642 4.25 11.5 4.58579 11.5 5V9.25H15.75C16.1642 9.25 16.5 9.58579 16.5 10C16.5 10.4142 16.1642 10.75 15.75 10.75H11.5V15C11.5 15.4142 11.1642 15.75 10.75 15.75C10.3358 15.75 10 15.4142 10 15V10.75H5.75C5.33579 10.75 5 10.4142 5 10C5 9.58579 5.33579 9.25 5.75 9.25H10V5C10 4.58579 10.3358 4.25 10.75 4.25Z"
 								fill="white"
 							/>

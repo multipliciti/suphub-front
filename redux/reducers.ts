@@ -43,7 +43,10 @@ const combinedReducer = combineReducers({
 
 export const resetState = createAction('state/reset');
 
-export const rootReducer: Reducer = (state, action) => {
+export const rootReducer: Reducer<ReturnType<typeof combinedReducer>> = (
+	state,
+	action
+) => {
 	if (action.type === 'state/reset') {
 		state = undefined;
 	}
