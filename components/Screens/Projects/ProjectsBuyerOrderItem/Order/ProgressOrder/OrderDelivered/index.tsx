@@ -3,8 +3,10 @@ import { classNames } from '@/utils/classNames';
 import s from './OrderDelivered.module.scss';
 import { Api } from '@/services';
 import { useState } from 'react';
+import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
+	date: string;
 	orderId: number;
 	activeDisplay: number[];
 	index: number;
@@ -13,6 +15,7 @@ interface PropsType {
 }
 
 export const OrderDelivered = ({
+	date,
 	orderId,
 	activeDisplay,
 	index,
@@ -40,7 +43,7 @@ export const OrderDelivered = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>In transit</p>
+				<p>kfkkfkf</p>
 			</div>
 
 			<div

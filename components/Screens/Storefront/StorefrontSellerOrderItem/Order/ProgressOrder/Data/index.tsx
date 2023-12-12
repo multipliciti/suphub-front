@@ -1,6 +1,11 @@
 'use client';
 import s from './Data.module.scss';
+import { formatDateString } from '@/utils/formatDateString';
 
-export const Data = () => {
-	return <div className={s.wrapper}>01/05/2023</div>;
+type TypeProps = {
+	date: string;
+};
+
+export const Data = ({ date }: TypeProps) => {
+	return <div className={s.wrapper}>{formatDateString(date)}</div>;
 };

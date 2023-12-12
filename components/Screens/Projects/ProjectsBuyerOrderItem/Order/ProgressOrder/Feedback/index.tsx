@@ -9,6 +9,7 @@ import { Api } from '@/services';
 import { FeedbackInterface } from '@/types/services/Orders';
 
 interface PropsType {
+	date: string;
 	orderId: number;
 	activeDisplay: number[];
 	index: number;
@@ -22,6 +23,7 @@ interface forDataTupe {
 }
 
 export const Feedback = ({
+	date,
 	activeDisplay,
 	index,
 	orderId,

@@ -162,7 +162,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 								<span>Order confirmed</span>
 							</span>
 						</div>
-						<Data />
+						<Data date={order.createdAt} />
 					</div>
 				</div>
 			</div>
@@ -228,6 +228,12 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 2 && (
 							<Deposit
+								date={
+									activeStep === 2
+										? order.updatedAt
+										: order.payments.find((el) => el.type === 'deposit')
+												?.createdAt ?? ''
+								}
 								status={order.status}
 								index={2}
 								activeDisplay={activeDisplay}
@@ -298,6 +304,15 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 3 && (
 							<Production
+								date={
+									order.production && order.production.length > 0
+										? order.production[order.production.length - 1].createdAt
+										: order.payments.find((el) => el.type === 'deposit')
+												?.updatedAt ?? ''
+								}
+								productionStartedDate={
+									order.payments.find((el) => el.type === 'deposit')?.createdAt ?? ''
+								}
 								productionArr={order.production ? order.production : null}
 								orderId={order.id}
 								rerenderProgress={rerenderProgress}
@@ -371,6 +386,12 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 4 && (
 							<PreShipmentInspection
+								///need refactoring?
+								date={
+									order.delivery?.createdAt ??
+									order.payments.find((el) => el.type === 'delivery')?.updatedAt ??
+									''
+								}
 								activeStep={activeStep}
 								orderId={order.id}
 								rerenderProgress={rerenderProgress}
@@ -444,6 +465,16 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 5 && (
 							<PaymentDue
+								//need refactoring?
+								date={
+									activeStep === 5
+										? order.payments.find((el) => el.type === 'delivery')
+												?.updatedAt ?? ''
+										: activeStep > 5
+										  ? order.payments.find((el) => el.type === 'remaining')
+													?.updatedAt ?? ''
+										  : ''
+								}
 								activeStep={activeStep}
 								index={5}
 								activeDisplay={activeDisplay}
@@ -514,6 +545,19 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 6 && (
 							<OrderShipped
+								//refactorind (not have date)!
+								date={
+									activeStep === 6
+										? order.payments.find((el) => el.type === 'remaining')
+												?.updatedAt ?? ''
+										: activeStep > 6
+										  ? order.delivery?.updatedAt ?? ''
+										  : ''
+								}
+								preparingForShipmentDate={
+									order.payments.find((el) => el.type === 'remaining')?.updatedAt ??
+									''
+								}
 								orderId={order.id}
 								deliveryId={
 									order.delivery && order.delivery.id ? order.delivery.id : null

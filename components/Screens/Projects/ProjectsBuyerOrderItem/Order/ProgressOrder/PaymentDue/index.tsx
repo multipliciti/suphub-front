@@ -3,8 +3,10 @@ import s from './PaymentDue.module.scss';
 import { classNames } from '@/utils/classNames';
 import { useRouter } from 'next/navigation';
 import { Api } from '@/services';
+import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
+	date: string;
 	activeDisplay: number[];
 	index: number;
 	orderId: number;
@@ -13,6 +15,7 @@ interface PropsType {
 }
 
 export const PaymentDue = ({
+	date,
 	activeDisplay,
 	index,
 	orderId,
@@ -46,7 +49,7 @@ export const PaymentDue = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div

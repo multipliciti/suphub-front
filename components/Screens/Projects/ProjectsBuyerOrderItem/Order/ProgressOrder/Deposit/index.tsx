@@ -1,9 +1,10 @@
 'use client';
+import { useRouter } from 'next/navigation';
+
 import s from './Deposit.module.scss';
 import { classNames } from '@/utils/classNames';
 import { formatDateString } from '@/utils/formatDateString';
 import { Api } from '@/services';
-import { useRouter } from 'next/navigation';
 
 interface PropsType {
 	date: string;
@@ -20,6 +21,7 @@ export const Deposit = ({
 	activeDisplay,
 	index,
 	orderId,
+	status,
 	price,
 	date,
 }: PropsType) => {
@@ -62,10 +64,16 @@ export const Deposit = ({
 					activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
-				<p className={s.title}>To start production pay Deposit</p>
-				<button onClick={() => fetchOrderPay()} className={s.btn}>
-					Pay ${priceInner} now
-				</button>
+				{status === 'confirmed' ? (
+					<>
+						<p className={s.title}>To start production pay Deposit</p>
+						<button onClick={() => fetchOrderPay()} className={s.btn}>
+							Pay ${priceInner} now
+						</button>
+					</>
+				) : (
+					<p className={s.paid}>Paid</p>
+				)}
 			</div>
 		</>
 	);

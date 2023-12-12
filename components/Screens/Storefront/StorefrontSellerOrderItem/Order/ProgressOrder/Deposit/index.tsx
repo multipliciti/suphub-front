@@ -3,12 +3,13 @@ import s from './Deposit.module.scss';
 import { classNames } from '@/utils/classNames';
 
 interface PropsType {
+	date: string;
 	activeDisplay: number[];
 	index: number;
 	status: string;
 }
 
-export const Deposit = ({ activeDisplay, index, status }: PropsType) => {
+export const Deposit = ({ activeDisplay, index, status, date }: PropsType) => {
 	return (
 		<>
 			<div

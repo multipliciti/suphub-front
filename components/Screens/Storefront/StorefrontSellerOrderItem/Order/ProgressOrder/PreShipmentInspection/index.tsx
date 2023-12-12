@@ -1,11 +1,13 @@
 'use client';
+import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
+
 import { classNames } from '@/utils/classNames';
 import { useAppDispatch } from '@/redux/hooks';
 import { setPhotoShow } from '@/redux/slices/Order/order';
 import { setModal } from '@/redux/slices/modal';
 import { Api } from '@/services';
-import Image from 'next/image';
+import { formatDateString } from '@/utils/formatDateString';
 import s from './PreShipmentInspection.module.scss';
 import pdf_upload_icon from '@/imgs/Buyer&Seller/pdf_upload.svg';
 import plus_icon from '@/imgs/Buyer&Seller/plus.svg';
@@ -13,6 +15,7 @@ import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
 import done_icon from '@/imgs/Buyer&Seller/done.svg';
 
 interface PropsType {
+	date: string;
 	activeDisplay: number[];
 	orderId: number;
 	index: number;
@@ -29,6 +32,7 @@ interface formDataType {
 }
 
 export const PreShipmentInspection = ({
+	date,
 	activeDisplay,
 	index,
 	orderId,
@@ -120,7 +124,7 @@ export const PreShipmentInspection = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div
@@ -131,7 +135,7 @@ export const PreShipmentInspection = ({
 			>
 				{activeStep < 5 && (
 					<>
-						<span className={s.data}>01/05/2023</span>
+						<span className={s.data}>{formatDateString(date)}</span>
 						<form className={s.form}>
 							{/* choice type */}
 							<div className={s.form_chapter}>

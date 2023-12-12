@@ -1,16 +1,18 @@
 'use client';
-import { ChangeEvent, useEffect, useState } from 'react';
+import Image from 'next/image';
+import { ChangeEvent, useState } from 'react';
+
 import { classNames } from '@/utils/classNames';
 import s from './OrderShipped.module.scss';
-import Image from 'next/image';
-import { Delivery } from '@/types/services/Orders';
 import { Api } from '@/services';
 import { truncateFileName } from '@/utils/names';
 import pdf_upload_2 from '@/imgs/Buyer&Seller/pdf_upload_2.svg';
 import close_icon from '@/imgs/close.svg';
-import order from '@/redux/slices/Order/order';
+import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
+	date: string;
+	preparingForShipmentDate: string;
 	activeDisplay: number[];
 	index: number;
 	deliveryId: number | null;
@@ -24,6 +26,8 @@ interface formDataType {
 }
 
 export const OrderShipped = ({
+	date,
+	preparingForShipmentDate,
 	activeDisplay,
 	index,
 	deliveryId,
@@ -96,7 +100,7 @@ export const OrderShipped = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div
@@ -106,7 +110,9 @@ export const OrderShipped = ({
 				)}
 			>
 				<div className={s.info}>
-					<span className={s.info_data}>01/05/2023</span>
+					<span className={s.info_data}>
+						{formatDateString(preparingForShipmentDate)}
+					</span>
 					<span className={s.info_title}>Preparing for shipment</span>
 				</div>
 

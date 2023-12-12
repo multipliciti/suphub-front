@@ -5,11 +5,14 @@ import { classNames } from '@/utils/classNames';
 import { setPhotoShow } from '@/redux/slices/Order/order';
 import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Api } from '@/services';
-import { ProductionItem, orderProductionInterface } from '@/types/services/Orders';
+import { ProductionItem } from '@/types/services/Orders';
 import { formatDateString } from '@/utils/formatDateString';
+
 interface PropsType {
+	date: string;
+	productionStartedDate: string;
 	activeDisplay: number[];
 	activeStep: number;
 	index: number;
@@ -22,6 +25,8 @@ interface PropsType {
 }
 
 export const Production = ({
+	date,
+	productionStartedDate,
 	activeDisplay,
 	index,
 	status,
@@ -69,7 +74,7 @@ export const Production = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div
@@ -79,7 +84,9 @@ export const Production = ({
 				)}
 			>
 				<div className={s.block}>
-					<span className={s.block_data}>01/05/2023</span>
+					<span className={s.block_data}>
+						{formatDateString(productionStartedDate)}
+					</span>
 					<span className={s.block_title}>Production started</span>
 				</div>
 				{productionArr?.map((el, ind) => {

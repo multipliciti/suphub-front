@@ -1,20 +1,23 @@
 'use client';
 import s from './Production.module.scss';
+import Image from 'next/image';
 import { ChangeEvent, useState } from 'react';
+
 import { classNames } from '@/utils/classNames';
 import { useAppDispatch } from '@/redux/hooks';
 import { setPhotoShow } from '@/redux/slices/Order/order';
 import { setModal } from '@/redux/slices/modal';
-import { useEffect } from 'react';
 import { Api } from '@/services';
 import { formatDateString } from '@/utils/formatDateString';
 import { orderProductionInterface } from '@/types/services/Orders';
 import { ProductionItem } from '@/types/services/Orders';
-import Image from 'next/image';
+
 import plus_icon from '@/imgs/Buyer&Seller/plus.svg';
 import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
 
 interface PropsType {
+	date: string;
+	productionStartedDate: string;
 	activeDisplay: number[];
 	orderId: number;
 	index: number;
@@ -24,6 +27,8 @@ interface PropsType {
 }
 
 export const Production = ({
+	date,
+	productionStartedDate,
 	activeDisplay,
 	index,
 	rerenderProgress,
@@ -117,7 +122,7 @@ export const Production = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 			<div
 				className={classNames(
@@ -127,7 +132,7 @@ export const Production = ({
 			>
 				<div className={s.form}>
 					<div className={s.form_block}>
-						<span className={s.data}>01/05/2023</span>
+						<span className={s.data}>{formatDateString(productionStartedDate)}</span>
 						<span className={s.title}>Production started</span>
 					</div>
 					{productionArr?.map((el: ProductionItem, ind: number) => {

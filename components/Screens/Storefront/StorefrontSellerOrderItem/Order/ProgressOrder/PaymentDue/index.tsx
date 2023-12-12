@@ -1,14 +1,21 @@
 'use client';
 import s from './PaymentDue.module.scss';
 import { classNames } from '@/utils/classNames';
+import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
+	date: string;
 	activeDisplay: number[];
 	activeStep: number;
 	index: number;
 }
 
-export const PaymentDue = ({ activeDisplay, index, activeStep }: PropsType) => {
+export const PaymentDue = ({
+	activeDisplay,
+	index,
+	activeStep,
+	date,
+}: PropsType) => {
 	return (
 		<>
 			<div
@@ -17,7 +24,7 @@ export const PaymentDue = ({ activeDisplay, index, activeStep }: PropsType) => {
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div

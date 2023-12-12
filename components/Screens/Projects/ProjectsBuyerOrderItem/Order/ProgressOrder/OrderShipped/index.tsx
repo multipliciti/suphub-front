@@ -2,14 +2,23 @@
 import { classNames } from '@/utils/classNames';
 import { Delivery } from '@/types/services/Orders';
 import s from './OrderShipped.module.scss';
+import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
+	date: string;
+	preparingForShipmentDate: string;
 	activeDisplay: number[];
 	index: number;
 	delivery: Delivery | null;
 }
 
-export const OrderShipped = ({ activeDisplay, index, delivery }: PropsType) => {
+export const OrderShipped = ({
+	date,
+	preparingForShipmentDate,
+	activeDisplay,
+	index,
+	delivery,
+}: PropsType) => {
 	return (
 		<>
 			<div
@@ -18,7 +27,7 @@ export const OrderShipped = ({ activeDisplay, index, delivery }: PropsType) => {
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div
@@ -29,13 +38,15 @@ export const OrderShipped = ({ activeDisplay, index, delivery }: PropsType) => {
 			>
 				<div className={s.wrapper_inner}>
 					<div className={s.info}>
-						<span className={s.info_data}>01/05/2023</span>
+						<span className={s.info_data}>
+							{formatDateString(preparingForShipmentDate)}
+						</span>
 						<p className={s.info_title}>Preparing for shipment</p>
 					</div>
 					{/* //   */}
 					{delivery && (
 						<div className={s.info}>
-							<span className={s.info_data}>01/05/2023</span>
+							<span className={s.info_data}>{formatDateString(date)}</span>
 							<p className={s.info_title}>
 								Order has shipped. Carrier: <span>Ocean Freight.</span> Tracking
 								number

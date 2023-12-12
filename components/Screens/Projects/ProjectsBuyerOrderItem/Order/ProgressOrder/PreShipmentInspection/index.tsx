@@ -9,8 +9,10 @@ import Image from 'next/image';
 import s from './PreShipmentInspection.module.scss';
 import { Delivery } from '@/types/services/Orders';
 import { Api } from '@/services';
+import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
+	date: string;
 	delivery: Delivery | null;
 	orderId: number;
 	activeDisplay: number[];
@@ -19,6 +21,7 @@ interface PropsType {
 }
 
 export const PreShipmentInspection = ({
+	date,
 	activeDisplay,
 	activeStep,
 	index,
@@ -60,7 +63,7 @@ export const PreShipmentInspection = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div
@@ -69,7 +72,7 @@ export const PreShipmentInspection = ({
 					activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
-				<span className={s.data}>01/05/2023</span>
+				<span className={s.data}>{formatDateString(date)}</span>
 				{delivery && (
 					<form className={s.form}>
 						{/* choice type */}
