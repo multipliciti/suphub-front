@@ -159,7 +159,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 								<span>Order confirmed</span>
 							</span>
 						</div>
-						<Data />
+						<Data date={order.createdAt} />
 					</div>
 				</div>
 			</div>
@@ -225,6 +225,12 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 2 && (
 							<Deposit
+								date={
+									activeStep === 2
+										? order.updatedAt
+										: order.payments.find((el) => el.type === 'deposit')
+												?.createdAt ?? ''
+								}
 								status={order.status}
 								rerenderProgress={rerenderProgress}
 								setRerenderProgress={setRerenderProgress}

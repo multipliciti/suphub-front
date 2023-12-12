@@ -22,7 +22,7 @@ export const MapList = () => {
 	const [categoriesFilter, setCategoriesFilter] = useState<CategoryItem[]>();
 
 	useEffect(() => {
-		const categoriesFilterInner = categories.filter((category: CategoryItem) => {
+		const categoriesFilterInner = categories.filter((category) => {
 			const searchLower = searchQuery.toLowerCase();
 			const categoryNameLower = category.name.toLowerCase();
 

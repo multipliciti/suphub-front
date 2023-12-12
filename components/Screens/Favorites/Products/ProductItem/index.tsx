@@ -38,7 +38,6 @@ export const ProductItem = (props: ProductItemType) => {
 		['Frame Material', frameMatireal ? `${frameMatireal}` : '-'],
 		['Glazing Type', glassType ? `${glassType}` : '-'],
 	];
-	console.log('props', props);
 
 	useEffect(() => {
 		setFavoriteStar(favorite);

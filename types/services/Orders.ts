@@ -58,6 +58,16 @@ export interface FeedbackInterface {
 	message?: string;
 }
 
+export interface Payment {
+	id: number;
+	sum: number;
+	type: string;
+	stripeInvoiceid: null;
+	orderId: number;
+	updatedAt: string;
+	createdAt: string;
+}
+
 export interface OrderInterface {
 	id: number;
 	status: string;
@@ -67,11 +77,15 @@ export interface OrderInterface {
 	PO: string;
 	buyerCompanyId: number;
 	sellerCompanyId: number;
-	estDate: string;
+
 	production?: ProductionItem[];
 	delivery?: Delivery;
 	sellerFeedback: FeedbackInterface | null;
 	buyerFeedback: FeedbackInterface | null;
+	payments: Payment[];
+	estDate: string;
+	updatedAt: string;
+	createdAt: string;
 }
 
 export interface OrderCreateBody {
