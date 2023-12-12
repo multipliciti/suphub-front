@@ -70,7 +70,7 @@ const BuyerCompanyInfo = () => {
 			setPreviewLogo(logo ? logo.url : null);
 		};
 		fetch();
-	}, []);
+	}, [buyerCompany]);
 
 	const onSubmit: SubmitHandler<any> = async (data) => {
 		setSubmitClicked(true);

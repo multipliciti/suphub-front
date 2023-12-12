@@ -288,7 +288,7 @@ const SellerCompanyInfo = () => {
 			setPreviewLogo(logo ? logo.url : null);
 		};
 		fetch();
-	}, []);
+	}, [sellerCompany]);
 
 	const onSubmit: SubmitHandler<any> = async (data) => {
 		setSubmitClicked(true);
