@@ -1,9 +1,15 @@
 'use client';
-import s from './InvoiceChatComponent.module.scss';
+import s from './InvoiceComponent.module.scss';
 import { Invoice } from './Invoice';
 import { useState } from 'react';
 import { classNames } from '@/utils/classNames';
-export const InvoiceChatComponent = () => {
+import { Element } from '@/types/services/orders';
+
+type TypeProps = {
+	data: Element[] | null;
+};
+
+export const InvoiceComponent = ({ data }: TypeProps) => {
 	const [activeDisplay, setActiveDisplay] = useState<number>(1);
 	return (
 		<div className={s.wrapper}>
@@ -21,7 +27,7 @@ export const InvoiceChatComponent = () => {
 					Chat
 				</span>
 			</div>
-			{activeDisplay === 1 && <Invoice />}
+			{activeDisplay === 1 && <Invoice data={data || null} />}
 		</div>
 	);
 };

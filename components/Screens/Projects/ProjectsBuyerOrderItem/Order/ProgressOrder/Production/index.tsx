@@ -7,7 +7,7 @@ import { setModal } from '@/redux/slices/modal';
 import { useAppDispatch } from '@/redux/hooks';
 import { useState } from 'react';
 import { Api } from '@/services';
-import { ProductionItem } from '@/types/services/Orders';
+import { ProductionItem } from '@/types/services/orders';
 import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {

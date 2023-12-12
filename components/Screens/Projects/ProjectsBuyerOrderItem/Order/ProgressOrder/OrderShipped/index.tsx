@@ -1,6 +1,6 @@
 'use client';
 import { classNames } from '@/utils/classNames';
-import { Delivery } from '@/types/services/Orders';
+import { Delivery } from '@/types/services/orders';
 import s from './OrderShipped.module.scss';
 import { formatDateString } from '@/utils/formatDateString';
 

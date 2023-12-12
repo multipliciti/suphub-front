@@ -7,7 +7,7 @@ import { classNames } from '@/utils/classNames';
 import { setModal } from '@/redux/slices/modal';
 import Image from 'next/image';
 import s from './PreShipmentInspection.module.scss';
-import { Delivery } from '@/types/services/Orders';
+import { Delivery } from '@/types/services/orders';
 import { Api } from '@/services';
 import { formatDateString } from '@/utils/formatDateString';
 

@@ -5,7 +5,7 @@ import { Info } from './Info';
 import Image from 'next/image';
 import back_btn from '@/imgs/Buyer&Seller/back_btn.svg';
 import { ProgressOrder } from './ProgressOrder';
-import { OrderInterface } from '@/types/services/Orders';
+import { OrderInterface } from '@/types/services/orders';
 
 interface TypeProps {
 	order: OrderInterface;

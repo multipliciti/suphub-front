@@ -1,10 +1,10 @@
 'use client';
 import { useEffect, useState } from 'react';
 import s from './StorefrontSellerOrderItem.module.scss';
-import { InvoiceChatComponent } from './InvoiceChatComponent';
+import { InvoiceComponent } from './InvoiceComponent';
 import { Order } from './Order';
 import { Api } from '@/services';
-import { OrderInterface } from '@/types/services/Orders';
+import { OrderInterface } from '@/types/services/orders';
 
 interface TypeProps {
 	id: number;
@@ -33,7 +33,7 @@ export const StorefrontSellerOrderItem = ({ id }: TypeProps) => {
 			{order && (
 				<>
 					<Order order={order} />
-					<InvoiceChatComponent />
+					<InvoiceComponent data={order.elements || null} />
 				</>
 			)}
 		</div>

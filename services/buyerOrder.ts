@@ -1,6 +1,6 @@
-import { OrderPayInterface } from '@/types/services/Orders';
+import { OrderPayInterface } from '@/types/services/orders';
 import { AxiosInstance } from 'axios';
-import { OrderInterface } from '@/types/services/Orders';
+import { OrderInterface } from '@/types/services/orders';
 
 export const buyerOrderAPI = (instance: AxiosInstance) => ({
 	async getOrderById(id: number) {

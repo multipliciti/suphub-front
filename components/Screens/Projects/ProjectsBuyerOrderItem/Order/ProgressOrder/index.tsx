@@ -11,7 +11,7 @@ import { PaymentDue } from './PaymentDue';
 import { OrderDelivered } from './OrderDelivered';
 import { OrderShipped } from './OrderShipped';
 import { Feedback } from './Feedback';
-import { OrderInterface } from '@/types/services/Orders';
+import { OrderInterface } from '@/types/services/orders';
 import done_icon from '@/imgs/Buyer&Seller/done.svg';
 import show_details_icon from '@/imgs/Buyer&Seller/showDetails.svg';
 
@@ -228,7 +228,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 								date={
 									activeStep === 2
 										? order.updatedAt
-										: order.payments.find((el) => el.type === 'deposit')
+										: order.payments?.find((el) => el.type === 'deposit')
 												?.createdAt ?? ''
 								}
 								status={order.status}
@@ -310,11 +310,12 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 								date={
 									order.production && order.production.length > 0
 										? order.production[order.production.length - 1].createdAt
-										: order.payments.find((el) => el.type === 'deposit')
+										: order.payments?.find((el) => el.type === 'deposit')
 												?.updatedAt ?? ''
 								}
 								productionStartedDate={
-									order.payments.find((el) => el.type === 'deposit')?.createdAt ?? ''
+									order.payments?.find((el) => el.type === 'deposit')?.createdAt ??
+									''
 								}
 								productionArr={order.production ? order.production : null}
 								status={order.status}
@@ -395,7 +396,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 								///need refactoring?
 								date={
 									order.delivery?.createdAt ??
-									order.payments.find((el) => el.type === 'delivery')?.updatedAt ??
+									order.payments?.find((el) => el.type === 'delivery')?.updatedAt ??
 									''
 								}
 								activeStep={activeStep}
@@ -472,10 +473,10 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 								//need refactoring?
 								date={
 									activeStep === 5
-										? order.payments.find((el) => el.type === 'delivery')
+										? order.payments?.find((el) => el.type === 'delivery')
 												?.updatedAt ?? ''
 										: activeStep > 5
-										  ? order.payments.find((el) => el.type === 'remaining')
+										  ? order.payments?.find((el) => el.type === 'remaining')
 													?.updatedAt ?? ''
 										  : ''
 								}
@@ -556,14 +557,14 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 								//refactorind (not have date)!
 								date={
 									activeStep === 6
-										? order.payments.find((el) => el.type === 'remaining')
+										? order.payments?.find((el) => el.type === 'remaining')
 												?.updatedAt ?? ''
 										: activeStep > 6
 										  ? order.delivery?.updatedAt ?? ''
 										  : ''
 								}
 								preparingForShipmentDate={
-									order.payments.find((el) => el.type === 'remaining')?.updatedAt ??
+									order.payments?.find((el) => el.type === 'remaining')?.updatedAt ??
 									''
 								}
 								delivery={order.delivery ?? null}

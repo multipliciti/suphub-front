@@ -9,8 +9,8 @@ import { setPhotoShow } from '@/redux/slices/Order/order';
 import { setModal } from '@/redux/slices/modal';
 import { Api } from '@/services';
 import { formatDateString } from '@/utils/formatDateString';
-import { orderProductionInterface } from '@/types/services/Orders';
-import { ProductionItem } from '@/types/services/Orders';
+import { OrderProductionInterface } from '@/types/services/orders';
+import { ProductionItem } from '@/types/services/orders';
 
 import plus_icon from '@/imgs/Buyer&Seller/plus.svg';
 import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
@@ -41,7 +41,7 @@ export const Production = ({
 	const [testShow, setTestShow] = useState<boolean>(false);
 	const [complete, setComplete] = useState<boolean>(false);
 	const [newMessage, setNewMessage] = useState<boolean>(false);
-	const [formData, setFormData] = useState<orderProductionInterface | null>({
+	const [formData, setFormData] = useState<OrderProductionInterface | null>({
 		images: [],
 		orderId,
 		updates: '',
@@ -99,7 +99,7 @@ export const Production = ({
 		}
 	};
 
-	const AddOrderProduction = async (data: orderProductionInterface) => {
+	const AddOrderProduction = async (data: OrderProductionInterface) => {
 		const formDataSend = new FormData();
 		for (let i = 0; i < data.images.length; i++) {
 			formDataSend.append('files', data.images[i]);

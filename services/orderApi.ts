@@ -1,7 +1,7 @@
 import { AxiosInstance } from 'axios';
 
 import { PaginationResponse } from '@/types/pagination';
-import { OrderCreateBody } from '@/types/services/Orders';
+import { OrderCreateBody } from '@/types/services/orders';
 import { OrderSeller } from '@/types/products/order';
 
 export const OrderApi = (instance: AxiosInstance) => ({

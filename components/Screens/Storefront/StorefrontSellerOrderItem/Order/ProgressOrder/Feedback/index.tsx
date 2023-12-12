@@ -3,7 +3,7 @@ import s from './Feedback.module.scss';
 import { ChangeEvent, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { classNames } from '@/utils/classNames';
-import { FeedbackInterface } from '@/types/services/Orders';
+import { FeedbackInterface } from '@/types/services/orders';
 import { Api } from '@/services';
 import star_rate from '@/imgs/Buyer&Seller/star_rate.svg';
 import star_rate_active from '@/imgs/Buyer&Seller/star_rate_active.svg';

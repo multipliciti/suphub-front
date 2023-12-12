@@ -47,7 +47,7 @@ export interface OrderPayInterface {
 	cancelUrl: string;
 }
 
-export interface orderProductionInterface {
+export interface OrderProductionInterface {
 	updates: string;
 	images: File[];
 	orderId: number;
@@ -58,11 +58,22 @@ export interface FeedbackInterface {
 	message?: string;
 }
 
-export interface Payment {
+interface Payment {
 	id: number;
 	sum: number;
 	type: string;
 	stripeInvoiceid: null;
+	orderId: number;
+	updatedAt: string;
+	createdAt: string;
+}
+
+export interface Element {
+	id: number;
+	quantity: number;
+	price: number;
+	model: string;
+	modelId: number | null;
 	orderId: number;
 	updatedAt: string;
 	createdAt: string;
@@ -77,12 +88,12 @@ export interface OrderInterface {
 	PO: string;
 	buyerCompanyId: number;
 	sellerCompanyId: number;
-
+	elements?: Element[];
 	production?: ProductionItem[];
 	delivery?: Delivery;
 	sellerFeedback: FeedbackInterface | null;
 	buyerFeedback: FeedbackInterface | null;
-	payments: Payment[];
+	payments?: Payment[];
 	estDate: string;
 	updatedAt: string;
 	createdAt: string;
