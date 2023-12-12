@@ -1,22 +1,23 @@
-ARG NODE_VERSION=18
-FROM node:${NODE_VERSION}-alpine as Build
+ARG NODE_VERSION=20
+FROM node:${NODE_VERSION}-alpine as base
 
 ARG USERID=1000
 ARG USERNAME=node
 
-RUN apk add --no-cache bash shadow && \
+RUN apk add --no-cache bash shadow nano htop && \
     usermod -u ${USERID} ${USERNAME} && \
-    groupmod -g ${USERID} ${USERNAME}
+    groupmod -g ${USERID} ${USERNAME} && \
+    apk cache clean && \
+    rm -rf /var/cache/apk/*
 
 RUN echo 'export PS1="\e[0;35m\e[0;37m\u-container-\h\e[0;32m\w\e[0;0m$ "'>> /etc/profile.d/settings-terminal.sh
 
+FROM base as builder
+
+ARG USERNAME=node
 
 WORKDIR /app
 COPY --chown=${USERNAME}:${USERNAME} . /app
-RUN chown -Rf ${USERNAME}:${USERNAME} /app
-#RUN ln -s ./Screens ./components/Screens
-
-USER ${USERNAME}
 
 #Enviroment variables
 ARG NEXT_PUBLIC_BASE_URL=http://api.localhost:8080
@@ -26,7 +27,23 @@ ENV NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL}
 ARG NODE_ENV=development
 ENV NODE_ENV=${NODE_ENV}
 
-RUN if [[ ! -z "${NODE_ENV}" ]] && [[ ${NODE_ENV} != development ]]; then npm i --save-dev @types/lodash.debounce && npm install && npm run build; fi
+RUN npm install 
+RUN npm run build
+RUN chown -Rf ${USERNAME}:${USERNAME} /app
+
+
+FROM base as production
+
+ARG USERNAME=node
+
+WORKDIR /app
+
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=${USERNAME}:${USERNAME} /app/.next/standalone ./
+COPY --from=builder --chown=${USERNAME}:${USERNAME} /app/.next/static ./.next/static
+
+
+USER ${USERNAME}
 
 EXPOSE 3000
-ENTRYPOINT ["bash", "-c", "if [[ ! -z ${NODE_ENV} ]] && [[ ${NODE_ENV} != development ]]; then npm run start; else npm install; npm run dev; fi"]
+CMD ["node", "server.js"]
