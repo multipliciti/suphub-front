@@ -14,6 +14,8 @@ RUN echo 'export PS1="\e[0;35m\e[0;37m\u-container-\h\e[0;32m\w\e[0;0m$ "'>> /et
 
 FROM base as builder
 
+ARG USERNAME=node
+
 WORKDIR /app
 COPY --chown=${USERNAME}:${USERNAME} . /app
 
@@ -31,6 +33,8 @@ RUN chown -Rf ${USERNAME}:${USERNAME} /app
 
 
 FROM base as production
+
+ARG USERNAME=node
 
 WORKDIR /app
 
