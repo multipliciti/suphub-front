@@ -44,55 +44,26 @@
   gap: 8px;
 }
 
-.image_upload {
-  width: 48px;
-  height: 48px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border: 1px dotted #94A3B8;
-  border-radius: 8px;
-  background-color: #F8FAFC;
-
-  cursor: pointer;
-}
-
-.button {
+.controllers {
   margin-top: 28px;
+
   display: flex;
   align-items: center;
-  justify-content: right;
+  justify-content: flex-end;
   gap: 12px;
 
   > button {
-    border: none;
-    outline: none;
-
+    font-size: 16px;
     line-height: 20px;
   }
 
-  &_cancel {
-    width: 80px;
-    height: 40px;
-
+  .btn_cancel {
     color: #0F172A;
-    background-color: transparent;
+    padding: 8px 12px;
   }
 
-  &_save {
-    padding: 8px 16px;
-    height: 36px;
-
-    background-color: #2B1694;
-    border-radius: 8px;
-    color: #ffffff;
-
-    &:disabled {
-      color: #94A3B8;
-      background-color: #E2E8F0;
-      opacity: 1;
-    }
+  .btn_publish {
+    background-color: #DE7A05;
+    border: 1px solid #DE7A05;
   }
 }

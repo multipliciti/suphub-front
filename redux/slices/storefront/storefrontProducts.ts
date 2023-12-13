@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { FindSellerProductsParams } from '@/types/services/sellerProduct';
 import { PaginationResponse } from '@/types/pagination';
 import { ProductItemType } from '@/types/products/product';
+import { ImageType } from '@/types/products/image';
 
 interface CounterState {
 	params: FindSellerProductsParams;
@@ -37,7 +38,7 @@ const initialState: CounterState = {
 	result: [],
 };
 
-const storefrontCategoriesSlice = createSlice({
+const storefrontProductsSlice = createSlice({
 	name: 'storefrontProducts',
 	initialState,
 	reducers: {
@@ -49,6 +50,20 @@ const storefrontCategoriesSlice = createSlice({
 				label: data.pagination,
 			};
 			state.result = data.result;
+		},
+		setImagesForProductItem(
+			state,
+			action: PayloadAction<{ productId: number; images: ImageType[] }>
+		) {
+			const { productId, images } = action.payload;
+
+			const productIndex = state.result.findIndex((item) => item.id === productId);
+
+			if (productIndex === -1) {
+				return;
+			}
+
+			state.result[productIndex].images = images;
 		},
 		setStatus(state, action: PayloadAction<CounterState['status']>) {
 			state.status = action.payload;
@@ -75,10 +90,11 @@ const storefrontCategoriesSlice = createSlice({
 
 export const {
 	setResult,
+	setImagesForProductItem,
 	setStatus,
 	setPage,
 	setSearchFilter,
 	setSubcategoryFilter,
-} = storefrontCategoriesSlice.actions;
+} = storefrontProductsSlice.actions;
 
-export default storefrontCategoriesSlice.reducer;
+export default storefrontProductsSlice.reducer;

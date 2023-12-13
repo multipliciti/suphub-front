@@ -1,10 +1,12 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Image from 'next/image';
 
-import { setProductIdForUploadImages } from '@/redux/slices/storefront/storefront';
+import { StorefrontProductImageUploadModal } from '@/components/Screens/Storefront/StorefrontLayout/StorefrontImageUploadModal';
+import { setImagesForProductItem } from '@/redux/slices/storefront/storefrontProducts';
 import { ProductItemType } from '@/types/products/product';
 import { useAppDispatch } from '@/redux/hooks';
-import { setModal } from '@/redux/slices/modal';
+import { ModalPortal } from '@/components/Features/ModalPortal';
+import { ImageType } from '@/types/products/image';
 
 import s from './ImageUploader.module.scss';
 
@@ -21,9 +23,10 @@ export const StorefrontProductImageUploader: FC<Props> = ({
 }) => {
 	const dispatch = useAppDispatch();
 
-	const showModalForUploadImages = () => {
-		dispatch(setProductIdForUploadImages(productId));
-		dispatch(setModal('sellerProductUploadImage'));
+	const [isShowModal, setIsShowModal] = useState(false);
+
+	const handleSetImages = async (images: ImageType[]) => {
+		dispatch(setImagesForProductItem({ productId, images }));
 	};
 
 	return (
@@ -37,10 +40,18 @@ export const StorefrontProductImageUploader: FC<Props> = ({
 					style={{ borderRadius: 8 }}
 				/>
 			) : (
-				<div className={s.add_image} onClick={showModalForUploadImages}>
+				<div className={s.add_image} onClick={() => setIsShowModal(true)}>
 					<Image src={plusImage} alt={'Upload image'} />
 				</div>
 			)}
+
+			<ModalPortal isOpen={isShowModal} onHide={() => setIsShowModal(false)}>
+				<StorefrontProductImageUploadModal
+					onHide={() => setIsShowModal(false)}
+					productId={productId}
+					setImages={handleSetImages}
+				/>
+			</ModalPortal>
 		</div>
 	);
 };

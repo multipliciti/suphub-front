@@ -21,7 +21,6 @@ import { DepositSetUp } from '@/components/Modals/SellerVerification/DepositSetU
 import { MembershipFee } from '@/components/Modals/SellerVerification/MembershipFee';
 import { SellerAddNewProduct } from './StorefrontAddProduct/AddNewProduct';
 import { SellerProductBulkUpload } from './StorefrontAddProduct/BulkUpload';
-import { SellerProductUploadImage } from './StorefrontAddProduct/UploadImage';
 import { DeleteProject } from '@/components/Modals/Projects/DeleteProject';
 import { WarningTrialCanBeUsedOnce } from '@/components/Modals/WarningTrialCanBeUsedOnce';
 import { SelectSamples } from './SelectSamples/SelectSamples';
@@ -194,15 +193,6 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'sellerProductBulkUpload' && <SellerProductBulkUpload />}
-			</div>
-
-			<div
-				className={classNames(
-					s.wrapper,
-					modal === 'sellerProductUploadImage' && s.wrapper_active
-				)}
-			>
-				{modal === 'sellerProductUploadImage' && <SellerProductUploadImage />}
 			</div>
 
 			<div
