@@ -28,16 +28,10 @@ import notifacation_img from '@/imgs/Header/Notification.svg';
 import avatartest from '@/imgs/Header/AvatarsTest.svg';
 import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 
-interface Button {
-	id: number;
-	label: string;
-	href: string;
-}
-
 export const Header = () => {
 	const api = Api();
 	const dispatch = useAppDispatch();
-	const user = useAppSelector((state) => state.authSlice.user);
+	const user = useAppSelector((state) => state.authSlice.user) || null;
 	const sellerCompany = useAppSelector((state) => state.authSlice.sellerCompany);
 	const buyerCompany = useAppSelector((state) => state.authSlice.buyerCompany);
 	const menuRef = useRef<HTMLDivElement | null>(null);
@@ -48,6 +42,8 @@ export const Header = () => {
 	useClickOutside(menuRef, () => {
 		setMenu(false);
 	});
+	console.log('user', !user);
+	console.log('');
 
 	const menuItems = [
 		{
@@ -121,6 +117,7 @@ export const Header = () => {
 					<div className={s.menu}>
 						<Image src={modal_logo} alt="modal_logo" width={32} height={35} />
 
+						{/* seller nav  */}
 						{user.role === 'seller' && (
 							<div className={s.buttons}>
 								{buttonsSeller.map((button, index) => (
@@ -149,10 +146,70 @@ export const Header = () => {
 								))}
 							</div>
 						)}
-
+						{/* buyer nav  */}
 						{user.role === 'buyer' && (
 							<div className={s.buttons}>
 								{buttonsBuyer.map((button, index) => (
+									<div
+										key={index}
+										className={classNames(
+											s.menu_btn,
+											activeLink === button.id && s.menu_btn_active
+										)}
+									>
+										<Link
+											onClick={(e) => {
+												e.stopPropagation();
+												setActiveLink(button.id);
+											}}
+											href={button.href}
+											className={classNames(
+												s.menu_btn,
+												activeLink === button.id && s.menu_btn_active
+											)}
+											key={button.id}
+										>
+											{button.label}
+										</Link>
+									</div>
+								))}
+							</div>
+						)}
+
+						{/* regular user nav  */}
+						{user && user.role !== 'buyer' && user.role !== 'seller' && (
+							<div className={s.buttons}>
+								{regularUser.map((button, index) => (
+									<div
+										key={index}
+										className={classNames(
+											s.menu_btn,
+											activeLink === button.id && s.menu_btn_active
+										)}
+									>
+										<Link
+											onClick={(e) => {
+												e.stopPropagation();
+												setActiveLink(button.id);
+											}}
+											href={button.href}
+											className={classNames(
+												s.menu_btn,
+												activeLink === button.id && s.menu_btn_active
+											)}
+											key={button.id}
+										>
+											{button.label}
+										</Link>
+									</div>
+								))}
+							</div>
+						)}
+
+						{/* logout user nav  */}
+						{!user && (
+							<div className={s.buttons}>
+								{logOutUser.map((button, index) => (
 									<div
 										key={index}
 										className={classNames(

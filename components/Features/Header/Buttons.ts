@@ -15,6 +15,11 @@ export const buttonsSeller: Button[] = [
 		label: 'My Storefront',
 		href: '/storefront/get-started',
 	},
+	{
+		id: 3,
+		label: 'Support',
+		href: '/support',
+	},
 ];
 
 export const buttonsBuyer: Button[] = [
@@ -28,6 +33,11 @@ export const buttonsBuyer: Button[] = [
 		label: 'Projects',
 		href: '/projects',
 	},
+	{
+		id: 3,
+		label: 'Support',
+		href: '/support',
+	},
 ];
 
 export const regularUser: Button[] = [
@@ -38,8 +48,8 @@ export const regularUser: Button[] = [
 	},
 	{
 		id: 2,
-		label: 'Projects',
-		href: '/projects',
+		label: 'Support',
+		href: '/support',
 	},
 ];
 
@@ -51,7 +61,7 @@ export const logOutUser: Button[] = [
 	},
 	{
 		id: 2,
-		label: 'Projects',
-		href: '/projects',
+		label: 'Support',
+		href: '/support',
 	},
 ];

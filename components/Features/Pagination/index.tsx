@@ -22,7 +22,10 @@ export const Pagination = ({
 	return (
 		<div className={s.wrapper}>
 			{/* prev btn  */}
-			<button onClick={() => setActivePage(currentPage - 1)} className={s.btn}>
+			<button
+				className={classNames(s.btn, currentPage === 1 && s.btn_disable)}
+				onClick={() => setActivePage(currentPage - 1)}
+			>
 				<Image
 					className={s.img}
 					src={arrow_left}

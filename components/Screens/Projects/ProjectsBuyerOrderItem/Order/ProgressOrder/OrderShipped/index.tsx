@@ -38,9 +38,12 @@ export const OrderShipped = ({
 			>
 				<div className={s.wrapper_inner}>
 					<div className={s.info}>
-						<span className={s.info_data}>
-							{formatDateString(preparingForShipmentDate)}
-						</span>
+						{formatDateString(preparingForShipmentDate) && (
+							<span className={s.info_data}>
+								{formatDateString(preparingForShipmentDate)}
+							</span>
+						)}
+
 						<p className={s.info_title}>Preparing for shipment</p>
 					</div>
 					{/* //   */}

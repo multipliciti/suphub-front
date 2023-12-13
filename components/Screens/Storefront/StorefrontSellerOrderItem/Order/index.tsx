@@ -20,7 +20,11 @@ export const Order = ({ order }: Product) => {
 			</button>
 
 			<StatusOrder code={order.PO} status={order.status} />
-			<Info price={order.amount} />
+			<Info
+				date={order.estDate}
+				payments={order.payments ?? null}
+				price={order.amount}
+			/>
 			<ProgressOrder order={order} />
 		</div>
 	);

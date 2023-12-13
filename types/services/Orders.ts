@@ -58,7 +58,7 @@ export interface FeedbackInterface {
 	message?: string;
 }
 
-interface Payment {
+export interface Payment {
 	id: number;
 	sum: number;
 	type: string;
