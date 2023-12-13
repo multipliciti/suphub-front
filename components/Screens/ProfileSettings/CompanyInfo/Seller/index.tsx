@@ -12,6 +12,7 @@ import Image from 'next/image';
 import { Api } from '@/services';
 import { RemoveCertification, UpdateSellerCompany } from '@/types/services/company';
 import { useAppSelector } from '@/redux/hooks';
+import { Spinner } from '@/components/UI/Spinner';
 
 const SellerCompanyInfo = () => {
 	const api = Api();
@@ -54,6 +55,7 @@ const SellerCompanyInfo = () => {
 
 	const sellerCompany = useAppSelector((state) => state.authSlice.sellerCompany);
 
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [logoSrc, setLogoSrc] = useState(null);
 	const [previewLogo, setPreviewLogo] = useState<string | null>(null);
 
@@ -254,6 +256,11 @@ const SellerCompanyInfo = () => {
 	};
 
 	useEffect(() => {
+		if (!sellerCompany) setIsLoading(true);
+		else setIsLoading(false);
+	}, [sellerCompany]);
+
+	useEffect(() => {
 		const fetch = async () => {
 			const name = sellerCompany?.name;
 			const logo = sellerCompany?.logo;
@@ -288,7 +295,7 @@ const SellerCompanyInfo = () => {
 			setPreviewLogo(logo ? logo.url : null);
 		};
 		fetch();
-	}, []);
+	}, [sellerCompany]);
 
 	const onSubmit: SubmitHandler<any> = async (data) => {
 		setSubmitClicked(true);
@@ -438,521 +445,545 @@ const SellerCompanyInfo = () => {
 					Save Changes
 				</button>
 			</div>
-			<div className={s.settings}>
-				<div className={s.title_general}>General Info</div>
-				<div className={s.row}>
-					<p className={s.title}>Company Legal Name</p>
-					<label className={s.label} htmlFor="name">
-						<input
-							className={s.input}
-							{...register('name', {
-								required: 'Please enter the company name.',
-							})}
-							placeholder="Enter company legal name"
-							type="text"
-							id="name"
-						/>
-					</label>
+			{isLoading ? (
+				<div className={s.spinner_wrapper}>
+					<Spinner />
 				</div>
-				{errors.name && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.name?.message}</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>Logo</p>
-					<div className={s.logo_wrapper}>
-						<label htmlFor="logoInput">
-							{previewLogo ? (
-								<Image
-									alt={'Logo placeholder'}
-									className={s.logo}
-									width={80}
-									height={80}
-									src={previewLogo}
+			) : (
+				<>
+					<div className={s.settings}>
+						<div className={s.title_general}>General Info</div>
+						<div className={s.row}>
+							<p className={s.title}>Company Legal Name</p>
+							<label className={s.label} htmlFor="name">
+								<input
+									className={s.input}
+									{...register('name', {
+										required: 'Please enter the company name.',
+									})}
+									placeholder="Enter company legal name"
+									type="text"
+									id="name"
 								/>
-							) : (
-								<Image
-									alt={'Logo placeholder'}
-									className={s.logo_placeholder}
-									src={logo_placeholder}
-								/>
-							)}
-							<input
-								{...register('logo')}
-								type="file"
-								id="logoInput"
-								className={s.hidden_input}
-								onChange={handleLogoChange}
-							/>
-						</label>
-					</div>
-				</div>
-				{errors.logo && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.logo?.message}</p>
-					</div>
-				)}
-			</div>
-			<div className={s.settings}>
-				<div className={s.title_general}>Files</div>
-				<div
-					className={
-						businessCertificationFiles?.length > 0 ? s.row_align_start : s.row
-					}
-				>
-					<p className={s.title}>Business certification</p>
-					<div className={s.files_wrapper}>
-						{businessCertificationFiles?.length > 0 &&
-							businessCertificationFiles.map((file: any, index: number) => (
-								<div key={index} className={s.upload_row}>
-									<div className={s.upload_filename}>
-										{file?.name || 'File Name Missing'}
-										<span className={s.upload_filename_size}>
-											{file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0} Mb
-										</span>
-									</div>
-									<span
-										onClick={() => handleRemoveBusinessCertificationFiles(index)}
-									>
-										<Image
-											src={big_cross}
-											alt={'big_cross'}
-											className={s.upload_close}
-										/>
-									</span>
-								</div>
-							))}
-						<label htmlFor={'businessFileInput'}>
-							<div className={s.upload_button}>
-								<Image alt={'Upload Button'} src={file_icon} />
-								Upload files
-							</div>
-							<input
-								{...register('businessCertification')}
-								accept=".jpg, .jpeg, .png, .pdf"
-								type="file"
-								id="businessFileInput"
-								className={s.hidden_input}
-								onChange={handleBusinessCertificationFiles}
-								multiple
-							/>
-						</label>
-					</div>
-				</div>
-				{errors.businessCertification && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>
-							{errors.businessCertification?.message}
-						</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-				<div
-					className={
-						factoryCertificationFiles?.length > 0 ? s.row_align_start : s.row
-					}
-				>
-					<p className={s.title}>Factory certifications</p>
-					<div className={s.files_wrapper}>
-						{factoryCertificationFiles?.length > 0 &&
-							factoryCertificationFiles.map((file: any, index: number) => (
-								<div key={index} className={s.upload_row}>
-									<div className={s.upload_filename}>
-										{file?.name || 'File Name Missing'}
-										<span className={s.upload_filename_size}>
-											{file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0} Mb
-										</span>
-									</div>
-									<span onClick={() => handleRemoveFactoryCertificationFiles(index)}>
-										<Image
-											src={big_cross}
-											alt={'big_cross'}
-											className={s.upload_close}
-										/>
-									</span>
-								</div>
-							))}
-						<label htmlFor={'factoryFileInput'}>
-							<div className={s.upload_button}>
-								<Image alt={'Upload Button'} src={file_icon} />
-								Upload files
-							</div>
-							<input
-								{...register('factoryCertifications')}
-								type="file"
-								id="factoryFileInput"
-								className={s.hidden_input}
-								onChange={handleFactoryCertificationFiles}
-								multiple
-							/>
-						</label>
-					</div>
-				</div>
-				{errors.factoryCertifications && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>
-							{errors.factoryCertifications?.message}
-						</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>Products certified for</p>
-					<div className={s.tag_wrapper_countries}>
-						{countryProductsCertifiedFor.map((product, index) => (
-							<div className={s.tag} key={index}>
-								<p>{product}</p>
-								<Image
-									alt="close"
-									className={s.tag_close}
-									src={modal_close}
-									onClick={() => handleRemoveCountryCertification(product)}
-								/>
-							</div>
-						))}
-						<div className={s.tag_add}>
-							<Image
-								alt={'add product'}
-								src={plus_sign}
-								onClick={handleAddCountryCertification}
-							/>
-							<input
-								className={classNames(s.input_certification, s.width_smaller)}
-								value={addCountryInput}
-								onChange={(e) => {
-									setAddCountryInput(e.target.value);
-								}}
-								onKeyDown={(e) => {
-									if (e.key === 'Enter') {
-										e.preventDefault();
-										handleAddCountryCertification();
-									}
-								}}
-								placeholder={'Add country'}
-							/>
+							</label>
 						</div>
-					</div>
-				</div>
-				{errors.countryProductsCertifiedFor && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>
-							{errors.countryProductsCertifiedFor?.message}
-						</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-
-				<div className={s.row}>
-					<p className={s.title}>Product certifications</p>
-					<div className={s.tag_wrapper}>
-						{productCertifications.map((product, index) => (
-							<div className={s.tag} key={index}>
-								<p>{product}</p>
-								<Image
-									alt={'Add product Certification'}
-									className={s.tag_close}
-									src={modal_close}
-									onClick={() => handeRemoveCertification(product)}
-								/>
+						{errors.name && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>{errors.name?.message}</p>
 							</div>
-						))}
-						<div className={s.tag_add}>
-							<Image
-								alt="add product certification"
-								src={plus_sign}
-								onClick={handleAddCertification}
-							/>
-							<input
-								className={classNames(s.input_certification, s.width_bigger)}
-								value={addCertificationInput}
-								onChange={(e) => {
-									setAddCertificationInput(e.target.value);
-								}}
-								onKeyDown={(e) => {
-									if (e.key === 'Enter') {
-										e.preventDefault();
-										handleAddCertification();
-									}
-								}}
-								placeholder={'Add certification'}
-							/>
+						)}
+						<div className={s.separator}></div>
+						<div className={s.row}>
+							<p className={s.title}>Logo</p>
+							<div className={s.logo_wrapper}>
+								<label htmlFor="logoInput">
+									{previewLogo ? (
+										<Image
+											alt={'Logo placeholder'}
+											className={s.logo}
+											width={80}
+											height={80}
+											src={previewLogo}
+										/>
+									) : (
+										<Image
+											alt={'Logo placeholder'}
+											className={s.logo_placeholder}
+											src={logo_placeholder}
+										/>
+									)}
+									<input
+										{...register('logo')}
+										type="file"
+										id="logoInput"
+										className={s.hidden_input}
+										onChange={handleLogoChange}
+									/>
+								</label>
+							</div>
 						</div>
+						{errors.logo && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>{errors.logo?.message}</p>
+							</div>
+						)}
 					</div>
-				</div>
+					<div className={s.settings}>
+						<div className={s.title_general}>Files</div>
+						<div
+							className={
+								businessCertificationFiles?.length > 0 ? s.row_align_start : s.row
+							}
+						>
+							<p className={s.title}>Business certification</p>
+							<div className={s.files_wrapper}>
+								{businessCertificationFiles?.length > 0 &&
+									businessCertificationFiles.map((file: any, index: number) => (
+										<div key={index} className={s.upload_row}>
+											<div className={s.upload_filename}>
+												{file?.name || 'File Name Missing'}
+												<span className={s.upload_filename_size}>
+													{file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0} Mb
+												</span>
+											</div>
+											<span
+												onClick={() => handleRemoveBusinessCertificationFiles(index)}
+											>
+												<Image
+													src={big_cross}
+													alt={'big_cross'}
+													className={s.upload_close}
+												/>
+											</span>
+										</div>
+									))}
+								<label htmlFor={'businessFileInput'}>
+									<div className={s.upload_button}>
+										<Image alt={'Upload Button'} src={file_icon} />
+										Upload files
+									</div>
+									<input
+										{...register('businessCertification')}
+										accept=".jpg, .jpeg, .png, .pdf"
+										type="file"
+										id="businessFileInput"
+										className={s.hidden_input}
+										onChange={handleBusinessCertificationFiles}
+										multiple
+									/>
+								</label>
+							</div>
+						</div>
+						{errors.businessCertification && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>
+									{errors.businessCertification?.message}
+								</p>
+							</div>
+						)}
+						<div className={s.separator}></div>
+						<div
+							className={
+								factoryCertificationFiles?.length > 0 ? s.row_align_start : s.row
+							}
+						>
+							<p className={s.title}>Factory certifications</p>
+							<div className={s.files_wrapper}>
+								{factoryCertificationFiles?.length > 0 &&
+									factoryCertificationFiles.map((file: any, index: number) => (
+										<div key={index} className={s.upload_row}>
+											<div className={s.upload_filename}>
+												{file?.name || 'File Name Missing'}
+												<span className={s.upload_filename_size}>
+													{file?.size ? (file.size / 1024 / 1024).toFixed(2) : 0} Mb
+												</span>
+											</div>
+											<span
+												onClick={() => handleRemoveFactoryCertificationFiles(index)}
+											>
+												<Image
+													src={big_cross}
+													alt={'big_cross'}
+													className={s.upload_close}
+												/>
+											</span>
+										</div>
+									))}
+								<label htmlFor={'factoryFileInput'}>
+									<div className={s.upload_button}>
+										<Image alt={'Upload Button'} src={file_icon} />
+										Upload files
+									</div>
+									<input
+										{...register('factoryCertifications')}
+										type="file"
+										id="factoryFileInput"
+										className={s.hidden_input}
+										onChange={handleFactoryCertificationFiles}
+										multiple
+									/>
+								</label>
+							</div>
+						</div>
+						{errors.factoryCertifications && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>
+									{errors.factoryCertifications?.message}
+								</p>
+							</div>
+						)}
+						<div className={s.separator}></div>
+						<div className={s.row}>
+							<p className={s.title}>Products certified for</p>
+							<div className={s.tag_wrapper_countries}>
+								{countryProductsCertifiedFor.map((product, index) => (
+									<div className={s.tag} key={index}>
+										<p>{product}</p>
+										<Image
+											alt="close"
+											className={s.tag_close}
+											src={modal_close}
+											onClick={() => handleRemoveCountryCertification(product)}
+										/>
+									</div>
+								))}
+								<div className={s.tag_add}>
+									<Image
+										alt={'add product'}
+										src={plus_sign}
+										onClick={handleAddCountryCertification}
+									/>
+									<input
+										className={classNames(s.input_certification, s.width_smaller)}
+										value={addCountryInput}
+										onChange={(e) => {
+											setAddCountryInput(e.target.value);
+										}}
+										onKeyDown={(e) => {
+											if (e.key === 'Enter') {
+												e.preventDefault();
+												handleAddCountryCertification();
+											}
+										}}
+										placeholder={'Add country'}
+									/>
+								</div>
+							</div>
+						</div>
+						{errors.countryProductsCertifiedFor && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>
+									{errors.countryProductsCertifiedFor?.message}
+								</p>
+							</div>
+						)}
+						<div className={s.separator}></div>
 
-				{errors.productCertifications && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>
-							{errors.productCertifications?.message}
-						</p>
-					</div>
-				)}
-			</div>
-			<div className={s.settings}>
-				<div className={s.title_general}>Company Address</div>
-				<div className={s.row}>
-					<p className={s.title}>Street address</p>
-					<label className={s.label} htmlFor="companyStreet">
-						<input
-							className={s.input}
-							{...register('companyStreet', {
-								required: 'Please provide the street address',
-							})}
-							placeholder="Enter street address"
-							type="text"
-							id="companyStreet"
-						/>
-					</label>
-				</div>
-				{errors.companyStreet && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.companyStreet?.message}</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>City</p>
-					<label className={s.label} htmlFor="companyCity">
-						<input
-							className={s.input}
-							{...register('companyCity', { required: 'Please fill in the city' })}
-							placeholder="Enter city"
-							type="text"
-							id="companyCity"
-						/>
-					</label>
-				</div>
-				{errors.companyCity && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.companyCity?.message}</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>State / Province</p>
-					<label className={s.label} htmlFor="companyState">
-						<input
-							className={s.input}
-							{...register('companyState', {
-								required: 'Please specify the state',
-							})}
-							placeholder="Enter state / Province"
-							type="text"
-							id="companyState"
-						/>
-					</label>
-				</div>
-				{errors.companyState && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.companyState?.message}</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>Country</p>
-					<label className={s.label} htmlFor="companyCountry">
-						<input
-							className={s.input}
-							{...register('companyCountry', {
-								required: 'Please indicate the country',
-							})}
-							placeholder="Enter Country"
-							type="text"
-							id="companyCountry"
-						/>
-					</label>
-				</div>
-				{errors.companyCountry && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.companyCountry?.message}</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>Zip Code</p>
-					<label className={s.label} htmlFor="companyZipCode">
-						<input
-							className={s.input}
-							{...register('companyZipCode', {
-								required: 'Please input the ZIP code',
-							})}
-							placeholder="Enter Zip Code"
-							type="text"
-							id="companyZipCode"
-						/>
-					</label>
-				</div>
-				{errors.companyZipCode && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.companyZipCode?.message}</p>
-					</div>
-				)}
-			</div>
-			<div className={s.settings}>
-				<div className={s.row}>
-					<div className={s.title_general}>Factory Address (Ship from)</div>
-					<div className={s.checkbox}>
-						<input
-							type="checkbox"
-							id={'sameAsCompanyAddress'}
-							name={'sameAsCompanyAddress'}
-							checked={isFactoryAddressSameAsCompanyAddress}
-							onClick={isFactoryAddressSameAsCompanyAddressHandler}
-						/>
-						<label htmlFor={'sameAsCompanyAddress'}>Same as Company Address</label>
-					</div>
-				</div>
-				<div className={s.row}>
-					<p className={s.title}>Street address</p>
-					<label
-						className={classNames(
-							s.label,
-							isFactoryAddressSameAsCompanyAddress && s.label_disabled
+						<div className={s.row}>
+							<p className={s.title}>Product certifications</p>
+							<div className={s.tag_wrapper}>
+								{productCertifications.map((product, index) => (
+									<div className={s.tag} key={index}>
+										<p>{product}</p>
+										<Image
+											alt={'Add product Certification'}
+											className={s.tag_close}
+											src={modal_close}
+											onClick={() => handeRemoveCertification(product)}
+										/>
+									</div>
+								))}
+								<div className={s.tag_add}>
+									<Image
+										alt="add product certification"
+										src={plus_sign}
+										onClick={handleAddCertification}
+									/>
+									<input
+										className={classNames(s.input_certification, s.width_bigger)}
+										value={addCertificationInput}
+										onChange={(e) => {
+											setAddCertificationInput(e.target.value);
+										}}
+										onKeyDown={(e) => {
+											if (e.key === 'Enter') {
+												e.preventDefault();
+												handleAddCertification();
+											}
+										}}
+										placeholder={'Add certification'}
+									/>
+								</div>
+							</div>
+						</div>
+
+						{errors.productCertifications && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>
+									{errors.productCertifications?.message}
+								</p>
+							</div>
 						)}
-						htmlFor="factoryStreet"
-					>
-						<input
-							className={s.input}
-							{...register('factoryStreet', {
-								required: 'Please provide the street address',
-							})}
-							placeholder="Enter street address"
-							type="text"
-							id="factoryStreet"
-							disabled={isFactoryAddressSameAsCompanyAddress}
-						/>
-					</label>
-				</div>
-				{!isFactoryAddressSameAsCompanyAddress && errors.factoryStreet && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.factoryStreet?.message}</p>
 					</div>
-				)}
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>City</p>
-					<label
-						className={classNames(
-							s.label,
-							isFactoryAddressSameAsCompanyAddress && s.label_disabled
+					<div className={s.settings}>
+						<div className={s.title_general}>Company Address</div>
+						<div className={s.row}>
+							<p className={s.title}>Street address</p>
+							<label className={s.label} htmlFor="companyStreet">
+								<input
+									className={s.input}
+									{...register('companyStreet', {
+										required: 'Please provide the street address',
+									})}
+									placeholder="Enter street address"
+									type="text"
+									id="companyStreet"
+								/>
+							</label>
+						</div>
+						{errors.companyStreet && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>{errors.companyStreet?.message}</p>
+							</div>
 						)}
-						htmlFor="factoryCity"
-					>
-						<input
-							className={s.input}
-							{...register('factoryCity', { required: 'Please fill in the city' })}
-							placeholder="Enter city"
-							type="text"
-							id="factoryCity"
-							disabled={isFactoryAddressSameAsCompanyAddress}
-						/>
-					</label>
-				</div>
-				{!isFactoryAddressSameAsCompanyAddress && errors.factoryCity && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.factoryCity?.message}</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>State / Province</p>
-					<label
-						className={classNames(
-							s.label,
-							isFactoryAddressSameAsCompanyAddress && s.label_disabled
+						<div className={s.separator}></div>
+						<div className={s.row}>
+							<p className={s.title}>City</p>
+							<label className={s.label} htmlFor="companyCity">
+								<input
+									className={s.input}
+									{...register('companyCity', {
+										required: 'Please fill in the city',
+									})}
+									placeholder="Enter city"
+									type="text"
+									id="companyCity"
+								/>
+							</label>
+						</div>
+						{errors.companyCity && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>{errors.companyCity?.message}</p>
+							</div>
 						)}
-						htmlFor="factoryState"
-					>
-						<input
-							className={s.input}
-							{...register('factoryState', {
-								required: 'Please specify the state',
-							})}
-							placeholder="Enter state / Province"
-							type="text"
-							id="factoryState"
-							disabled={isFactoryAddressSameAsCompanyAddress}
-						/>
-					</label>
-				</div>
-				{!isFactoryAddressSameAsCompanyAddress && errors.factoryState && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.factoryState?.message}</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>Country</p>
-					<label
-						className={classNames(
-							s.label,
-							isFactoryAddressSameAsCompanyAddress && s.label_disabled
+						<div className={s.separator}></div>
+						<div className={s.row}>
+							<p className={s.title}>State / Province</p>
+							<label className={s.label} htmlFor="companyState">
+								<input
+									className={s.input}
+									{...register('companyState', {
+										required: 'Please specify the state',
+									})}
+									placeholder="Enter state / Province"
+									type="text"
+									id="companyState"
+								/>
+							</label>
+						</div>
+						{errors.companyState && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>{errors.companyState?.message}</p>
+							</div>
 						)}
-						htmlFor="factoryCountry"
-					>
-						<input
-							className={s.input}
-							{...register('factoryCountry', {
-								required: 'Please indicate the country',
-							})}
-							placeholder="Enter Country"
-							type="text"
-							id="factoryCountry"
-							disabled={isFactoryAddressSameAsCompanyAddress}
-						/>
-					</label>
-				</div>
-				{!isFactoryAddressSameAsCompanyAddress && errors.factoryCountry && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.factoryCountry?.message}</p>
-					</div>
-				)}
-				<div className={s.separator}></div>
-				<div className={s.row}>
-					<p className={s.title}>Zip Code</p>
-					<label
-						className={classNames(
-							s.label,
-							isFactoryAddressSameAsCompanyAddress && s.label_disabled
+						<div className={s.separator}></div>
+						<div className={s.row}>
+							<p className={s.title}>Country</p>
+							<label className={s.label} htmlFor="companyCountry">
+								<input
+									className={s.input}
+									{...register('companyCountry', {
+										required: 'Please indicate the country',
+									})}
+									placeholder="Enter Country"
+									type="text"
+									id="companyCountry"
+								/>
+							</label>
+						</div>
+						{errors.companyCountry && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>
+									{errors.companyCountry?.message}
+								</p>
+							</div>
 						)}
-						htmlFor="factoryZipCode"
-					>
-						<input
-							className={s.input}
-							{...register('factoryZipCode', {
-								required: 'Please input the ZIP code',
-							})}
-							placeholder="Enter Zip Code"
-							type="text"
-							id="factoryZipCode"
-							disabled={isFactoryAddressSameAsCompanyAddress}
-						/>
-					</label>
-				</div>
-				{!isFactoryAddressSameAsCompanyAddress && errors.factoryZipCode && (
-					<div className={s.row_nogap}>
-						<p></p>
-						<p className={s.errorDescription}>{errors.factoryZipCode?.message}</p>
+						<div className={s.separator}></div>
+						<div className={s.row}>
+							<p className={s.title}>Zip Code</p>
+							<label className={s.label} htmlFor="companyZipCode">
+								<input
+									className={s.input}
+									{...register('companyZipCode', {
+										required: 'Please input the ZIP code',
+									})}
+									placeholder="Enter Zip Code"
+									type="text"
+									id="companyZipCode"
+								/>
+							</label>
+						</div>
+						{errors.companyZipCode && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>
+									{errors.companyZipCode?.message}
+								</p>
+							</div>
+						)}
 					</div>
-				)}
-			</div>
+					<div className={s.settings}>
+						<div className={s.row}>
+							<div className={s.title_general}>Factory Address (Ship from)</div>
+							<div className={s.checkbox}>
+								<input
+									type="checkbox"
+									id={'sameAsCompanyAddress'}
+									name={'sameAsCompanyAddress'}
+									checked={isFactoryAddressSameAsCompanyAddress}
+									onClick={isFactoryAddressSameAsCompanyAddressHandler}
+								/>
+								<label htmlFor={'sameAsCompanyAddress'}>
+									Same as Company Address
+								</label>
+							</div>
+						</div>
+						<div className={s.row}>
+							<p className={s.title}>Street address</p>
+							<label
+								className={classNames(
+									s.label,
+									isFactoryAddressSameAsCompanyAddress && s.label_disabled
+								)}
+								htmlFor="factoryStreet"
+							>
+								<input
+									className={s.input}
+									{...register('factoryStreet', {
+										required: 'Please provide the street address',
+									})}
+									placeholder="Enter street address"
+									type="text"
+									id="factoryStreet"
+									disabled={isFactoryAddressSameAsCompanyAddress}
+								/>
+							</label>
+						</div>
+						{!isFactoryAddressSameAsCompanyAddress && errors.factoryStreet && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>{errors.factoryStreet?.message}</p>
+							</div>
+						)}
+						<div className={s.separator}></div>
+						<div className={s.row}>
+							<p className={s.title}>City</p>
+							<label
+								className={classNames(
+									s.label,
+									isFactoryAddressSameAsCompanyAddress && s.label_disabled
+								)}
+								htmlFor="factoryCity"
+							>
+								<input
+									className={s.input}
+									{...register('factoryCity', {
+										required: 'Please fill in the city',
+									})}
+									placeholder="Enter city"
+									type="text"
+									id="factoryCity"
+									disabled={isFactoryAddressSameAsCompanyAddress}
+								/>
+							</label>
+						</div>
+						{!isFactoryAddressSameAsCompanyAddress && errors.factoryCity && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>{errors.factoryCity?.message}</p>
+							</div>
+						)}
+						<div className={s.separator}></div>
+						<div className={s.row}>
+							<p className={s.title}>State / Province</p>
+							<label
+								className={classNames(
+									s.label,
+									isFactoryAddressSameAsCompanyAddress && s.label_disabled
+								)}
+								htmlFor="factoryState"
+							>
+								<input
+									className={s.input}
+									{...register('factoryState', {
+										required: 'Please specify the state',
+									})}
+									placeholder="Enter state / Province"
+									type="text"
+									id="factoryState"
+									disabled={isFactoryAddressSameAsCompanyAddress}
+								/>
+							</label>
+						</div>
+						{!isFactoryAddressSameAsCompanyAddress && errors.factoryState && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>{errors.factoryState?.message}</p>
+							</div>
+						)}
+						<div className={s.separator}></div>
+						<div className={s.row}>
+							<p className={s.title}>Country</p>
+							<label
+								className={classNames(
+									s.label,
+									isFactoryAddressSameAsCompanyAddress && s.label_disabled
+								)}
+								htmlFor="factoryCountry"
+							>
+								<input
+									className={s.input}
+									{...register('factoryCountry', {
+										required: 'Please indicate the country',
+									})}
+									placeholder="Enter Country"
+									type="text"
+									id="factoryCountry"
+									disabled={isFactoryAddressSameAsCompanyAddress}
+								/>
+							</label>
+						</div>
+						{!isFactoryAddressSameAsCompanyAddress && errors.factoryCountry && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>
+									{errors.factoryCountry?.message}
+								</p>
+							</div>
+						)}
+						<div className={s.separator}></div>
+						<div className={s.row}>
+							<p className={s.title}>Zip Code</p>
+							<label
+								className={classNames(
+									s.label,
+									isFactoryAddressSameAsCompanyAddress && s.label_disabled
+								)}
+								htmlFor="factoryZipCode"
+							>
+								<input
+									className={s.input}
+									{...register('factoryZipCode', {
+										required: 'Please input the ZIP code',
+									})}
+									placeholder="Enter Zip Code"
+									type="text"
+									id="factoryZipCode"
+									disabled={isFactoryAddressSameAsCompanyAddress}
+								/>
+							</label>
+						</div>
+						{!isFactoryAddressSameAsCompanyAddress && errors.factoryZipCode && (
+							<div className={s.row_nogap}>
+								<p></p>
+								<p className={s.errorDescription}>
+									{errors.factoryZipCode?.message}
+								</p>
+							</div>
+						)}
+					</div>
+				</>
+			)}
 		</form>
 	);
 };

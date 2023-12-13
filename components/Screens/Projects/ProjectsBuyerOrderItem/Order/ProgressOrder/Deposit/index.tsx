@@ -1,10 +1,9 @@
 'use client';
-import { useRouter } from 'next/navigation';
-
 import s from './Deposit.module.scss';
 import { classNames } from '@/utils/classNames';
 import { formatDateString } from '@/utils/formatDateString';
 import { Api } from '@/services';
+import { useRouter } from 'next/navigation';
 
 interface PropsType {
 	date: string;

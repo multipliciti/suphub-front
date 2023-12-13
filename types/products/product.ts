@@ -46,6 +46,8 @@ export interface DynamicAttribute {
 
 export type UpdateDynamicAttribute = DynamicAttribute & { attrValueIds: number[] };
 
+export type ProductItemStatus = 'draft' | 'rfqOnly' | 'published' | 'archived';
+
 export interface ProductItemType {
 	id: number;
 	name: string;
@@ -59,6 +61,7 @@ export interface ProductItemType {
 	views: number;
 	favorites: number;
 	projects: number;
+	status: ProductItemStatus;
 	subCategory: Subcategory;
 	prices: Price[];
 	images: ImageType[];
