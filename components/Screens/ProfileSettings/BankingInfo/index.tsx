@@ -7,6 +7,7 @@ import chevron_down from '@/imgs/ProfileSettings/chevron-down.svg';
 import Image from 'next/image';
 import { Api } from '@/services';
 import countries from '@/utils/countries';
+import { Spinner } from '@/components/UI/Spinner';
 
 type PaymentType = 'Domestic bank (USA)' | 'International';
 const BankingInfo = () => {
@@ -21,6 +22,8 @@ const BankingInfo = () => {
 
 	const [vendorType, setVendorType] = useState('business');
 	const [selectedCountry, setSelectedCountry] = useState('Select Country');
+
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const {
 		register,
@@ -84,6 +87,7 @@ const BankingInfo = () => {
 
 	useEffect(() => {
 		const fetch = async () => {
+			setIsLoading(true);
 			if (paymentType === 'Domestic bank (USA)') {
 				try {
 					const response = await api.bankUSA.get();
@@ -99,6 +103,7 @@ const BankingInfo = () => {
 					setIsFirstTimeCreateInternationalBank(true);
 				}
 			}
+			setIsLoading(false);
 		};
 		fetch();
 	}, [paymentType]);
@@ -200,7 +205,8 @@ const BankingInfo = () => {
 					</div>
 				</div>
 
-				{paymentType === 'Domestic bank (USA)' && (
+				{isLoading && <Spinner />}
+				{paymentType === 'Domestic bank (USA)' && !isLoading && (
 					<div className={s.settings}>
 						<div className={s.title_general}>Domestic bank (USA)</div>
 						<div className={s.radio_row}>
@@ -324,7 +330,7 @@ const BankingInfo = () => {
 						)}
 					</div>
 				)}
-				{paymentType === 'International' && (
+				{paymentType === 'International' && !isLoading && (
 					<div className={s.settings}>
 						<div className={s.title_general}>International</div>
 						<div className={s.row}>
