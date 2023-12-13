@@ -10,10 +10,12 @@ import modal_password from '@/imgs/Modal/pasword.svg';
 import pencil from '@/imgs/ProfileSettings/pencil.svg';
 import { Api } from '@/services';
 import { useAppSelector } from '@/redux/hooks';
+import { Spinner } from '@/components/UI/Spinner';
 
 const PersonalInfo = () => {
 	const dispatch = useAppDispatch();
 	const user = useAppSelector((state) => state.authSlice.user);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const api = Api();
 
@@ -30,13 +32,15 @@ const PersonalInfo = () => {
 	});
 
 	useEffect(() => {
-		const fetch = async () => {
-			setValue('firstName', user?.firstName || '');
-			setValue('lastName', user?.lastName || '');
-			setValue('email', user?.email || '');
-		};
-		fetch();
+		setValue('firstName', user?.firstName || '');
+		setValue('lastName', user?.lastName || '');
+		setValue('email', user?.email || '');
 	}, []);
+
+	useEffect(() => {
+		if (!user) setIsLoading(true);
+		else setIsLoading(false);
+	}, [user]);
 
 	const onSubmit = async (data: any) => {
 		const { firstName, lastName, email } = data;
@@ -66,113 +70,121 @@ const PersonalInfo = () => {
 						Save Changes
 					</button>
 				</div>
-				<div className={s.settings}>
-					<div className={s.title_general}>General Info</div>
-					<div className={s.row}>
-						<p className={s.title}>First name</p>
-						<label className={s.label} htmlFor="firstName">
-							<input
-								className={s.input}
-								{...register('firstName', { required: 'Please enter first name' })}
-								placeholder="Enter First Name"
-								type="text"
-								id="firstName"
-							/>
-						</label>
-					</div>
-					{errors.firstName && (
-						<div className={s.row_nogap}>
-							<p></p>
-							<p className={s.errorDescription}>{errors.firstName?.message}</p>
-						</div>
-					)}
-					<div className={s.separator}></div>
-					<div className={s.row}>
-						<p className={s.title}>Last name</p>
-						<label className={s.label} htmlFor="lastName">
-							<input
-								className={s.input}
-								{...register('lastName', { required: 'Please enter last name' })}
-								placeholder="Enter Last Name"
-								type="text"
-								id="lastName"
-							/>
-						</label>
-					</div>
-					{errors.lastName && (
-						<div className={s.row_nogap}>
-							<p></p>
-							<p className={s.errorDescription}>{errors.lastName?.message}</p>
-						</div>
-					)}
-					<div className={s.separator}></div>
-					<div className={s.row}>
-						<p className={s.title}>Email</p>
-						<label className={s.label} htmlFor="email">
-							<input
-								className={s.input}
-								{...register('email', {
-									required: 'Email is required',
-									pattern: {
-										value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-										message: 'Invalid email format',
-									},
-								})}
-								id="email"
-								placeholder="example@suphub.com"
-								type="text"
-							/>
-						</label>
-					</div>
-					{errors.email && (
-						<div className={s.row_nogap}>
-							<p></p>
-							<p className={s.errorDescription}>{errors.email?.message}</p>
-						</div>
-					)}
-					<div className={s.separator}></div>
-					<div className={s.row}>
-						<p className={s.title}>Password</p>
-						<label className={s.label} htmlFor="password">
-							<Image
-								className={s.image}
-								src={modal_password}
-								alt="password_icon"
-								width={20}
-								height={20}
-							/>
-							<input
-								className={s.input}
-								id="password"
-								type={'password'}
-								value={'********'}
-								disabled
-							/>
+				{isLoading ? (
+					<Spinner />
+				) : (
+					<>
+						<div className={s.settings}>
+							<div className={s.title_general}>General Info</div>
+							<div className={s.row}>
+								<p className={s.title}>First name</p>
+								<label className={s.label} htmlFor="firstName">
+									<input
+										className={s.input}
+										{...register('firstName', {
+											required: 'Please enter first name',
+										})}
+										placeholder="Enter First Name"
+										type="text"
+										id="firstName"
+									/>
+								</label>
+							</div>
+							{errors.firstName && (
+								<div className={s.row_nogap}>
+									<p></p>
+									<p className={s.errorDescription}>{errors.firstName?.message}</p>
+								</div>
+							)}
+							<div className={s.separator}></div>
+							<div className={s.row}>
+								<p className={s.title}>Last name</p>
+								<label className={s.label} htmlFor="lastName">
+									<input
+										className={s.input}
+										{...register('lastName', { required: 'Please enter last name' })}
+										placeholder="Enter Last Name"
+										type="text"
+										id="lastName"
+									/>
+								</label>
+							</div>
+							{errors.lastName && (
+								<div className={s.row_nogap}>
+									<p></p>
+									<p className={s.errorDescription}>{errors.lastName?.message}</p>
+								</div>
+							)}
+							<div className={s.separator}></div>
+							<div className={s.row}>
+								<p className={s.title}>Email</p>
+								<label className={s.label} htmlFor="email">
+									<input
+										className={s.input}
+										{...register('email', {
+											required: 'Email is required',
+											pattern: {
+												value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+												message: 'Invalid email format',
+											},
+										})}
+										id="email"
+										placeholder="example@suphub.com"
+										type="text"
+									/>
+								</label>
+							</div>
+							{errors.email && (
+								<div className={s.row_nogap}>
+									<p></p>
+									<p className={s.errorDescription}>{errors.email?.message}</p>
+								</div>
+							)}
+							<div className={s.separator}></div>
+							<div className={s.row}>
+								<p className={s.title}>Password</p>
+								<label className={s.label} htmlFor="password">
+									<Image
+										className={s.image}
+										src={modal_password}
+										alt="password_icon"
+										width={20}
+										height={20}
+									/>
+									<input
+										className={s.input}
+										id="password"
+										type={'password'}
+										value={'********'}
+										disabled
+									/>
 
-							<Image
-								onClick={() => {
+									<Image
+										onClick={() => {
+											dispatch(setModal('editPassword'));
+										}}
+										className={s.image_edit}
+										src={pencil}
+										alt="edit_password"
+										width={20}
+										height={20}
+									/>
+								</label>
+							</div>
+						</div>
+						<div className={s.to_right}>
+							<button
+								onClick={(e) => {
+									e.preventDefault();
 									dispatch(setModal('editPassword'));
 								}}
-								className={s.image_edit}
-								src={pencil}
-								alt="edit_password"
-								width={20}
-								height={20}
-							/>
-						</label>
-					</div>
-				</div>
-				<div className={s.to_right}>
-					<button
-						onClick={(e) => {
-							e.preventDefault();
-							dispatch(setModal('editPassword'));
-						}}
-						className={classNames(s.btn_send, s.btn_send_reset)}
-					>
-						Reset Password
-					</button>
-				</div>
+								className={classNames(s.btn_send, s.btn_send_reset)}
+							>
+								Reset Password
+							</button>
+						</div>
+					</>
+				)}
 			</form>
 		</div>
 	);

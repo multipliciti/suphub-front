@@ -16,6 +16,7 @@ import plus_sign from '@/imgs/Modal/plus_sign.svg';
 import plus_sign_white from '@/imgs/Modal/plus_sign_white.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
 import { classNames } from '@/utils/classNames';
+import { Spinner } from '@/components/UI/Spinner';
 
 export const AddToRFQCart = () => {
 	const dispatch = useAppDispatch();
@@ -43,6 +44,7 @@ export const AddToRFQCart = () => {
 	const [selectedProjectId, setSelectedProjectId] = useState<number>(0);
 	const [addingProjectOrRfqInProgress, setAddingProjectOrRfqInProgress] =
 		useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const refresh = () => {
 		setRefreshable((prev) => prev + 1);
 	};
@@ -68,6 +70,7 @@ export const AddToRFQCart = () => {
 
 	const fetchRfq = async (projectId: number) => {
 		try {
+			setIsLoading(true);
 			const response = await api.rfq.getProjectById({
 				projectId,
 				searchParams: JSON.stringify({ subCategoryId: product?.subCategoryId }),
@@ -76,6 +79,7 @@ export const AddToRFQCart = () => {
 		} catch (error) {
 			console.error('Error fetching rfqs:', error);
 		}
+		setIsLoading(false);
 	};
 
 	const toRfq = (projectId: number) => {
@@ -126,12 +130,14 @@ export const AddToRFQCart = () => {
 	useEffect(() => {
 		const fetchProjects = async () => {
 			try {
+				setIsLoading(true);
 				const response = await api.project.getProject({});
 				setProjects(response.result);
 			} catch (error) {
 				console.error('Error fetching categories:', error);
 			}
 			setAddingProjectOrRfqInProgress(false);
+			setIsLoading(false);
 		};
 
 		const handlePopState = () => {
@@ -181,7 +187,8 @@ export const AddToRFQCart = () => {
 					/>
 				</label>
 				<div className={s.list}>
-					{step === 1 && (
+					{isLoading && <Spinner />}
+					{step === 1 && !isLoading && (
 						<>
 							{projects
 								.filter((project: Project) =>
@@ -214,7 +221,7 @@ export const AddToRFQCart = () => {
 						</>
 					)}
 
-					{step === 2 && (
+					{step === 2 && !isLoading && (
 						<>
 							{rfqs
 								.filter((rfq) =>
