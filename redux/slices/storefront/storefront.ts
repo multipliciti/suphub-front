@@ -5,13 +5,11 @@ import { CategoryItem } from '@/types/sideBar';
 interface CounterState {
 	sidebar: boolean;
 	categories: CategoryItem[] | null;
-	productIdForUploadImages: number | null;
 }
 
 const initialState: CounterState = {
 	sidebar: false,
 	categories: null,
-	productIdForUploadImages: null,
 };
 
 const storefrontSlice = createSlice({
@@ -24,16 +22,9 @@ const storefrontSlice = createSlice({
 		setCategories(state, action: PayloadAction<CounterState['categories']>) {
 			state.categories = action.payload;
 		},
-		setProductIdForUploadImages(
-			state,
-			action: PayloadAction<CounterState['productIdForUploadImages']>
-		) {
-			state.productIdForUploadImages = action.payload;
-		},
 	},
 });
 
-export const { setSidebar, setCategories, setProductIdForUploadImages } =
-	storefrontSlice.actions;
+export const { setSidebar, setCategories } = storefrontSlice.actions;
 
 export default storefrontSlice.reducer;

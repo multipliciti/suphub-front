@@ -11,10 +11,14 @@ interface Props extends ButtonHTMLAttributes<HTMLButtonElement> {
 export const Button: FC<PropsWithChildren<Props>> = ({
 	children,
 	variant = 'text',
+	className,
 	...props
 }) => {
 	return (
-		<button className={classNames(s.button, s[`button_${variant}`])} {...props}>
+		<button
+			className={classNames(s.button, s[`button_${variant}`], className)}
+			{...props}
+		>
 			{children}
 		</button>
 	);

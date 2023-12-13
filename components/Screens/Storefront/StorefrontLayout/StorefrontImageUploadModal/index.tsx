@@ -1,26 +1,29 @@
-'use client';
-import { useEffect, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
-import { StorefrontAddProductModalLayout } from '@/components/Modals/StorefrontAddProduct/layout';
-import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { ModalLayout } from '@/components/Features/ModalLayout';
+import { ImageType } from '@/types/products/image';
 import { Dropzone } from '@/components/UI/Dropzone';
-import { setModal } from '@/redux/slices/modal';
 import { Api } from '@/services';
 
-import s from '../Form.module.scss';
+import s from '@/components/Modals/StorefrontAddProduct/Form.module.scss';
+
+interface Props {
+	onHide: () => void;
+	productId: number;
+	setImages: (images: ImageType[]) => void;
+}
 
 type FormValues = {
 	files: File[];
 };
 
-export const SellerProductUploadImage = () => {
+export const StorefrontProductImageUploadModal: FC<Props> = ({
+	onHide,
+	productId,
+	setImages,
+}) => {
 	const api = Api();
-	const dispatch = useAppDispatch();
-
-	const productId = useAppSelector(
-		(state) => state.storefrontSlice.productIdForUploadImages
-	);
 
 	const [files, setFiles] = useState<File[]>([]);
 
@@ -44,24 +47,16 @@ export const SellerProductUploadImage = () => {
 			if (!productId) {
 				return;
 			}
-			await api.productSeller.uploadImages(productId, values.files);
-
-			hideModal();
-
-			setTimeout(() => {
-				window.location.reload();
-			}, 150);
+			const response = await api.productSeller.uploadImages(productId, values.files);
+			setImages(response);
+			onHide();
 		} catch (e) {
 			console.log('Error with upload product images', e);
 		}
 	};
 
-	const hideModal = () => {
-		dispatch(setModal(''));
-	};
-
 	return (
-		<StorefrontAddProductModalLayout title="Upload Image" close={hideModal}>
+		<ModalLayout title="Upload Image" onHide={onHide}>
 			<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 				<div className={s.form_row}>
 					<Dropzone
@@ -82,7 +77,7 @@ export const SellerProductUploadImage = () => {
 				</div>
 
 				<div className={s.form_buttons}>
-					<button type="button" className={s.form_cancel} onClick={hideModal}>
+					<button type="button" className={s.form_cancel} onClick={onHide}>
 						Cancel
 					</button>
 
@@ -95,6 +90,6 @@ export const SellerProductUploadImage = () => {
 					</button>
 				</div>
 			</form>
-		</StorefrontAddProductModalLayout>
+		</ModalLayout>
 	);
 };

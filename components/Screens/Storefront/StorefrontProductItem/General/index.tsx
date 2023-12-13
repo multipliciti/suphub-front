@@ -1,28 +1,27 @@
 'use client';
 import { FC, useEffect, useState } from 'react';
-import Image from 'next/image';
 
 import {
 	DynamicAttribute,
 	ProductItemType,
 	UpdateDynamicAttribute,
 } from '@/types/products/product';
-import {
-	setCategories,
-	setProductIdForUploadImages,
-} from '@/redux/slices/storefront/storefront';
+import { StorefrontProductImageUploadModal } from '../../StorefrontLayout/StorefrontImageUploadModal';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { categoryService } from '@/services/categoryApi';
-import { setModal } from '@/redux/slices/modal';
-import { Input } from '@/components/UI/Input';
-import { Api } from '@/services';
 import { SpecificationDynamicTable } from '@/components/Screens/Storefront/StorefrontProductItem/General/SpecificationDynamicTable';
 import { StorefrontProductPriceTier } from '@/components/Screens/Storefront/StorefrontProducts/Table/PriceTier';
-import { StorefrontProductImage } from '@/components/Screens/Storefront/StorefrontProductItem/General/ProductImage';
+import { ImageUploadButton } from '@/components/UI/ImageUploadButton';
+import { categoryService } from '@/services/categoryApi';
+import { setCategories } from '@/redux/slices/storefront/storefront';
+import { ImageListItem } from '@/components/UI/ImageListItem';
+import { ModalPortal } from '@/components/Features/ModalPortal';
+import { FetchStatus } from '@/types/fetch-status';
+import { ImageType } from '@/types/products/image';
+import { Button } from '@/components/UI/Button';
+import { Input } from '@/components/UI/Input';
+import { Api } from '@/services';
 
 import s from './StorefrontProductItemGeneral.module.scss';
-
-import addIcon from '@/imgs/Buyer&Seller/SideBar/addProject.svg';
 
 type ChangedProductFields = Partial<Omit<ProductItemType, 'dynamic_attr'>>;
 export type ChangeFieldFunction = <K extends keyof ProductItemType>(
@@ -49,9 +48,8 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 
 	const categories = useAppSelector((state) => state.storefrontSlice.categories);
 
-	const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>(
-		'idle'
-	);
+	const [status, setStatus] = useState<FetchStatus>('idle');
+	const [updateStatus, setUpdateStatus] = useState<FetchStatus>('idle');
 
 	const [product, setProduct] = useState<ProductItemType>();
 	const [dynamicAttributes, setDynamicAttributes] = useState<
@@ -59,6 +57,8 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 	>([]);
 	const [changedProductFields, setChangedProductFields] =
 		useState<ChangedProductFields>();
+
+	const [isShowImageUploadModal, setIsShowImageUploadModal] = useState(false);
 
 	useEffect(() => {
 		if (!categories || !categories.length) {
@@ -68,8 +68,9 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 	}, []);
 
 	const fetchData = async () => {
-		setStatus('loading');
 		try {
+			setStatus('loading');
+
 			const response = await api.productSeller.getSellerProductById(id);
 
 			setProduct(response);
@@ -100,7 +101,6 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 			setStatus('success');
 		} catch (e) {
 			setStatus('error');
-			console.log('Error with get product', e);
 		}
 	};
 
@@ -113,13 +113,18 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 		}
 	};
 
-	const updateProduct = async () => {
+	const updateProduct = async (
+		directlyChangedProductFields?: ChangedProductFields
+	) => {
 		if (!product) {
 			return;
 		}
 		try {
+			setUpdateStatus('loading');
+
 			const data = {
 				...changedProductFields,
+				...directlyChangedProductFields,
 				dynamic_attr: dynamicAttributes
 					.filter((item) => item.value || item.attrValueIds.length > 0)
 					.map((item) => {
@@ -140,9 +145,9 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 			};
 
 			await api.productSeller.updateSellerProductById(product.id, data);
-			await fetchData();
+			setUpdateStatus('idle');
 		} catch (e) {
-			console.log('Error with update product', e);
+			setUpdateStatus('error');
 		}
 	};
 
@@ -203,19 +208,34 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 		});
 	};
 
-	const onDeleteImageByIndex = (index: number) => {
-		if (!product) {
-			return;
-		}
-		setProduct({
-			...product,
-			images: product.images.filter((_, idx) => idx !== index),
+	const handleSetImages = async (images: ImageType[]) => {
+		setProduct((prevState) => {
+			if (!prevState) {
+				return;
+			}
+			return {
+				...prevState,
+				images,
+			};
 		});
 	};
 
-	const showModalForUploadImages = () => {
-		dispatch(setProductIdForUploadImages(id));
-		dispatch(setModal('sellerProductUploadImage'));
+	const handleDeleteImages = async (imageId: number) => {
+		try {
+			await api.productSeller.deleteImages([imageId]);
+
+			setProduct((prevState) => {
+				if (!prevState) {
+					return;
+				}
+				return {
+					...prevState,
+					images: prevState.images.filter((item) => item.id !== imageId),
+				};
+			});
+		} catch (e) {
+			console.log(e);
+		}
 	};
 
 	if (status === 'error') {
@@ -274,7 +294,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 							<Input
 								type="number"
 								placeholder="Enter warranty"
-								value={product.warranty}
+								value={product?.warranty || 0}
 								onChange={(e) =>
 									onChangeField('warranty', Number(e.currentTarget.value))
 								}
@@ -288,16 +308,27 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 							<div className={s.images}>
 								{product.images.length > 0 &&
 									product.images.map((item, index) => (
-										<StorefrontProductImage
+										<ImageListItem
 											key={`${item.id}-${index}`}
-											id={item.id}
-											url={item.url}
-											onDeleteImageByIndex={() => onDeleteImageByIndex(index)}
+											url={item.url || ''}
+											onDelete={() => handleDeleteImages(item.id)}
 										/>
 									))}
-								<div className={s.image_upload} onClick={showModalForUploadImages}>
-									<Image src={addIcon} alt="add_image_icon" width={24} height={24} />
-								</div>
+
+								<ImageUploadButton
+									onClick={() => setIsShowImageUploadModal(!isShowImageUploadModal)}
+								/>
+
+								<ModalPortal
+									isOpen={isShowImageUploadModal}
+									onHide={() => setIsShowImageUploadModal(false)}
+								>
+									<StorefrontProductImageUploadModal
+										onHide={() => setIsShowImageUploadModal(false)}
+										productId={id}
+										setImages={handleSetImages}
+									/>
+								</ModalPortal>
 							</div>
 						</td>
 					</tr>
@@ -318,14 +349,31 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 				onChangeSelectField={onChangeDynamicSelectField}
 			/>
 
-			<div className={s.button}>
-				<button
+			<div className={s.controllers}>
+				<Button variant="text" className={s.btn_cancel} onClick={fetchData}>
+					Cancel
+				</Button>
+				<Button
+					variant="contained"
 					type="submit"
-					className={s.button_save}
+					disabled={updateStatus === 'loading'}
 					onClick={() => updateProduct()}
 				>
 					Save
-				</button>
+				</Button>
+				{product.status === 'draft' && (
+					<Button
+						variant="contained"
+						className={s.btn_publish}
+						disabled={updateStatus === 'loading'}
+						onClick={async () => {
+							onChangeField('status', 'published');
+							await updateProduct({ status: 'published' });
+						}}
+					>
+						Publish
+					</Button>
+				)}
 			</div>
 		</div>
 	);

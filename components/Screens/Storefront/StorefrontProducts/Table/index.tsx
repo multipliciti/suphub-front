@@ -5,6 +5,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { TableWrapper } from '@/components/UI/TableWrapper';
 import { StorefrontProductImageUploader } from './ImageUploader';
 import { StorefrontProductPerformance } from './Performance';
+import { StorefrontProductStatusLabel } from './StatusLabel';
 import { StorefrontEmptyTableMessage } from './EmptyTableMessage';
 import { StorefrontProductPagination } from './Pagination';
 import { StorefrontProductPriceTier } from './PriceTier';
@@ -80,7 +81,7 @@ export const StorefrontProductsTable = () => {
 								</td>
 
 								<td style={{ textAlign: 'center' }}>
-									<span className={s.status_label}>Draft</span>
+									<StorefrontProductStatusLabel status={item.status} />
 								</td>
 
 								<td style={{ textAlign: 'center' }}>
