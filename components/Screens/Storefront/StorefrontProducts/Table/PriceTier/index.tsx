@@ -75,7 +75,6 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 							<Image src={infoIcon} alt="information_icon" width={16} height={16} />
 						</div>
 					</th>
-					<th />
 				</tr>
 			</thead>
 
@@ -124,6 +123,8 @@ const PriceTierItem: FC<PriceTierItemProps> = ({
 	const [minCount, setMinCount] = useState(item.minCount);
 	const [value, setValue] = useState(item.value);
 
+	const [isShowDeleteButton, setIsShowDeleteButton] = useState(false);
+
 	const debouncedUpdate = debounce((value) => {
 		onUpdate(value[0], value[1]);
 	}, 300);
@@ -151,7 +152,10 @@ const PriceTierItem: FC<PriceTierItemProps> = ({
 	};
 
 	return (
-		<tr>
+		<tr
+			onMouseEnter={() => setIsShowDeleteButton(true)}
+			onMouseLeave={() => setIsShowDeleteButton(false)}
+		>
 			<td>
 				<div className={s.price_row}>
 					<div>QTY &gt;</div>
@@ -181,17 +185,22 @@ const PriceTierItem: FC<PriceTierItemProps> = ({
 				</div>
 			</td>
 
-			<td>
+			<td style={{ position: 'relative' }}>
 				<Input
+					style={{ width: 145 }}
 					withBorder={true}
 					type="text"
 					placeholder={'$0,00'}
 					disabled
 					value={`$${(value * (1 - platformCommission)).toFixed(2)}`}
 				/>
-			</td>
-			<td>
-				<div style={{ cursor: 'pointer' }} onClick={onDelete}>
+				<div
+					className={classNames(
+						s.delete_btn,
+						isShowDeleteButton && s.delete_btn_show
+					)}
+					onClick={onDelete}
+				>
 					<Image src={clearIcon} alt="clear_icon" width={16} height={16} />
 				</div>
 			</td>

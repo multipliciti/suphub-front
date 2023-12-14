@@ -13,10 +13,6 @@
       th:nth-child(2) {
         min-width: 183px;
       }
-      th:nth-child(3) {
-        width: 40px;
-        min-width: 40px;
-      }
     }
   }
 
@@ -27,13 +23,6 @@
 
     tr:last-child td {
       border-bottom: 1px solid #E7E9EF;
-    }
-
-    tr {
-      th:nth-child(3) {
-        width: 49px;
-        min-width: 49px;
-      }
     }
   }
 }
@@ -74,6 +63,22 @@
 .add_btn {
   background-color: transparent;
   color: #755CF1;
+}
+
+.delete_btn {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  cursor: pointer;
+
+  &_show {
+    opacity: 1;
+  }
 }
 
 .currency {
