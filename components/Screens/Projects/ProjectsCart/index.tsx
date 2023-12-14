@@ -14,7 +14,8 @@ import {
 	reset,
 } from '@/redux/slices/projects/projectsCart';
 
-import s from './/ProjectCart.module.scss';
+import s from './ProjectCart.module.scss';
+import { Spinner } from '@/components/UI/Spinner';
 
 interface Props {
 	id: number;
@@ -59,7 +60,7 @@ export const ProjectsCart: FC<Props> = ({ id }) => {
 
 	return (
 		<div className={s.wrapper}>
-			{(status === 'idle' || status === 'loading') && <div>Loading...</div>}
+			{(status === 'idle' || status === 'loading') && <Spinner />}
 
 			{status === 'rejected' && <div>Something went wrong</div>}
 

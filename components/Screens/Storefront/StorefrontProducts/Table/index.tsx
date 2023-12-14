@@ -9,6 +9,7 @@ import { StorefrontProductStatusLabel } from './StatusLabel';
 import { StorefrontEmptyTableMessage } from './EmptyTableMessage';
 import { StorefrontProductPagination } from './Pagination';
 import { StorefrontProductPriceTier } from './PriceTier';
+import { Spinner } from '@/components/UI/Spinner';
 
 import s from './Table.module.scss';
 
@@ -19,7 +20,7 @@ export const StorefrontProductsTable = () => {
 	const status = useAppSelector((state) => state.storefrontProductsSlice.status);
 
 	if (status === 'idle' || status === 'loading') {
-		return <div></div>;
+		return <Spinner />;
 	}
 
 	if (status === 'rejected') {
