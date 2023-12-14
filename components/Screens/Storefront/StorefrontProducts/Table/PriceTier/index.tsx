@@ -6,6 +6,7 @@ import debounce from 'lodash.debounce';
 import { TableWrapper } from '@/components/UI/TableWrapper';
 import { classNames } from '@/utils/classNames';
 import { Price } from '@/types/products/product';
+import { Input } from '@/components/UI/Input';
 import { Api } from '@/services';
 
 import s from './PriceTier.module.scss';
@@ -154,31 +155,39 @@ const PriceTierItem: FC<PriceTierItemProps> = ({
 			<td>
 				<div className={s.price_row}>
 					<div>QTY &gt;</div>
-					<input
+					<Input
 						style={{ width: 60 }}
+						withBorder={true}
 						placeholder={'0'}
 						type="number"
+						min={0}
 						value={minCount === 0 ? '' : minCount}
-						onChange={(e) => setMinCount(Number(e.target.value))}
+						onChange={(e) => setMinCount(Math.abs(Number(e.target.value)))}
 					/>
-					<input
-						style={{ width: 90 }}
-						placeholder={'$0.00'}
-						type="number"
-						value={value === 0 ? '' : value}
-						onChange={(e) => setValue(Number(e.target.value))}
-					/>
+					<div className={classNames(s.currency, value !== 0 && s.currency_value)}>
+						<Input
+							style={{ width: 90 }}
+							withBorder={true}
+							placeholder={'0,00'}
+							type="number"
+							step={0.1}
+							min={0}
+							value={value === 0 ? '' : value}
+							onChange={(e) => setValue(Math.abs(Number(e.target.value)))}
+						/>
+					</div>
+
 					<span>per unit</span>
 				</div>
 			</td>
 
 			<td>
-				<input
-					className={s.earnings_input}
+				<Input
+					withBorder={true}
 					type="text"
-					disabled={true}
-					placeholder={'$0.00'}
-					value={(value * (1 - platformCommission)).toFixed(2)}
+					placeholder={'$0,00'}
+					disabled
+					value={`$${(value * (1 - platformCommission)).toFixed(2)}`}
 				/>
 			</td>
 			<td>

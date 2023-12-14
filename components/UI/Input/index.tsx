@@ -12,6 +12,7 @@ interface Props extends InputHTMLAttributes<HTMLInputElement> {
 export const Input: FC<Props> = ({
 	withBorder = false,
 	withFocusBorder = true,
+	className,
 	...props
 }) => {
 	return (
@@ -19,7 +20,8 @@ export const Input: FC<Props> = ({
 			className={classNames(
 				s.input,
 				withBorder && s.input_border,
-				withFocusBorder && s.input_focus_border
+				withFocusBorder && s.input_focus_border,
+				className
 			)}
 			{...props}
 		/>
