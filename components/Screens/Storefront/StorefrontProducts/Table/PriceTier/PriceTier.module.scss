@@ -36,20 +36,6 @@
       }
     }
   }
-
-  input {
-    padding: 4px 8px;
-
-    border: 1px solid #CBD5E1;
-    border-radius: 4px;
-    &:focus {
-      border: 1px solid #755CF1;
-      outline: none;
-    }
-    &::placeholder {
-      color: #CBD5E1;
-    }
-  }
 }
 
 .reset_th_row {
@@ -83,13 +69,32 @@
     gap: 4px;
     color: #94A3B8;
   }
-
-  &_input {
-    width: 150px;
-  }
 }
 
 .add_btn {
   background-color: transparent;
   color: #755CF1;
+}
+
+.currency {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    content: "$";
+    top: 50%;
+    left: 8px;
+    transform: translateY(-50%);
+    color: #CBD5E1;
+  }
+
+  &_value {
+    &::before {
+      color: #334155;
+    }
+  }
+
+  > input {
+    padding-left: 15px;
+  }
 }
