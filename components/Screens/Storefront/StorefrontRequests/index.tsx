@@ -7,10 +7,12 @@ import { useState, useEffect } from 'react';
 import { Api } from '@/services';
 import { setProjects } from '@/redux/slices/storefront/storefrontProjectsSeller';
 import { useAppDispatch } from '@/redux/hooks';
+import { Spinner } from '@/components/UI/Spinner';
 export const StorefrontRequests = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
 	//store filters-inputs value
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [stateInputs, setStateInputs] = useState({
 		search: '',
 		type: [],
@@ -41,6 +43,7 @@ export const StorefrontRequests = () => {
 	const finalJsonString = JSON.stringify(finalAttrObj);
 
 	const getProjects = async (finalJsonString: string) => {
+		setIsLoading(true);
 		try {
 			const response = await api.sellerProject.getSellerProjects({
 				page: currentPage,
@@ -52,6 +55,7 @@ export const StorefrontRequests = () => {
 		} catch (error) {
 			console.error('getProjects seller error', error);
 		}
+		setIsLoading(false);
 	};
 
 	useEffect(() => {
@@ -62,12 +66,18 @@ export const StorefrontRequests = () => {
 		return (
 			<div className={s.wrapper}>
 				<Filters stateInputs={stateInputs} setStateInputs={setStateInputs} />
-				<RequestTable />
-				<PaginationWrapper
-					currentPage={currentPage}
-					setActivePage={setCurrentPage}
-					totalPages={20}
-				/>
+				{isLoading ? (
+					<Spinner />
+				) : (
+					<>
+						<RequestTable />
+						<PaginationWrapper
+							currentPage={currentPage}
+							setActivePage={setCurrentPage}
+							totalPages={20}
+						/>
+					</>
+				)}
 			</div>
 		);
 	}

@@ -8,7 +8,7 @@ import { Products } from './Products';
 import { RfqItemGot } from '@/types/services/rfq';
 import { Api } from '@/services';
 import { IsBuyerSideBarRequestDetail } from '@/components/Containers/IsBuyerSideBarRequestDetail/IsBuyerSideBarRequestDetail';
-
+import { Spinner } from '@/components/UI/Spinner';
 export const ProjectsRFQCart = () => {
 	const pathname = usePathname();
 	const api = Api();
@@ -17,6 +17,7 @@ export const ProjectsRFQCart = () => {
 		categories: [],
 		statuses: [],
 	});
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	//get projectId from url
 	const path = pathname;
@@ -91,20 +92,26 @@ export const ProjectsRFQCart = () => {
 	};
 
 	useEffect(() => {
+		setIsLoading(true);
 		fetchData();
+		setIsLoading(false);
 	}, [stateInputs]);
 
 	{
 		return (
 			<div>
 				<IsBuyerSideBarRequestDetail>
-					<>
-						<RFQCartFilters
-							stateInputs={stateInputs}
-							setStateInputs={setStateInputs}
-						/>
-						{rfqsSorted.length < 1 ? <NoResult /> : <Products rfqs={rfqsSorted} />}
-					</>
+					{isLoading ? (
+						<Spinner />
+					) : (
+						<>
+							<RFQCartFilters
+								stateInputs={stateInputs}
+								setStateInputs={setStateInputs}
+							/>
+							{rfqsSorted.length < 1 ? <NoResult /> : <Products rfqs={rfqsSorted} />}
+						</>
+					)}
 				</IsBuyerSideBarRequestDetail>
 			</div>
 		);

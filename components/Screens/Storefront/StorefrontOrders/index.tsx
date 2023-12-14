@@ -5,6 +5,7 @@ import { ProjectsTable } from './ProjectsTable';
 import { PaginationWrapper } from './PaginationWrapper';
 import { Api } from '@/services';
 import { Order } from '@/types/services/projects';
+import { Spinner } from '@/components/UI/Spinner';
 
 export const StorefrontOrders = () => {
 	const api = Api();
@@ -18,6 +19,7 @@ export const StorefrontOrders = () => {
 
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [orders, setOrders] = useState<Order[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const columns = [
 		{ title: 'PO#', key: 'PO#' },
 		{ title: 'Issue Date', key: 'Issue Date' },
@@ -59,6 +61,7 @@ export const StorefrontOrders = () => {
 	const finalJsonString = JSON.stringify(finalAttrObj);
 
 	const getOrders = async () => {
+		setIsLoading(true);
 		try {
 			const orders = await api.sellerProject.getSellerOrders({
 				page: currentPage,
@@ -71,6 +74,7 @@ export const StorefrontOrders = () => {
 		} catch (error) {
 			console.error('getOrders seller error', error);
 		}
+		setIsLoading(false);
 	};
 
 	useEffect(() => {
@@ -81,12 +85,18 @@ export const StorefrontOrders = () => {
 		return (
 			<div>
 				<Filters stateInputs={stateInputs} setStateInputs={setStateInputs} />
-				{orders.length > 0 && <ProjectsTable columns={columns} data={orders} />}
-				<PaginationWrapper
-					currentPage={currentPage}
-					setActivePage={setCurrentPage}
-					totalPages={20}
-				/>
+				{isLoading ? (
+					<Spinner />
+				) : (
+					<>
+						{orders.length > 0 && <ProjectsTable columns={columns} data={orders} />}
+						<PaginationWrapper
+							currentPage={currentPage}
+							setActivePage={setCurrentPage}
+							totalPages={20}
+						/>
+					</>
+				)}
 			</div>
 		);
 	}

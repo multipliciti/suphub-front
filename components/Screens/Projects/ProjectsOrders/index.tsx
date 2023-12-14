@@ -5,6 +5,7 @@ import { ProjectsTable } from './ProjectsTable';
 import { PaginationWrapper } from './PaginationWrapper';
 import { Api } from '@/services';
 import { Order } from '@/types/services/projects';
+import { Spinner } from '@/components/UI/Spinner';
 
 export const ProjectsOrders = () => {
 	const api = Api();
@@ -15,7 +16,7 @@ export const ProjectsOrders = () => {
 		status: [],
 		orderType: [],
 	});
-
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [orders, setOrders] = useState<Order[]>([]);
 	const columns = [
@@ -74,19 +75,27 @@ export const ProjectsOrders = () => {
 	};
 
 	useEffect(() => {
+		setIsLoading(true);
 		getOrders();
+		setIsLoading(false);
 	}, [stateInputs, currentPage]);
 
 	{
 		return (
 			<div>
 				<Filters stateInputs={stateInputs} setStateInputs={setStateInputs} />
-				{orders.length > 0 && <ProjectsTable columns={columns} data={orders} />}
-				<PaginationWrapper
-					currentPage={currentPage}
-					setActivePage={setCurrentPage}
-					totalPages={20}
-				/>
+				{isLoading ? (
+					<Spinner />
+				) : (
+					<>
+						{orders.length > 0 && <ProjectsTable columns={columns} data={orders} />}
+						<PaginationWrapper
+							currentPage={currentPage}
+							setActivePage={setCurrentPage}
+							totalPages={20}
+						/>
+					</>
+				)}
 			</div>
 		);
 	}

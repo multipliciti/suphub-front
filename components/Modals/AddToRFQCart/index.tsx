@@ -187,7 +187,11 @@ export const AddToRFQCart = () => {
 					/>
 				</label>
 				<div className={s.list}>
-					{isLoading && <Spinner />}
+					{isLoading && (
+						<div className={s.spinner}>
+							<Spinner />
+						</div>
+					)}
 					{step === 1 && !isLoading && (
 						<>
 							{projects

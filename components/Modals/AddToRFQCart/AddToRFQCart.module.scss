@@ -160,14 +160,11 @@
 		align-items: center;
 		width: 100%;
 		padding: 12px;
-		border: none;
 		outline: none;
-		background-color: transparent;
 		border-radius: 8px;
-		border: 1px solid #cbd5e1;
 
 		color: #0f172a;
-		margin: 35px 0px 24px;
+		margin: 35px 0 24px;
 
 		font-size: 16px;
 		font-style: normal;
@@ -200,4 +197,8 @@
 		font-weight: 400;
 		line-height: 20px;
 	}
+}
+
+.spinner {
+	margin-top: 2vh;
 }

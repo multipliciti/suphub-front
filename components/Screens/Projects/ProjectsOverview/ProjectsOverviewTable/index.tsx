@@ -9,6 +9,7 @@ import { TableSelect } from '@/components/UI/TableSelect';
 import { Api } from '@/services';
 
 import s from './ProjectsOverviewTable.module.scss';
+import { Spinner } from '@/components/UI/Spinner';
 
 type ChangeProjectFieldFunction = <K extends keyof Project>(
 	key: K,
@@ -92,135 +93,149 @@ export const ProjectsOverviewTable: FC = () => {
 	};
 
 	return (
-		<div className={s.wrapper}>
-			<table>
-				<thead>
-					<tr>
-						<th colSpan={2}>General information</th>
-					</tr>
-				</thead>
+		<>
+			{isLoading ? (
+				<Spinner />
+			) : (
+				<div className={s.wrapper}>
+					<table>
+						<thead>
+							<tr>
+								<th colSpan={2}>General information</th>
+							</tr>
+						</thead>
 
-				<tbody>
-					<tr>
-						<td>Project name</td>
+						<tbody>
+							<tr>
+								<td>Project name</td>
 
-						<ProjectTableInput
-							placeholder="Enter project name"
-							value={project.name}
-							onChange={(e) => onChangeField('name', e.currentTarget.value)}
-						/>
-					</tr>
-					<tr>
-						<td>Project type</td>
-						<td>
-							<TableSelect
-								isMultiple={false}
-								placeholder={'Select project type'}
-								options={['singleFamily', 'custom', 'multifamily'] as ProjectType[]}
-								value={[project.type]}
-								setValue={(value) => {
-									onChangeField('type', value[0] as ProjectType);
-								}}
-							/>
-						</td>
-					</tr>
-					<tr>
-						<td>Budget</td>
+								<ProjectTableInput
+									placeholder="Enter project name"
+									value={project.name}
+									onChange={(e) => onChangeField('name', e.currentTarget.value)}
+								/>
+							</tr>
+							<tr>
+								<td>Project type</td>
+								<td>
+									<TableSelect
+										isMultiple={false}
+										placeholder={'Select project type'}
+										options={
+											['singleFamily', 'custom', 'multifamily'] as ProjectType[]
+										}
+										value={[project.type]}
+										setValue={(value) => {
+											onChangeField('type', value[0] as ProjectType);
+										}}
+									/>
+								</td>
+							</tr>
+							<tr>
+								<td>Budget</td>
 
-						<ProjectTableInput
-							type="number"
-							placeholder="Enter budget"
-							value={project.budget}
-							onChange={(e) =>
-								onChangeField('budget', Number(e.currentTarget.value))
-							}
-						/>
-					</tr>
-					<tr>
-						<td>Floor area</td>
+								<ProjectTableInput
+									type="number"
+									placeholder="Enter budget"
+									value={project.budget}
+									onChange={(e) =>
+										onChangeField('budget', Number(e.currentTarget.value))
+									}
+								/>
+							</tr>
+							<tr>
+								<td>Floor area</td>
 
-						<ProjectTableInput
-							type="number"
-							placeholder="Enter floor"
-							value={project.floorArea}
-							onChange={(e) =>
-								onChangeField('floorArea', Number(e.currentTarget.value))
-							}
-						/>
-					</tr>
-				</tbody>
-			</table>
+								<ProjectTableInput
+									type="number"
+									placeholder="Enter floor"
+									value={project.floorArea}
+									onChange={(e) =>
+										onChangeField('floorArea', Number(e.currentTarget.value))
+									}
+								/>
+							</tr>
+						</tbody>
+					</table>
 
-			<table>
-				<thead>
-					<tr>
-						<th colSpan={2}>Address (for delivery)</th>
-					</tr>
-				</thead>
+					<table>
+						<thead>
+							<tr>
+								<th colSpan={2}>Address (for delivery)</th>
+							</tr>
+						</thead>
 
-				<tbody>
-					<tr>
-						<td>Street address</td>
+						<tbody>
+							<tr>
+								<td>Street address</td>
 
-						<ProjectTableInput
-							placeholder="Enter address"
-							value={project.address?.street}
-							onChange={(e) => onChangeAddressField('street', e.currentTarget.value)}
-						/>
-					</tr>
-					<tr>
-						<td>City</td>
+								<ProjectTableInput
+									placeholder="Enter address"
+									value={project.address?.street}
+									onChange={(e) =>
+										onChangeAddressField('street', e.currentTarget.value)
+									}
+								/>
+							</tr>
+							<tr>
+								<td>City</td>
 
-						<ProjectTableInput
-							placeholder="Enter address"
-							value={project.address?.city}
-							onChange={(e) => onChangeAddressField('city', e.currentTarget.value)}
-						/>
-					</tr>
-					<tr>
-						<td>State</td>
+								<ProjectTableInput
+									placeholder="Enter address"
+									value={project.address?.city}
+									onChange={(e) =>
+										onChangeAddressField('city', e.currentTarget.value)
+									}
+								/>
+							</tr>
+							<tr>
+								<td>State</td>
 
-						<ProjectTableInput
-							placeholder="Enter address"
-							value={project.address?.state}
-							onChange={(e) => onChangeAddressField('state', e.currentTarget.value)}
-						/>
-					</tr>
-					<tr>
-						<td>Country</td>
+								<ProjectTableInput
+									placeholder="Enter address"
+									value={project.address?.state}
+									onChange={(e) =>
+										onChangeAddressField('state', e.currentTarget.value)
+									}
+								/>
+							</tr>
+							<tr>
+								<td>Country</td>
 
-						<ProjectTableInput
-							placeholder="Enter country"
-							value={project.address?.country}
-							onChange={(e) =>
-								onChangeAddressField('country', e.currentTarget.value)
-							}
-						/>
-					</tr>
-					<tr>
-						<td>Zip code</td>
+								<ProjectTableInput
+									placeholder="Enter country"
+									value={project.address?.country}
+									onChange={(e) =>
+										onChangeAddressField('country', e.currentTarget.value)
+									}
+								/>
+							</tr>
+							<tr>
+								<td>Zip code</td>
 
-						<ProjectTableInput
-							placeholder="Enter zip code"
-							value={project.address?.zipcode}
-							onChange={(e) =>
-								onChangeAddressField('zipcode', e.currentTarget.value)
-							}
-						/>
-					</tr>
-				</tbody>
-			</table>
+								<ProjectTableInput
+									placeholder="Enter zip code"
+									value={project.address?.zipcode}
+									onChange={(e) =>
+										onChangeAddressField('zipcode', e.currentTarget.value)
+									}
+								/>
+							</tr>
+						</tbody>
+					</table>
 
-			<button
-				type="submit"
-				className={s.button_save}
-				onClick={updateProject}
-				disabled={isLoading}
-			>
-				{isLoading ? 'Loading...' : 'Save changes'}
-			</button>
+					<button
+						type="submit"
+						className={s.button_save}
+						onClick={updateProject}
+						disabled={isLoading}
+					>
+						{isLoading ? 'Loading...' : 'Save changes'}
+					</button>
 
-			{isError && <div style={{ color: 'red' }}>Something went wrong</div>}
-		</div>
+					{isError && <div style={{ color: 'red' }}>Something went wrong</div>}
+				</div>
+			)}
+		</>
 	);
 };
