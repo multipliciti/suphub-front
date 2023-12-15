@@ -1,15 +1,15 @@
 export const productStatuses = [
 	'draft',
-	'rfqOnly',
 	'published',
 	'archived',
+	'rfqOnly',
 ] as const;
 
 export type ProductItemStatus = (typeof productStatuses)[number];
 
 export const productLabelStatuses: { [key in ProductItemStatus]: string } = {
 	draft: 'Draft',
+	published: 'Active',
 	archived: 'Archived',
-	published: 'Published',
 	rfqOnly: 'RFQ',
 };
