@@ -1,4 +1,5 @@
 import { DynamicAttribute } from '@/types/products/product';
+import { ProductItemStatus } from '@/types/products/productStatus';
 
 export interface CreateSellerProduct {
 	subCategoryId: number;
@@ -22,6 +23,9 @@ export interface FindSellerProductsParams {
 		};
 		subCategoryId: {
 			in: number[];
+		};
+		status: {
+			in: ProductItemStatus[];
 		};
 	};
 }

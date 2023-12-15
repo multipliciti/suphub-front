@@ -25,6 +25,9 @@ const initialState: CounterState = {
 			subCategoryId: {
 				in: [],
 			},
+			status: {
+				in: [],
+			},
 		},
 		page: 1,
 		limit: 10,
@@ -85,6 +88,12 @@ const storefrontProductsSlice = createSlice({
 			state.params.page = 1;
 			state.params.find.subCategoryId.in = action.payload;
 		},
+		setStatusFilter(
+			state,
+			action: PayloadAction<FindSellerProductsParams['find']['status']['in']>
+		) {
+			state.params.find.status.in = action.payload;
+		},
 	},
 });
 
@@ -95,6 +104,7 @@ export const {
 	setPage,
 	setSearchFilter,
 	setSubcategoryFilter,
+	setStatusFilter,
 } = storefrontProductsSlice.actions;
 
 export default storefrontProductsSlice.reducer;

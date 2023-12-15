@@ -17,6 +17,9 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 					...(find.subCategoryId.in.length && {
 						subCategoryId: { in: find.subCategoryId.in },
 					}),
+					...(find.status.in.length && {
+						status: { in: find.status.in },
+					}),
 				},
 			});
 
