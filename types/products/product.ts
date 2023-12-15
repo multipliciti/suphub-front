@@ -1,4 +1,5 @@
 import { ImageType } from '@/types/products/image';
+import { ProductItemStatus } from '@/types/products/productStatus';
 
 interface CutSheet {
 	id: number;
@@ -45,8 +46,6 @@ export interface DynamicAttribute {
 }
 
 export type UpdateDynamicAttribute = DynamicAttribute & { attrValueIds: number[] };
-
-export type ProductItemStatus = 'draft' | 'rfqOnly' | 'published' | 'archived';
 
 export interface ProductItemType {
 	id: number;

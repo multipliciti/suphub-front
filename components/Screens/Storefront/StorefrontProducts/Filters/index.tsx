@@ -5,15 +5,20 @@ import {
 	setResult,
 	setStatus,
 	setSubcategoryFilter,
+	setStatusFilter,
 } from '@/redux/slices/storefront/storefrontProducts';
+import {
+	ProductItemStatus,
+	productLabelStatuses,
+} from '@/types/products/productStatus';
+import { StorefrontProductAddProductButton } from './AddProductButton';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { StorefrontProductSearchInput } from './SearchInput';
+import { entriesFromObject } from '@/utils/object';
 import { categoryService } from '@/services/categoryApi';
 import { setCategories } from '@/redux/slices/storefront/storefront';
 import { Select } from '@/components/UI/Select';
 import { Api } from '@/services';
-
-import { StorefrontProductAddProductButton } from './AddProductButton';
-import { StorefrontProductSearchInput } from './SearchInput';
 
 import s from './StorefrontProductsFilters.module.scss';
 
@@ -29,13 +34,13 @@ export const StorefrontProductsFilters = () => {
 	const sort = useAppSelector((state) => state.storefrontProductsSlice.sort);
 
 	const [subcategory, setSubcategory] = useState<string[]>([]);
-	const [statusFilter, setStatusFilter] = useState<string[]>([]);
+	const [productStatus, setProductStatus] = useState<string[]>([]);
 
 	useEffect(() => {
 		if (categories) {
 			return;
 		}
-		fetchSubcategories();
+		fetchCategories();
 	}, []);
 
 	useEffect(() => {
@@ -52,7 +57,11 @@ export const StorefrontProductsFilters = () => {
 		changeSubcategoryFilter();
 	}, [subcategory]);
 
-	const fetchSubcategories = async () => {
+	useEffect(() => {
+		changeStatusFilter();
+	}, [productStatus]);
+
+	const fetchCategories = async () => {
 		try {
 			const response = await api.category.getCategories();
 			dispatch(setCategories(response));
@@ -94,6 +103,22 @@ export const StorefrontProductsFilters = () => {
 		dispatch(setSubcategoryFilter(subcategoryIds));
 	};
 
+	const changeStatusFilter = () => {
+		const selectedProductStatues: ProductItemStatus[] = [];
+
+		productStatus.forEach((item) => {
+			const statusKey = entriesFromObject(productLabelStatuses).find(
+				([_, value]) => value === item
+			);
+
+			if (statusKey) {
+				selectedProductStatues.push(statusKey[0]);
+			}
+		});
+
+		dispatch(setStatusFilter(selectedProductStatues));
+	};
+
 	return (
 		<div className={s.wrapper}>
 			<StorefrontProductAddProductButton />
@@ -111,10 +136,10 @@ export const StorefrontProductsFilters = () => {
 
 				<Select
 					title="Status"
-					options={[]}
+					options={Object.values(productLabelStatuses)}
 					isMulti={true}
-					value={statusFilter}
-					setValue={setStatusFilter}
+					value={productStatus}
+					setValue={setProductStatus}
 				/>
 			</div>
 		</div>
