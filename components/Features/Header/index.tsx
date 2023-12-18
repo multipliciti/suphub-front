@@ -42,8 +42,6 @@ export const Header = () => {
 	useClickOutside(menuRef, () => {
 		setMenu(false);
 	});
-	console.log('user', !user);
-	console.log('');
 
 	const menuItems = [
 		{
