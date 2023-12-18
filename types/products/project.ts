@@ -1,5 +1,3 @@
-export type ProjectType = 'singleFamily' | 'multifamily' | 'custom';
-
 export interface Project {
 	id: number;
 	name: string;
@@ -22,3 +20,10 @@ export interface Project {
 	updatedAt: string;
 	createdAt: string;
 }
+
+export type ProjectType = 'singleFamily' | 'commercial';
+
+export const projectTypeLabels: { [key in ProjectType]: string } = {
+	singleFamily: 'Single Family Project',
+	commercial: 'Commercial Project',
+};
