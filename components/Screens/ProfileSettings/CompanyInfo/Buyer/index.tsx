@@ -126,9 +126,7 @@ const BuyerCompanyInfo = () => {
 				</button>
 			</div>
 			{isLoading ? (
-				<div className={s.spinner_wrapper}>
-					<Spinner />
-				</div>
+				<Spinner className={s.spinner_wrapper} />
 			) : (
 				<>
 					<div className={s.settings}>

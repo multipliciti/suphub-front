@@ -20,7 +20,7 @@ export const StorefrontProductsTable = () => {
 	const status = useAppSelector((state) => state.storefrontProductsSlice.status);
 
 	if (status === 'idle' || status === 'loading') {
-		return <Spinner />;
+		return <Spinner style={{ marginTop: '9vh' }} />;
 	}
 
 	if (status === 'rejected') {

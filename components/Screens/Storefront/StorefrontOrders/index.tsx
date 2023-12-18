@@ -6,7 +6,6 @@ import { PaginationWrapper } from './PaginationWrapper';
 import { Api } from '@/services';
 import { Order } from '@/types/services/projects';
 import { Spinner } from '@/components/UI/Spinner';
-
 export const StorefrontOrders = () => {
 	const api = Api();
 	//store filters-inputs value
@@ -86,7 +85,7 @@ export const StorefrontOrders = () => {
 			<div>
 				<Filters stateInputs={stateInputs} setStateInputs={setStateInputs} />
 				{isLoading ? (
-					<Spinner />
+					<Spinner style={{ marginTop: '9vh' }} />
 				) : (
 					<>
 						{orders.length > 0 && <ProjectsTable columns={columns} data={orders} />}
