@@ -19,7 +19,7 @@ export const ProjectsAddButton = () => {
 		try {
 			const response = await api.project.createProject({
 				name: 'Untitled',
-				type: 'custom',
+				type: 'singleFamily',
 				budget: 0,
 				floorArea: 0,
 				address: {

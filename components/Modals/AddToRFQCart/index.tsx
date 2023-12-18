@@ -100,7 +100,7 @@ export const AddToRFQCart = () => {
 		try {
 			await api.project.createProject({
 				name: 'New Project',
-				type: 'custom',
+				type: 'singleFamily',
 				budget: 0,
 				floorArea: 0,
 			});
