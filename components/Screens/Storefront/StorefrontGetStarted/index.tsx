@@ -23,11 +23,7 @@ export const StorefrontGetStarted = () => {
 	}, [sellerCompany]);
 	return (
 		<>
-			{isLoading && (
-				<div className={s.spinner_wrapper}>
-					<Spinner />
-				</div>
-			)}
+			{isLoading && <Spinner className={s.spinner_wrapper} />}
 			{!isLoading && (
 				<div className={s.content_group}>
 					<div className={s.main_group}>

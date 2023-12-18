@@ -67,7 +67,7 @@ export const StorefrontRequests = () => {
 			<div className={s.wrapper}>
 				<Filters stateInputs={stateInputs} setStateInputs={setStateInputs} />
 				{isLoading ? (
-					<Spinner />
+					<Spinner className={s.spinner} />
 				) : (
 					<>
 						<RequestTable />
