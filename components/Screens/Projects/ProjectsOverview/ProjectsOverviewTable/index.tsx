@@ -1,15 +1,16 @@
 import { FC, useEffect, useState } from 'react';
 
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { Project, ProjectType } from '@/types/products/project';
+import { Project, projectTypeLabels } from '@/types/products/project';
 import { ProjectTableInput } from '@/components/Screens/Projects/ProjectsOverview/ProjectsOverviewTable/TableInput';
 import { updateProjectName } from '@/redux/slices/projects/projects';
-import { setProject } from '@/redux/slices/projects/projectItem';
+import { entriesFromObject } from '@/utils/object';
 import { TableSelect } from '@/components/UI/TableSelect';
+import { setProject } from '@/redux/slices/projects/projectItem';
+import { Spinner } from '@/components/UI/Spinner';
 import { Api } from '@/services';
 
 import s from './ProjectsOverviewTable.module.scss';
-import { Spinner } from '@/components/UI/Spinner';
 
 type ChangeProjectFieldFunction = <K extends keyof Project>(
 	key: K,
@@ -92,6 +93,18 @@ export const ProjectsOverviewTable: FC = () => {
 		);
 	};
 
+	const onChangeProjectTypeField = (data: string[]) => {
+		const projectTypeKey = entriesFromObject(projectTypeLabels).find(
+			([_, value]) => data[0] === value
+		);
+
+		if (!projectTypeKey) {
+			return;
+		}
+
+		onChangeField('type', projectTypeKey[0]);
+	};
+
 	return (
 		<>
 			{isLoading ? (
@@ -120,14 +133,10 @@ export const ProjectsOverviewTable: FC = () => {
 								<td>
 									<TableSelect
 										isMultiple={false}
-										placeholder={'Select project type'}
-										options={
-											['singleFamily', 'custom', 'multifamily'] as ProjectType[]
-										}
-										value={[project.type]}
-										setValue={(value) => {
-											onChangeField('type', value[0] as ProjectType);
-										}}
+										placeholder="Select project type"
+										options={Object.values(projectTypeLabels)}
+										value={[projectTypeLabels[project.type]]}
+										setValue={(value) => onChangeProjectTypeField(value)}
 									/>
 								</td>
 							</tr>
