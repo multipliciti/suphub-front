@@ -90,6 +90,7 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 								key={`${index}-${item.id}-${item.productId}`}
 								item={item}
 								platformCommission={platformCommission}
+								canDelete={prices.length !== 1}
 								onDelete={() => deletePrice(item.id)}
 							/>
 						))}
@@ -109,11 +110,13 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 interface PriceTierItemProps {
 	item: Price;
 	platformCommission: number;
+	canDelete: boolean;
 	onDelete: () => void;
 }
 const PriceTierItem: FC<PriceTierItemProps> = ({
 	item,
 	platformCommission,
+	canDelete,
 	onDelete,
 }) => {
 	const api = Api();
@@ -153,8 +156,16 @@ const PriceTierItem: FC<PriceTierItemProps> = ({
 
 	return (
 		<tr
-			onMouseEnter={() => setIsShowDeleteButton(true)}
-			onMouseLeave={() => setIsShowDeleteButton(false)}
+			onMouseEnter={() => {
+				if (canDelete) {
+					setIsShowDeleteButton(true);
+				}
+			}}
+			onMouseLeave={() => {
+				if (canDelete) {
+					setIsShowDeleteButton(false);
+				}
+			}}
 		>
 			<td>
 				<div className={s.price_row}>
@@ -194,15 +205,18 @@ const PriceTierItem: FC<PriceTierItemProps> = ({
 					disabled
 					value={`$${(value * (1 - platformCommission)).toFixed(2)}`}
 				/>
-				<div
-					className={classNames(
-						s.delete_btn,
-						isShowDeleteButton && s.delete_btn_show
-					)}
-					onClick={onDelete}
-				>
-					<Image src={clearIcon} alt="clear_icon" width={16} height={16} />
-				</div>
+
+				{canDelete && (
+					<div
+						className={classNames(
+							s.delete_btn,
+							isShowDeleteButton && s.delete_btn_show
+						)}
+						onClick={onDelete}
+					>
+						<Image src={clearIcon} alt="clear_icon" width={16} height={16} />
+					</div>
+				)}
 			</td>
 		</tr>
 	);
