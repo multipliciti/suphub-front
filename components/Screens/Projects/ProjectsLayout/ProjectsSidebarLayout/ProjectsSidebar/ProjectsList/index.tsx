@@ -7,6 +7,7 @@ import { useAppSelector } from '@/redux/hooks';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
 import { setModal } from '@/redux/slices/modal';
+import { Spinner } from '@/components/UI/Spinner';
 
 import s from './ProjectsList.module.scss';
 
@@ -49,6 +50,7 @@ export const ProjectsList = () => {
 					/>
 				</div>
 			))}
+			{status === 'loading' && <Spinner size="s" />}
 			{status === 'rejected' && <div>Something went wrong</div>}
 		</div>
 	);
