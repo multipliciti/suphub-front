@@ -104,6 +104,10 @@ export const StorefrontProductsFilters = () => {
 	};
 
 	const changeStatusFilter = () => {
+		if (!productStatus.length) {
+			return;
+		}
+
 		const selectedProductStatues: ProductItemStatus[] = [];
 
 		productStatus.forEach((item) => {
