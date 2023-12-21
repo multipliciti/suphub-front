@@ -134,7 +134,7 @@ export const ProjectsCartTable: FC<Props> = ({ item }) => {
 							</td>
 							<td>
 								<ProjectsCartProduct
-									imgUrl={el.model.product?.images[0].image.url}
+									imgUrl={el.model.product?.images[0]?.image?.url}
 									title={el.model.product?.name || ''}
 									labels={generateProductLabels(el.model)}
 								/>
