@@ -188,7 +188,7 @@ export const ProjectsCartOrderModal: FC<Props> = ({ sellerId, onHide }) => {
 									<tr key={`${item.id}-${index}`}>
 										<td>
 											<ProjectsCartProduct
-												imgUrl={item.model.product?.images[0].image.url}
+												imgUrl={item.model.product?.images[0]?.image?.url}
 												title={item.model.product?.name || ''}
 												labels={generateProductLabels(item.model)}
 											/>
