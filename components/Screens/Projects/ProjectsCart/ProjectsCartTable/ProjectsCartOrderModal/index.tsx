@@ -83,10 +83,10 @@ export const ProjectsCartOrderModal: FC<Props> = ({ sellerId, onHide }) => {
 			await api.order.create({
 				type: '',
 				PO: '',
-				estDate: '',
 				shipmentAmount: 0,
 				//  The fields above are empty because
 				//  they have no meaning at the time of writing the code
+				estDate: new Date().toISOString(),
 				cartElementIds: selectedProducts.map((item) => item.id),
 			});
 
