@@ -8,6 +8,7 @@ import { setStatus } from '@/redux/slices/storefront/storefrontProducts';
 import { categoryService } from '@/services/categoryApi';
 import { Dropzone } from '@/components/UI/Dropzone';
 import { setModal } from '@/redux/slices/modal';
+import { Button } from '@/components/UI/Button';
 import { Select } from '@/components/UI/Select';
 import { Api } from '@/services';
 
@@ -77,10 +78,7 @@ export const SellerProductBulkUpload = () => {
 				throw new Error('Error with missing subcategoryId');
 			}
 
-			const response = await api.productSeller.bulkUploadCsv({
-				csvFile: values.file,
-				subCategoryId,
-			});
+			const response = await api.productSeller.bulkUploadCsv(values.file);
 
 			if (!response.error) {
 				setSuccessMessage(response.message);
@@ -93,6 +91,40 @@ export const SellerProductBulkUpload = () => {
 	const handleRetry = () => {
 		setFiles([]);
 		setIsError(false);
+	};
+
+	const handleDownloadTemplate = async () => {
+		if (!categories?.length || !subcategory.length) {
+			return;
+		}
+		const subCategoryId = categoryService.findSubcategoryIdByName(
+			categories,
+			subcategory[0]
+		);
+
+		if (!subCategoryId) {
+			return;
+		}
+
+		try {
+			const response =
+				await api.productSeller.downloadBulkUploadSampleFile(subCategoryId);
+
+			const data = new Blob([response.data], { type: 'text/csv' });
+
+			const href = window.URL.createObjectURL(data);
+
+			const anchorElement = document.createElement('a');
+
+			anchorElement.href = href;
+			anchorElement.download = 'bulk-upload-csv-template';
+
+			document.body.appendChild(anchorElement);
+			anchorElement.click();
+
+			document.body.removeChild(anchorElement);
+			window.URL.revokeObjectURL(href);
+		} catch (e) {}
 	};
 
 	const refetchSellerProducts = () => {
@@ -139,10 +171,15 @@ export const SellerProductBulkUpload = () => {
 					<div className={s.form_row}>
 						<span>Download CSV Template</span>
 						<p>Download CSV file and fill it with your data</p>
-						<a href="/bulk-upload-csv-template.csv" className={s.download_btn}>
-							<Image src={downloadIcon} alt="download_icon" />
+						<Button
+							disabled={subcategory.length === 0}
+							variant="outlined"
+							className={s.download_btn}
+							onClick={handleDownloadTemplate}
+						>
+							<Image src={downloadIcon} alt="download_icon" width={14} height={18} />
 							<span>Download CSV</span>
-						</a>
+						</Button>
 					</div>
 
 					<div className={s.form_row}>

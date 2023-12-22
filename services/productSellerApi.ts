@@ -35,7 +35,6 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			);
 			return response.data;
 		} catch (error) {
-			console.error('Product Seller API error:', error);
 			throw error;
 		}
 	},
@@ -46,7 +45,6 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			const response = await instance.get<ProductItemType>(url);
 			return response.data;
 		} catch (error) {
-			console.error('Product Seller API error:', error);
 			throw error;
 		}
 	},
@@ -57,7 +55,6 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			const response = await instance.post(url, data);
 			return response.data;
 		} catch (error) {
-			console.error('Product Seller API error:', error);
 			throw error;
 		}
 	},
@@ -68,18 +65,14 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			const response = await instance.patch(url, data);
 			return response.data;
 		} catch (error) {
-			console.error('Product Seller API error:', error);
 			throw error;
 		}
 	},
 
-	async bulkUploadCsv(data: { csvFile: File; subCategoryId: number }) {
+	async bulkUploadCsv(file: File) {
 		try {
-			const { csvFile, subCategoryId } = data;
-
 			const formData = new FormData();
-			formData.append('file', csvFile);
-			formData.append('subCategoryId', String(subCategoryId));
+			formData.append('file', file);
 
 			const url = `/product-seller/upload-csv`;
 			const response = await instance.post<{ error: boolean; message: string }>(
@@ -88,7 +81,6 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			);
 			return response.data;
 		} catch (error) {
-			console.error('Product Seller API error:', error);
 			throw error;
 		}
 	},
@@ -105,7 +97,6 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			const response = await instance.post(url, formData);
 			return response.data;
 		} catch (error) {
-			console.error('Product Seller API error:', error);
 			throw error;
 		}
 	},
@@ -116,7 +107,15 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			const response = await instance.delete(url, { data: { ids } });
 			return response.data;
 		} catch (error) {
-			console.error('Product Seller API error:', error);
+			throw error;
+		}
+	},
+
+	async downloadBulkUploadSampleFile(subCategoryId: number) {
+		try {
+			const url = `/product-seller/download-file-sample/${subCategoryId}`;
+			return await instance.get(url, { responseType: 'blob' });
+		} catch (error) {
 			throw error;
 		}
 	},
