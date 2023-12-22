@@ -17,6 +17,7 @@ import { ImageListItem } from '@/components/UI/ImageListItem';
 import { ModalPortal } from '@/components/Features/ModalPortal';
 import { FetchStatus } from '@/types/fetch-status';
 import { ImageType } from '@/types/products/image';
+import { Spinner } from '@/components/UI/Spinner';
 import { Button } from '@/components/UI/Button';
 import { Input } from '@/components/UI/Input';
 import { Api } from '@/services';
@@ -243,7 +244,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 	}
 
 	if (status === 'idle' || status === 'loading' || !product) {
-		return <div></div>;
+		return <Spinner style={{ marginTop: '10%' }} />;
 	}
 
 	return (

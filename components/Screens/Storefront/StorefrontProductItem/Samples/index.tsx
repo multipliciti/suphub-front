@@ -3,6 +3,7 @@ import { FC, useEffect, useState } from 'react';
 
 import { StorefrontSampleRow } from './SampleRow';
 import { TableWrapper } from '@/components/UI/TableWrapper';
+import { Spinner } from '@/components/UI/Spinner';
 import { Sample } from '@/types/products/sample';
 import { Button } from '@/components/UI/Button';
 import { Api } from '@/services';
@@ -61,7 +62,7 @@ export const StorefrontProductItemSamples: FC<Props> = ({ id }) => {
 	};
 
 	if (status === 'idle' || status === 'loading') {
-		return <div>Loading...</div>;
+		return <Spinner style={{ marginTop: '10%' }} />;
 	}
 
 	if (status === 'rejected') {

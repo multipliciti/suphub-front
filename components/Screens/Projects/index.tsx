@@ -1,6 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+
 import { ProjectsEmptyTableMessage } from '@/components/Screens/Projects/ProjectsOverview/ProjectsEmptyTableMessage';
 import { useAppSelector } from '@/redux/hooks';
 import { Spinner } from '@/components/UI/Spinner';
@@ -24,5 +25,5 @@ export const Projects = () => {
 	if (status === 'rejected') {
 		return <div>Something went wrong</div>;
 	}
-	return <Spinner />;
+	return <Spinner style={{ marginTop: '15%' }} />;
 };
