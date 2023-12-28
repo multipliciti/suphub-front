@@ -2,7 +2,7 @@
 const nextConfig = {
 	output: 'standalone',
 	images: {
-		domains: ['suphub-dev.s3.amazonaws.com', 'multipliciti-app.s3.amazonaws.com'],
+		domains: ['suphub-dev.s3.amazonaws.com', 'multipliciti-app.s3.amazonaws.com', 'localhost'],
 	},
 	eslint: {
 		ignoreDuringBuilds: true,
