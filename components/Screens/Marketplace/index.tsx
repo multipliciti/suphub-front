@@ -7,7 +7,7 @@ import { Products } from './Products';
 import { Pagination } from '@/components/Features/Pagination';
 import { setActivePage, setStatus } from '@/redux/slices/marketplace/products';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { setProducts, setTotal } from '@/redux/slices/marketplace/products';
+import { setTotal } from '@/redux/slices/marketplace/products';
 import { useEffect, useState } from 'react';
 import { Api } from '@/services';
 import { setItemsFilter } from '@/redux/slices/marketplace/filters';
@@ -16,12 +16,14 @@ import { transformCharData } from '@/utils/productsUtils';
 import { checkFiltersEmpty } from '@/utils/productsUtils';
 import { checkCharsEmpty } from '@/utils/productsUtils';
 import { createObjFetch } from '@/utils/productsUtils';
+import { ProductItemType } from '@/types/products/product';
 
 export const Marketplace = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
 	const [totalPages, setTotalPages] = useState<number>(0);
-	const products = useAppSelector((state) => state.marketplaceProduct.products);
+	const [products, setProducts] = useState<ProductItemType[]>();
+	const user = useAppSelector((state) => state.authSlice.user);
 	const activePage = useAppSelector((state) => state.marketplaceProduct.activePage);
 	const total = useAppSelector((state) => state.marketplaceProduct.total);
 	const status = useAppSelector((state) => state.marketplaceProduct.status);
@@ -109,7 +111,7 @@ export const Marketplace = () => {
 				sortParams: sortDirection ? sortDirection : { id: 'desc' },
 				searchParams: finalJsonString,
 			});
-			dispatch(setProducts(response.result));
+			setProducts(response.result);
 			dispatch(setTotal(response.total));
 			dispatch(setStatus('success'));
 			setTotalPages(response.totalPages < 1 ? 1 : response.totalPages);
@@ -131,7 +133,7 @@ export const Marketplace = () => {
 	useEffect(() => {
 		getFiltersFunction();
 		fetchData();
-	}, [activePage, productsFilter, charData, activeId]);
+	}, [activePage, productsFilter, charData, activeId, user]);
 
 	return (
 		<div className={s.wrapper}>

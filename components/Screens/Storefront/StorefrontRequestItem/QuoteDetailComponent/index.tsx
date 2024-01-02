@@ -11,7 +11,6 @@ type TypeProps = {
 };
 
 export const QuoteDetailComponent = ({ item }: TypeProps) => {
-	console.log('item', item);
 	const [activeDispale, setActiveDispaly] = useState<number>(1);
 	const navList = [
 		{

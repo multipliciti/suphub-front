@@ -5,20 +5,22 @@ import { RequestTable } from './RequestTable';
 import { PaginationWrapper } from './PaginationWrapper';
 import { useState, useEffect } from 'react';
 import { Api } from '@/services';
-import { setProjects } from '@/redux/slices/storefront/storefrontProjectsSeller';
-import { useAppDispatch } from '@/redux/hooks';
 import { Spinner } from '@/components/UI/Spinner';
+
 export const StorefrontRequests = () => {
-	const dispatch = useAppDispatch();
 	const api = Api();
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [projects, setProjects] = useState<any[] | null>(null);
 	//store filters-inputs value
-	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [stateInputs, setStateInputs] = useState({
 		search: '',
 		type: [],
 	});
-	console.log('stateInputs', stateInputs);
+
+	const [totalItems, setTotalItems] = useState<number>(0);
 	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [totalPages, setTotalPages] = useState<number>(0);
+	const limitItems = 12;
 
 	// create fetch objs
 	const objFetchSearch = stateInputs.search
@@ -43,19 +45,21 @@ export const StorefrontRequests = () => {
 	const finalJsonString = JSON.stringify(finalAttrObj);
 
 	const getProjects = async (finalJsonString: string) => {
-		setIsLoading(true);
 		try {
 			const response = await api.sellerProject.getSellerProjects({
 				page: currentPage,
-				limit: 12,
+				limit: limitItems,
 				searchParams: finalJsonString,
 			});
 			const projects = response.result;
-			dispatch(setProjects(projects));
+
+			setProjects(projects || null);
+			setTotalItems(response.total);
+			setTotalPages(response.totalPages);
+			setIsLoading(false);
 		} catch (error) {
 			console.error('getProjects seller error', error);
 		}
-		setIsLoading(false);
 	};
 
 	useEffect(() => {
@@ -70,11 +74,13 @@ export const StorefrontRequests = () => {
 					<Spinner className={s.spinner} />
 				) : (
 					<>
-						<RequestTable />
+						<RequestTable data={projects} />
 						<PaginationWrapper
+							limitItems={limitItems}
+							totalItems={totalItems}
 							currentPage={currentPage}
 							setActivePage={setCurrentPage}
-							totalPages={20}
+							totalPages={totalPages}
 						/>
 					</>
 				)}

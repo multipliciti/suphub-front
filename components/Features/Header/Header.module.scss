@@ -48,12 +48,15 @@
 	background: #475569;
 }
 
+.img_logo {
+	margin-right: 20px;
+}
+
 //login header
 .menu {
 	display: flex;
 	align-items: center;
 	.buttons {
-		margin-left: 48px;
 		display: flex;
 		gap: 8px;
 	}

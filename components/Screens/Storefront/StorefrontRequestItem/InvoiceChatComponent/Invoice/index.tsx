@@ -4,6 +4,7 @@ import s from './Invoice.module.scss';
 import edit_icon from '@/imgs/Buyer&Seller/edit.svg';
 import Image from 'next/image';
 import { useRef } from 'react';
+import { Spinner } from '@/components/UI/Spinner';
 //new
 export const Invoice = () => {
 	const string = `774 Jennings Court San Francisco, CA 94112 917-333-6767`;
@@ -50,6 +51,7 @@ export const Invoice = () => {
 	return (
 		<div className={s.wrapper}>
 			{/* Manufacturer && Ship To */}
+
 			<div className={s.info_ship}>
 				<div className={s.block}>
 					<p className={s.header}>Manufacturer</p>

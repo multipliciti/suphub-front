@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import s from './ProgressOrder.module.scss';
 import { classNames } from '@/utils/classNames';
 import Image from 'next/image';
@@ -638,7 +638,13 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						{activeStep >= 7 && (
 							<OrderDelivered
 								//need refactoring (not date)
-								date={order.delivery?.updatedAt ?? ''}
+								date={
+									activeStep === 7
+										? order.delivery?.updatedAt ?? ''
+										: activeStep > 7
+										  ? order.deliveryDate ?? ''
+										  : ''
+								}
 								orderId={order.id}
 								activeStep={activeStep}
 								index={7}
@@ -711,8 +717,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 8 && (
 							<Feedback
-								//need refactoring (not date)
-								date={order.delivery?.updatedAt ?? ''}
+								date={order.deliveryDate ?? ''}
 								orderId={order.id}
 								buyerFeedback={order.buyerFeedback}
 								sellerFeedback={order.sellerFeedback}

@@ -5,10 +5,13 @@ import Image from 'next/image';
 import { classNames } from '@/utils/classNames';
 import { FeedbackInterface } from '@/types/services/orders';
 import { Api } from '@/services';
+import { formatDateString } from '@/utils/formatDateString';
+
 import star_rate from '@/imgs/Buyer&Seller/star_rate.svg';
 import star_rate_active from '@/imgs/Buyer&Seller/star_rate_active.svg';
 
 interface PropsType {
+	date: string;
 	orderId: number;
 	activeDisplay: number[];
 	index: number;
@@ -22,6 +25,7 @@ interface forDataTupe {
 }
 
 export const Feedback = ({
+	date,
 	orderId,
 	activeDisplay,
 	index,
@@ -77,7 +81,7 @@ export const Feedback = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div

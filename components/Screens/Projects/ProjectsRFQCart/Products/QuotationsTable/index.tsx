@@ -31,7 +31,6 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 			setRect(rect);
 		}
 	}, [indexMore, compress]);
-	console.log('rfqs', rfqs);
 
 	// const handleMouseEnter = (id: number) => {
 	// 	setHoveredIds((prev) => [...prev, id]);
@@ -56,24 +55,24 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 
 	return (
 		<div className={s.wrapper}>
+			{rect && (
+				<div
+					style={{
+						top: `${rect.top + (compress ? 55 : 52) - 215}px`,
+						left: `${rect.left - (compress ? 0 : 0) - 262}px`,
+					}}
+					className={classNames(s.more, indexMore !== -1 && s.more_active)}
+				>
+					<Link href={`/projects/options/${indexMore}`} className={s.more_item}>
+						Product details
+					</Link>
+					<span className={s.more_item}>Order sample</span>
+					<span className={classNames(s.more_item, s.more_decline)}>
+						Decline offer
+					</span>
+				</div>
+			)}
 			<table className={classNames(s.table, compress && s.table_compress)}>
-				{rect && (
-					<div
-						style={{
-							top: `${rect.top + (compress ? 55 : 52)}px`,
-							left: `${rect.left - (compress ? 0 : 0)}px`,
-						}}
-						className={classNames(s.more, indexMore !== -1 && s.more_active)}
-					>
-						<Link href={`/projects/options/${indexMore}`} className={s.more_item}>
-							Product details
-						</Link>
-						<span className={s.more_item}>Order sample</span>
-						<span className={classNames(s.more_item, s.more_decline)}>
-							Decline offer
-						</span>
-					</div>
-				)}
 				<thead ref={tHeadRef} className={s.thead}>
 					<tr>
 						<th className={classNames(s.th, compress && s.th_compress)}>

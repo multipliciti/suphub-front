@@ -1,14 +1,21 @@
 'use client';
 import { classNames } from '@/utils/classNames';
 import s from './OrderDelivered.module.scss';
+import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
+	date: string;
 	activeDisplay: number[];
 	index: number;
 	activeStep: number;
 }
 
-export const OrderDelivered = ({ activeDisplay, index, activeStep }: PropsType) => {
+export const OrderDelivered = ({
+	activeDisplay,
+	index,
+	activeStep,
+	date,
+}: PropsType) => {
 	return (
 		<>
 			<div
@@ -28,14 +35,14 @@ export const OrderDelivered = ({ activeDisplay, index, activeStep }: PropsType) 
 			>
 				{activeStep <= 7 && (
 					<div className={s.info}>
-						<span className={s.info_data}>01/05/2023</span>
+						<span className={s.info_data}>{formatDateString(date)}</span>
 						<span className={s.info_title}>Order is delivering...</span>
 					</div>
 				)}
 
 				{activeStep > 7 && (
 					<div className={s.info}>
-						<span className={s.info_data}>01/05/2023</span>
+						<span className={s.info_data}>{formatDateString(date)}</span>
 						<span className={s.info_title}>Order is delivered</span>
 					</div>
 				)}

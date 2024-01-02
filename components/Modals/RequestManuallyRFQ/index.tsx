@@ -8,6 +8,7 @@ import { setModal } from '@/redux/slices/modal';
 import { validateFormData } from './validation';
 import { categoriesToSubCategories } from '@/utils/categoriesToSubCategories';
 import { classNames } from '@/utils/classNames';
+import { Spinner } from '@/components/UI/Spinner';
 //imgs
 import upload_icon from '@/imgs/Buyer&Seller/upload_icon.svg';
 import close_img from '@/imgs/close.svg';
@@ -37,9 +38,14 @@ export const RequestManuallyRFQ = () => {
 		projectId,
 		files: [],
 	});
+
 	const [chooseCategory, setChooseCategory] = useState<boolean>(false);
 	const [category, setCategory] = useState<any[]>([]);
 	const subCategories = categoriesToSubCategories(category);
+	const selectedSubCategory = formData.subCategoryId
+		? subCategories.find((el) => el.id === formData.subCategoryId)
+		: null;
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	// set handleKeysubCategoryId
 	const handleKeysubCategoryId = (id: number) => {
@@ -48,6 +54,7 @@ export const RequestManuallyRFQ = () => {
 			subCategoryId: id,
 		}));
 	};
+
 	//set certifications
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		const id = event.currentTarget.id;
@@ -147,6 +154,7 @@ export const RequestManuallyRFQ = () => {
 	//submit
 	const submitData = async (data: RfqItemFetch) => {
 		try {
+			setIsLoading(true);
 			const formDataSend = new FormData();
 			formDataSend.append('projectId', data.projectId);
 			formDataSend.append('size', String(data.size));
@@ -171,6 +179,7 @@ export const RequestManuallyRFQ = () => {
 			}
 
 			await api.rfq.createRfqItem(formDataSend);
+			setIsLoading(false);
 			dispatch(setModal('submitedRFQ'));
 		} catch (error) {
 			console.error('error submit RFQ', error);
@@ -192,6 +201,12 @@ export const RequestManuallyRFQ = () => {
 
 	return (
 		<div className={s.wrapper_layout}>
+			{isLoading && (
+				<div className={s.spinner_wrapper}>
+					<Spinner />
+				</div>
+			)}
+
 			<div className={s.header_modal}>
 				<span className={s.header_title}>Request for Quotation</span>
 				<span
@@ -217,9 +232,9 @@ export const RequestManuallyRFQ = () => {
 						>
 							{formData.subCategoryId && (
 								<span className={s.subcategory_title}>
-									{subCategories.filter(
-										(el) => el.categoryId === formData.subCategoryId
-									)[0]?.name || 'Undefined'}
+									{selectedSubCategory
+										? `${selectedSubCategory.name}`
+										: 'Choose subcategory'}
 								</span>
 							)}
 							{!formData.subCategoryId && (

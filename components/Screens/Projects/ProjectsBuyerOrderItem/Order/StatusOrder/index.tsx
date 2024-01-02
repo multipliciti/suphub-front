@@ -8,7 +8,6 @@ interface PropsType {
 }
 
 export const StatusOrder = ({ code, status }: PropsType) => {
-	console.log('code', code, 'status_info', status, 'status', status);
 	return (
 		<div className={s.info}>
 			<span className={s.info_code}>Order PO#{code}</span>

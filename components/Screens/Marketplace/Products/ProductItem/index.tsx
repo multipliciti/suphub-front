@@ -8,7 +8,6 @@ import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import star from '@/imgs/Marketplace/Products/star.svg';
 import star_active from '@/imgs/Marketplace/Products/star_sctive.svg';
 import { ProductItemType } from '@/types/products/product';
-import test2 from '@/imgs/Product/test2.png';
 import { Api } from '@/services';
 import { useEffect, useState } from 'react';
 import { setModal } from '@/redux/slices/modal';

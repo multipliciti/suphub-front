@@ -7,6 +7,7 @@ import star_rate from '@/imgs/Buyer&Seller/star_rate.svg';
 import star_rate_active from '@/imgs/Buyer&Seller/star_rate_active.svg';
 import { Api } from '@/services';
 import { FeedbackInterface } from '@/types/services/orders';
+import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
 	date: string;
@@ -80,7 +81,7 @@ export const Feedback = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div

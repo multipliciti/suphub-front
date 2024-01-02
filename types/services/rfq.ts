@@ -47,6 +47,15 @@ export interface RfqItemGot {
 	certifications: string;
 	additionalComments: string;
 	cover: string;
+	documents: {
+		name: string;
+		url: string;
+	}[];
+
+	images: {
+		name: string;
+		url: string;
+	}[];
 
 	subCategory: {
 		csiCode: string;

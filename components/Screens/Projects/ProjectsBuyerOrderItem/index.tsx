@@ -13,7 +13,6 @@ interface TypeProps {
 
 export const ProjectsBuyerOrderItem = ({ id }: TypeProps) => {
 	const api = Api();
-	const img = useAppSelector((state) => state.orderSlice.img);
 	const [order, setOrder] = useState<OrderInterface | null>(null);
 	//using id we will must make fetch
 

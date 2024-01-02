@@ -7,8 +7,10 @@ import { RFQCartFilters } from './RFQCartFilters';
 import { Products } from './Products';
 import { RfqItemGot } from '@/types/services/rfq';
 import { Api } from '@/services';
+import { useAppSelector } from '@/redux/hooks';
 import { IsBuyerSideBarRequestDetail } from '@/components/Containers/IsBuyerSideBarRequestDetail/IsBuyerSideBarRequestDetail';
 import { Spinner } from '@/components/UI/Spinner';
+
 export const ProjectsRFQCart = () => {
 	const pathname = usePathname();
 	const api = Api();
@@ -17,7 +19,8 @@ export const ProjectsRFQCart = () => {
 		categories: [],
 		statuses: [],
 	});
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const modal = useAppSelector((state) => state.modalSlice.modal);
 
 	//get projectId from url
 	const path = pathname;
@@ -25,6 +28,7 @@ export const ProjectsRFQCart = () => {
 	const projectId = match && match[1];
 
 	const [rfqsSorted, setRfqsSorted] = useState<RfqItemGot[][]>([]);
+	const [data, setData] = useState();
 
 	// create fetch objs
 	const objFetchSearch = stateInputs.search
@@ -46,12 +50,6 @@ export const ProjectsRFQCart = () => {
 			  }
 			: null;
 
-	const objFetchCategories = stateInputs.categories.map((item: any) => {
-		return {
-			countryOfOrigin: { contains: item },
-		};
-	});
-
 	const finalAttrObj = {
 		...(objFetchSearch && { ...objFetchSearch }),
 		...(statusesFilterArr && { ...statusesFilterArr }),
@@ -70,7 +68,9 @@ export const ProjectsRFQCart = () => {
 				searchParams: finalJsonString,
 			});
 			const data: RfqItemGot[] = await response.result;
-
+			// @ts-ignore
+			setData(data);
+			setIsLoading(false);
 			const groupedData: Record<string, RfqItemGot[]> = data.reduce(
 				(acc, item) => {
 					const csiCode = item.subCategory.csiCode;
@@ -82,7 +82,6 @@ export const ProjectsRFQCart = () => {
 				},
 				{} as Record<string, RfqItemGot[]>
 			);
-
 			const sortedData: RfqItemGot[][] = Object.values(groupedData);
 
 			setRfqsSorted(sortedData);
@@ -92,10 +91,12 @@ export const ProjectsRFQCart = () => {
 	};
 
 	useEffect(() => {
-		setIsLoading(true);
-		fetchData();
-		setIsLoading(false);
-	}, [stateInputs]);
+		//for rerender (update fetch) when set modal = '' after create new rfq
+		if (modal === '') {
+			setIsLoading(true);
+			fetchData();
+		}
+	}, [stateInputs, modal]);
 
 	{
 		return (
