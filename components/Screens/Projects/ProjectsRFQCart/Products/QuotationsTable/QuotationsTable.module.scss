@@ -1,28 +1,5 @@
 .wrapper {
 	overflow-x: scroll;
-}
-
-.wrapper::-webkit-scrollbar {
-	height: 4px;
-	background-color: transparent;
-	border-radius: 5px;
-}
-
-.wrapper::-webkit-scrollbar-thumb {
-	background: #94a3b8;
-	border-radius: 3px;
-}
-
-.table {
-	border-collapse: collapse;
-	width: 100%;
-	display: block;
-	overflow-y: hidden;
-	border-bottom: 1px solid #e2e8f0;
-
-	&_compress {
-		width: 100%;
-	}
 
 	.more {
 		width: 190px;
@@ -69,10 +46,34 @@
 			border-top-left-radius: 7px;
 			border-top-right-radius: 7px;
 		}
+
 		&_item:last-child {
 			border-bottom-left-radius: 7px;
 			border-bottom-right-radius: 7px;
 		}
+	}
+}
+
+.wrapper::-webkit-scrollbar {
+	height: 4px;
+	background-color: transparent;
+	border-radius: 5px;
+}
+
+.wrapper::-webkit-scrollbar-thumb {
+	background: #94a3b8;
+	border-radius: 3px;
+}
+
+.table {
+	border-collapse: collapse;
+	width: 100%;
+	display: block;
+	overflow-y: hidden;
+	border-bottom: 1px solid #e2e8f0;
+
+	&_compress {
+		width: 100%;
 	}
 }
 

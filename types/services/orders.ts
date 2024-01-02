@@ -97,6 +97,7 @@ export interface OrderInterface {
 	estDate: string;
 	updatedAt: string;
 	createdAt: string;
+	deliveryDate: null | string;
 }
 
 export interface OrderCreateBody {

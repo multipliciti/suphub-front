@@ -70,6 +70,21 @@
 				}
 			}
 		}
+		.link {
+			color: black;
+			text-decoration: underline;
+		}
+
+		.images {
+			display: flex;
+			align-items: center;
+			gap: 8px;
+
+			.img {
+				border: 1px solid #aab3ec;
+				border-radius: 4px;
+			}
+		}
 	}
 }
 

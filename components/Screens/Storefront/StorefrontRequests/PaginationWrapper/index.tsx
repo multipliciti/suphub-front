@@ -7,20 +7,28 @@ import arrow_left from '@/imgs/arrow-left.svg';
 import arrow_rigth_disable from '@/imgs/arrow-right-disable.svg';
 import arrow_left_disable from '@/imgs/arrow-left-disable.svg';
 import { classNames } from '@/utils/classNames';
+
 interface PropsType {
+	limitItems: number;
+	totalItems: number;
 	currentPage: number;
 	totalPages: number;
 	setActivePage: (n: number) => void;
 }
 
 export const PaginationWrapper = ({
+	limitItems,
+	totalItems,
 	currentPage,
 	setActivePage,
 	totalPages,
 }: PropsType) => {
 	return (
 		<div className={s.wrapper}>
-			<span className={s.step}>1-12 of 14</span>
+			<span className={s.step}>
+				{totalPages > limitItems - 1 ? currentPage * limitItems : totalItems} of
+				{` ${totalItems}`}
+			</span>
 			<Image
 				onClick={() => setActivePage(currentPage - 1)}
 				className={classNames(s.arrow, currentPage === 1 && s.arrow_disable)}

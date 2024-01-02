@@ -36,7 +36,6 @@ export const MyQuotation = ({ item }: TypeProps) => {
 	const [dataArr, setDataArr] = useState<any[]>(initialState);
 	//function that changes data dataArr
 	const handleChangeDataArr = (ind: number, key: string, value: any) => {
-		console.log('clicked handleChangeDataArr');
 		const dataArrCopy = [...dataArr];
 		const objCopy = dataArrCopy[ind];
 		objCopy[key] = value;
@@ -55,14 +54,12 @@ export const MyQuotation = ({ item }: TypeProps) => {
 				productId: el.productId.id,
 			};
 		});
-		console.log('finishDataArrya', finishDataArrya);
 		finishDataArrya.forEach((el) => {
 			api.rfqOption.create(el);
 		});
 	};
 	//Hook for disappearing wrapperRef
 	useClickOutside(wrapperRef, () => {
-		console.log('useClickOutsideContains');
 		setFocusedInput(-1);
 	});
 

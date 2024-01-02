@@ -7,7 +7,7 @@ import chat_image from '@/imgs/Buyer&Seller/chat_icon.svg';
 import { RfqItemGot } from '@/types/services/rfq';
 import { setRfqId } from '@/redux/slices/sideBars/sideBarRequestDetail';
 import { useAppDispatch } from '@/redux/hooks';
-
+import { extractDigits } from './helpers';
 interface TypeProps {
 	properties: RfqItemGot[];
 	compress: boolean;
@@ -77,7 +77,9 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 							</td>
 							<td>
 								<div className={s.description}>
-									<span className={s.subtitle}>{property.productName}</span>
+									<span className={s.subtitle}>
+										CSI {extractDigits(property.subCategory.csiCode)}
+									</span>
 									<p
 										onClick={() => dispatch(setRfqId(property.id))}
 										className={s.title}

@@ -11,7 +11,7 @@ interface PropsType {
 }
 
 export const AboutProduct = ({ product }: PropsType) => {
-	const [activeImg, setActiveImg] = useState<number>(1);
+	const [activeImg, setActiveImg] = useState<number>(0);
 	const { dynamic_attr, images } = product;
 	const shipmentPackaging = [
 		{

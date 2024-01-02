@@ -26,7 +26,6 @@ import LogOut from '@/imgs/Header/LogOut.svg';
 import star_img from '@/imgs/Header/Star.svg';
 import notifacation_img from '@/imgs/Header/Notification.svg';
 import avatartest from '@/imgs/Header/AvatarsTest.svg';
-import modal_logo from '@/imgs/Modal/Modal_logo.svg';
 
 export const Header = () => {
 	const api = Api();
@@ -113,7 +112,13 @@ export const Header = () => {
 			{user && (
 				<div className={s.wrapper}>
 					<div className={s.menu}>
-						<Image src={modal_logo} alt="modal_logo" width={32} height={35} />
+						<Image
+							className={s.img_logo}
+							src={logo}
+							alt="Logo"
+							width={117}
+							height={36}
+						/>
 
 						{/* seller nav  */}
 						{user.role === 'seller' && (
@@ -145,7 +150,7 @@ export const Header = () => {
 							</div>
 						)}
 						{/* buyer nav  */}
-						{user.role === 'buyer' && (
+						{user && user.role === 'buyer' && (
 							<div className={s.buttons}>
 								{buttonsBuyer.map((button, index) => (
 									<div
@@ -178,36 +183,6 @@ export const Header = () => {
 						{user && user.role !== 'buyer' && user.role !== 'seller' && (
 							<div className={s.buttons}>
 								{regularUser.map((button, index) => (
-									<div
-										key={index}
-										className={classNames(
-											s.menu_btn,
-											activeLink === button.id && s.menu_btn_active
-										)}
-									>
-										<Link
-											onClick={(e) => {
-												e.stopPropagation();
-												setActiveLink(button.id);
-											}}
-											href={button.href}
-											className={classNames(
-												s.menu_btn,
-												activeLink === button.id && s.menu_btn_active
-											)}
-											key={button.id}
-										>
-											{button.label}
-										</Link>
-									</div>
-								))}
-							</div>
-						)}
-
-						{/* logout user nav  */}
-						{!user && (
-							<div className={s.buttons}>
-								{logOutUser.map((button, index) => (
 									<div
 										key={index}
 										className={classNames(
@@ -274,8 +249,7 @@ export const Header = () => {
 							</li>
 							<li className={s.item_avatar}>
 								<Image
-									onClick={(e) => {
-										e.stopPropagation();
+									onClick={() => {
 										setMenu(!menu);
 									}}
 									className={s.avatar}
@@ -324,9 +298,6 @@ export const Header = () => {
 									</div>
 								)}
 							</li>
-
-							<li></li>
-							<li></li>
 						</ul>
 					</nav>
 				</div>
@@ -334,7 +305,42 @@ export const Header = () => {
 
 			{!user && (
 				<div className={s.wrapper}>
-					<Image src={logo} alt="Logo" width={117} height={36} />
+					<div className={s.menu}>
+						<Image
+							className={s.img_logo}
+							src={logo}
+							alt="Logo"
+							width={117}
+							height={36}
+						/>
+						<div className={s.buttons}>
+							{logOutUser.map((button, index) => (
+								<div
+									key={index}
+									className={classNames(
+										s.menu_btn,
+										activeLink === button.id && s.menu_btn_active
+									)}
+								>
+									<Link
+										onClick={(e) => {
+											e.stopPropagation();
+											setActiveLink(button.id);
+										}}
+										href={button.href}
+										className={classNames(
+											s.menu_btn,
+											activeLink === button.id && s.menu_btn_active
+										)}
+										key={button.id}
+									>
+										{button.label}
+									</Link>
+								</div>
+							))}
+						</div>
+					</div>
+
 					<div className={s.auth}>
 						<ul className={s.auth_buttons}>
 							<li

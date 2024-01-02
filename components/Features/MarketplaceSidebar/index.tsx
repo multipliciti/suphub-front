@@ -15,6 +15,7 @@ export const Sidebar = () => {
 	const dispatch = useAppDispatch();
 	const api = Api();
 	const isSideBar = useAppSelector((state) => state.sideBarSlice.sideBar);
+	const user = useAppSelector((state) => state.authSlice.user);
 
 	const fetchCategories = async () => {
 		try {
@@ -31,7 +32,7 @@ export const Sidebar = () => {
 
 	useEffect(() => {
 		fetchCategories();
-	}, []);
+	}, [user]);
 
 	return (
 		<div className={classNames(s.wrapper, isSideBar && s.wrapper_active)}>

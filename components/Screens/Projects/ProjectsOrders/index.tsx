@@ -16,8 +16,13 @@ export const ProjectsOrders = () => {
 		status: [],
 		orderType: [],
 	});
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+
+	const [totalItems, setTotalItems] = useState<number>(0);
 	const [currentPage, setCurrentPage] = useState<number>(1);
+	const [totalPages, setTotalPages] = useState<number>(0);
+	const limitItems = 12;
+
+	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [orders, setOrders] = useState<Order[]>([]);
 	const columns = [
 		{ title: 'PO#', key: 'PO#' },
@@ -63,21 +68,22 @@ export const ProjectsOrders = () => {
 		try {
 			const orders = await api.buyerProject.getBuyerOrders({
 				page: currentPage,
-				limit: 12,
+				limit: limitItems,
 				searchParams: finalJsonString,
 			});
 			const ordersGot: Order[] = orders.result;
 
 			setOrders(ordersGot);
+			setTotalItems(orders.total);
+			setTotalPages(orders.totalPages);
+			setIsLoading(false);
 		} catch (error) {
 			console.error('getOrders buyer error', error);
 		}
 	};
 
 	useEffect(() => {
-		setIsLoading(true);
 		getOrders();
-		setIsLoading(false);
 	}, [stateInputs, currentPage]);
 
 	{
@@ -90,9 +96,11 @@ export const ProjectsOrders = () => {
 					<>
 						{orders.length > 0 && <ProjectsTable columns={columns} data={orders} />}
 						<PaginationWrapper
+							limitItems={limitItems}
+							totalItems={totalItems}
 							currentPage={currentPage}
 							setActivePage={setCurrentPage}
-							totalPages={20}
+							totalPages={totalPages}
 						/>
 					</>
 				)}

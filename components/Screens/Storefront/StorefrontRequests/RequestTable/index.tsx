@@ -2,14 +2,14 @@
 import { classNames } from '@/utils/classNames';
 import s from './RequestTable.module.scss';
 import Link from 'next/link';
-import { useAppSelector } from '@/redux/hooks';
 import { formatDateString } from '@/utils/formatDateString';
 import { truncateFileNameEnd } from '@/utils/names';
 
-export const RequestTable = () => {
-	const data = useAppSelector(
-		(state) => state.storefrontProjectsSellerSlice.projects
-	);
+type TypeProps = {
+	data: any[] | null;
+};
+
+export const RequestTable = ({ data }: TypeProps) => {
 	return (
 		<div className={s.wrapper}>
 			<table className={s.table}>
@@ -26,7 +26,7 @@ export const RequestTable = () => {
 
 				{/* body  */}
 				<tbody className={s.tbody}>
-					{data.map((el: any, ind: number) => {
+					{data?.map((el: any, ind: number) => {
 						return (
 							<tr key={ind}>
 								<td> {formatDateString(el.createdAt)} </td>

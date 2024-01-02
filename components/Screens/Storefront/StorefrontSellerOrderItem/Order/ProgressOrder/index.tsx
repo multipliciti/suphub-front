@@ -632,6 +632,13 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 7 && (
 							<OrderDelivered
+								date={
+									activeStep === 7
+										? order.delivery?.updatedAt ?? ''
+										: activeStep > 7
+										  ? order.deliveryDate ?? ''
+										  : ''
+								}
 								activeStep={activeStep}
 								index={7}
 								activeDisplay={activeDisplay}
@@ -702,6 +709,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 						</div>
 						{activeStep >= 8 && (
 							<Feedback
+								date={order.deliveryDate ?? ''}
 								orderId={order.id}
 								buyerFeedback={order.buyerFeedback}
 								sellerFeedback={order.sellerFeedback}

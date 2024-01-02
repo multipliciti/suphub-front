@@ -1,20 +1,31 @@
+// @ts-ignore
 import React, { useState } from 'react';
 import s from './Table.module.scss';
 import { classNames } from '@/utils/classNames';
 import { DynamicAttribute } from '@/types/products/product';
 
+interface TypeShipmentPackaging {
+	label: string;
+	value: string;
+	//Cannot have this property here, created to avoid TypeScript error.
+	attributeDescription?: null;
+}
+
+interface TypeTables {
+	id: number;
+	title: string;
+	keyShow: DynamicAttribute[] | TypeShipmentPackaging[];
+}
+
 interface PropsType {
 	dynamic_attr: DynamicAttribute[];
-	shipmentPackaging: {
-		label: string;
-		value: string;
-	}[];
+	shipmentPackaging: TypeShipmentPackaging[];
 }
 
 export const TableComponent = ({ dynamic_attr, shipmentPackaging }: PropsType) => {
 	const [activeTable, setActiveTable] = useState<number>(1);
 
-	const tables = [
+	const tables: TypeTables[] = [
 		{
 			id: 1,
 			title: 'Specification',
@@ -52,12 +63,19 @@ export const TableComponent = ({ dynamic_attr, shipmentPackaging }: PropsType) =
 						<tbody>
 							{tables
 								.find((el) => el.id === activeTable)
-								?.keyShow.map((item, ind) => (
-									<tr className={s.table_row} key={ind}>
-										<td className={s.table_key}>{item.label}</td>
-										<td className={s.table_value}>{item.value}</td>
-									</tr>
-								))}
+								?.keyShow.map(
+									(item: DynamicAttribute | TypeShipmentPackaging, ind) => (
+										<tr className={s.table_row} key={ind}>
+											<td className={s.table_key}>
+												{item.label}
+												{item.attributeDescription
+													? ` (${item.attributeDescription})`
+													: ''}
+											</td>
+											<td className={s.table_value}>{item.value}</td>
+										</tr>
+									)
+								)}
 						</tbody>
 					</table>
 				</div>

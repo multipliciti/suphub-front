@@ -1,10 +1,11 @@
 .wrapper {
 	display: flex;
 	gap: 12px;
-	margin-top: 24px;
 
 	.request {
-		transition: background-color 0.3s ease, color 0.4s ease;
+		transition:
+			background-color 0.3s ease,
+			color 0.4s ease;
 		cursor: pointer;
 		min-width: 138px;
 		padding: 8px 12px;

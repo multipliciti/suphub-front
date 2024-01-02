@@ -2,7 +2,6 @@
 import { classNames } from '@/utils/classNames';
 import s from './OrderDelivered.module.scss';
 import { Api } from '@/services';
-import { useState } from 'react';
 import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
@@ -43,7 +42,7 @@ export const OrderDelivered = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>kfkkfkf</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div

@@ -13,7 +13,6 @@ import productSlice from './slices/marketplace/product';
 import orderSlice from './slices/Order/order';
 import storefrontSlice from './slices/storefront/storefront';
 import storefrontProductsSlice from './slices/storefront/storefrontProducts';
-import storefrontProjectsSellerSlice from './slices/storefront/storefrontProjectsSeller';
 import projectsSlice from './slices/projects/projects';
 import projectsSidebar from './slices/projects/projectsSidebar';
 import projectItemSlice from './slices/projects/projectItem';
@@ -33,7 +32,6 @@ const combinedReducer = combineReducers({
 	orderSlice,
 	storefrontSlice,
 	storefrontProductsSlice,
-	storefrontProjectsSellerSlice,
 	projectsSlice,
 	projectsSidebar,
 	projectItemSlice,

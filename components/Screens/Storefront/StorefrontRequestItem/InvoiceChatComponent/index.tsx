@@ -4,6 +4,7 @@ import { Invoice } from './Invoice';
 import { Requirements } from './Requirements/Requirements';
 import { useState } from 'react';
 import { classNames } from '@/utils/classNames';
+import { Spinner } from '@/components/UI/Spinner';
 
 //new
 export const InvoiceChatComponent = () => {
@@ -24,6 +25,8 @@ export const InvoiceChatComponent = () => {
 					Requirements
 				</span>
 			</div>
+
+			{/* {isLoading && <Spinner className={s.spinner} />} */}
 			{activeDisplay === 1 && <Invoice />}
 			{activeDisplay === 2 && <Requirements />}
 		</div>
