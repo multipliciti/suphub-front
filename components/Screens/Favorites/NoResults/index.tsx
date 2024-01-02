@@ -1,8 +1,6 @@
 'use client';
-import { setProducts, setStatus, setTotal } from '@/redux/slices/favorites/products';
 import s from './NoResults.module.scss';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { Api } from '@/services';
 import {
 	resetAllFilters,
 	startResetInputs,

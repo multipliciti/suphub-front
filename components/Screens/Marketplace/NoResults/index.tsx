@@ -1,12 +1,6 @@
 'use client';
-import {
-	setProducts,
-	setStatus,
-	setTotal,
-} from '@/redux/slices/marketplace/products';
 import s from './NoResults.module.scss';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { Api } from '@/services';
 import { clearAll } from '@/redux/slices/marketplace/filters';
 import { startResetInputs } from '@/redux/slices/marketplace/productsFilter';
 import { resetAllFilters } from '@/redux/slices/marketplace/productsFilter';
