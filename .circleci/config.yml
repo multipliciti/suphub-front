@@ -51,7 +51,7 @@ workflows:
               only:
                 - develop
           cluster-name: "${EKS_CLUSTER_NAME}"
-          deployment-name: "mysuphub-front-dev"
+          deployment-name: "suphub-front-dev"
           kubernetes-namespace: "dev-front"
           requires:
             - build-front-dev
