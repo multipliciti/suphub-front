@@ -17,7 +17,6 @@ import s from './Header.module.scss';
 import '@/styles/globals.scss';
 
 //imgs
-import Arrow from '@/imgs/Header/menu/Arrow.svg';
 import Calendar from '@/imgs/Header/menu/Calendar.svg';
 import Comment from '@/imgs/Header/menu/Comment.svg';
 import User from '@/imgs/Header/menu/User.svg';
@@ -38,6 +37,7 @@ export const Header = () => {
 	const [logoSrc, setLogoSrc] = useState(avatartest);
 	const [menu, setMenu] = useState<boolean>(false);
 	const router = useRouter();
+	const role = user?.role;
 	useClickOutside(menuRef, () => {
 		setMenu(false);
 	});
@@ -48,12 +48,6 @@ export const Header = () => {
 			img: User,
 			title: 'My profile',
 			href: '/settings/personal-info',
-		},
-		{
-			id: 2,
-			img: Arrow,
-			title: 'Convert to business',
-			href: '/404',
 		},
 		{
 			id: 3,
@@ -213,26 +207,28 @@ export const Header = () => {
 					{/* // nav  */}
 					<nav className={s.nav}>
 						<ul className={s.nav_ul}>
-							<div
-								className={classNames(
-									s.menu_btn,
-									activeLink === 3 && s.menu_btn_active
-								)}
-							>
+							{role === 'user' && (
 								<div
-									onClick={(e) => {
-										e.stopPropagation();
-										setActiveLink(3);
-										dispatch(setModal('createBusinessAccount'));
-									}}
 									className={classNames(
 										s.menu_btn,
 										activeLink === 3 && s.menu_btn_active
 									)}
 								>
-									Convert to business
+									<div
+										onClick={(e) => {
+											e.stopPropagation();
+											setActiveLink(3);
+											dispatch(setModal('convertToBusinessAccount'));
+										}}
+										className={classNames(
+											s.menu_btn,
+											activeLink === 3 && s.menu_btn_active
+										)}
+									>
+										Convert to business
+									</div>
 								</div>
-							</div>
+							)}
 							<li className={s.split}></li>
 							<li className={s.item_img}>
 								<Link href={'/favorites'}>

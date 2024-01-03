@@ -17,6 +17,7 @@ type ModalType =
 	| 'submitedRFQ'
 	| 'bulkUpload'
 	| 'createBusinessAccount'
+	| 'convertToBusinessAccount'
 	| 'sellerVerificationBusinessVerification'
 	| 'sellerVerificationMembershipFee'
 	| 'sellerVerificationDepositSetUp'
