@@ -24,6 +24,7 @@ import { SellerProductBulkUpload } from './StorefrontAddProduct/BulkUpload';
 import { DeleteProject } from '@/components/Modals/Projects/DeleteProject';
 import { WarningTrialCanBeUsedOnce } from '@/components/Modals/WarningTrialCanBeUsedOnce';
 import { SelectSamples } from './SelectSamples/SelectSamples';
+import { ConvertToBusinessAccount } from '@/components/Modals/ConvertToBusinessAccount';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -139,6 +140,15 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'createBusinessAccount' && <CreateBusinessAccount />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'convertToBusinessAccount' && s.wrapper_active
+				)}
+			>
+				{modal === 'convertToBusinessAccount' && <ConvertToBusinessAccount />}
 			</div>
 
 			<div
