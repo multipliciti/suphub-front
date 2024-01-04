@@ -55,3 +55,23 @@ workflows:
           kubernetes-namespace: "dev-front"
           requires:
             - build-front-dev
+      - aws-ecr/build-and-push-image:
+          name: "build-front-prod"
+          filters:
+            branches:
+              only:
+                - main  
+          extra-build-args: "--build-arg NEXT_PUBLIC_BASE_URL=${PROD_API_URL} --build-arg NEXT_PUBLIC_CLIENT_HOST=${PROD_NEXT_PUBLIC_CLIENT_HOST} --build-arg NODE_ENV=${NODE_ENV_DEV}"
+          repo: "${ECR_FRONT_PROD}"
+          tag: "latest,${CIRCLE_SHA1}"
+      - patch_deployment:
+          name: "deploy-front-prod"
+          filters:
+            branches:
+              only:
+                - main
+          cluster-name: "${EKS_CLUSTER_NAME}"
+          deployment-name: "suphub-front-prod"
+          kubernetes-namespace: "prod-front"
+          requires:
+            - build-front-prod
