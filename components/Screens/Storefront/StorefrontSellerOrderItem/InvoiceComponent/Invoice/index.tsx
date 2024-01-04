@@ -1,17 +1,17 @@
 'use client';
-import Image from 'next/image';
 import { useRef } from 'react';
 import { classNames } from '@/utils/classNames';
 import s from './Invoice.module.scss';
 import edit_icon from '@/imgs/Buyer&Seller/edit.svg';
-import { Element } from '@/types/services/orders';
+import Image from 'next/image';
+import { OrderInterface } from '@/types/services/orders';
+import { truncateFileNameEnd } from '@/utils/names';
 
 type TypeProps = {
-	data: Element[] | null;
+	order: OrderInterface;
 };
 
-export const Invoice = ({ data }: TypeProps) => {
-	const string = `None None None None None None None None None None None None None None None None None None None None None`;
+export const Invoice = ({ order }: TypeProps) => {
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	const handleEditClick = () => {
@@ -20,8 +20,10 @@ export const Invoice = ({ data }: TypeProps) => {
 		}
 	};
 
-	const totalQuantity = data?.reduce((acc, order) => acc + (order.quantity || 0), 0);
-	const totalPrice = data?.reduce((acc, order) => acc + (order.price || 0), 0);
+	const totalPrice = order.elements?.reduce(
+		(acc, order) => acc + (order.price || 0),
+		0
+	);
 
 	return (
 		<div className={s.wrapper}>
@@ -30,7 +32,8 @@ export const Invoice = ({ data }: TypeProps) => {
 				<div className={s.block}>
 					<p className={s.header}>Manufacturer</p>
 					<p className={s.title}>
-						None <br /> <span className={s.subtitle}>And None</span>
+						{order.sellerCompany.abbreviation} <br />
+						<span className={s.subtitle}>{order.sellerCompany.name}</span>
 					</p>
 				</div>
 
@@ -44,15 +47,14 @@ export const Invoice = ({ data }: TypeProps) => {
 					</p>
 					<textarea
 						ref={textareaRef}
-						defaultValue={string}
+						defaultValue={order.buyerCompany.address ?? 'Not adress'}
 						className={classNames(s.input, s.title)}
 					></textarea>
 				</div>
 			</div>
 
 			{/* Product table  */}
-
-			{data && (
+			{order.elements && order.elements.length > 0 && (
 				<div className={s.info_product}>
 					<table className={s.table}>
 						<thead className={s.thead}>
@@ -64,26 +66,30 @@ export const Invoice = ({ data }: TypeProps) => {
 							</tr>
 						</thead>
 						<tbody>
-							{data.map((product, ind) => {
+							{order.elements.map((product, ind) => {
 								return (
 									<tr className={s.tr} key={ind}>
 										<td className={s.description}>
-											<span className={s.title}>{'None'}</span>
-											<span className={s.size}>{'None'}</span>
+											<span className={s.title}>
+												{truncateFileNameEnd(product.modelName ?? '', 35) ??
+													'Not name'}
+											</span>
+											{/* <span className={s.size}>{'None'}</span> */}
 										</td>
-										<td className={s.td_info}>${product.quantity}</td>
+										<td className={s.td_info}>{product.quantity}</td>
 										<td className={s.td_info}>${product.price}</td>
-										<td className={s.td_info}>{'None'}</td>
+										<td className={s.td_info}>
+											${`${(product.quantity * product.price).toFixed(0)}`}
+										</td>
 									</tr>
 								);
 							})}
-							{/* Добавьте другие строки по мере необходимости */}
 						</tbody>
 					</table>
 
 					<div className={s.amount}>
 						<p className={s.amount_shipping}>
-							<span>Shipping</span> <span>${totalQuantity?.toFixed(0)}</span>
+							<span>Shipping</span> <span>Not now</span>
 						</p>
 						<p className={s.amount_total}>
 							<span>Total</span>

@@ -3,13 +3,13 @@ import s from './InvoiceComponent.module.scss';
 import { Invoice } from './Invoice';
 import { useState } from 'react';
 import { classNames } from '@/utils/classNames';
-import { Element } from '@/types/services/orders';
+import { OrderInterface } from '@/types/services/orders';
 
 type TypeProps = {
-	data: Element[] | null;
+	order: OrderInterface;
 };
 
-export const InvoiceComponent = ({ data }: TypeProps) => {
+export const InvoiceComponent = ({ order }: TypeProps) => {
 	const [activeDisplay, setActiveDisplay] = useState<number>(1);
 	return (
 		<div className={s.wrapper}>
@@ -27,7 +27,7 @@ export const InvoiceComponent = ({ data }: TypeProps) => {
 					Chat
 				</span>
 			</div>
-			{activeDisplay === 1 && <Invoice data={data || null} />}
+			{activeDisplay === 1 && <Invoice order={order} />}
 		</div>
 	);
 };

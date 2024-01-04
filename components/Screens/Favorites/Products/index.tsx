@@ -134,7 +134,7 @@ export const Products = ({ products, status, filtersEmpty }: ProductsPropsType) 
 				{total > 0 &&
 					products?.map((el, ind) => (
 						<div key={ind} className={s.products_item}>
-							<ProductItem {...el} />
+							<ProductItem product={el} />
 						</div>
 					))}
 			</div>

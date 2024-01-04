@@ -28,7 +28,6 @@ export const ProjectsRFQCart = () => {
 	const projectId = match && match[1];
 
 	const [rfqsSorted, setRfqsSorted] = useState<RfqItemGot[][]>([]);
-	const [data, setData] = useState();
 
 	// create fetch objs
 	const objFetchSearch = stateInputs.search
@@ -68,9 +67,8 @@ export const ProjectsRFQCart = () => {
 				searchParams: finalJsonString,
 			});
 			const data: RfqItemGot[] = await response.result;
-			// @ts-ignore
-			setData(data);
 			setIsLoading(false);
+			//sorted and set got data
 			const groupedData: Record<string, RfqItemGot[]> = data.reduce(
 				(acc, item) => {
 					const csiCode = item.subCategory.csiCode;

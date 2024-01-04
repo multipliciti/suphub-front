@@ -66,6 +66,9 @@ export interface ProductItemType {
 	images: ImageType[];
 	cutsheets: CutSheet[];
 	dynamic_attr: DynamicAttribute[];
+	seller: {
+		name: string;
+	};
 	containerQty20ft: string;
 	containerQty40ft: string;
 	createdAt: string;

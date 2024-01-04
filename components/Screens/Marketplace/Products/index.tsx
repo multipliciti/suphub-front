@@ -139,7 +139,7 @@ export const Products = (props: ProductsPropsType) => {
 				<div className={classNames(s.products, isSideBar && s.products_sidebar)}>
 					{products.map((el, ind) => (
 						<div key={ind} className={s.products_item}>
-							<ProductItem {...el} />
+							<ProductItem product={el} />
 						</div>
 					))}
 				</div>

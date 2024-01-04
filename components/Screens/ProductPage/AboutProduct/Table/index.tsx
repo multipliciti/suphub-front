@@ -8,7 +8,7 @@ interface TypeShipmentPackaging {
 	label: string;
 	value: string;
 	//Cannot have this property here, created to avoid TypeScript error.
-	attributeDescription?: null;
+	attributeDescription?: null | string;
 }
 
 interface TypeTables {

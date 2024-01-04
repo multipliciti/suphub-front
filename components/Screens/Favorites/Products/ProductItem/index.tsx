@@ -11,10 +11,15 @@ import { useEffect, useState } from 'react';
 import { ProductItemType } from '@/types/products/product';
 import { Api } from '@/services';
 
-export const ProductItem = (props: ProductItemType) => {
+type TypeProps = {
+	product: ProductItemType;
+};
+
+export const ProductItem = ({ product }: TypeProps) => {
 	const { push } = useRouter();
 	const [favoriteStar, setFavoriteStar] = useState<boolean>(true);
-	const { name, id, unitPrice, dynamic_attr, favorite, images } = props;
+	const { name, id, unitPrice, dynamic_attr, favorite, images, unitOfMeasurement } =
+		product;
 
 	const certification = dynamic_attr.find((el: any) => el.label === 'Certification')
 		?.value;
@@ -28,9 +33,9 @@ export const ProductItem = (props: ProductItemType) => {
 		?.value;
 
 	const properties = [
-		['MOQ', props.moq ? `${props.moq} units` : '-'],
-		['Lead time (weeks)', props.leadTime ? `${props.leadTime} days` : '-'],
-		['Warranty', props.warranty ? `${props.warranty} month` : '-'],
+		['MOQ', product.moq ? `${product.moq} ${product.unitOfMeasurement}` : '-'],
+		['Lead time (weeks)', product.leadTime ? `${product.leadTime} days` : '-'],
+		['Warranty', product.warranty ? `${product.warranty} month` : '-'],
 		['Certification', certification ? `${certification}` : '-'],
 		['Width', width ? `${width}"` : '-'],
 		['Heigth', heigth ? `${heigth}"` : '-'],
@@ -105,7 +110,7 @@ export const ProductItem = (props: ProductItemType) => {
 					<h1 className={s.title}>{name} </h1>
 					<h2 className={s.price}>
 						<span className={s.price}>${unitPrice}</span>
-						<span className={s.price_format}>/ Unit</span>
+						<span className={s.price_format}>/ {unitOfMeasurement}</span>
 					</h2>
 
 					{properties.map((el: any, ind: number) => {

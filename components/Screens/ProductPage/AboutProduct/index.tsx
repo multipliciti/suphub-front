@@ -81,7 +81,7 @@ export const AboutProduct = ({ product }: PropsType) => {
 					</div>
 				</div>
 				<div className={s.product_description}>
-					<p className={s.subtitle}>Weika Windows</p>
+					<p className={s.subtitle}>{product.seller.name}</p>
 					<h3 className={s.title}> {product.name} </h3>
 
 					<div className={s.product_description_wrap}>
