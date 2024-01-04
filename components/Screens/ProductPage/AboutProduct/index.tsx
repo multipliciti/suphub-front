@@ -35,7 +35,10 @@ export const AboutProduct = ({ product }: PropsType) => {
 	const certification = dynamic_attr.find((el: any) => el.label === 'Certification')
 		?.value;
 	const properties = [
-		['Min. Order Quantity', product.moq ? `${product.moq} units` : '-'],
+		[
+			'Min. Order Quantity',
+			product.moq ? `${product.moq} ${product.unitOfMeasurement}` : '-',
+		],
 		['Lead time (weeks)', product.leadTime ? `${product.leadTime} ` : '-'],
 		[
 			'Warranty',
