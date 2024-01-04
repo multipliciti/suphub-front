@@ -13,12 +13,16 @@ import { useEffect, useState } from 'react';
 import { setModal } from '@/redux/slices/modal';
 import { truncateFileNameEnd } from '@/utils/names';
 
-export const ProductItem = (props: ProductItemType) => {
+type TypeProps = {
+	product: ProductItemType;
+};
+
+export const ProductItem = ({ product }: TypeProps) => {
 	const { push } = useRouter();
 	const user = useAppSelector((state) => state.authSlice.user);
-
 	const dispatch = useAppDispatch();
-	const { name, id, dynamic_attr, unitPrice, favorite, images } = props;
+	const { name, id, dynamic_attr, unitPrice, favorite, images, unitOfMeasurement } =
+		product;
 
 	const [favoriteStar, setFavoriteStar] = useState<boolean>(false);
 
@@ -32,14 +36,13 @@ export const ProductItem = (props: ProductItemType) => {
 		?.value;
 	const glassType = dynamic_attr.find((el: any) => el.label === 'Glazing Type')
 		?.value;
-
 	const properties = [
-		['MOQ', props.moq ? `${props.moq} units` : '-'],
-		['Lead time (weeks)', props.leadTime ? `${props.leadTime}` : '-'],
+		['MOQ', product.moq ? `${product.moq} ${product.unitOfMeasurement}` : '-'],
+		['Lead time (weeks)', product.leadTime ? `${product.leadTime}` : '-'],
 		[
 			'Warranty',
-			props.warranty
-				? `${props.warranty} ${props.warranty === 1 ? 'year' : 'years'}`
+			product.warranty
+				? `${product.warranty} ${product.warranty === 1 ? 'year' : 'years'}`
 				: '-',
 		],
 		['Certification', certification ? `${certification}` : '-'],
@@ -76,7 +79,7 @@ export const ProductItem = (props: ProductItemType) => {
 
 	return (
 		<>
-			<div onClick={() => push(`marketplace//product/${id}`)} className={s.wrapper}>
+			<div onClick={() => push(`marketplace/product/${id}`)} className={s.wrapper}>
 				<div className={s.img_wrapper}>
 					<div
 						onClick={(e) => {
@@ -125,7 +128,7 @@ export const ProductItem = (props: ProductItemType) => {
 					<h1 className={s.title}> {name} </h1>
 					<h2 className={s.price}>
 						<span className={s.price}>${unitPrice}</span>
-						<span className={s.price_format}>/Unit</span>
+						<span className={s.price_format}>/ {unitOfMeasurement}</span>
 					</h2>
 
 					{properties.map((el: any, ind: number) => {

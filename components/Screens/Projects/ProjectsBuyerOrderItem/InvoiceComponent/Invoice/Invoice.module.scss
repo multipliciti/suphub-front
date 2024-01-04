@@ -106,13 +106,14 @@
 			flex-direction: column;
 
 			.title {
+				text-align: center;
 				color: #1e293b;
 				font-weight: 600;
 			}
 
-			.size {
-				color: #64748b;
-			}
+			// .size {
+			// 	color: #64748b;
+			// }
 		}
 	}
 
@@ -122,7 +123,7 @@
 		background: #f7f8f9;
 
 		th {
-			text-align: left;
+			text-align: center;
 			padding: 8px;
 
 			color: #143644;

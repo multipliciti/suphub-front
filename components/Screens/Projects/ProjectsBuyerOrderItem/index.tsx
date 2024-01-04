@@ -2,7 +2,6 @@
 import s from './ProjectsBuyerOrderItem.module.scss';
 import { useEffect, useState } from 'react';
 import { InvoiceComponent } from './InvoiceComponent';
-import { useAppSelector } from '@/redux/hooks';
 import { Order } from './Order';
 import { Api } from '@/services';
 import { OrderInterface } from '@/types/services/orders';
@@ -34,7 +33,7 @@ export const ProjectsBuyerOrderItem = ({ id }: TypeProps) => {
 			{order && (
 				<>
 					<Order order={order} />
-					<InvoiceComponent data={order.elements || null} />
+					<InvoiceComponent order={order} />
 				</>
 			)}
 		</div>

@@ -33,7 +33,7 @@ export const StorefrontSellerOrderItem = ({ id }: TypeProps) => {
 			{order && (
 				<>
 					<Order order={order} />
-					<InvoiceComponent data={order.elements || null} />
+					<InvoiceComponent order={order} />
 				</>
 			)}
 		</div>

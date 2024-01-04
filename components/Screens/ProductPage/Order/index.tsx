@@ -7,20 +7,16 @@ import { classNames } from '@/utils/classNames';
 import { User } from '@/types/services/auth';
 import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
+import { ProductItemType } from '@/types/products/product';
 
 interface PropsType {
 	user: User | null;
 	statusGetUser: 'pending' | 'success' | 'rejected' | 'logouted';
+	product: ProductItemType;
 }
 
-export const Order = ({ user, statusGetUser }: PropsType) => {
+export const Order = ({ user, statusGetUser, product }: PropsType) => {
 	const dispatch = useAppDispatch();
-
-	const orderSummary = [
-		['QTY. 1+', 75],
-		['QTY. 1+', 75],
-		['QTY. 1+', 75],
-	];
 
 	const simples = [
 		{
@@ -82,12 +78,13 @@ export const Order = ({ user, statusGetUser }: PropsType) => {
 			<div className={s.order}>
 				<div className={s.header}>Order Price</div>
 				<div className={s.price}>
-					{orderSummary.map((el, ind) => {
+					{product.prices.map((el, ind) => {
 						return (
 							<p key={ind} className={s.price_row}>
-								<span className={s.price_row_key}> {el[0]}</span>
+								<span className={s.price_row_key}> {`QTY. ${el.minCount}`} </span>
 								<span className={s.price_row_value}>
-									${el[1]} <span className={s.unit}>/ unit</span>
+									${el.value}
+									<span className={s.unit}>/ {product.unitOfMeasurement}</span>
 								</span>
 							</p>
 						);
@@ -104,7 +101,7 @@ export const Order = ({ user, statusGetUser }: PropsType) => {
 				</div>
 			</div>
 
-			{simples.map((el: any, ind: number) => {
+			{/* {simples.map((el: any, ind: number) => {
 				return (
 					<div key={ind}>
 						<Simple
@@ -115,7 +112,7 @@ export const Order = ({ user, statusGetUser }: PropsType) => {
 						/>
 					</div>
 				);
-			})}
+			})} */}
 		</div>
 	);
 };

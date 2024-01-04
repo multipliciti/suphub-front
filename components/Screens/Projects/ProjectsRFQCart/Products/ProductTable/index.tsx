@@ -18,6 +18,8 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 	const statusTest = 'Selection needed';
 	const tableRef = useRef<HTMLTableSectionElement | null>(null);
 
+	console.log('properties', properties);
+
 	const arrTableHead = [
 		{
 			title: 'Product',

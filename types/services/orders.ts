@@ -77,6 +77,36 @@ export interface Element {
 	orderId: number;
 	updatedAt: string;
 	createdAt: string;
+	modelName: null | string;
+}
+
+interface sellerCompanyType {
+	id: number;
+	name: string;
+	abbreviation: string;
+	website: string;
+	status: string;
+	productCertification: string;
+	countryProductsCertifiedFor: string;
+	businessCertifications: string[];
+	factoryCertifications: string[];
+	companyAddressId: null | number;
+	factoryAddressId: null | number;
+	logoId: null | number;
+	updatedA: string;
+	createdAt: string;
+}
+
+interface BuyerCompanyType {
+	id: number;
+	name: string;
+	website: string;
+	addressId: number | null;
+	EIN: string;
+	logoId: number | null;
+	updatedAt: string;
+	createdAt: string;
+	address: string | null;
 }
 
 export interface OrderInterface {
@@ -98,6 +128,8 @@ export interface OrderInterface {
 	updatedAt: string;
 	createdAt: string;
 	deliveryDate: null | string;
+	sellerCompany: sellerCompanyType;
+	buyerCompany: BuyerCompanyType;
 }
 
 export interface OrderCreateBody {
