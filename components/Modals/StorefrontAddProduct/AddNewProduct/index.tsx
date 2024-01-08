@@ -52,14 +52,6 @@ export const SellerAddNewProduct = () => {
 			const data: CreateSellerProduct = {
 				name: values.productName,
 				subCategoryId,
-				countryOfOrigin: '',
-				hsCode: '',
-				unitPrice: 0,
-				moq: 0,
-				minOrder: 0,
-				leadTime: 0,
-				warranty: 0,
-				dynamic_attr: [],
 			};
 			await api.productSeller.addSellerProduct(data);
 
