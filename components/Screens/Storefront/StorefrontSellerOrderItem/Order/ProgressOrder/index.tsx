@@ -56,7 +56,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 				setHeightWrapper(wrapperRef.current.offsetHeight - heightFromLowestPoint);
 			}
 		}, 300);
-	}, [activeDisplay, rerenderProgress, setRerenderProgress]);
+	}, [activeDisplay, rerenderProgress, setRerenderProgress, order, activeStep]);
 
 	const setActiveDisplayFunction = (n: number) => {
 		setActiveDisplay((prevState) => {
@@ -74,6 +74,10 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 	useEffect(() => {
 		switch (order.status) {
 			case 'confirmed':
+				setActiveStep(1);
+				setRerenderProgress(!rerenderProgress);
+				break;
+			case 'depositWaiting':
 				setActiveStep(2);
 				setRerenderProgress(!rerenderProgress);
 				break;
@@ -314,6 +318,8 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 									order.payments?.find((el) => el.type === 'deposit')?.createdAt ??
 									''
 								}
+								setActiveStep={setActiveStep}
+								status={order.status}
 								productionArr={order.production ? order.production : null}
 								orderId={order.id}
 								rerenderProgress={rerenderProgress}

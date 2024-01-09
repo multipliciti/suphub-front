@@ -97,6 +97,18 @@ interface sellerCompanyType {
 	createdAt: string;
 }
 
+interface Address {
+	id: number;
+	street: string;
+	city: string;
+	state: string;
+	country: string;
+	zipcode: string;
+	postalCode: null | string;
+	updatedAt: string;
+	createdAt: string;
+}
+
 interface BuyerCompanyType {
 	id: number;
 	name: string;
@@ -106,7 +118,7 @@ interface BuyerCompanyType {
 	logoId: number | null;
 	updatedAt: string;
 	createdAt: string;
-	address: string | null;
+	address: Address;
 }
 
 export interface OrderInterface {

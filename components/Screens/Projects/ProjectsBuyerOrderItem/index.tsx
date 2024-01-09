@@ -13,6 +13,7 @@ interface TypeProps {
 export const ProjectsBuyerOrderItem = ({ id }: TypeProps) => {
 	const api = Api();
 	const [order, setOrder] = useState<OrderInterface | null>(null);
+	const [rerenderProgress, setRerenderProgress] = useState<boolean>(false);
 	//using id we will must make fetch
 
 	const getOrderById = async (id: number) => {

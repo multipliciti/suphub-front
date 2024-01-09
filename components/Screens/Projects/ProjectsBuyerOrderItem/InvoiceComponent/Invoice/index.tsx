@@ -25,6 +25,10 @@ export const Invoice = ({ order }: TypeProps) => {
 		0
 	);
 
+	const formattedAddress = order.buyerCompany.address
+		? `${order.buyerCompany.address.street}\n${order.buyerCompany.address.city}, ${order.buyerCompany.address.state} ${order.buyerCompany.address.zipcode}\n${order.buyerCompany.address.country}`
+		: 'Not adress';
+
 	return (
 		<div className={s.wrapper}>
 			{/* Manufacturer && Ship To */}
@@ -47,7 +51,7 @@ export const Invoice = ({ order }: TypeProps) => {
 					</p>
 					<textarea
 						ref={textareaRef}
-						defaultValue={order.buyerCompany.address ?? 'Not adress'}
+						defaultValue={formattedAddress}
 						className={classNames(s.input, s.title)}
 					></textarea>
 				</div>
