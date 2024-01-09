@@ -27,7 +27,7 @@ export const Info = ({ price, payments, date }: TypeProps) => {
 				</span>
 				<div className={s.item_info}>
 					<span className={s.item_info_title}>Remaining</span>
-					<span className={s.item_info_value}>${remainingTotal}</span>
+					<span className={s.item_info_value}>${remainingTotal.toFixed(0)}</span>
 				</div>
 			</div>
 			{/* //  */}
@@ -37,7 +37,7 @@ export const Info = ({ price, payments, date }: TypeProps) => {
 				</span>
 				<div className={s.item_info}>
 					<span className={s.item_info_title}>Paid</span>
-					<span className={s.item_info_value}>${paidTotal}</span>
+					<span className={s.item_info_value}>${paidTotal.toFixed(0)}</span>
 				</div>
 			</div>
 			{/* //  */}
@@ -47,7 +47,7 @@ export const Info = ({ price, payments, date }: TypeProps) => {
 				</span>
 				<div className={s.item_info}>
 					<span className={s.item_info_title}>Total</span>
-					<span className={s.item_info_value}>${price}</span>
+					<span className={s.item_info_value}>${price.toFixed(0)}</span>
 				</div>
 			</div>
 			{/* //  */}

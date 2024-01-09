@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import s from './ProjectsTable.module.scss';
 import { truncateFileNameEnd } from '@/utils/names';
 import { classNames } from '@/utils/classNames';
 import { useRouter } from 'next/navigation';
 import { Order } from '@/types/services/projects';
-import Link from 'next/link';
 
 interface PropsType {
 	columns: { title: string; key: string }[];
@@ -86,21 +85,29 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 													className={classNames(
 														s.td_status,
 														s.td,
-														row.status.toLowerCase() === 'depositWaiting' &&
-															s.td_status_pending,
-														row.status.toLowerCase() === 'in transit' &&
-															s.td_status_transit,
-														row.status.toLowerCase() === 'inProduction' &&
-															s.td_status_production,
-														row.status.toLowerCase() === 'pO issued' &&
-															s.td_status_issued,
-														row.status.toLowerCase() === 'delivered' &&
-															s.td_status_delivered,
-														row.status.toLowerCase() === 'completed' &&
-															s.td_status_delivered
+														row.status === 'confirmed' && s.td_status_issued,
+														row.status === 'depositWaiting' && s.td_status_pending,
+														row.status === 'inProduction' &&
+															s.td_status_inproduction,
+														row.status === 'productionCompleted' &&
+															s.td_status_inproduction,
+														row.status === 'paymentWaiting' && s.td_status_pending,
+														row.status === 'preShipment' && s.td_status_preshipment,
+														row.status === 'shipped' && s.td_status_intransit,
+														row.status === 'delivered' && s.td_status_delivered,
+														row.status === 'completed' && s.td_status_delivered
 													)}
 												>
-													{row.status}
+													{row.status === 'confirmed' && 'PO issued'}
+													{row.status === 'depositWaiting' && 'Payment pending'}
+													{row.status === 'inProduction' && 'In production'}
+													{row.status === 'productionCompleted' &&
+														'Production Completed'}
+													{row.status === 'paymentWaiting' && 'Payment pending'}
+													{row.status === 'preShipment' && 'Pre-shipment'}
+													{row.status === 'shipped' && 'In transit'}
+													{row.status === 'delivered' && 'Delivered'}
+													{row.status === 'completed' && 'Delivered'}
 												</span>
 											</span>
 										</td>

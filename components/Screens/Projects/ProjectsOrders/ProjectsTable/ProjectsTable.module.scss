@@ -60,24 +60,29 @@
 		font-weight: 700;
 		line-height: 18px;
 
+		&_issued {
+			border: 1px solid #cbd5e1;
+			color: #64748b;
+		}
+
 		&_pending {
 			background: #f52419;
 			color: #fff;
 		}
 
-		&_transit {
-			background: #fff5e8;
-			color: #de7a05;
-		}
-
-		&_production {
+		&_inproduction {
 			background: #f0f2fe;
 			color: #2b1694;
 		}
 
-		&_issued {
-			border: 1px solid #cbd5e1;
+		&_preshipment {
+			background: #edf1f6;
 			color: #64748b;
+		}
+
+		&_intransit {
+			background: #fff5e8;
+			color: #de7a05;
 		}
 
 		&_delivered {

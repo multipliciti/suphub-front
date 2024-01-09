@@ -1,6 +1,7 @@
 'use client';
 import s from './Deposit.module.scss';
 import { classNames } from '@/utils/classNames';
+import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
 	date: string;
@@ -18,7 +19,7 @@ export const Deposit = ({ activeDisplay, index, status, date }: PropsType) => {
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>01/05/2023</p>
+				<p>{formatDateString(date)}</p>
 			</div>
 
 			<div
@@ -28,7 +29,7 @@ export const Deposit = ({ activeDisplay, index, status, date }: PropsType) => {
 				)}
 			>
 				<p className={classNames(s.status, status !== 'confirmed' && s.status_paid)}>
-					{status !== 'confirmed' ? 'Paid' : 'Payment pending'}
+					{status !== 'depositWaiting' ? 'Paid' : 'Payment pending'}
 				</p>
 			</div>
 		</>

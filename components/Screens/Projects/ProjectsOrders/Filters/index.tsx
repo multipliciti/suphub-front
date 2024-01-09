@@ -7,11 +7,18 @@ import Image from 'next/image';
 import search_icon from '@/imgs/search.svg';
 import arrow_icon from '@/imgs/arrow.svg';
 import clear_input from '@/imgs/Buyer&Seller/clear.svg';
+import { Eagle_Lake } from 'next/font/google';
 
 interface TypeProps {
 	setStateInputs: (n: any) => void;
 	stateInputs: any;
 }
+
+interface statusesType {
+	label: string;
+	status: string;
+}
+
 export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 	const statusFilterRef = useRef<HTMLDivElement>(null);
 	const orderTypeRef = useRef<HTMLDivElement>(null);
@@ -45,21 +52,62 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 		}
 	};
 
-	const statuses = {
-		confirmed: 'confirmed',
-		depositWaiting: 'depositWaiting',
-		inProduction: 'inProduction',
-		preShipment: 'preShipment',
-		shipped: 'shipped',
-		paymentWaiting: 'paymentWaiting',
-		delivered: 'delivered',
-		completed: 'completed',
-	};
+	const statuses: statusesType[] = [
+		{
+			label: 'PO issued',
+			status: 'confirmed',
+		},
+		{
+			label: 'Payment pending',
+			status: 'depositWaiting',
+		},
+		//not reade to backend
+		//refactoring
+		// {
+		// 	label: 'Declined',
+		// 	status: 'declined',
+		// },
+		{
+			label: 'In production',
+			status: 'inProduction',
+		},
+		{
+			label: 'Production Completed',
+			status: 'productionCompleted',
+		},
+		{
+			label: 'Pre-shipment',
+			status: 'preShipment',
+		},
 
-	const orderType = {
-		sample: 'sample',
-		product: ' product',
-	};
+		{
+			label: 'Payment pending',
+			status: 'paymentWaiting',
+		},
+		{
+			label: 'In transit',
+			status: 'shipped',
+		},
+		{
+			label: 'Delivered',
+			status: 'delivered',
+		},
+		{
+			label: 'Completed',
+			status: 'completed',
+		},
+	];
+
+	const orderTypeArr = [
+		{
+			label: 'Sample',
+			status: 'sample',
+		},
+		{
+			label: 'Product',
+			status: 'product',
+		},
+	];
 
 	return (
 		<div className={s.wrapper}>
@@ -117,23 +165,23 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 						activeFilter === 1 && s.filter_content_active
 					)}
 				>
-					{Object.values(statuses).map((el, ind) => {
+					{statuses.map((el, ind) => {
 						return (
 							<div key={ind} className={s.item_wrapper}>
 								<p
 									onClick={(e) => {
 										e.stopPropagation();
-										setVelueFilters('status', el);
+										setVelueFilters('status', el.status);
 									}}
 									className={classNames(
 										s.item,
 										stateInputs['status'].some(
-											(existingItem: any) => existingItem === el
+											(existingItem: any) => existingItem === el.status
 										) && s.item_active
 									)}
 									key={ind}
 								>
-									{el}
+									{el.label}
 								</p>
 							</div>
 						);
@@ -165,23 +213,23 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 						activeFilter === 2 && s.filter_content_active
 					)}
 				>
-					{Object.values(orderType).map((el, ind) => {
+					{orderTypeArr.map((el, ind) => {
 						return (
 							<div key={ind} className={s.item_wrapper}>
 								<p
 									onClick={(e) => {
 										e.stopPropagation();
-										setVelueFilters('orderType', el);
+										setVelueFilters('orderType', el.status);
 									}}
 									className={classNames(
 										s.item,
 										stateInputs['orderType'].some(
-											(existingItem: any) => existingItem === el
+											(existingItem: any) => existingItem === el.status
 										) && s.item_active
 									)}
 									key={ind}
 								>
-									{el}
+									{el.label}
 								</p>
 							</div>
 						);
