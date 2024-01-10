@@ -199,7 +199,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 					if (type === 'char' && el.charValue === item) {
 						findAttrValueIds.push(el.id);
 					}
-					if (type === 'numeric' && el.numericValue === item) {
+					if (type === 'numeric' && el.numericValue === Number(item)) {
 						findAttrValueIds.push(el.id);
 					}
 				});
