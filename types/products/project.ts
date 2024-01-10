@@ -21,9 +21,19 @@ export interface Project {
 	createdAt: string;
 }
 
-export type ProjectType = 'singleFamily' | 'commercial';
+export type ProjectType =
+	| 'singleFamily'
+	| 'commercial'
+	| 'custom'
+	| 'renovation'
+	| 'retrofit'
+	| 'residential';
 
 export const projectTypeLabels: { [key in ProjectType]: string } = {
 	singleFamily: 'Single Family Project',
 	commercial: 'Commercial Project',
+	custom: 'Custom Project',
+	renovation: 'Renovation Project',
+	retrofit: 'Retrofit Project',
+	residential: 'Residential Project',
 };
