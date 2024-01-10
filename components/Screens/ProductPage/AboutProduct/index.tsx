@@ -13,6 +13,7 @@ interface PropsType {
 export const AboutProduct = ({ product }: PropsType) => {
 	const [activeImg, setActiveImg] = useState<number>(0);
 	const { dynamic_attr, images } = product;
+	//generate info product
 	const shipmentPackaging = [
 		{
 			label: 'packaging',
@@ -32,12 +33,22 @@ export const AboutProduct = ({ product }: PropsType) => {
 		},
 	];
 
+	//generate properties
+	const minPriceOfPrices =
+		product.prices.length > 0
+			? product.prices.reduce(function (prev, current) {
+					return prev.value < current.value ? prev : current;
+			  })
+			: null;
+
 	const certification = dynamic_attr.find((el: any) => el.label === 'Certification')
 		?.value;
 	const properties = [
 		[
 			'Min. Order Quantity',
-			product.moq ? `${product.moq} ${product.unitOfMeasurement}` : '-',
+			minPriceOfPrices
+				? `${minPriceOfPrices.minCount} ${product.unitOfMeasurement}`
+				: '-',
 		],
 		['Lead time (weeks)', product.leadTime ? `${product.leadTime} ` : '-'],
 		[

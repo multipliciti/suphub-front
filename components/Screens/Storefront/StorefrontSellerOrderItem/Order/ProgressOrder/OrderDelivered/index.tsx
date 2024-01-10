@@ -24,7 +24,7 @@ export const OrderDelivered = ({
 					!activeDisplay.includes(index) && s.data_active
 				)}
 			>
-				<p>In transit</p>
+				{formatDateString(date)}
 			</div>
 
 			<div

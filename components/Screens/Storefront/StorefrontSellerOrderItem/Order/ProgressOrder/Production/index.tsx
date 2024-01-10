@@ -1,7 +1,7 @@
 'use client';
 import s from './Production.module.scss';
 import Image from 'next/image';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useRef } from 'react';
 
 import { classNames } from '@/utils/classNames';
 import { useAppDispatch } from '@/redux/hooks';
@@ -17,10 +17,12 @@ import remove_icon from '@/imgs/Buyer&Seller/remove.svg';
 
 interface PropsType {
 	date: string;
+	status: string;
 	productionStartedDate: string;
 	activeDisplay: number[];
 	orderId: number;
 	index: number;
+	setActiveStep: (n: number) => void;
 	rerenderProgress: boolean;
 	setRerenderProgress: (n: boolean) => void;
 	productionArr: ProductionItem[] | null;
@@ -30,22 +32,29 @@ export const Production = ({
 	date,
 	productionStartedDate,
 	activeDisplay,
+	status,
 	index,
 	rerenderProgress,
 	setRerenderProgress,
 	productionArr,
+	setActiveStep,
 	orderId,
 }: PropsType) => {
 	const dispatch = useAppDispatch();
 	const api = Api();
-	const [testShow, setTestShow] = useState<boolean>(false);
-	const [complete, setComplete] = useState<boolean>(false);
+	//for send new message. Display btns for new message
 	const [newMessage, setNewMessage] = useState<boolean>(false);
+	//when has alredy sent new message
+	const [sentMessage, setSentMessage] = useState<boolean>(false);
+	//disable btns
+	const [complete, setComplete] = useState<boolean>(false);
 	const [formData, setFormData] = useState<OrderProductionInterface | null>({
 		images: [],
 		orderId,
 		updates: '',
 	});
+	const [sentMessages, setSentMessages] = useState<OrderProductionInterface[]>([]);
+	const inputRef = useRef<HTMLInputElement>(null);
 	const currentdDate = new Date().toLocaleDateString('en-GB');
 
 	// Add photo
@@ -94,21 +103,33 @@ export const Production = ({
 				status,
 			});
 			setComplete(true);
+			setActiveStep(4);
 		} catch (error) {
 			console.error('changeStatusPreShipment error:', error);
 		}
 	};
 
 	const AddOrderProduction = async (data: OrderProductionInterface) => {
+		console.log('data AddOrderProduction', data);
 		const formDataSend = new FormData();
 		for (let i = 0; i < data.images.length; i++) {
 			formDataSend.append('files', data.images[i]);
 		}
 		formDataSend.append('orderId', data.orderId.toString());
 		formDataSend.append('updates', data.updates);
-
 		try {
-			await api.sellerOrder.orderProduction(formDataSend);
+			// await api.sellerOrder.orderProduction(formDataSend);
+			setNewMessage(false);
+			setSentMessages((prevState) => [...prevState, data]);
+			setSentMessage(true);
+
+			//reset data for new message
+			setFormData({
+				images: [],
+				orderId,
+				updates: '',
+			});
+			inputRef.current && (inputRef.current.value = '');
 		} catch (error) {
 			console.error('AddOrderProduction error:', error);
 		}
@@ -135,6 +156,8 @@ export const Production = ({
 						<span className={s.data}>{formatDateString(productionStartedDate)}</span>
 						<span className={s.title}>Production started</span>
 					</div>
+
+					{/* render the incoming messages from the backend here */}
 					{productionArr?.map((el: ProductionItem, ind: number) => {
 						return (
 							<div key={ind} className={s.form_block}>
@@ -163,11 +186,44 @@ export const Production = ({
 						);
 					})}
 
+					{/* If I have sent at least one message, we render the incoming messages from the backend here. */}
+					{sentMessages.length > 0 &&
+						sentMessage &&
+						sentMessages.map((el, ind) => {
+							return (
+								<div key={ind} className={classNames(s.form_block)}>
+									<div className={s.status}>
+										<p className={s.data}>{currentdDate}</p>
+										<p className={classNames(s.status_text, s.status_gray)}>Sent</p>
+									</div>
+									<div className={s.sent_wrapper}>
+										<p className={s.sent_title}> {el.updates} </p>
+										<div className={s.sent_images}>
+											{el?.images.map((el, ind) => (
+												<Image
+													className={s.updates_photo_img}
+													key={ind}
+													onClick={() => {
+														dispatch(setPhotoShow(URL.createObjectURL(el)));
+														dispatch(setModal('showPhoto'));
+													}}
+													src={URL.createObjectURL(el)}
+													alt="sent_image"
+													width={60}
+													height={60}
+												/>
+											))}
+										</div>
+									</div>
+								</div>
+							);
+						})}
 					{/* add updates */}
 					<div className={classNames(s.form_none, newMessage && s.form_block)}>
 						<span className={s.data}>{currentdDate}</span>
 						<div className={s.updates_wrapper}>
 							<input
+								ref={inputRef}
 								onChange={handleAddMessage}
 								placeholder="Provide updates"
 								className={s.updates_input}
@@ -218,41 +274,18 @@ export const Production = ({
 							</div>
 						</div>
 					</div>
-
-					{/* sent new updates */}
-					{testShow && formData && (
-						<div className={classNames(s.form_block)}>
-							<div className={s.status}>
-								<p className={s.data}>No data</p>
-								<p className={classNames(s.status_text, s.status_gray)}>Sent</p>
-							</div>
-
-							<div className={s.sent_wrapper}>
-								<p className={s.sent_title}> {formData.updates} </p>
-								<div className={s.sent_images}>
-									{formData?.images.map((el, ind) => (
-										<Image
-											className={s.updates_photo_img}
-											key={ind}
-											src={URL.createObjectURL(el)}
-											alt="sent_image"
-											width={60}
-											height={60}
-										/>
-									))}
-								</div>
-							</div>
-						</div>
-					)}
-
-					{/* buttons */}
 					<div className={s.buttons}>
-						{!testShow && !newMessage && (
+						{/* wait buyer approve  (inProduction status) */}
+						{status === 'inProduction' && (
+							<span className={s.waiting}>Waiting for customer approval</span>
+						)}
+
+						{/* buyer has already approved (productionCompleted status)  */}
+						{!newMessage && status === 'productionCompleted' && (
 							<>
 								<button
 									onClick={() => {
 										setNewMessage(true);
-										setTestShow(false);
 										setRerenderProgress(!rerenderProgress);
 									}}
 									className={classNames(
@@ -264,7 +297,7 @@ export const Production = ({
 								</button>
 								<button
 									onClick={() => {
-										changeStatusPreShipment(orderId, 'productionCompleted');
+										changeStatusPreShipment(orderId, 'preShipment');
 									}}
 									className={classNames(
 										s.buttons_production,
@@ -275,11 +308,9 @@ export const Production = ({
 								</button>
 							</>
 						)}
-						{testShow && !newMessage && (
-							<span className={s.waiting}>Waiting for customer approval</span>
-						)}
+
 						{/* new updates */}
-						{newMessage && !testShow && (
+						{newMessage && (
 							<>
 								<button
 									onClick={() => {
@@ -293,8 +324,6 @@ export const Production = ({
 								<button
 									onClick={() => {
 										if (formData) AddOrderProduction(formData);
-										setTestShow(true);
-										setNewMessage(false);
 									}}
 									className={s.buttons_send}
 								>

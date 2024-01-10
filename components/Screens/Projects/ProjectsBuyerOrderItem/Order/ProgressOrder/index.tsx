@@ -64,6 +64,10 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 	useEffect(() => {
 		switch (order.status) {
 			case 'confirmed':
+				setActiveStep(1);
+				setRerenderProgress(!rerenderProgress);
+				break;
+			case 'depositWaiting':
 				setActiveStep(2);
 				setRerenderProgress(!rerenderProgress);
 				break;

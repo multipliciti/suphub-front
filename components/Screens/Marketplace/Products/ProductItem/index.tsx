@@ -18,26 +18,39 @@ type TypeProps = {
 };
 
 export const ProductItem = ({ product }: TypeProps) => {
+	const dispatch = useAppDispatch();
+	const { name, id, dynamic_attr, favorite, images, unitOfMeasurement } = product;
 	const { push } = useRouter();
 	const user = useAppSelector((state) => state.authSlice.user);
-	const dispatch = useAppDispatch();
-	const { name, id, dynamic_attr, unitPrice, favorite, images, unitOfMeasurement } =
-		product;
-
 	const [favoriteStar, setFavoriteStar] = useState<boolean>(false);
+	//generate info product
+	//find an object with the minimum value in the 'prices' array.
+	const minPriceOfPrices =
+		product.prices.length > 0
+			? product.prices.reduce(function (prev, current) {
+					return prev.value < current.value ? prev : current;
+			  })
+			: null;
 
-	const certification = dynamic_attr.find((el: any) => el.label === 'Certification')
-		?.value;
-	const width = dynamic_attr.find((el: any) => el.label === 'Width')?.value;
-	const heigth = dynamic_attr.find((el: any) => el.label === 'Heigth')?.value;
-	const opening = dynamic_attr.find((el: any) => el.label === 'Opening Style')
-		?.value;
-	const frameMatireal = dynamic_attr.find((el: any) => el.label === 'Frame Material')
-		?.value;
-	const glassType = dynamic_attr.find((el: any) => el.label === 'Glazing Type')
-		?.value;
-	const properties = [
-		['MOQ', product.moq ? `${product.moq} ${product.unitOfMeasurement}` : '-'],
+	//generate properties
+	//Excluding objects with null values and sorting them in the array dynamic_attr
+	const dynamic_attr_corted = dynamic_attr
+		.filter((obj) => obj.order !== null)
+		.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+	//Converting the sorted objects according to the type we need
+	const propertiesDynamicArray = dynamic_attr_corted.map((obj) => [
+		`${obj.label}`,
+		obj.value ? obj.value : '-',
+	]);
+	//generate static array
+	const propertiesStaticArray = [
+		[
+			'MOQ',
+			minPriceOfPrices
+				? `${minPriceOfPrices.minCount} ${product.unitOfMeasurement}`
+				: '-',
+		],
 		['Lead time (weeks)', product.leadTime ? `${product.leadTime}` : '-'],
 		[
 			'Warranty',
@@ -45,13 +58,9 @@ export const ProductItem = ({ product }: TypeProps) => {
 				? `${product.warranty} ${product.warranty === 1 ? 'year' : 'years'}`
 				: '-',
 		],
-		['Certification', certification ? `${certification}` : '-'],
-		['Width', width ? `${width}"` : '-'],
-		['Heigth', heigth ? `${heigth}"` : '-'],
-		['Opening', opening ? `${opening}` : '-'],
-		['Frame Material', frameMatireal ? `${frameMatireal}` : '-'],
-		['Glazing Type', glassType ? `${glassType}` : '-'],
 	];
+	//combining arrays
+	const properties = propertiesStaticArray.concat(propertiesDynamicArray);
 
 	useEffect(() => {
 		setFavoriteStar(favorite);
@@ -127,7 +136,9 @@ export const ProductItem = ({ product }: TypeProps) => {
 				<div className={s.description_wrapper}>
 					<h1 className={s.title}> {name} </h1>
 					<h2 className={s.price}>
-						<span className={s.price}>${unitPrice}</span>
+						<span className={s.price}>
+							${minPriceOfPrices ? minPriceOfPrices.value : '-'}
+						</span>
 						<span className={s.price_format}>/ {unitOfMeasurement}</span>
 					</h2>
 

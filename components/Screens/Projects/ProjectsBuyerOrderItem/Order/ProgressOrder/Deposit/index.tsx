@@ -63,7 +63,7 @@ export const Deposit = ({
 					activeDisplay.includes(index) && s.wrapper_active
 				)}
 			>
-				{status === 'confirmed' ? (
+				{status === 'depositWaiting' ? (
 					<>
 						<p className={s.title}>To start production pay Deposit</p>
 						<button onClick={() => fetchOrderPay()} className={s.btn}>

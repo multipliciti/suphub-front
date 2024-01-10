@@ -362,6 +362,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 				>
 					Save
 				</Button>
+
 				{product.status === 'draft' && (
 					<Button
 						variant="contained"
@@ -373,6 +374,20 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 						}}
 					>
 						Publish
+					</Button>
+				)}
+
+				{product.status === 'published' && (
+					<Button
+						variant="contained"
+						className={s.btn_publish}
+						disabled={updateStatus === 'loading'}
+						onClick={async () => {
+							onChangeField('status', 'draft');
+							await updateProduct({ status: 'draft' });
+						}}
+					>
+						Unpublish
 					</Button>
 				)}
 			</div>
