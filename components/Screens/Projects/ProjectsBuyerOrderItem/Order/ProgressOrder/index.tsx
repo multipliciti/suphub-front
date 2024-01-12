@@ -113,6 +113,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 			}
 		});
 	};
+	console.log('activeStep', activeStep);
 
 	return (
 		<div ref={wrapperRef} className={s.wrapper}>

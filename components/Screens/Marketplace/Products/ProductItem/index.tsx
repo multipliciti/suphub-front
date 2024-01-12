@@ -31,6 +31,12 @@ export const ProductItem = ({ product }: TypeProps) => {
 					return prev.value < current.value ? prev : current;
 			  })
 			: null;
+	const minCountOfPrices =
+		product.prices.length > 0
+			? product.prices.reduce(function (prev, current) {
+					return prev.minCount < current.minCount ? prev : current;
+			  })
+			: null;
 
 	//generate properties
 	//Excluding objects with null values and sorting them in the array dynamic_attr
@@ -47,8 +53,8 @@ export const ProductItem = ({ product }: TypeProps) => {
 	const propertiesStaticArray = [
 		[
 			'MOQ',
-			minPriceOfPrices
-				? `${minPriceOfPrices.minCount} ${product.unitOfMeasurement}`
+			minCountOfPrices
+				? `${minCountOfPrices.minCount} ${product.unitOfMeasurement}`
 				: '-',
 		],
 		['Lead time (weeks)', product.leadTime ? `${product.leadTime}` : '-'],
@@ -124,13 +130,21 @@ export const ProductItem = ({ product }: TypeProps) => {
 						</svg>
 						<span className={s.add_text}>Add to project</span>
 					</button>
-					<Image
-						className={s.img}
-						src={images[0]?.url ?? ''}
-						alt="img"
-						width={244}
-						height={212}
-					/>
+					<div className={s.img_wrapper_inner}>
+						<Image
+							// layout="responsive"
+							className={s.img}
+							src={images[0]?.url ?? ''}
+							alt="img"
+							width={244}
+							height={212}
+							style={{
+								width: '100%',
+								height: 'auto',
+							}}
+							sizes="(max-width: 244px) (max-height: 212)"
+						/>
+					</div>
 				</div>
 
 				<div className={s.description_wrapper}>

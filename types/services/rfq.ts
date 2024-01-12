@@ -1,9 +1,5 @@
 import { ProductItemType } from './../products/product';
 
-type SortOptions = {
-	[key: string]: 'asc' | 'desc';
-};
-
 export interface Option {
 	id: number;
 	size: string;
@@ -56,7 +52,7 @@ export interface RfqItemGot {
 		name: string;
 		url: string;
 	}[];
-
+	status: string;
 	subCategory: {
 		csiCode: string;
 		id: number;
@@ -64,6 +60,14 @@ export interface RfqItemGot {
 		categoryId: number;
 		updatedAt: string;
 		createdAt: string;
+
+		category: {
+			csiCode: string;
+			id: number;
+			name: string;
+			updatedAt: string;
+			createdAt: string;
+		};
 	};
 	options: Option[];
 }

@@ -56,7 +56,15 @@ export const RequestTable = ({ data }: TypeProps) => {
 										{el.status} Null
 									</span>
 								</td>
-								<td> {el.shipTo} Null </td>
+								<td>
+									{el.address &&
+									el.address.city &&
+									el.address.state &&
+									el.address.zip &&
+									el.address.country
+										? `${el.address.city}, ${el.address.state}, ${el.address.zip}, ${el.address.country}`
+										: 'not address'}
+								</td>
 							</tr>
 						);
 					})}

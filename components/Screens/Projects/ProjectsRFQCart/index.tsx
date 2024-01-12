@@ -35,10 +35,11 @@ export const ProjectsRFQCart = () => {
 				productName: { contains: stateInputs.search },
 		  }
 		: null;
+
 	const categoriesFilterArr =
 		stateInputs.categories.length > 0
 			? {
-					subCategoryId: { in: stateInputs.categories },
+					subCategory: { category: { id: { in: stateInputs.categories } } },
 			  }
 			: null;
 
@@ -68,14 +69,15 @@ export const ProjectsRFQCart = () => {
 			});
 			const data: RfqItemGot[] = await response.result;
 			setIsLoading(false);
+
 			//sorted and set got data
 			const groupedData: Record<string, RfqItemGot[]> = data.reduce(
 				(acc, item) => {
-					const csiCode = item.subCategory.csiCode;
-					if (!acc[csiCode]) {
-						acc[csiCode] = [];
+					const categoryId = item.subCategory.category.id;
+					if (!acc[categoryId]) {
+						acc[categoryId] = [];
 					}
-					acc[csiCode].push(item);
+					acc[categoryId].push(item);
 					return acc;
 				},
 				{} as Record<string, RfqItemGot[]>
@@ -100,17 +102,20 @@ export const ProjectsRFQCart = () => {
 		return (
 			<div>
 				<IsBuyerSideBarRequestDetail>
-					{isLoading ? (
-						<Spinner />
-					) : (
-						<>
-							<RFQCartFilters
-								stateInputs={stateInputs}
-								setStateInputs={setStateInputs}
-							/>
-							{rfqsSorted.length < 1 ? <NoResult /> : <Products rfqs={rfqsSorted} />}
-						</>
-					)}
+					<RFQCartFilters
+						stateInputs={stateInputs}
+						setStateInputs={setStateInputs}
+					/>
+					{/* // */}
+					<>
+						{isLoading ? (
+							<Spinner />
+						) : rfqsSorted.length < 1 ? (
+							<NoResult />
+						) : (
+							<Products rfqs={rfqsSorted} />
+						)}
+					</>
 				</IsBuyerSideBarRequestDetail>
 			</div>
 		);

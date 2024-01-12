@@ -34,10 +34,10 @@ export const AboutProduct = ({ product }: PropsType) => {
 	];
 
 	//generate properties
-	const minPriceOfPrices =
+	const minCountOfPrices =
 		product.prices.length > 0
 			? product.prices.reduce(function (prev, current) {
-					return prev.value < current.value ? prev : current;
+					return prev.minCount < current.minCount ? prev : current;
 			  })
 			: null;
 
@@ -46,8 +46,8 @@ export const AboutProduct = ({ product }: PropsType) => {
 	const properties = [
 		[
 			'Min. Order Quantity',
-			minPriceOfPrices
-				? `${minPriceOfPrices.minCount} ${product.unitOfMeasurement}`
+			minCountOfPrices
+				? `${minCountOfPrices.minCount} ${product.unitOfMeasurement}`
 				: '-',
 		],
 		['Lead time (weeks)', product.leadTime ? `${product.leadTime} ` : '-'],

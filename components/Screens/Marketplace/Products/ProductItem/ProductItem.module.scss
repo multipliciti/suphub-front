@@ -35,7 +35,9 @@
 			outline: none;
 			border: none;
 			border-radius: 0 0 10px 10px;
-			transition: transform 0.3s ease, opacity 0.3s ease;
+			transition:
+				transform 0.3s ease,
+				opacity 0.3s ease;
 			&_text {
 				color: #fff;
 
@@ -44,6 +46,12 @@
 				font-weight: 700;
 				line-height: 24px;
 			}
+		}
+
+		&_inner {
+			width: 244px;
+			height: 212px;
+			overflow: hidden;
 		}
 	}
 

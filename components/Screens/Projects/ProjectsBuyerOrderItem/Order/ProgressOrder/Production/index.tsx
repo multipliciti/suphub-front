@@ -155,7 +155,7 @@ export const Production = ({
 					{activeStep >= 4 && (
 						<p className={s.buttons_aproved}>Milestone approved</p>
 					)}
-					{activeStep === 3 && !newMessage && (
+					{activeStep === 3 && !newMessage && status === 'inProduction' && (
 						<>
 							<button
 								onClick={() => {
@@ -167,19 +167,17 @@ export const Production = ({
 								Decline & add feedback
 							</button>
 
-							{status === 'productionCompleted' && (
-								<button
-									onClick={() => {
-										changeStatusShipped(orderId, 'preShipment');
-									}}
-									className={s.buttons_right}
-								>
-									Approve
-								</button>
-							)}
+							<button
+								onClick={() => {
+									changeStatusShipped(orderId, 'productionCompleted');
+								}}
+								className={s.buttons_right}
+							>
+								Approve
+							</button>
 						</>
 					)}
-					{status !== 'preShipment' && newMessage && (
+					{newMessage && (
 						<>
 							<button
 								onClick={() => {

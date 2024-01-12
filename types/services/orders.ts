@@ -104,7 +104,7 @@ interface Address {
 	state: string;
 	country: string;
 	zipcode: string;
-	postalCode: null | string;
+	postalCode: null | number;
 	updatedAt: string;
 	createdAt: string;
 }
