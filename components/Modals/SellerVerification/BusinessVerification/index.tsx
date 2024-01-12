@@ -560,6 +560,7 @@ export const BusinessVerification = () => {
 										onChange={(e) => {
 											setAddCertificationInput(e.target.value);
 										}}
+										onBlur={handleAddCertification}
 										onKeyDown={(e) => {
 											if (e.key === 'Enter' || e.key === ' ') {
 												e.preventDefault();
@@ -608,6 +609,7 @@ export const BusinessVerification = () => {
 										onChange={(e) => {
 											setAddCountryInput(e.target.value);
 										}}
+										onBlur={handleAddCountryCertification}
 										onKeyDown={(e) => {
 											if (e.key === 'Enter' || e.key === ' ') {
 												e.preventDefault();

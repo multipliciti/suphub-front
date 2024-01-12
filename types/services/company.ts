@@ -1,5 +1,6 @@
 import { ImageType } from '@/types/products/image';
 
+export type plansFetchedStatus = 'loading' | 'success' | 'error';
 export type SubscriptionType = 'none' | 'trial' | 'full';
 
 export interface Subscription {
