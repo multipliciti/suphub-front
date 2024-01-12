@@ -80,6 +80,7 @@ export const PreShipmentInspection = ({
 							<div className={s.block}>
 								<h5 className={s.title}>Freight type</h5>
 							</div>
+
 							<div className={classNames(s.block, s.options)}>
 								{optionsArr.map((option, ind) => {
 									return (

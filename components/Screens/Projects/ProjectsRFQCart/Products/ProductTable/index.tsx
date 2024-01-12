@@ -7,7 +7,6 @@ import chat_image from '@/imgs/Buyer&Seller/chat_icon.svg';
 import { RfqItemGot } from '@/types/services/rfq';
 import { setRfqId } from '@/redux/slices/sideBars/sideBarRequestDetail';
 import { useAppDispatch } from '@/redux/hooks';
-import { extractDigits } from './helpers';
 interface TypeProps {
 	properties: RfqItemGot[];
 	compress: boolean;
@@ -15,10 +14,7 @@ interface TypeProps {
 
 export const ProductTable = ({ properties, compress }: TypeProps) => {
 	const dispatch = useAppDispatch();
-	const statusTest = 'Selection needed';
 	const tableRef = useRef<HTMLTableSectionElement | null>(null);
-
-	console.log('properties', properties);
 
 	const arrTableHead = [
 		{
@@ -80,7 +76,7 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 							<td>
 								<div className={s.description}>
 									<span className={s.subtitle}>
-										CSI {extractDigits(property.subCategory.csiCode)}
+										CSI {property.subCategory.csiCode}
 									</span>
 									<p
 										onClick={() => dispatch(setRfqId(property.id))}
@@ -125,15 +121,16 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 									className={classNames(
 										s.status,
 										compress && s.status_compress,
-										//hardcode
-										// property.status === 'Selection needed' && s.status_needed,
-										statusTest === 'Selection needed' && s.status_needed
-										// statusTestr === 'Sampling' && s.status_sampling,
-										// statusTest === 'Ordered' && s.status_ordered
+
+										property.status === 'requested' && s.status_requested,
+										property.status === 'selectionNeeded' &&
+											s.status_selectionNeeded,
+										property.status === 'ordered' && s.status_ordered
 									)}
 								>
-									{/* {property.items.status} */}
-									Selection needed
+									{property.status === 'requested' && 'Requested'}
+									{property.status === 'selectionNeeded' && 'Selection needed'}
+									{property.status === 'ordered' && 'Orderd'}
 								</span>
 							</td>
 							{/* Unit Budget  */}

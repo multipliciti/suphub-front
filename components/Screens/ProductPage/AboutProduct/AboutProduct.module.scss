@@ -10,6 +10,8 @@
 		}
 
 		&_chose {
+			max-width: 420px;
+			overflow-x: scroll;
 			display: flex;
 			gap: 16px;
 

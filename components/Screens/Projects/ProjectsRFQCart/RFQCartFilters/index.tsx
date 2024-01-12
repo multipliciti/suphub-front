@@ -24,7 +24,6 @@ export const RFQCartFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 	const [requestBtn, setRequestBtn] = useState<boolean>(false);
 	const inputSearchRef = useRef<HTMLInputElement | null>(null);
 	const [category, setCategory] = useState<any[]>([]);
-	const subCategories = categoriesToSubCategories(category);
 	const requestFilterRef = useRef<HTMLButtonElement>(null);
 	const categoriesFilterRef = useRef<HTMLDivElement>(null);
 	const statusFilterRef = useRef<HTMLDivElement>(null);
@@ -73,15 +72,25 @@ export const RFQCartFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 		getCategory();
 	}, []);
 
-	const statuses = {
-		draft: 'draft',
-		requested: 'requested',
-		responded: 'responded',
-		sampling: 'sampling',
-		purchase: 'purchase',
-		closed: 'closed',
-		archived: 'archived',
-	};
+	const statusesArr = [
+		{
+			status: 'requested',
+			label: 'Requested',
+		},
+		{
+			status: 'selectionNeeded',
+			label: 'Selection needed',
+		},
+		// 	refactoring (not redy?)
+		// {
+		// 	status: 'sampling',
+		// 	label: 'In cart',
+		// },
+		{
+			status: 'ordered',
+			label: 'Ordered',
+		},
+	];
 
 	return (
 		<div className={s.wrapper}>
@@ -172,7 +181,7 @@ export const RFQCartFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 						activeFilter === 1 && s.filter_content_active
 					)}
 				>
-					{subCategories.map((el, ind) => {
+					{category.map((el, ind) => {
 						return (
 							<div key={ind} className={s.item_wrapper}>
 								<p
@@ -219,23 +228,23 @@ export const RFQCartFilters = ({ setStateInputs, stateInputs }: TypeProps) => {
 						activeFilter === 2 && s.filter_content_active
 					)}
 				>
-					{Object.values(statuses).map((el, ind) => {
+					{statusesArr.map((el, ind) => {
 						return (
 							<div key={ind} className={s.item_wrapper}>
 								<p
 									onClick={(e) => {
 										e.stopPropagation();
-										setVelueFilters('statuses', el);
+										setVelueFilters('statuses', el.status);
 									}}
 									className={classNames(
 										s.item,
 										stateInputs['statuses'].some(
-											(existingItem: any) => existingItem === el
+											(existingItem: any) => existingItem === el.status
 										) && s.item_active
 									)}
 									key={ind}
 								>
-									{el}
+									{el.label}
 								</p>
 							</div>
 						);

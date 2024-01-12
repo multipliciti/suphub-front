@@ -130,19 +130,19 @@
 				min-width: 90px;
 			}
 
-			&_needed {
-				color: red;
-				background: #feeae8;
+			&_requested {
+				background: #edf1f6;
+				color: #64748b;
 			}
 
-			&_sampling {
-				color: #de7a05;
-				background-color: #fff5e8;
+			&_selectionNeeded {
+				background: #feeae8;
+				color: red;
 			}
 
 			&_ordered {
-				color: #2b1694;
-				background-color: #f0f2fe;
+				background: #ebf8f6;
+				color: #0ba98a;
 			}
 		}
 	}
