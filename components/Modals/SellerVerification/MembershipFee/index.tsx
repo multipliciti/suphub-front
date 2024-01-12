@@ -10,7 +10,7 @@ import modal_close from '@/imgs/close.svg';
 import stripe_logo from '@/imgs/Buyer&Seller/SellerVerification/stripe-logo.svg';
 import { useRouter } from 'next/navigation';
 import { Plan } from '@/types/services/payment';
-import { SubscriptionType } from '@/types/services/company';
+import { plansFetchedStatus, SubscriptionType } from '@/types/services/company';
 import { useAppSelector } from '@/redux/hooks';
 
 export const MembershipFee = () => {
@@ -18,7 +18,9 @@ export const MembershipFee = () => {
 	const sellerCompany = useAppSelector((state) => state.authSlice.sellerCompany);
 	const dispatch = useAppDispatch();
 	const router = useRouter();
-	const [plans, setPlans] = React.useState<Plan[]>();
+	const [plans, setPlans] = React.useState<Plan[]>([]);
+	const [plansFetchStatus, setPlansFetchStatus] =
+		React.useState<plansFetchedStatus>('loading');
 	const [subscriptionType, setSubscriptionType] =
 		React.useState<SubscriptionType>('none');
 
@@ -47,15 +49,27 @@ export const MembershipFee = () => {
 			try {
 				const response = await api.payment.getPlans();
 				setPlans(response);
+				setPlansFetchStatus('success');
 				if (sellerCompany?.subscription) {
 					setSubscriptionType(sellerCompany.subscription.type);
 				}
 			} catch (e) {
 				console.error(e);
+				setPlansFetchStatus('error');
 			}
 		};
 		fetch();
 	}, []);
+
+	function informationAboutPlansStatus() {
+		if (plansFetchStatus === 'error') {
+			return 'Some error occurred while fetching plans';
+		} else if (plansFetchStatus === 'success') {
+			return 'There is currently no plans available';
+		} else {
+			return 'Loading plans...';
+		}
+	}
 
 	return (
 		<div className={s.wrapper}>
@@ -70,7 +84,8 @@ export const MembershipFee = () => {
 			<div className={s.separator}></div>
 			<div className={s.content}>
 				<div className={s.content_group_bottom}>
-					{plans &&
+					{!(plans.length > 0) && <div>{informationAboutPlansStatus()}</div>}
+					{plans.length > 0 &&
 						plans.map((plan, id) => (
 							<div className={s.content_group_planBox} key={id}>
 								<div className={s.content_group_stripe}>
