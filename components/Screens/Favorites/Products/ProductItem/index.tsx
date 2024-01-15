@@ -27,6 +27,12 @@ export const ProductItem = ({ product }: TypeProps) => {
 					return prev.value < current.value ? prev : current;
 			  })
 			: null;
+	const minCountOfPrices =
+		product.prices.length > 0
+			? product.prices.reduce(function (prev, current) {
+					return prev.minCount < current.minCount ? prev : current;
+			  })
+			: null;
 
 	//generate properties
 	//Excluding objects with null values and sorting them in the array dynamic_attr
@@ -43,8 +49,8 @@ export const ProductItem = ({ product }: TypeProps) => {
 	const propertiesStaticArray = [
 		[
 			'MOQ',
-			minPriceOfPrices
-				? `${minPriceOfPrices.minCount} ${product.unitOfMeasurement}`
+			minCountOfPrices
+				? `${minCountOfPrices.minCount} ${product.unitOfMeasurement}`
 				: '-',
 		],
 		['Lead time (weeks)', product.leadTime ? `${product.leadTime}` : '-'],

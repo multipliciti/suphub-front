@@ -57,12 +57,12 @@ export const Products = ({ rfqs }: TypeProps) => {
 									{compress ? (
 										<p>
 											<span className={s.indificator}>CSI</span>
-											{truncateFileNameEnd(el[0].subCategory.csiCode, 15)}
+											{truncateFileNameEnd(el[0].subCategory.category.csiCode, 15)}
 										</p>
 									) : (
 										<p>
 											<span className={s.indificator}>CSI</span>
-											{el[0].subCategory.csiCode}
+											{el[0].subCategory.category.csiCode}
 										</p>
 									)}
 								</div>

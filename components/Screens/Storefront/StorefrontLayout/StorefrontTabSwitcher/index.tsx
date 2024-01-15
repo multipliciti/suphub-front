@@ -29,7 +29,9 @@ export const StorefrontTabSwitcher = () => {
 	const sellerCompany = useAppSelector((state) => state.authSlice.sellerCompany);
 
 	const tabs =
-		!sellerCompany || sellerCompany.status !== 'verified'
+		!sellerCompany ||
+		sellerCompany.status !== 'verified' ||
+		!sellerCompany.subscription
 			? tabList
 			: tabList.map((item) => ({ ...item, isBlocked: false }));
 

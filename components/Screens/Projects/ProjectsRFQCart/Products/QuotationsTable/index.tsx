@@ -5,8 +5,8 @@ import s from './QuotationsTable.module.scss';
 import Image from 'next/image';
 import more_icon from '@/imgs/Buyer&Seller/more.svg';
 import delete_icon from '@/imgs/Buyer&Seller/delete.svg';
-import sample_icon from '@/imgs/Buyer&Seller/sample.svg';
 import purchase_icon from '@/imgs/Buyer&Seller/purchase.svg';
+import ordered_icon from '@/imgs/Buyer&Seller/ordered.svg';
 import { useRouter } from 'next/navigation';
 import eye_icon from '@/imgs/Buyer&Seller/eye.svg';
 import { RfqItemGot } from '@/types/services/rfq';
@@ -22,7 +22,7 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 	const [indexMore, setIndexMore] = useState<number>(-1);
 	const [rect, setRect] = useState<any>();
 	const tHeadRef = useRef<HTMLTableSectionElement>(null);
-
+	console.log('rfqs', rfqs);
 	useEffect(() => {
 		const targetElement = document.querySelector(`[data-id="${indexMore}"]`);
 
@@ -109,6 +109,7 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 										height={20}
 									/>
 								</td>
+
 								{el.options.length < 1 && (
 									<td className={s.td}>
 										<span className={s.noquotes}>You have no quotes yet.</span>
@@ -120,54 +121,57 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 										<td
 											data-id={el.id}
 											className={classNames(s.td, compress && s.td_compress)}
-											onClick={() => {
-												setIndexMore(indexMore === el.id ? -1 : el.id);
-											}}
+											// onClick={() => {
+											// 	setIndexMore(indexMore === el.id ? -1 : el.id);
+											// }}
 											key={ind}
 										>
-											<span
-												// onMouseEnter={() => handleMouseEnter(el.id)}
-												// onMouseLeave={() => handleMouseLeave(el.id)}
-												className={s.item}
-											>
+											<span className={s.item}>
+												{/* This is about borders, as td:hover is not working in the
+												table.
+												bad code */}
+
+												{/* // */}
+												{/* // */}
+												<span className={classNames(s.border, s.border_top)}></span>
+												<span
+													className={classNames(s.border, s.border_bottom)}
+												></span>
+												<span className={classNames(s.border, s.border_left)}></span>
+												<span
+													className={classNames(s.border, s.border_right)}
+												></span>
+												{/* // */}
+												{/* // */}
+
 												<span className={s.item_info}>
 													<span className={s.item_info_size}>{el.size}</span>
 													<span className={s.item_info_price}>${el.price}</span>
 												</span>
-
-												<span
-													className={classNames(
-														s.img_wrapper
-														// hoveredIds.includes(el.id) && s.img_active
-													)}
-												>
+												<span className={s.item_icons}>
 													<Image
-														src={delete_icon}
-														alt="delete_icon"
+														src={ordered_icon}
+														alt="ordered_icon"
+														width={20}
+														height={20}
+													/>
+													<Image
+														src={purchase_icon}
+														alt="purchase_icon"
+														width={20}
+														height={20}
+													/>
+													<Image
+														onClick={() =>
+															setIndexMore(indexMore === el.id ? -1 : el.id)
+														}
+														className={s.icon_more}
+														src={more_icon}
+														alt="more_icon"
 														width={20}
 														height={20}
 													/>
 												</span>
-
-												<Image
-													src={sample_icon}
-													alt="sample_icon"
-													width={20}
-													height={20}
-												/>
-												<Image
-													src={purchase_icon}
-													alt="purchase_icon"
-													width={20}
-													height={20}
-												/>
-												<Image
-													className={s.icons_more}
-													src={more_icon}
-													alt="more_icon"
-													width={20}
-													height={20}
-												/>
 											</span>
 										</td>
 									);
