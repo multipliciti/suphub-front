@@ -37,7 +37,6 @@ export const Header = () => {
 	const [logoSrc, setLogoSrc] = useState(avatartest);
 	const [menu, setMenu] = useState<boolean>(false);
 	const router = useRouter();
-	const role = user?.role;
 	useClickOutside(menuRef, () => {
 		setMenu(false);
 	});
@@ -207,28 +206,6 @@ export const Header = () => {
 					{/* // nav  */}
 					<nav className={s.nav}>
 						<ul className={s.nav_ul}>
-							{role === 'user' && (
-								<div
-									className={classNames(
-										s.menu_btn,
-										activeLink === 3 && s.menu_btn_active
-									)}
-								>
-									<div
-										onClick={(e) => {
-											e.stopPropagation();
-											setActiveLink(3);
-											dispatch(setModal('convertToBusinessAccount'));
-										}}
-										className={classNames(
-											s.menu_btn,
-											activeLink === 3 && s.menu_btn_active
-										)}
-									>
-										Convert to business
-									</div>
-								</div>
-							)}
 							<li className={s.split}></li>
 							<li className={s.item_img}>
 								<Link href={'/favorites'}>

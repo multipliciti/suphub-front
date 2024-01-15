@@ -16,7 +16,7 @@ import close_eye from '@/imgs/Modal/close_eye.svg';
 import chevron_down from '@/imgs/ProfileSettings/chevron-down.svg';
 import { useForm } from 'react-hook-form';
 import { Api } from '@/services';
-import { PreviousValuesOfCompany, UserDataType } from '@/types/services/auth';
+import { UserDataType } from '@/types/services/auth';
 import countries from '@/utils/countries';
 
 export const CreateBusinessAccount = () => {
@@ -86,10 +86,6 @@ export const CreateBusinessAccount = () => {
 
 	const handleCountryChange = (e: ChangeEvent<HTMLSelectElement>) => {
 		setSelectedCountry(e.target.value);
-	};
-
-	const openCreatePersonalAccount = () => {
-		dispatch(setModal('registration'));
 	};
 
 	const renderCompanySection = () => (
@@ -171,7 +167,6 @@ export const CreateBusinessAccount = () => {
 		register: step2Register,
 		handleSubmit: step2HandleSubmit,
 		setValue: set2SetValue,
-		setError: setError2,
 		clearErrors: clearErrors2,
 		getValues: getStep2Values,
 		formState: { errors: step2Errors },
@@ -267,19 +262,6 @@ export const CreateBusinessAccount = () => {
 								{sellMaterialsSVG()}
 								<div className={s.account_type_button_text}>Sell Materials</div>
 							</button>
-							<div className={s.account_type_text}>
-								<div>Or</div>
-								<div>
-									Create a{' '}
-									<a
-										className={s.account_type_text_link}
-										onClick={openCreatePersonalAccount}
-									>
-										Personal Account
-									</a>{' '}
-									to browse products only
-								</div>
-							</div>
 						</div>
 					</>
 				);
@@ -684,7 +666,7 @@ export const CreateBusinessAccount = () => {
 								</button>
 
 								<div className={s.form_disclaimer}>
-									By submitting application, you agree to Suphub's{' '}
+									By submitting application, you agree to Suphub&apos;s{' '}
 									<a className={s.form_disclaimer_link}>Terms and Conditions</a> and{' '}
 									<a className={s.form_disclaimer_link}>Privacy Policy</a>
 								</div>

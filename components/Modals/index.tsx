@@ -4,7 +4,6 @@ import { useAppSelector } from '@/redux/hooks';
 import { Login } from './Login';
 import { ForgotPassword } from './ForgotPassword';
 import { CheckEmail } from './ CheckEmail';
-import { Registration } from './Registration';
 import { classNames } from '@/utils/classNames';
 import { VerifyEmail } from './VerifyEmail';
 import { AddToRFQCart } from '@/components/Modals/AddToRFQCart';
@@ -24,7 +23,6 @@ import { SellerProductBulkUpload } from './StorefrontAddProduct/BulkUpload';
 import { DeleteProject } from '@/components/Modals/Projects/DeleteProject';
 import { WarningTrialCanBeUsedOnce } from '@/components/Modals/WarningTrialCanBeUsedOnce';
 import { SelectSamples } from './SelectSamples/SelectSamples';
-import { ConvertToBusinessAccount } from '@/components/Modals/ConvertToBusinessAccount';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -48,15 +46,6 @@ export const Modal = () => {
 				className={classNames(s.wrapper, modal === 'checkEmail' && s.wrapper_active)}
 			>
 				{modal === 'checkEmail' && <CheckEmail />}
-			</div>
-
-			<div
-				className={classNames(
-					s.wrapper,
-					modal === 'registration' && s.wrapper_active
-				)}
-			>
-				<div className={s.modal}>{modal === 'registration' && <Registration />}</div>
 			</div>
 
 			<div
@@ -140,15 +129,6 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'createBusinessAccount' && <CreateBusinessAccount />}
-			</div>
-
-			<div
-				className={classNames(
-					s.wrapper,
-					modal === 'convertToBusinessAccount' && s.wrapper_active
-				)}
-			>
-				{modal === 'convertToBusinessAccount' && <ConvertToBusinessAccount />}
 			</div>
 
 			<div

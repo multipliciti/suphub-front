@@ -102,7 +102,7 @@ export const Login: React.FC = () => {
 				<p className={s.subtitle}>
 					New to Suphub?
 					<span
-						onClick={() => dispatch(setModal('registration'))}
+						onClick={() => dispatch(setModal('createBusinessAccount'))}
 						className={s.signup}
 					>
 						Signup

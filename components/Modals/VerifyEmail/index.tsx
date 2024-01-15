@@ -18,7 +18,7 @@ export const VerifyEmail = () => {
 
 	const fetchAuthResend = async (data: RegisterUserType) => {
 		try {
-			const responce = await api.auth.resendAuth(data);
+			await api.auth.resendAuth(data);
 		} catch (error) {
 			console.log('error resendAuth: ', error);
 		}
@@ -27,7 +27,10 @@ export const VerifyEmail = () => {
 	return (
 		<div className={s.wrapper}>
 			<div className={s.header}>
-				<span onClick={() => dispatch(setModal('registration'))} className={s.back}>
+				<span
+					onClick={() => dispatch(setModal('createBusinessAccount'))}
+					className={s.back}
+				>
 					<Image
 						className={s.back_img}
 						src={back_btn}
