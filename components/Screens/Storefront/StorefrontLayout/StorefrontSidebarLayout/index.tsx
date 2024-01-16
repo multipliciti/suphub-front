@@ -26,7 +26,7 @@ export const StorefrontSidebarLayout: FC<PropsWithChildren> = ({ children }) => 
 		if (
 			pathname !== '/storefront/get-started' &&
 			sellerCompany &&
-			sellerCompany?.status !== 'verified'
+			(sellerCompany?.status !== 'verified' || !sellerCompany.subscription)
 		) {
 			router.push('/storefront/get-started');
 			return;

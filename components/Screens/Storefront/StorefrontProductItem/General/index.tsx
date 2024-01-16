@@ -280,32 +280,8 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 					</tr>
 
 					<tr>
-						<td>Minimum Order Quantity</td>
-						<td>
-							<Input
-								type="number"
-								placeholder="Enter quantity"
-								value={product.moq}
-								onChange={(e) => onChangeField('moq', Number(e.currentTarget.value))}
-							/>
-						</td>
-
-						<td>Warranty (years)</td>
-						<td>
-							<Input
-								type="number"
-								placeholder="Enter warranty"
-								value={product?.warranty || 0}
-								onChange={(e) =>
-									onChangeField('warranty', Number(e.currentTarget.value))
-								}
-							/>
-						</td>
-					</tr>
-
-					<tr>
 						<td>Product images</td>
-						<td colSpan={3}>
+						<td>
 							<div className={s.images}>
 								{product.images.length > 0 &&
 									product.images.map((item, index) => (
@@ -331,6 +307,18 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 									/>
 								</ModalPortal>
 							</div>
+						</td>
+
+						<td>Warranty (years)</td>
+						<td>
+							<Input
+								type="number"
+								placeholder="Enter warranty"
+								value={product?.warranty || 0}
+								onChange={(e) =>
+									onChangeField('warranty', Number(e.currentTarget.value))
+								}
+							/>
 						</td>
 					</tr>
 				</tbody>
