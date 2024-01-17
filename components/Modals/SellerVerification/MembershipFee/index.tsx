@@ -105,7 +105,7 @@ export const MembershipFee = () => {
 													<span className={s.content_payment_price_number}>$0 </span>
 													<span className={s.content_payment_price_month}>
 														{' '}
-														/ 7 days
+														/ 30 days
 													</span>
 												</div>
 											)}
