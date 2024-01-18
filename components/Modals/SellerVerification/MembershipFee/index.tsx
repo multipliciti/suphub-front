@@ -1,7 +1,7 @@
 'use client';
 import s from './MembershipFee.module.scss';
 import Image from 'next/image';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
 import { classNames } from '@/utils/classNames';
@@ -19,6 +19,7 @@ export const MembershipFee = () => {
 	const dispatch = useAppDispatch();
 	const router = useRouter();
 	const [plans, setPlans] = React.useState<Plan[]>([]);
+	const [trialPeriod, setTrialPeriod] = useState<number>();
 	const [plansFetchStatus, setPlansFetchStatus] =
 		React.useState<plansFetchedStatus>('loading');
 	const [subscriptionType, setSubscriptionType] =
@@ -48,7 +49,8 @@ export const MembershipFee = () => {
 		const fetch = async () => {
 			try {
 				const response = await api.payment.getPlans();
-				setPlans(response);
+				setPlans(response.plans);
+				setTrialPeriod(response.trialPeriod);
 				setPlansFetchStatus('success');
 				if (sellerCompany?.subscription) {
 					setSubscriptionType(sellerCompany.subscription.type);
@@ -105,7 +107,7 @@ export const MembershipFee = () => {
 													<span className={s.content_payment_price_number}>$0 </span>
 													<span className={s.content_payment_price_month}>
 														{' '}
-														/ 30 days
+														/ {trialPeriod} days
 													</span>
 												</div>
 											)}

@@ -31,3 +31,8 @@ export interface Plan {
 	trial_period_days: null | number;
 	usage_type: string;
 }
+
+export interface FetchPlans {
+	plans: Plan[];
+	trialPeriod: number;
+}

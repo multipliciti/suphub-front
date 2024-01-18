@@ -1,10 +1,10 @@
 import { AxiosInstance } from 'axios';
-import { Payment, Plan } from '@/types/services/payment';
+import { Payment, FetchPlans } from '@/types/services/payment';
 
 export const PaymentApi = (instance: AxiosInstance) => ({
 	async getPlans() {
 		const url = `/payment/plans`;
-		const response = await instance.get<Plan[]>(url);
+		const response = await instance.get<FetchPlans>(url);
 		return response.data;
 	},
 	async subscribe(data: Payment) {
