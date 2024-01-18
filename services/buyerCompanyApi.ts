@@ -1,6 +1,7 @@
 import { AxiosInstance } from 'axios';
 import {
 	BuyerCompany,
+	CompanyAdminAccountApplicationData,
 	RegisterBuyerCompany,
 	UpdateBuyerCompany,
 } from '@/types/services/company';
@@ -56,5 +57,11 @@ export const BuyerCompanyApi = (instance: AxiosInstance) => ({
 			console.error('Upload logo error:', error);
 			throw error;
 		}
+	},
+	async adminApprove({ id, params }: CompanyAdminAccountApplicationData) {
+		return await instance.patch(`/buyer/admin-approve/${id}`, null, { params });
+	},
+	async adminDecline({ id, params }: CompanyAdminAccountApplicationData) {
+		return await instance.patch(`/buyer/admin-decline/${id}`, null, { params });
 	},
 });

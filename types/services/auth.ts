@@ -6,7 +6,6 @@ export interface LoginDto {
 export type RegisterUserType = {
 	firstName: string;
 	lastName: string;
-	confirmUrl?: string;
 } & LoginDto;
 
 export interface NewPasswordType {

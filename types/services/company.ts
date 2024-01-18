@@ -102,6 +102,7 @@ export interface RegisterBuyerCompany {
 	EIN?: string;
 	userEmail: string;
 	address: Address;
+	confirmUrl: string;
 }
 
 export interface RegisterSellerCompany {
@@ -115,6 +116,7 @@ export interface RegisterSellerCompany {
 	userEmail: string;
 	companyAddress: Address;
 	factoryAddress: Address;
+	confirmUrl: string;
 }
 
 export interface UpdateBuyerCompany {
@@ -147,4 +149,14 @@ export interface UpdateSellerCompany {
 export interface RemoveCertification {
 	type?: 'business' | 'factory';
 	fileIds?: number[];
+}
+
+export interface CompanyAdminAccountApplicationData {
+	id: number;
+	params: CompanyAdminAccountApplicationParams;
+}
+
+interface CompanyAdminAccountApplicationParams {
+	url: string;
+	adminId: string;
 }

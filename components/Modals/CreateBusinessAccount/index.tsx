@@ -18,6 +18,7 @@ import { useForm } from 'react-hook-form';
 import { Api } from '@/services';
 import { UserDataType } from '@/types/services/auth';
 import countries from '@/utils/countries';
+import { ROUTES } from '@/services/routes';
 
 export const CreateBusinessAccount = () => {
 	const dispatch = useAppDispatch();
@@ -123,8 +124,6 @@ export const CreateBusinessAccount = () => {
 		shouldUnregister: true,
 	});
 
-	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
-
 	const [selectedAccountType, setSelectedAccountType] = useState<
 		'buyer' | 'seller' | null
 	>(null);
@@ -194,7 +193,6 @@ export const CreateBusinessAccount = () => {
 				lastName,
 				email,
 				password,
-				confirmUrl: `${HOST}/confirm-email`,
 			});
 
 			if (selectedAccountType === 'buyer') {
@@ -209,6 +207,7 @@ export const CreateBusinessAccount = () => {
 						country,
 						zipcode,
 					},
+					confirmUrl: ROUTES.adminNewAccountApplicationUrl,
 				});
 			} else if (selectedAccountType === 'seller') {
 				await api.sellerCompany.register({
@@ -232,6 +231,7 @@ export const CreateBusinessAccount = () => {
 						country,
 						zipcode,
 					},
+					confirmUrl: ROUTES.adminNewAccountApplicationUrl,
 				});
 			}
 		} catch (error: any) {

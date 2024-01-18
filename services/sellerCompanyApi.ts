@@ -4,6 +4,7 @@ import {
 	UpdateSellerCompany,
 	RemoveCertification,
 	SellerCompany,
+	CompanyAdminAccountApplicationData,
 } from '@/types/services/company';
 
 export const SellerCompanyApi = (instance: AxiosInstance) => ({
@@ -78,5 +79,11 @@ export const SellerCompanyApi = (instance: AxiosInstance) => ({
 			console.error('Remove certification error:', error);
 			throw error;
 		}
+	},
+	async adminApprove({ id, params }: CompanyAdminAccountApplicationData) {
+		return await instance.patch(`/seller/admin-approve/${id}`, null, { params });
+	},
+	async adminDecline({ id, params }: CompanyAdminAccountApplicationData) {
+		return await instance.patch(`/seller/admin-decline/${id}`, null, { params });
 	},
 });
