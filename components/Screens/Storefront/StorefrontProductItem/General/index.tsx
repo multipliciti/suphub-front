@@ -84,7 +84,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 						const values = item.value.split(',').map((item) => item.trim());
 						item.options.forEach((el) => {
 							if (item.type === 'char') {
-								if (el.charValue && values.includes(el.charValue)) {
+								if (el.charValue && values.includes(el.charValue.trim())) {
 									newItem.attrValueIds.push(el.id);
 								}
 							}
