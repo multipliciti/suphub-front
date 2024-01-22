@@ -20,3 +20,9 @@ export interface FindSellerProductsParams {
 		};
 	};
 }
+
+export interface UploadSellerProduct {
+	productId: number;
+	type: 'images' | 'cutsheets' | 'manuals' | 'certifications';
+	files: File[];
+}

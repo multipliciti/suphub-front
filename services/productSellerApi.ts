@@ -3,6 +3,7 @@ import { AxiosInstance } from 'axios';
 import {
 	CreateSellerProduct,
 	FindSellerProductsParams,
+	UploadSellerProduct,
 } from '@/types/services/sellerProduct';
 import { PaginationResponse } from '@/types/pagination';
 import { ProductItemType } from '@/types/products/product';
@@ -85,15 +86,18 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 		}
 	},
 
-	async uploadImages(productId: number, images: File[]) {
+	async uploadImages(data: UploadSellerProduct) {
 		try {
+			const { productId, type, files } = data;
+
 			const formData = new FormData();
 			formData.append('productId', String(productId));
-			images.forEach((item) => {
+			formData.append('type', type);
+			files.forEach((item) => {
 				formData.append('files', item);
 			});
 
-			const url = `/product-seller/upload-images`;
+			const url = `/product-seller/upload`;
 			const response = await instance.post(url, formData);
 			return response.data;
 		} catch (error) {

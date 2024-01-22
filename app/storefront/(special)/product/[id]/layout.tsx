@@ -10,6 +10,10 @@ const tabList = (id: number): TabSwitcherItem[] => [
 		title: 'General Info',
 	},
 	{
+		href: `/storefront/product/${id}/files`,
+		title: 'Product Files',
+	},
+	{
 		href: `/storefront/product/${id}/samples`,
 		title: 'Samples',
 	},

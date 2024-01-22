@@ -39,10 +39,13 @@
   align-items: center;
   gap: 6px;
   white-space: nowrap;
+  overflow: hidden;
 
   > span {
     color: #64748B;
     font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 

@@ -280,8 +280,58 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 					</tr>
 
 					<tr>
-						<td>Product images</td>
+						<td>Unit of measurement</td>
 						<td>
+							<Input
+								placeholder="Enter unit of measurement"
+								value={product.unitOfMeasurement}
+								onChange={(e) =>
+									onChangeField('unitOfMeasurement', e.currentTarget.value)
+								}
+							/>
+						</td>
+
+						<td>Warranty (years)</td>
+						<td>
+							<Input
+								type="number"
+								placeholder="Enter warranty"
+								value={product?.warranty || 0}
+								onChange={(e) =>
+									onChangeField('warranty', Number(e.currentTarget.value))
+								}
+							/>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Production lead time (weeks)</td>
+						<td>
+							<Input
+								type="number"
+								placeholder="Enter lead time in weeks"
+								value={product?.leadTime || 0}
+								onChange={(e) =>
+									onChangeField('leadTime', Number(e.currentTarget.value))
+								}
+							/>
+						</td>
+
+						<td>Country of origin</td>
+						<td>
+							<Input
+								placeholder="Enter country of origin"
+								value={product.countryOfOrigin}
+								onChange={(e) =>
+									onChangeField('countryOfOrigin', e.currentTarget.value)
+								}
+							/>
+						</td>
+					</tr>
+
+					<tr>
+						<td>Product images</td>
+						<td colSpan={3}>
 							<div className={s.images}>
 								{product.images.length > 0 &&
 									product.images.map((item, index) => (
@@ -308,18 +358,6 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 								</ModalPortal>
 							</div>
 						</td>
-
-						<td>Warranty (years)</td>
-						<td>
-							<Input
-								type="number"
-								placeholder="Enter warranty"
-								value={product?.warranty || 0}
-								onChange={(e) =>
-									onChangeField('warranty', Number(e.currentTarget.value))
-								}
-							/>
-						</td>
 					</tr>
 				</tbody>
 			</table>
@@ -328,6 +366,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 				productId={product.id}
 				productPrices={product.prices}
 				platformCommission={product.subCategory.platformCommission}
+				unitOfMeasurement={product.unitOfMeasurement}
 				viewType="separate"
 				titleColumn="Price"
 			/>

@@ -69,6 +69,7 @@ export const StorefrontProductsTable = () => {
 										productId={item.id}
 										productPrices={item.prices}
 										platformCommission={item.subCategory.platformCommission}
+										unitOfMeasurement={item.unitOfMeasurement}
 										viewType="inside"
 									/>
 								</td>

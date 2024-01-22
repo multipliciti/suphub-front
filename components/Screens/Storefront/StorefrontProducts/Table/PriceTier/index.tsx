@@ -18,13 +18,20 @@ interface Props {
 	productId: number;
 	productPrices: Price[];
 	platformCommission: number;
+	unitOfMeasurement: string;
 	viewType: 'inside' | 'separate';
 	titleColumn?: string;
 }
 
 export const StorefrontProductPriceTier: FC<Props> = (props) => {
-	const { productId, productPrices, platformCommission, viewType, titleColumn } =
-		props;
+	const {
+		productId,
+		productPrices,
+		platformCommission,
+		unitOfMeasurement,
+		viewType,
+		titleColumn,
+	} = props;
 
 	const api = Api();
 
@@ -90,6 +97,7 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 								key={`${index}-${item.id}-${item.productId}`}
 								item={item}
 								platformCommission={platformCommission}
+								unitOfMeasurement={viewType === 'separate' ? unitOfMeasurement : ''}
 								canDelete={prices.length !== 1}
 								onDelete={() => deletePrice(item.id)}
 							/>
@@ -110,12 +118,14 @@ export const StorefrontProductPriceTier: FC<Props> = (props) => {
 interface PriceTierItemProps {
 	item: Price;
 	platformCommission: number;
+	unitOfMeasurement: string;
 	canDelete: boolean;
 	onDelete: () => void;
 }
 const PriceTierItem: FC<PriceTierItemProps> = ({
 	item,
 	platformCommission,
+	unitOfMeasurement,
 	canDelete,
 	onDelete,
 }) => {
@@ -192,7 +202,7 @@ const PriceTierItem: FC<PriceTierItemProps> = ({
 						/>
 					</div>
 
-					<span>per unit</span>
+					<span>per {unitOfMeasurement?.toLowerCase() || 'unit'}</span>
 				</div>
 			</td>
 

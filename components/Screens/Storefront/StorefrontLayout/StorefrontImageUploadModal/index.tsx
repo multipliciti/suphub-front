@@ -47,7 +47,11 @@ export const StorefrontProductImageUploadModal: FC<Props> = ({
 			if (!productId) {
 				return;
 			}
-			const response = await api.productSeller.uploadImages(productId, values.files);
+			const response = await api.productSeller.uploadImages({
+				productId,
+				type: 'images',
+				files: values.files,
+			});
 			setImages(response);
 			onHide();
 		} catch (e) {
