@@ -108,7 +108,8 @@ export const CreateBusinessAccount = () => {
 		register: step1Register,
 		handleSubmit: step1HandleSubmit,
 		setValue: step1SetValue,
-		formState: { errors: step1Errors },
+		getValues: getStep1Values,
+		formState: { errors: step1Errors, touchedFields: step1Touched },
 		setError: setError1,
 		clearErrors: clearErrors1,
 	} = useForm({
@@ -123,6 +124,14 @@ export const CreateBusinessAccount = () => {
 		shouldFocusError: true,
 		shouldUnregister: true,
 	});
+
+	const isStep1SubmitButtonDisabled = () => {
+		const isAllNotTouched = !(
+			Object.keys(step1Touched).length === Object.keys(getStep1Values()).length
+		);
+		const isErrors = Boolean(Object.keys(step1Errors).length > 0);
+		return Boolean(isAllNotTouched || isErrors);
+	};
 
 	const [selectedAccountType, setSelectedAccountType] = useState<
 		'buyer' | 'seller' | null
@@ -168,7 +177,7 @@ export const CreateBusinessAccount = () => {
 		setValue: set2SetValue,
 		clearErrors: clearErrors2,
 		getValues: getStep2Values,
-		formState: { errors: step2Errors },
+		formState: { errors: step2Errors, touchedFields: step2Touched },
 	} = useForm({
 		defaultValues: {
 			companyName: '',
@@ -183,6 +192,14 @@ export const CreateBusinessAccount = () => {
 		shouldFocusError: true,
 		shouldUnregister: true,
 	});
+
+	const isStep2SubmitButtonDisabled = () => {
+		const isAllNotTouched = !(
+			Object.keys(step2Touched).length === Object.keys(getStep2Values()).length
+		);
+		const isErrors = Boolean(Object.keys(step2Errors).length > 0);
+		return Boolean(isAllNotTouched || isErrors);
+	};
 
 	const onSubmitStep2 = async (data: any) => {
 		const { companyName, street, city, state, country, zipcode } = data;
@@ -393,6 +410,12 @@ export const CreateBusinessAccount = () => {
 									<input
 										{...step1Register('confirmPassword', {
 											required: 'Enter password confirmation',
+											validate: (value) => {
+												return (
+													Boolean(value === getStep1Values('password')) ||
+													'Passwords do not match'
+												);
+											},
 											minLength: {
 												value: 8,
 												message: 'Password must be at least 8 characters long',
@@ -422,11 +445,10 @@ export const CreateBusinessAccount = () => {
 							<button
 								className={classNames(
 									s.form_button,
-									Boolean(!(Object.keys(step1Errors).length > 0)) &&
-										s.form_button_active
+									!isStep1SubmitButtonDisabled() && s.form_button_active
 								)}
 								type="submit"
-								disabled={Boolean(Object.keys(step1Errors).length > 0)}
+								disabled={isStep1SubmitButtonDisabled()}
 							>
 								Continue
 							</button>
@@ -656,11 +678,10 @@ export const CreateBusinessAccount = () => {
 								<button
 									className={classNames(
 										s.form_button,
-										Boolean(!(Object.keys(step2Errors).length > 0)) &&
-											s.form_button_active
+										!isStep2SubmitButtonDisabled() && s.form_button_active
 									)}
 									type="submit"
-									disabled={Boolean(Object.keys(step2Errors).length > 0)}
+									disabled={isStep2SubmitButtonDisabled()}
 								>
 									Submit Application
 								</button>
