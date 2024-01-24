@@ -71,6 +71,8 @@ export const IsBuyerSideBarRequestDetail = ({ children }: TypeProps) => {
 	};
 
 	useEffect(() => {
+		//!!! for rerender and show correct data we must setData(null)
+		setData(null);
 		if (rfqId !== -1) fetchGetRfq(rfqId);
 	}, [rfqId]);
 

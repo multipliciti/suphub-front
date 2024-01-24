@@ -45,16 +45,6 @@ export const Specs = ({ data, setData, updateData, setUpdateData }: TypeProps) =
 
 	const certificationsInputRef = useRef<HTMLInputElement | null>(null);
 
-	console.log('data', data);
-	// //data states
-	// const [data, setData] = useState<RfqItemGot | null>(null);
-	// //dataUpdate to operate the local changed state.
-	// const [updateData, setUpdateData] = useState<updateDataInterface>({
-	// 	subCategoryId: data?.subCategoryId || null,
-	// 	productName: data?.productName || null,
-	// 	certifications: data?.certifications || null,
-	// });
-
 	//category
 	const [chooseCategory, setChooseCategory] = useState<boolean>(false);
 	const [category, setCategory] = useState<any[]>([]);

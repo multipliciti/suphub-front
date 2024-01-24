@@ -15,7 +15,6 @@ type TypeProps = {
 };
 
 export const ProjectsRFQCart = ({ projectId }: TypeProps) => {
-	console.log('projectId', projectId);
 	const api = Api();
 	const [stateInputs, setStateInputs] = useState({
 		search: '',

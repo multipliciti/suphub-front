@@ -90,7 +90,10 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 					</tr>
 				</thead>
 				{/* tbody  */}
-				<tbody ref={tableRef} className={s.tbody}>
+				<tbody
+					ref={tableRef}
+					className={classNames(s.tbody, compress && s.tbody_compress)}
+				>
 					{properties.map((rfq: RfqItemGot, ind: number) => (
 						<tr key={ind}>
 							{/* title  */}
@@ -103,7 +106,7 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 								<div className={s.description}>
 									<span className={s.subtitle}>
 										{/* refactoring */}
-										CSI {rfq.subCategory.csiCode}
+										CSI {extractCode(rfq.subCategory.csiCode)}
 									</span>
 									<p onClick={() => dispatch(setRfqId(rfq.id))} className={s.title}>
 										{rfq.productName}
