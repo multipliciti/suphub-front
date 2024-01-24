@@ -1,14 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { StoreItem } from '@/types/products/filters';
 import { Char } from '@/types/products/filters';
 import { ItemFilter } from '@/types/products/filters';
-import test from '@/imgs/Marketplace/Filters/Sustainability/test.png';
 
 interface CounterState {
 	selectedCount: number[];
-	itemsFilter: any[];
+	itemsFilter: ItemFilter[];
 	char: Char[];
 }
+
 //test
 const initialState: CounterState = {
 	char: [],

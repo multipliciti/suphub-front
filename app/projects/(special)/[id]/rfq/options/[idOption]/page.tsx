@@ -3,13 +3,14 @@ import { OptionsView } from '@/components/Screens/Projects/ProjectsViewOptionIte
 interface Props {
 	params: {
 		id: number;
+		idOption: number;
 	};
 }
 
-export default function ProjectsOptionItem({ params: { id } }: Props) {
+export default function ProjectsOptionItem({ params: { id, idOption } }: Props) {
 	return (
 		<>
-			<OptionsView id={id} />
+			<OptionsView idProject={id} idOption={idOption} />
 		</>
 	);
 }

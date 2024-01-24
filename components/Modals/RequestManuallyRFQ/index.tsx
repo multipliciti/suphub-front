@@ -36,7 +36,6 @@ export const RequestManuallyRFQ = () => {
 		productName: '',
 		quantity: 0,
 		projectId,
-		files: [],
 	});
 
 	const [chooseCategory, setChooseCategory] = useState<boolean>(false);
@@ -58,10 +57,10 @@ export const RequestManuallyRFQ = () => {
 	//set certifications
 	const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
 		const id = event.currentTarget.id;
-		const value = event.currentTarget.value;
+		const value = event.currentTarget.value.trim();
 
-		if (id === 'certifications' && (event.key === 'Enter' || event.key === 'Tab')) {
-			if (value.trim() !== '') {
+		if (event.key === 'Enter' || event.key === ' ') {
+			if (value !== '') {
 				setFormData((prevState) => {
 					const newCertifications = [
 						...(prevState.certifications || []),
@@ -82,10 +81,7 @@ export const RequestManuallyRFQ = () => {
 	//set inputs value
 	const handleValueFormData = (event: ChangeEvent<HTMLInputElement>) => {
 		const id = event.target.id;
-		const type = event.target.type;
-		const value =
-			type === 'number' ? Number(event.target.value) : event.target.value;
-
+		const value = event.target.value;
 		setFormData((prevState) => ({ ...prevState, [id]: value }));
 	};
 
@@ -155,30 +151,7 @@ export const RequestManuallyRFQ = () => {
 	const submitData = async (data: RfqItemFetch) => {
 		try {
 			setIsLoading(true);
-			const formDataSend = new FormData();
-			formDataSend.append('projectId', data.projectId);
-			formDataSend.append('size', String(data.size));
-			formDataSend.append('budget', String(data.budget));
-			formDataSend.append('subCategoryId', String(data.subCategoryId));
-			formDataSend.append('productName', data.productName);
-			if (data.files && data.files.length > 0) {
-				for (let i = 0; i < data.files.length; i++) {
-					formDataSend.append('documents', data.files[i]);
-				}
-			}
-
-			data.certifications &&
-				formDataSend.append('certifications', data.certifications.join(' '));
-			if (data.cover && data.cover.length > 0) {
-				for (let i = 0; i < data.cover.length; i++) {
-					formDataSend.append('images', data.cover[i]);
-				}
-			}
-			if (data.additionalComments) {
-				formDataSend.append('additionalComments', data.additionalComments);
-			}
-
-			await api.rfq.createRfqItem(formDataSend);
+			await api.rfq.createRfqItem(data);
 			setIsLoading(false);
 			dispatch(setModal('submitedRFQ'));
 		} catch (error) {
@@ -399,7 +372,7 @@ export const RequestManuallyRFQ = () => {
 					</div>
 
 					{/* if have files  */}
-					<div className="have_files_container">
+					<div className={s.have_files_container}>
 						{formData.files &&
 							formData.files.length > 0 &&
 							formData.files.map((el, ind) => {

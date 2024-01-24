@@ -48,6 +48,7 @@ export const PreShipmentInspection = ({
 		type: '',
 		amount: '',
 	});
+
 	// for local rerenderind
 	const [approved, setApproved] = useState<boolean>(false);
 
@@ -103,7 +104,7 @@ export const PreShipmentInspection = ({
 		formDataSend.append('amount', data.amount.toString());
 		formDataSend.append('type', data.type);
 		try {
-			const data = await api.sellerOrder.orderDelivery(formDataSend);
+			await api.sellerOrder.orderDelivery(formDataSend);
 			setApproved(true);
 		} catch (error) {
 			console.error('postOrdeDelivery error:', error);

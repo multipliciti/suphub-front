@@ -1,69 +1,88 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+
 import { classNames } from '@/utils/classNames';
 import s from './QuotationsTable.module.scss';
-import Image from 'next/image';
+import { RfqItemGot } from '@/types/services/rfq';
+
 import more_icon from '@/imgs/Buyer&Seller/more.svg';
-import delete_icon from '@/imgs/Buyer&Seller/delete.svg';
 import purchase_icon from '@/imgs/Buyer&Seller/purchase.svg';
 import ordered_icon from '@/imgs/Buyer&Seller/ordered.svg';
-import { useRouter } from 'next/navigation';
 import eye_icon from '@/imgs/Buyer&Seller/eye.svg';
-import { RfqItemGot } from '@/types/services/rfq';
-import Link from 'next/link';
+import eye_icon_hover from '@/imgs/Buyer&Seller/eye_hover.svg';
 
 interface TypeProps {
+	projectId: number;
 	rfqs: RfqItemGot[];
 	compress: boolean;
 }
 
-export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
-	const { push } = useRouter();
+export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
+	const [maxOptionsLengthArr, setMaxOptionsLengthArr] = useState<number[]>([]);
+
+	//states for modal 'more'
+	const targetElement = useRef<HTMLDivElement | null>(null);
 	const [indexMore, setIndexMore] = useState<number>(-1);
-	const [rect, setRect] = useState<any>();
-	const tHeadRef = useRef<HTMLTableSectionElement>(null);
-	console.log('rfqs', rfqs);
+	const [rfqIdNavigation, setRfqIdNavigation] = useState<number>(0);
+	const [topRelativeToParent, setTopRelativeToParent] = useState<number>(0);
+	const [leftRelativeToParent, setLeftRelativeToParent] = useState<number>(0);
+
+	// const [hoverRfq, setHoverRfq] = useState<number>(-1);
+
 	useEffect(() => {
-		const targetElement = document.querySelector(`[data-id="${indexMore}"]`);
+		const maxOptionsLength = rfqs.reduce((max, item) => {
+			return Math.max(max, item.options.length);
+		}, 0);
+		//set max length options for render header index(number) option
+		setMaxOptionsLengthArr(
+			Array.from({ length: maxOptionsLength }, (_, index) => index + 1)
+		);
+	}, [rfqs]);
 
-		if (targetElement) {
-			const rect = targetElement.getBoundingClientRect();
-			setRect(rect);
+	const handleItemClick = (e: React.MouseEvent<HTMLImageElement>, index: number) => {
+		if (targetElement.current) {
+			const rect = e.currentTarget.getBoundingClientRect();
+			const targetRect = targetElement.current.getBoundingClientRect();
+
+			const topRelativeToTarget = rect.top - targetRect.top;
+			const leftRelativeToTarget = rect.left - targetRect.left;
+
+			setIndexMore(indexMore === index ? -1 : index);
+			setTopRelativeToParent(topRelativeToTarget);
+			setLeftRelativeToParent(leftRelativeToTarget);
 		}
-	}, [indexMore, compress]);
+	};
 
-	// const handleMouseEnter = (id: number) => {
-	// 	setHoveredIds((prev) => [...prev, id]);
+	// later
+	// useEffect(() => {
+	// const handleScroll = () => {
+
 	// };
+	// if (targetElement.current && ) {
+	// 	targetElement.current.addEventListener('scroll', handleScroll);
 
-	// const handleMouseLeave = (id: number) => {
-	// 	setHoveredIds((prev) => prev.filter((el) => el !== id));
-	// };
-
-	let maxOptionsLength = 0;
-	let maxOptionsLengthArr = [];
-
-	rfqs.forEach((item: RfqItemGot) => {
-		if (item.options.length > maxOptionsLength) {
-			maxOptionsLength = item.options.length;
-		}
-	});
-
-	for (let i = 0; i < maxOptionsLength; i++) {
-		maxOptionsLengthArr.push(i + 1);
-	}
+	// 	return () => {
+	// 		targetElement.current.removeEventListener('scroll', handleScroll);
+	// 	};
+	// }
+	// }, []);
 
 	return (
-		<div className={s.wrapper}>
-			{rect && (
+		<div ref={targetElement} className={s.wrapper}>
+			{indexMore !== -1 && (
 				<div
 					style={{
-						top: `${rect.top + (compress ? 55 : 52) - 215}px`,
-						left: `${rect.left - (compress ? 0 : 0) - 262}px`,
+						top: `${topRelativeToParent + 25}px`,
+						left: `${leftRelativeToParent - 159}px`,
 					}}
 					className={classNames(s.more, indexMore !== -1 && s.more_active)}
 				>
-					<Link href={`/projects/options/${indexMore}`} className={s.more_item}>
+					<Link
+						href={`/projects/${projectId}/rfq/options/${rfqIdNavigation}`}
+						className={s.more_item}
+					>
 						Product details
 					</Link>
 					<span className={s.more_item}>Order sample</span>
@@ -72,8 +91,9 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 					</span>
 				</div>
 			)}
-			<table className={classNames(s.table, compress && s.table_compress)}>
-				<thead ref={tHeadRef} className={s.thead}>
+
+			<table className={classNames(s.table)}>
+				<thead className={s.thead}>
 					<tr>
 						<th className={classNames(s.th, compress && s.th_compress)}>
 							<span className={s.eye_icon}>
@@ -97,12 +117,17 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 				</thead>
 
 				<tbody className={s.tbody}>
-					{rfqs.map((el, ind) => {
+					{rfqs.map((rfq, ind) => {
 						return (
-							<tr key={el.id} className={s.tr}>
-								<td className={classNames(s.td, compress && s.td_compress)}>
+							<tr key={ind} className={s.tr}>
+								<td
+									// onMouseOver={() => setHoverRfq(ind)}
+									// onMouseOut={() => setHoverRfq(-1)}
+									className={classNames(s.td, compress && s.td_compress)}
+								>
 									<Image
 										className={s.eye_icon}
+										// src={hoverRfq === ind ? eye_icon_hover : eye_icon}
 										src={eye_icon}
 										alt="eye_icon"
 										width={20}
@@ -110,27 +135,23 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 									/>
 								</td>
 
-								{el.options.length < 1 && (
+								{rfq.options.length < 1 && (
 									<td className={s.td}>
 										<span className={s.noquotes}>You have no quotes yet.</span>
 									</td>
 								)}
 
-								{el.options.map((el, ind) => {
+								{rfq.options.map((option, ind) => {
 									return (
 										<td
-											data-id={el.id}
+											data-id={option.id}
 											className={classNames(s.td, compress && s.td_compress)}
-											// onClick={() => {
-											// 	setIndexMore(indexMore === el.id ? -1 : el.id);
-											// }}
 											key={ind}
 										>
 											<span className={s.item}>
 												{/* This is about borders, as td:hover is not working in the
 												table.
 												bad code */}
-
 												{/* // */}
 												{/* // */}
 												<span className={classNames(s.border, s.border_top)}></span>
@@ -145,8 +166,10 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 												{/* // */}
 
 												<span className={s.item_info}>
-													<span className={s.item_info_size}>{el.size}</span>
-													<span className={s.item_info_price}>${el.price}</span>
+													<span className={s.item_info_size}>{option.size}</span>
+													<span className={s.item_info_price}>
+														{option.price ? `$${option.price}` : 'Not price'}
+													</span>
 												</span>
 												<span className={s.item_icons}>
 													<Image
@@ -162,9 +185,10 @@ export const QuotationsTable = ({ rfqs, compress }: TypeProps) => {
 														height={20}
 													/>
 													<Image
-														onClick={() =>
-															setIndexMore(indexMore === el.id ? -1 : el.id)
-														}
+														onClick={(e) => {
+															handleItemClick(e, ind);
+															setRfqIdNavigation(option.rfqId);
+														}}
 														className={s.icon_more}
 														src={more_icon}
 														alt="more_icon"

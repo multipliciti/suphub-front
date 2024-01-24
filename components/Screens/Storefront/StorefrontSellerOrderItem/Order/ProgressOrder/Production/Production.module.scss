@@ -290,6 +290,7 @@
 	}
 
 	&_send {
+		transition: background 0.3s ease;
 		border: none;
 		padding: 8px 20px;
 		border-radius: 8px;
@@ -301,6 +302,13 @@
 		font-style: normal;
 		font-weight: 700;
 		line-height: 20px;
+
+		&_invalid {
+			cursor: not-allowed;
+			pointer-events: none;
+			color: #b3bec3;
+			background: #e8ebed;
+		}
 	}
 
 	.waiting {

@@ -6,12 +6,14 @@ import { useRouter } from 'next/navigation';
 import { Order } from '@/types/services/projects';
 
 interface PropsType {
+	projectId: number;
 	columns: { title: string; key: string }[];
 	data: Order[];
 }
 
-export const ProjectsTable = ({ columns, data }: PropsType) => {
+export const ProjectsTable = ({ projectId, columns, data }: PropsType) => {
 	const { push } = useRouter();
+
 	return (
 		<div className={s.wrapper}>
 			<table className={s.table}>
@@ -26,7 +28,10 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 				<tbody>
 					{/* Creating Data Rows */}
 					{data.map((row, rowIndex) => (
-						<tr onClick={() => push(`/projects/order/${row.id}`)} key={rowIndex}>
+						<tr
+							onClick={() => push(`/projects/${projectId}/order/${row.id}`)}
+							key={rowIndex}
+						>
 							{columns.map((column, indd) => (
 								<>
 									{/* PO  */}

@@ -6,16 +6,20 @@ import Image from 'next/image';
 import { BackButton } from '@/components/UI/BackButton';
 import { ProgressOrder } from './ProgressOrder';
 import { OrderInterface } from '@/types/services/orders';
+import Link from 'next/link';
 
 interface TypeProps {
+	projectId: number;
 	order: OrderInterface;
 }
 
-export const Order = ({ order }: TypeProps) => {
+export const Order = ({ projectId, order }: TypeProps) => {
 	return (
 		<div className={s.wrapper}>
-			{/* hardcode  */}
-			<BackButton href="/projects/1/orders" />
+			<Link href={`projects/${projectId}/orders`}>
+				{/* href from BackButton dosn't work  */}
+				<BackButton />
+			</Link>
 
 			<StatusOrder code={order.PO} status={order.status} />
 			<Info

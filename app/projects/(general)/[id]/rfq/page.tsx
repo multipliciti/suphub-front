@@ -1,5 +1,11 @@
 import { ProjectsRFQCart } from '@/components/Screens/Projects/ProjectsRFQCart';
 
-export default function ProjectsRfqPage() {
-	return <ProjectsRFQCart />;
+interface Props {
+	params: {
+		id: number;
+	};
+}
+
+export default function ProjectsRfqPage({ params: { id } }: Props) {
+	return <ProjectsRFQCart projectId={id} />;
 }

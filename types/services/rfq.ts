@@ -27,6 +27,7 @@ export interface RfqItemFetch {
 	cover?: File[];
 	files?: File[];
 }
+
 export interface RfqEmptyItem {
 	projectId: number;
 	subCategoryId: number;
@@ -46,11 +47,12 @@ export interface RfqItemGot {
 	documents: {
 		name: string;
 		url: string;
+		key: string;
 	}[];
-
 	images: {
 		name: string;
 		url: string;
+		key: string;
 	}[];
 	status: string;
 	subCategory: {
@@ -84,8 +86,6 @@ export interface RfqFind {
 }
 
 export interface RfqUpdateData {
-	projectId: number;
-	subCategoryId: number;
 	productName?: string;
 	quantity?: number;
 	budget?: number;

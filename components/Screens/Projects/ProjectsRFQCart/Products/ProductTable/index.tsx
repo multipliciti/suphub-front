@@ -1,51 +1,73 @@
 'use client';
+import { useEffect, useRef, useState } from 'react';
+import { useAppDispatch } from '@/redux/hooks';
+
 import { classNames } from '@/utils/classNames';
 import s from './ProductTable.module.scss';
 import Image from 'next/image';
-import { useRef } from 'react';
 import chat_image from '@/imgs/Buyer&Seller/chat_icon.svg';
 import { RfqItemGot } from '@/types/services/rfq';
 import { setRfqId } from '@/redux/slices/sideBars/sideBarRequestDetail';
-import { useAppDispatch } from '@/redux/hooks';
+import { Api } from '@/services';
+import debounce from 'lodash.debounce';
+
+import { extractCode } from './halpers';
+
 interface TypeProps {
 	properties: RfqItemGot[];
 	compress: boolean;
 }
 
 export const ProductTable = ({ properties, compress }: TypeProps) => {
+	const api = Api();
 	const dispatch = useAppDispatch();
 	const tableRef = useRef<HTMLTableSectionElement | null>(null);
+	const inputBugetRef = useRef<HTMLInputElement | null>(null);
 
-	const arrTableHead = [
-		{
-			title: 'Product',
-			id: 1,
-		},
-		{
-			title: 'Chat',
-			id: 2,
-		},
-		{
-			title: 'Size',
-			id: 3,
-		},
-		{
-			title: 'Quantity',
-			id: 4,
-		},
-		{
-			title: 'Unit',
-			id: 5,
-		},
-		{
-			title: 'Status',
-			id: 6,
-		},
-		{
-			title: 'Unit Budget',
-			id: 7,
-		},
-	];
+	//handle string input
+	const handleUpdateRfqFetch = async (
+		id: number,
+		key: string,
+		e: React.ChangeEvent<HTMLInputElement>
+	) => {
+		const value = e.target.value;
+
+		try {
+			await api.rfq.updateRfq(id, { [key]: value });
+		} catch (error) {
+			console.log('error update rfq:', error);
+		}
+	};
+
+	//handle number input
+	const handleUpdateRfqFetchNumberType = async (
+		id: number,
+		key: string,
+		e: React.ChangeEvent<HTMLInputElement>
+	) => {
+		let data;
+		//remove $ if had
+		const value = e.target.value.startsWith('$')
+			? e.target.value.slice(1)
+			: e.target.value;
+
+		data = Number(value);
+		//if data number
+		if (!isNaN(data) && typeof data === 'number') {
+			try {
+				await api.rfq.updateRfq(id, { [key]: data });
+			} catch (error) {
+				console.log('error update rfq:', error);
+			}
+		}
+	};
+
+	const debouncedHandleUpdateRfqFtch = debounce(handleUpdateRfqFetch, 300);
+
+	useEffect(() => {
+		// Clean up debounce on component unmount
+		return () => debouncedHandleUpdateRfqFtch.cancel();
+	}, [debouncedHandleUpdateRfqFtch]);
 
 	return (
 		<div className={s.wrapper}>
@@ -58,14 +80,18 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 								<input className={s.input_checkbox} type="checkbox" />
 							</label>
 						</th>
-						{arrTableHead.map((column, ind) => (
-							<th key={ind}>{column.title}</th>
-						))}
+						<th>Product</th>
+						<th>Chat</th>
+						<th>Size</th>
+						<th>Quantity</th>
+						<th>Unit</th>
+						<th>Status</th>
+						<th>Unit Budget</th>
 					</tr>
 				</thead>
 				{/* tbody  */}
 				<tbody ref={tableRef} className={s.tbody}>
-					{properties.map((property: RfqItemGot, ind: number) => (
+					{properties.map((rfq: RfqItemGot, ind: number) => (
 						<tr key={ind}>
 							{/* title  */}
 							<td>
@@ -76,13 +102,11 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 							<td>
 								<div className={s.description}>
 									<span className={s.subtitle}>
-										CSI {property.subCategory.csiCode}
+										{/* refactoring */}
+										CSI {rfq.subCategory.csiCode}
 									</span>
-									<p
-										onClick={() => dispatch(setRfqId(property.id))}
-										className={s.title}
-									>
-										{property.productName}
+									<p onClick={() => dispatch(setRfqId(rfq.id))} className={s.title}>
+										{rfq.productName}
 									</p>
 								</div>
 							</td>
@@ -110,9 +134,25 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 								</div>
 							</td>
 							{/* size  */}
-							<td className={s.size}>{property.size}</td>
+							<td className={s.size}>
+								<input
+									defaultValue={rfq.size ? rfq.size : 'null'}
+									className={s.input}
+									onChange={(e) => debouncedHandleUpdateRfqFtch(rfq.id, 'size', e)}
+									type="text"
+								/>
+							</td>
 							{/* Quantity  */}
-							<td>{property.quantity}</td>
+							<td>
+								<input
+									defaultValue={rfq.quantity ? rfq.quantity : 'null'}
+									className={s.input}
+									onChange={(e) =>
+										handleUpdateRfqFetchNumberType(rfq.id, 'quantity', e)
+									}
+									type="number"
+								/>
+							</td>
 							{/* Unit  */}
 							<td>Unit</td>
 							{/* Status  */}
@@ -121,20 +161,28 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 									className={classNames(
 										s.status,
 										compress && s.status_compress,
-
-										property.status === 'requested' && s.status_requested,
-										property.status === 'selectionNeeded' &&
-											s.status_selectionNeeded,
-										property.status === 'ordered' && s.status_ordered
+										rfq.status === 'draft' && s.status_requested,
+										rfq.status === 'requested' && s.status_requested,
+										rfq.status === 'selectionNeeded' && s.status_selectionNeeded,
+										rfq.status === 'ordered' && s.status_ordered
 									)}
 								>
-									{property.status === 'requested' && 'Requested'}
-									{property.status === 'selectionNeeded' && 'Selection needed'}
-									{property.status === 'ordered' && 'Orderd'}
+									{rfq.status.charAt(0).toUpperCase() + rfq.status.slice(1)}
 								</span>
 							</td>
 							{/* Unit Budget  */}
-							<td>${property.budget}</td>
+							<td>
+								<input
+									ref={inputBugetRef}
+									defaultValue={`$` + `${rfq.budget}`}
+									className={s.input}
+									onChange={(e) =>
+										handleUpdateRfqFetchNumberType(rfq.id, 'budget', e)
+									}
+									// type="string" because I don’t know how to put the dollar at the beginning of the default state for the number type
+									type="string"
+								/>
+							</td>
 						</tr>
 					))}
 				</tbody>

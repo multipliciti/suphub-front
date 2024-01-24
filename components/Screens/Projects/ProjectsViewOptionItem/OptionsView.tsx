@@ -1,20 +1,22 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
+
 import s from './OptionsView.module.scss';
 import { Api } from '@/services';
 import { Option } from '@/types/services/rfq';
 import { BackButton } from '@/components/UI/BackButton';
 import testProduct from '@/imgs/Product/test2.png';
-import Link from 'next/link';
 
 type TypeProps = {
-	id: number;
+	idProject: number;
+	idOption: number;
 };
 
-export const OptionsView = ({ id }: TypeProps) => {
+export const OptionsView = ({ idOption, idProject }: TypeProps) => {
 	const api = Api();
 	const [options, setOptions] = useState<Option[]>([]);
+
 	const fetchDetOptions = async (projectId: number) => {
 		try {
 			const response = await api.rfqOption.getOptionsByRfqId(projectId);
@@ -25,15 +27,13 @@ export const OptionsView = ({ id }: TypeProps) => {
 	};
 
 	useEffect(() => {
-		fetchDetOptions(id);
+		fetchDetOptions(idOption);
 	}, []);
 
 	return (
 		<div className={s.wrapper}>
 			<div className={s.header}>
-				<Link className={s.header_link} href="/testBuyerRFQ" as={`/testBuyerRFQ`}>
-					<BackButton />
-				</Link>
+				<BackButton href={`/projects/${idProject}/rfq`} />
 				<span className={s.header_close}></span>
 				<span className={s.header_title}>Compare - Fixed Window</span>
 			</div>
@@ -60,10 +60,12 @@ export const OptionsView = ({ id }: TypeProps) => {
 											<td key={ind}>
 												<Image
 													className={s.img}
-													src={testProduct}
+													src={el.product.images[0].url ?? ''}
 													alt="testProduct"
 													width={160}
 													height={160}
+													objectFit="cover"
+													// layout="fill"
 												/>
 											</td>
 										);
@@ -91,7 +93,7 @@ export const OptionsView = ({ id }: TypeProps) => {
 								<tr>
 									<td>Manufacturer</td>
 									{options.map((el: Option, ind: number) => {
-										return <td key={ind}>Undefined</td>;
+										return <td key={ind}>{el.product.seller.name ?? 'null'}</td>;
 									})}
 								</tr>
 								{/* MOQ */}

@@ -1,6 +1,6 @@
 'use client';
 import s from './Products.module.scss';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import { classNames } from '@/utils/classNames';
 import { ProductTable } from './ProductTable';
@@ -9,17 +9,25 @@ import { truncateFileNameEnd } from '@/utils/names';
 import arrow_white from '@/imgs/Buyer&Seller/arrow_white.svg';
 import arrow_resize from '@/imgs/Buyer&Seller/arrow_resize.svg';
 import arrow_resize_active from '@/imgs/Buyer&Seller/arrow_resize_active.svg';
-import arrow_icon from '@/imgs/arrow.svg';
-import disable_arrow from '@/imgs/Buyer&Seller/disable_arrow.svg';
+// import arrow_icon from '@/imgs/arrow.svg';
+// import disable_arrow from '@/imgs/Buyer&Seller/disable_arrow.svg';
 import { RfqItemGot } from '@/types/services/rfq';
 
 interface TypeProps {
+	projectId: number;
 	rfqs: RfqItemGot[][];
 }
 
-export const Products = ({ rfqs }: TypeProps) => {
-	const [active, setActive] = useState<number>(0);
+export const Products = ({ rfqs, projectId }: TypeProps) => {
+	const [activeRfqs, setActiveRfqs] = useState<number[]>([0]);
 	const [compress, setCompress] = useState<boolean>(false);
+
+	useEffect(() => {
+		//initial state activeRfqs. need all elements to be active at once
+		if (rfqs.length > 0 && rfqs[0].length > 0) {
+			setActiveRfqs(Array.from({ length: rfqs.length }, (_, index) => index));
+		}
+	}, [rfqs]);
 
 	return (
 		<div className={s.wrapper}>
@@ -29,25 +37,35 @@ export const Products = ({ rfqs }: TypeProps) => {
 						<div
 							className={classNames(
 								s.products,
-								active === ind && compress && s.products_compress
+								activeRfqs.includes(ind) && compress && s.products_compress
 							)}
 						>
 							{/* header */}
 							<div
 								className={classNames(
 									s.products_header,
-									active === ind && s.products_header_active,
-									active === ind && compress && s.products_header_compress
+									activeRfqs.includes(ind) && s.products_header_active,
+									activeRfqs.includes(ind) && compress && s.products_header_compress
 								)}
 							>
 								<div
-									onClick={() => setActive(active === ind ? -1 : ind)}
+									onClick={() => {
+										setActiveRfqs((prevActive) => {
+											if (prevActive.includes(ind)) {
+												// if element present - remove
+												return prevActive.filter((item) => item !== ind);
+											} else {
+												//if element absent - add
+												return [...prevActive, ind];
+											}
+										});
+									}}
 									className={s.products_header_toggle}
 								>
 									<Image
 										className={classNames(
 											s.arrow_toggle,
-											ind === active && s.arrow_toggle_active
+											activeRfqs.includes(ind) && s.arrow_toggle_active
 										)}
 										src={arrow_white}
 										alt="arrow_white"
@@ -57,16 +75,16 @@ export const Products = ({ rfqs }: TypeProps) => {
 									{compress ? (
 										<p>
 											<span className={s.indificator}>CSI</span>
-											{truncateFileNameEnd(el[0].subCategory.category.csiCode, 15)}
+											{truncateFileNameEnd(el[0].subCategory.category.name, 14)}
 										</p>
 									) : (
 										<p>
 											<span className={s.indificator}>CSI</span>
-											{el[0].subCategory.category.csiCode}
+											{el[0].subCategory.category.name}
 										</p>
 									)}
 								</div>
-								{active === ind ? (
+								{activeRfqs.includes(ind) ? (
 									!compress && (
 										<p className={s.products_header_count}>
 											<span>{el.length} </span>
@@ -84,7 +102,7 @@ export const Products = ({ rfqs }: TypeProps) => {
 									className={classNames(
 										s.products_header_resize,
 										s.none,
-										active === ind && s.active
+										activeRfqs.includes(ind) && s.active
 									)}
 									src={compress ? arrow_resize_active : arrow_resize}
 									alt="arrow_resize"
@@ -95,8 +113,8 @@ export const Products = ({ rfqs }: TypeProps) => {
 							<span
 								className={classNames(
 									s.none,
-									active === ind && s.active,
-									active === ind && s.table_wrapper
+									activeRfqs.includes(ind) && s.active,
+									activeRfqs.includes(ind) && s.table_wrapper
 								)}
 							>
 								<span>
@@ -107,14 +125,14 @@ export const Products = ({ rfqs }: TypeProps) => {
 						<div
 							className={classNames(
 								s.quotations,
-								active === ind ? s.active : s.none,
+								activeRfqs.includes(ind) ? s.active : s.none,
 								compress && s.quotations_compress
 							)}
 						>
 							<div className={s.quotations_header}>
 								<p className={s.title}>Quotations</p>
 							</div>
-							<QuotationsTable compress={compress} rfqs={el} />
+							<QuotationsTable projectId={projectId} compress={compress} rfqs={el} />
 						</div>
 					</div>
 				);

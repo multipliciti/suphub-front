@@ -118,7 +118,7 @@ export const Production = ({
 		formDataSend.append('orderId', data.orderId.toString());
 		formDataSend.append('updates', data.updates);
 		try {
-			// await api.sellerOrder.orderProduction(formDataSend);
+			await api.sellerOrder.orderProduction(formDataSend);
 			setNewMessage(false);
 			setSentMessages((prevState) => [...prevState, data]);
 			setSentMessage(true);
@@ -325,7 +325,10 @@ export const Production = ({
 									onClick={() => {
 										if (formData) AddOrderProduction(formData);
 									}}
-									className={s.buttons_send}
+									className={classNames(
+										s.buttons_send,
+										formData && formData.updates.length < 1 && s.buttons_send_invalid
+									)}
 								>
 									Send
 								</button>

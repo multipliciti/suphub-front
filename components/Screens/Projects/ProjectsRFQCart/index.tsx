@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
 
 import { NoResult } from './NoResult';
 import { RFQCartFilters } from './RFQCartFilters';
@@ -11,8 +10,12 @@ import { useAppSelector } from '@/redux/hooks';
 import { IsBuyerSideBarRequestDetail } from '@/components/Containers/IsBuyerSideBarRequestDetail/IsBuyerSideBarRequestDetail';
 import { Spinner } from '@/components/UI/Spinner';
 
-export const ProjectsRFQCart = () => {
-	const pathname = usePathname();
+type TypeProps = {
+	projectId: number;
+};
+
+export const ProjectsRFQCart = ({ projectId }: TypeProps) => {
+	console.log('projectId', projectId);
 	const api = Api();
 	const [stateInputs, setStateInputs] = useState({
 		search: '',
@@ -21,11 +24,6 @@ export const ProjectsRFQCart = () => {
 	});
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const modal = useAppSelector((state) => state.modalSlice.modal);
-
-	//get projectId from url
-	const path = pathname;
-	const match = path.match(/\/projects\/(\d+)\/rfq/);
-	const projectId = match && match[1];
 
 	const [rfqsSorted, setRfqsSorted] = useState<RfqItemGot[][]>([]);
 
@@ -67,6 +65,7 @@ export const ProjectsRFQCart = () => {
 				projectId: Number(projectId),
 				searchParams: finalJsonString,
 			});
+
 			const data: RfqItemGot[] = await response.result;
 			setIsLoading(false);
 
@@ -83,7 +82,6 @@ export const ProjectsRFQCart = () => {
 				{} as Record<string, RfqItemGot[]>
 			);
 			const sortedData: RfqItemGot[][] = Object.values(groupedData);
-
 			setRfqsSorted(sortedData);
 		} catch (error) {
 			console.log('error fetch rfq', error);
@@ -113,7 +111,7 @@ export const ProjectsRFQCart = () => {
 						) : rfqsSorted.length < 1 ? (
 							<NoResult />
 						) : (
-							<Products rfqs={rfqsSorted} />
+							<Products projectId={projectId} rfqs={rfqsSorted} />
 						)}
 					</>
 				</IsBuyerSideBarRequestDetail>

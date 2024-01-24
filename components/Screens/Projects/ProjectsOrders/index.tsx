@@ -7,7 +7,11 @@ import { Api } from '@/services';
 import { Order } from '@/types/services/projects';
 import { Spinner } from '@/components/UI/Spinner';
 
-export const ProjectsOrders = () => {
+type typeProps = {
+	projectId: number;
+};
+
+export const ProjectsOrders = ({ projectId }: typeProps) => {
 	const api = Api();
 	//store filters-inputs value
 	const [stateInputs, setStateInputs] = useState({
@@ -94,7 +98,9 @@ export const ProjectsOrders = () => {
 					<Spinner />
 				) : (
 					<>
-						{orders.length > 0 && <ProjectsTable columns={columns} data={orders} />}
+						{orders.length > 0 && (
+							<ProjectsTable projectId={projectId} columns={columns} data={orders} />
+						)}
 						<PaginationWrapper
 							limitItems={limitItems}
 							totalItems={totalItems}

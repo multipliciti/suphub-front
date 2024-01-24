@@ -16,13 +16,26 @@
 .table {
 	width: 100%;
 	border-collapse: collapse;
+
 	&_header {
-		border: 1px solid #ccd5e1;
 		border-bottom: none;
 		padding: 12px 20px;
 		border-top-right-radius: 8px;
 		border-top-left-radius: 8px;
 		background-color: #f8fafc;
+	}
+
+	.input {
+		color: #0f172a;
+		font-variant-numeric: lining-nums proportional-nums;
+
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 400;
+		line-height: 18px;
+
+		outline: none;
+		border: none;
 	}
 
 	tr {
@@ -36,21 +49,102 @@
 			line-height: 18px;
 		}
 
-		color: #0f172a;
-		font-variant-numeric: lining-nums proportional-nums;
-
-		font-size: 14px;
-		font-style: normal;
-		font-weight: 400;
-		line-height: 18px;
 		td {
 			border: 1px solid #ccd5e1;
 			width: 50%;
 			padding: 12px 20px;
 
+			.subcategory {
+				width: 100%;
+				height: 100%;
+				position: relative;
+				cursor: pointer;
+				border-radius: 8px;
+				display: flex;
+				justify-content: space-between;
+
+				&_title {
+					color: #757474;
+					font-variant-numeric: lining-nums proportional-nums;
+
+					font-size: 16px;
+					font-style: normal;
+					font-weight: 400;
+					line-height: 20px;
+				}
+
+				.arrow {
+					transition: transform 0.3s ease;
+					&_active {
+						transform: rotate(180deg);
+					}
+				}
+
+				&_items {
+					overflow-y: auto;
+
+					transition: all 0.3s ease;
+					color: #143644;
+					font-size: 14px;
+					font-style: normal;
+					font-weight: 400;
+					line-height: 20px;
+
+					position: absolute;
+					z-index: 2;
+					top: 25px;
+					left: 0;
+					display: flex;
+					flex-direction: column;
+					width: 100%;
+					border: 1px solid #cbd5e1;
+					border-radius: 8px;
+					background-color: #fff;
+
+					pointer-events: none;
+					opacity: 0;
+					max-height: 0px;
+
+					&_active {
+						pointer-events: all;
+						opacity: 1;
+						max-height: 180px;
+						width: 100%;
+					}
+				}
+
+				&_items::-webkit-scrollbar {
+					width: 4px;
+					background-color: transparent;
+					border-radius: 5px;
+				}
+
+				&_items::-webkit-scrollbar-thumb {
+					background: #94a3b8;
+					border-radius: 3px;
+				}
+
+				&_item {
+					cursor: pointer;
+					padding: 8px 12px;
+
+					color: #143644;
+					font-size: 14px;
+					font-style: normal;
+					font-weight: 400;
+					line-height: 20px;
+				}
+
+				&_item:not(:last-child) {
+					border-bottom: 1px solid #cbd5e1;
+				}
+			}
+
 			.certifications {
 				display: flex;
+				flex-wrap: wrap;
 				gap: 8px;
+
 				&_item {
 					cursor: pointer;
 					border-radius: 6px;
@@ -68,6 +162,67 @@
 					align-items: center;
 					gap: 5px;
 				}
+
+				&_add {
+					outline: none;
+					border: none;
+					max-width: 70px;
+				}
+			}
+
+			.documents {
+				display: flex;
+				gap: 8px;
+				flex-wrap: wrap;
+
+				&_link {
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+				}
+
+				&_name {
+					color: #594d98;
+
+					font-family: Lato;
+					font-size: 12px;
+					font-style: normal;
+					font-weight: 400;
+					line-height: 18px;
+				}
+				// &_size {
+				// 	display: inline-block;
+				// 	margin-left: 4px;
+				// 	color: #94a3b8;
+				// 	font-variant-numeric: lining-nums proportional-nums;
+
+				// 	font-family: Lato;
+				// 	font-size: 12px;
+				// 	font-style: normal;
+				// 	font-weight: 400;
+				// 	line-height: 18px;
+				// }
+
+				&_add {
+					cursor: pointer;
+					color: #755cf1;
+					font-variant-numeric: lining-nums proportional-nums;
+
+					font-size: 12px;
+					font-style: normal;
+					font-weight: 700;
+					line-height: 20px;
+
+					&_input {
+						width: 0px;
+						height: 0px;
+						opacity: 0;
+					}
+				}
+
+				&_delete {
+					cursor: pointer;
+				}
 			}
 		}
 		.link {
@@ -80,9 +235,49 @@
 			align-items: center;
 			gap: 8px;
 
-			.img {
-				border: 1px solid #aab3ec;
+			&_input {
+				height: 0px;
+				width: 0px;
+				opacity: 0;
+			}
+
+			&_add {
+				cursor: pointer;
+
+				display: flex;
+				width: 48px;
+				height: 48px;
+				padding: 12px;
+				justify-content: center;
+				align-items: center;
+
 				border-radius: 4px;
+				border: 1px dashed #aab3ec;
+				background: #fff;
+			}
+
+			&_img {
+				position: relative;
+				border-radius: 4px;
+				border: 1px solid #cbd5e1;
+				width: 48px;
+				height: 48px;
+			}
+
+			&_delete {
+				cursor: pointer;
+
+				position: absolute;
+				top: -5px;
+				right: -5px;
+
+				align-items: center;
+				justify-content: center;
+				height: 15px;
+				width: 15px;
+				display: flex;
+				border-radius: 500px;
+				background: #475569;
 			}
 		}
 	}

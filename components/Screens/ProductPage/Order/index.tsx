@@ -1,7 +1,6 @@
 'use client';
 import s from './Order.module.scss';
 import imageTest1 from '@/imgs/Product/ImageTest1.png';
-import { useState } from 'react';
 import { Simple } from './Simple';
 import { classNames } from '@/utils/classNames';
 import { User } from '@/types/services/auth';
@@ -17,6 +16,9 @@ interface PropsType {
 
 export const Order = ({ user, statusGetUser, product }: PropsType) => {
 	const dispatch = useAppDispatch();
+	const sortedPrices = product.prices
+		.slice()
+		.sort((a, b) => a.minCount - b.minCount);
 
 	const simples = [
 		{
@@ -78,7 +80,7 @@ export const Order = ({ user, statusGetUser, product }: PropsType) => {
 			<div className={s.order}>
 				<div className={s.header}>Order Price</div>
 				<div className={s.price}>
-					{product.prices.map((el, ind) => {
+					{sortedPrices.map((el, ind) => {
 						return (
 							<p key={ind} className={s.price_row}>
 								<span className={s.price_row_key}> {`QTY. ${el.minCount}`} </span>

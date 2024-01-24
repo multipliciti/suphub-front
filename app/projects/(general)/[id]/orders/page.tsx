@@ -1,5 +1,11 @@
 import { ProjectsOrders } from '@/components/Screens/Projects/ProjectsOrders';
 
-export default function ProjectsOrdersPage() {
-	return <ProjectsOrders />;
+interface Props {
+	params: {
+		id: number;
+	};
+}
+
+export default function ProjectsOrdersPage({ params: { id } }: Props) {
+	return <ProjectsOrders projectId={id} />;
 }

@@ -45,6 +45,7 @@ export const ProductItem = ({ product }: TypeProps) => {
 		`${obj.label}`,
 		obj.value ? obj.value : '-',
 	]);
+
 	//generate static array
 	const propertiesStaticArray = [
 		[

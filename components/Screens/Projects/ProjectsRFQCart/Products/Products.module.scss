@@ -11,13 +11,11 @@
 	}
 
 	.products {
-		// transition: all 0.3s ease;
 		max-width: 700px;
 		display: flex;
 		flex-grow: 1;
 		flex-direction: column;
 		margin-right: 10px;
-		// position: relative;
 
 		&_compress {
 			overflow-x: auto;
@@ -129,22 +127,11 @@
 		font-style: normal;
 		font-weight: 900;
 		line-height: 20px;
+
+		&_compress {
+			height: 48px;
+		}
 	}
-
-	// .pagination {
-	// 	margin-left: auto;
-	// 	display: flex;
-	// 	gap: 4px;
-
-	// 	&_arrow {
-	// 		cursor: pointer;
-	// 		border-radius: 3.333px;
-	// 		border: 0.625px solid #cbd5e1;
-	// 		width: 20px;
-	// 		height: 20px;
-	// 		background-color: #fff;
-	// 	}
-	// }
 }
 
 .none {

@@ -5,6 +5,7 @@ import { Info } from './Info';
 import { ProgressOrder } from './ProgressOrder';
 import { OrderInterface } from '@/types/services/orders';
 import { BackButton } from '@/components/UI/BackButton';
+import Link from 'next/link';
 
 interface Product {
 	order: OrderInterface;
@@ -13,8 +14,7 @@ interface Product {
 export const Order = ({ order }: Product) => {
 	return (
 		<div className={s.wrapper}>
-			{/* hardcode  */}
-			<BackButton href="/storefront/1/orders" />
+			<BackButton href="/storefront/orders" />
 
 			<StatusOrder code={order.PO} status={order.status} />
 			<Info

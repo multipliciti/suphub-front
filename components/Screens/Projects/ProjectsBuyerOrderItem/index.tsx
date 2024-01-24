@@ -7,14 +7,13 @@ import { Api } from '@/services';
 import { OrderInterface } from '@/types/services/orders';
 
 interface TypeProps {
-	id: number;
+	projectId: number;
+	orderId: number;
 }
 
-export const ProjectsBuyerOrderItem = ({ id }: TypeProps) => {
+export const ProjectsBuyerOrderItem = ({ orderId, projectId }: TypeProps) => {
 	const api = Api();
 	const [order, setOrder] = useState<OrderInterface | null>(null);
-	const [rerenderProgress, setRerenderProgress] = useState<boolean>(false);
-	//using id we will must make fetch
 
 	const getOrderById = async (id: number) => {
 		try {
@@ -26,14 +25,14 @@ export const ProjectsBuyerOrderItem = ({ id }: TypeProps) => {
 	};
 
 	useEffect(() => {
-		getOrderById(id);
+		getOrderById(orderId);
 	}, []);
 
 	return (
 		<div className={s.wrapper}>
 			{order && (
 				<>
-					<Order order={order} />
+					<Order projectId={projectId} order={order} />
 					<InvoiceComponent order={order} />
 				</>
 			)}

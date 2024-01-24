@@ -56,23 +56,21 @@ export const Login: React.FC = () => {
 
 	const submit: SubmitHandler<LoginDto> = async (data) => {
 		try {
-			const response = await api.auth.loginUser(data);
-			if (response) {
-				dispatch(setModal(''));
-				const userResponse = await api.auth.getUser();
-				const user = userResponse.data;
+			await api.auth.loginUser(data);
+			dispatch(setModal(''));
+			const userResponse = await api.auth.getUser();
+			const user = userResponse.data;
 
-				if (user) {
-					dispatch(setUser(user));
-					dispatch(setStatusGetUser('success'));
-					dispatch(setModal(''));
-					if (searchParams.get('id') && searchParams.get('token')) {
-						push('/marketplace');
-					}
-				} else {
-					dispatch(setUser(null));
-					dispatch(setStatusGetUser('rejected'));
+			if (user) {
+				dispatch(setUser(user));
+				dispatch(setStatusGetUser('success'));
+				dispatch(setModal(''));
+				if (searchParams.get('id') && searchParams.get('token')) {
+					push('/marketplace');
 				}
+			} else {
+				dispatch(setUser(null));
+				dispatch(setStatusGetUser('rejected'));
 			}
 		} catch (error: any) {
 			console.log('err', error);

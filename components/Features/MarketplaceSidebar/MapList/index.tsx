@@ -20,25 +20,50 @@ export const MapList = () => {
 	const searchQuery = useAppSelector((state) => state.sideBarSlice.searchQuery);
 	const categories = useAppSelector((state) => state.sideBarSlice.categories);
 	const [categoriesFilter, setCategoriesFilter] = useState<CategoryItem[]>();
+	//Sorting alphabetically by the first letter propetry name
+	const categoriesFilterSorted = categoriesFilter?.sort((a, b) =>
+		a.name[0].localeCompare(b.name[0])
+	);
 
+	// Sorting subcategories alphabetically within each category
+	const categoriesWithSortedSubcategories = categoriesFilterSorted?.map(
+		(category) => ({
+			...category,
+			subCategories: category.subCategories
+				? [...category.subCategories].sort((subA, subB) =>
+						subA.name.localeCompare(subB.name)
+				  )
+				: [],
+		})
+	);
+
+	// Sorting categories based on search criteria
 	useEffect(() => {
+		// Filtering categories based on searchQuery
 		const categoriesFilterInner = categories.filter((category) => {
+			// Convert searchQuery and categoryName to lowercase for case-insensitive comparison
 			const searchLower = searchQuery.toLowerCase();
 			const categoryNameLower = category.name.toLowerCase();
 
+			// Check if categoryName includes searchQuery
 			const categoryMatches = categoryNameLower.includes(searchLower);
+
+			// Check if any subCategory name includes searchQuery
 			const subCategoryMatches = category.subCategories.some((subCategory) =>
 				subCategory.name.toLowerCase().includes(searchLower)
 			);
 
+			// If there's a match in subCategories, check and activate the parent category if necessary
 			if (subCategoryMatches) {
 				const categoryIsActive = parentActiveIds.includes(category.id);
 
+				// If the category is not active and there's a search query, activate it
 				if (!categoryIsActive && searchQuery !== '') {
 					dispatch(setParentActiveId(category.id));
 				}
 			}
 
+			// Return true if either category or subCategory matches the search criteria
 			return categoryMatches || subCategoryMatches;
 		});
 
@@ -47,7 +72,7 @@ export const MapList = () => {
 
 	return (
 		<div className={classNames(s.wrapper)}>
-			{categoriesFilter?.map((item, index) => {
+			{categoriesWithSortedSubcategories?.map((item, index) => {
 				return (
 					<div key={index}>
 						<span

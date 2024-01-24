@@ -23,7 +23,12 @@ export const FilterWrapper = ({ itemProps }: Props) => {
 	})
 		? true
 		: false;
-
+	//Sorting alphabetically by the first letter propetry value
+	const optionsSorted = options.slice().sort((a, b) => {
+		const aValue = a.value.toLowerCase();
+		const bValue = b.value.toLowerCase();
+		return aValue.localeCompare(bValue);
+	});
 	const dispatch = useAppDispatch();
 	const attrValueIdAll = options.map((el) => {
 		return el.attrValueId;
@@ -43,7 +48,7 @@ export const FilterWrapper = ({ itemProps }: Props) => {
 				</span>
 			</div>
 			<div className={s.content}>
-				{options.map((el, ind) => {
+				{optionsSorted.map((el, ind) => {
 					return (
 						<div key={ind}>
 							<Item

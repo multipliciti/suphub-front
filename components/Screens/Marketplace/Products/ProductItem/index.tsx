@@ -49,6 +49,7 @@ export const ProductItem = ({ product }: TypeProps) => {
 		`${obj.label}`,
 		obj.value ? obj.value : '-',
 	]);
+
 	//generate static array
 	const propertiesStaticArray = [
 		[
@@ -132,7 +133,7 @@ export const ProductItem = ({ product }: TypeProps) => {
 					</button>
 					<div className={s.img_wrapper_inner}>
 						<Image
-							// layout="responsive"
+							layout="responsive"
 							className={s.img}
 							src={images[0]?.url ?? ''}
 							alt="img"
@@ -142,7 +143,6 @@ export const ProductItem = ({ product }: TypeProps) => {
 								width: '100%',
 								height: 'auto',
 							}}
-							sizes="(max-width: 244px) (max-height: 212)"
 						/>
 					</div>
 				</div>

@@ -7,10 +7,10 @@ import { Api } from '@/services';
 import { OrderInterface } from '@/types/services/orders';
 
 interface TypeProps {
-	id: number;
+	orderId: number;
 }
 
-export const StorefrontSellerOrderItem = ({ id }: TypeProps) => {
+export const StorefrontSellerOrderItem = ({ orderId }: TypeProps) => {
 	const api = Api();
 	const [order, setOrder] = useState<OrderInterface | null>(null);
 
@@ -25,7 +25,7 @@ export const StorefrontSellerOrderItem = ({ id }: TypeProps) => {
 	};
 
 	useEffect(() => {
-		getOrderById(id);
+		getOrderById(orderId);
 	}, []);
 
 	return (
