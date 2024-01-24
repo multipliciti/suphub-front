@@ -109,7 +109,7 @@ export const CreateBusinessAccount = () => {
 		handleSubmit: step1HandleSubmit,
 		setValue: step1SetValue,
 		getValues: getStep1Values,
-		formState: { errors: step1Errors, touchedFields: step1Touched },
+		formState: { errors: step1Errors },
 		setError: setError1,
 		clearErrors: clearErrors1,
 	} = useForm({
@@ -126,11 +126,12 @@ export const CreateBusinessAccount = () => {
 	});
 
 	const isStep1SubmitButtonDisabled = () => {
-		const isAllNotTouched = !(
-			Object.keys(step1Touched).length === Object.keys(getStep1Values()).length
-		);
+		const isAnyFieldEmpty = () => {
+			const values = getStep1Values();
+			return Object.values(values).some((value) => value.trim() === '');
+		};
 		const isErrors = Boolean(Object.keys(step1Errors).length > 0);
-		return Boolean(isAllNotTouched || isErrors);
+		return Boolean(isAnyFieldEmpty() || isErrors);
 	};
 
 	const [selectedAccountType, setSelectedAccountType] = useState<
@@ -177,7 +178,7 @@ export const CreateBusinessAccount = () => {
 		setValue: set2SetValue,
 		clearErrors: clearErrors2,
 		getValues: getStep2Values,
-		formState: { errors: step2Errors, touchedFields: step2Touched },
+		formState: { errors: step2Errors },
 	} = useForm({
 		defaultValues: {
 			companyName: '',
@@ -194,11 +195,20 @@ export const CreateBusinessAccount = () => {
 	});
 
 	const isStep2SubmitButtonDisabled = () => {
-		const isAllNotTouched = !(
-			Object.keys(step2Touched).length === Object.keys(getStep2Values()).length
-		);
+		const isAnyFieldEmpty = () => {
+			const { city, companyName, description, state, street, zipcode } =
+				getStep2Values();
+			return Object.values({
+				city,
+				companyName,
+				description,
+				state,
+				street,
+				zipcode,
+			}).some((value) => value.trim() === '');
+		};
 		const isErrors = Boolean(Object.keys(step2Errors).length > 0);
-		return Boolean(isAllNotTouched || isErrors);
+		return Boolean(isAnyFieldEmpty() || isErrors);
 	};
 
 	const onSubmitStep2 = async (data: any) => {
