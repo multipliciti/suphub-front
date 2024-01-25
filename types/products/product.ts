@@ -21,7 +21,7 @@ export interface Price {
 	createdAt: string;
 }
 
-interface Subcategory {
+export interface Subcategory {
 	id: number;
 	name: string;
 	platformCommission: number;

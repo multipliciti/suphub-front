@@ -106,7 +106,7 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 								<div className={s.description}>
 									<span className={s.subtitle}>
 										{/* refactoring */}
-										CSI {extractCode(rfq.subCategory.csiCode)}
+										CSI {rfq.subCategory.csiCode}
 									</span>
 									<p onClick={() => dispatch(setRfqId(rfq.id))} className={s.title}>
 										{rfq.productName}

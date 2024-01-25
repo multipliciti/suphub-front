@@ -10,6 +10,9 @@ import { useAppDispatch } from '@/redux/hooks';
 import { setRfqId } from '@/redux/slices/sideBars/sideBarRequestDetail';
 import { Api } from '@/services';
 import { RfqItemGot } from '@/types/services/rfq';
+import { categoriesToSubCategories } from '@/utils/categoriesToSubCategories';
+import { CategoryItem } from '@/types/sideBar';
+import { Spinner } from '@/components/UI/Spinner';
 type TypeProps = {
 	children: React.ReactNode;
 };
@@ -35,21 +38,21 @@ export const IsBuyerSideBarRequestDetail = ({ children }: TypeProps) => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 	const rfqId = useAppSelector((state) => state.sideBarRequestDetailSlice.rfqId);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [navId, setNavId] = useState<number>(1);
 
+	//category
+	const [category, setCategory] = useState<CategoryItem[]>([]);
+	const subCategories = categoriesToSubCategories(category);
 	//data states
 	const [data, setData] = useState<RfqItemGot | null>(null);
-	//dataUpdate to operate the local changed state.
-	const [updateData, setUpdateData] = useState<updateDataInterface>({
-		subCategoryId: data?.subCategoryId || null,
-		productName: data?.productName || null,
-		certifications: data?.certifications || null,
-	});
 
 	const updateRfqFtch = async (rfqId: number, data: any) => {
 		try {
+			setIsLoading(true);
 			const response = await api.rfq.updateRfq(rfqId, data);
 			setData(response.data);
+			setIsLoading(false);
 		} catch (error) {
 			console.log('error update rfq:', error);
 		}
@@ -58,21 +61,30 @@ export const IsBuyerSideBarRequestDetail = ({ children }: TypeProps) => {
 	//get rfq
 	const fetchGetRfq = async (id: number) => {
 		try {
+			setIsLoading(true);
 			const response = await api.rfq.getRfqOne(id);
 			setData(response);
-			setUpdateData({
-				subCategoryId: null,
-				productName: null,
-				certifications: null,
-			});
+			setIsLoading(false);
 		} catch (error) {
 			console.error('fetchGetRfq buyer error', error);
 		}
 	};
 
+	const getCategory = async () => {
+		try {
+			const category = await api.category.getCategories();
+			setCategory(category);
+		} catch (error) {
+			console.error('error submit get category RFQ', error);
+		}
+	};
+
 	useEffect(() => {
-		//!!! for rerender and show correct data we must setData(null)
-		setData(null);
+		getCategory();
+	}, [rfqId]);
+
+	useEffect(() => {
+		getCategory();
 		if (rfqId !== -1) fetchGetRfq(rfqId);
 	}, [rfqId]);
 
@@ -86,40 +98,54 @@ export const IsBuyerSideBarRequestDetail = ({ children }: TypeProps) => {
 					</div>
 					<h3 className={s.sidebar_title}>Request Detail</h3>
 					{/* // */}
-					<div className={s.sidebar_nav}>
-						{btns_nav.map((el, ind) => {
-							return (
-								<span
-									key={ind}
-									onClick={() => setNavId(el.id)}
-									className={classNames(
-										s.sidebar_nav_item,
-										navId === el.id && s.sidebar_nav_item_active
-									)}
-								>
-									{el.label}
-								</span>
-							);
-						})}
-					</div>
 
-					{navId === 1 && (
-						<Specs
-							data={data}
-							setData={setData}
-							updateData={updateData}
-							setUpdateData={setUpdateData}
-						/>
-					)}
+					<>
+						{isLoading && (
+							<div className={s.spinner}>
+								<Spinner />
+							</div>
+						)}
 
-					<div className={s.update}>
-						<button
-							onClick={() => updateRfqFtch(rfqId, updateData)}
-							className={s.update_btn}
-						>
-							Update request
-						</button>
-					</div>
+						{!isLoading && (
+							<>
+								<div className={s.sidebar_nav}>
+									{btns_nav.map((el, ind) => {
+										return (
+											<span
+												key={ind}
+												onClick={() => setNavId(el.id)}
+												className={classNames(
+													s.sidebar_nav_item,
+													navId === el.id && s.sidebar_nav_item_active
+												)}
+											>
+												{el.label}
+											</span>
+										);
+									})}
+								</div>
+
+								{navId === 1 && (
+									<Specs
+										rfqId={rfqId}
+										subCategories={subCategories}
+										setIsLoading={setIsLoading}
+										data={data}
+										setData={setData}
+									/>
+								)}
+
+								<div className={s.update}>
+									<button
+										onClick={() => updateRfqFtch(rfqId, data)}
+										className={s.update_btn}
+									>
+										Update request
+									</button>
+								</div>
+							</>
+						)}
+					</>
 				</div>
 			</div>
 		</div>

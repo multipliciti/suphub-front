@@ -34,10 +34,10 @@ export const RfqApi = (instance: AxiosInstance) => ({
 	},
 
 	async updateRfq(rfqId: number, data: any) {
-		console.log('rfqId', rfqId);
+		// exclude these properties as there are separate endpoints for them.
 		const dataInner = Object.fromEntries(
 			Object.entries(data).filter(
-				([key, value]) => value !== null && value !== undefined
+				([key]) => !['cover', 'images', 'documents'].includes(key)
 			)
 		);
 

@@ -294,11 +294,19 @@
 		padding: 12px 20px;
 	}
 
-	&_body {
+	&_textarea {
+		padding: 20px;
 		min-height: 200px;
+		width: 100%;
+
+		display: block;
+
 		border-bottom-right-radius: 8px;
 		border-bottom-left-radius: 8px;
 		border: 1px solid #cbd5e1;
 		border-top: none;
+
+		outline: none;
+		resize: none;
 	}
 }
