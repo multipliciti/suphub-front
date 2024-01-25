@@ -109,7 +109,7 @@ export const CreateBusinessAccount = () => {
 		handleSubmit: step1HandleSubmit,
 		setValue: step1SetValue,
 		getValues: getStep1Values,
-		formState: { errors: step1Errors },
+		formState: { errors: step1Errors, isDirty: isStep1Dirty, isValid: isStep1Valid },
 		setError: setError1,
 		clearErrors: clearErrors1,
 	} = useForm({
@@ -126,12 +126,7 @@ export const CreateBusinessAccount = () => {
 	});
 
 	const isStep1SubmitButtonDisabled = () => {
-		const isAnyFieldEmpty = () => {
-			const values = getStep1Values();
-			return Object.values(values).some((value) => value.trim() === '');
-		};
-		const isErrors = Boolean(Object.keys(step1Errors).length > 0);
-		return Boolean(isAnyFieldEmpty() || isErrors);
+		return Boolean(!isStep1Dirty || !isStep1Valid);
 	};
 
 	const [selectedAccountType, setSelectedAccountType] = useState<
@@ -178,7 +173,7 @@ export const CreateBusinessAccount = () => {
 		setValue: set2SetValue,
 		clearErrors: clearErrors2,
 		getValues: getStep2Values,
-		formState: { errors: step2Errors },
+		formState: { errors: step2Errors, isDirty: isStep2Dirty, isValid: isStep2Valid },
 	} = useForm({
 		defaultValues: {
 			companyName: '',
@@ -195,20 +190,7 @@ export const CreateBusinessAccount = () => {
 	});
 
 	const isStep2SubmitButtonDisabled = () => {
-		const isAnyFieldEmpty = () => {
-			const { city, companyName, description, state, street, zipcode } =
-				getStep2Values();
-			return Object.values({
-				city,
-				companyName,
-				description,
-				state,
-				street,
-				zipcode,
-			}).some((value) => value.trim() === '');
-		};
-		const isErrors = Boolean(Object.keys(step2Errors).length > 0);
-		return Boolean(isAnyFieldEmpty() || isErrors);
+		return Boolean(!isStep2Dirty || !isStep2Valid);
 	};
 
 	const onSubmitStep2 = async (data: any) => {
@@ -422,7 +404,7 @@ export const CreateBusinessAccount = () => {
 											required: 'Enter password confirmation',
 											validate: (value) => {
 												return (
-													Boolean(value === getStep1Values('password')) ||
+													value === getStep1Values('password') ||
 													'Passwords do not match'
 												);
 											},
