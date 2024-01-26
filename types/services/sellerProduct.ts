@@ -21,8 +21,20 @@ export interface FindSellerProductsParams {
 	};
 }
 
-export interface UploadSellerProduct {
+export type SellerProductFile =
+	| 'images'
+	| 'cutsheets'
+	| 'manuals'
+	| 'certifications';
+
+export interface UploadSellerProductFiles {
 	productId: number;
-	type: 'images' | 'cutsheets' | 'manuals' | 'certifications';
+	type: SellerProductFile;
 	files: File[];
+}
+
+export interface DeleteSellerProductFiles {
+	productId: number;
+	type: SellerProductFile;
+	keys: string[];
 }

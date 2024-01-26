@@ -2,8 +2,9 @@ import { AxiosInstance } from 'axios';
 
 import {
 	CreateSellerProduct,
+	DeleteSellerProductFiles,
 	FindSellerProductsParams,
-	UploadSellerProduct,
+	UploadSellerProductFiles,
 } from '@/types/services/sellerProduct';
 import { PaginationResponse } from '@/types/pagination';
 import { ProductItemType } from '@/types/products/product';
@@ -86,7 +87,7 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 		}
 	},
 
-	async uploadImages(data: UploadSellerProduct) {
+	async uploadFiles(data: UploadSellerProductFiles) {
 		try {
 			const { productId, type, files } = data;
 
@@ -98,17 +99,17 @@ export const ProductSellerApi = (instance: AxiosInstance) => ({
 			});
 
 			const url = `/product-seller/upload`;
-			const response = await instance.post(url, formData);
+			const response = await instance.post<ProductItemType>(url, formData);
 			return response.data;
 		} catch (error) {
 			throw error;
 		}
 	},
 
-	async deleteImages(ids: number[]) {
+	async deleteFiles(data: DeleteSellerProductFiles) {
 		try {
-			const url = `/product-seller/images`;
-			const response = await instance.delete(url, { data: { ids } });
+			const url = `/product-seller/files`;
+			const response = await instance.delete(url, { data });
 			return response.data;
 		} catch (error) {
 			throw error;

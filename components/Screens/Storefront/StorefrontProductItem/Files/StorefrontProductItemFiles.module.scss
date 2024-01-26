@@ -15,6 +15,11 @@
 
 		> div {
 			padding: 32px 16px;
+			height: 100%;
+
+			display: flex;
+			align-items: center;
+
 			background-color: #F8FAFC;
 		}
 	}
@@ -22,4 +27,11 @@
 	tr:last-child > td:first-child > div {
 		border-radius: 0 0 0 8px;
 	}
+}
+
+.filelist {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
 }

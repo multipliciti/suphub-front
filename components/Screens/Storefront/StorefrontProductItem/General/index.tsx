@@ -221,9 +221,17 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 		});
 	};
 
-	const handleDeleteImages = async (imageId: number) => {
+	const handleDeleteImages = async (imageKey: string) => {
 		try {
-			await api.productSeller.deleteImages([imageId]);
+			if (!product) {
+				return;
+			}
+
+			await api.productSeller.deleteFiles({
+				productId: product.id,
+				type: 'images',
+				keys: [imageKey],
+			});
 
 			setProduct((prevState) => {
 				if (!prevState) {
@@ -231,7 +239,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 				}
 				return {
 					...prevState,
-					images: prevState.images.filter((item) => item.id !== imageId),
+					images: prevState.images.filter((item) => item.key !== imageKey),
 				};
 			});
 		} catch (e) {
@@ -338,7 +346,7 @@ export const StorefrontProductItemGeneral: FC<Props> = ({ id }) => {
 										<ImageListItem
 											key={`${item.id}-${index}`}
 											url={item.url || ''}
-											onDelete={() => handleDeleteImages(item.id)}
+											onDelete={() => handleDeleteImages(item.key)}
 										/>
 									))}
 

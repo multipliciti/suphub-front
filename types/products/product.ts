@@ -1,8 +1,9 @@
 import { ImageType } from '@/types/products/image';
 import { ProductItemStatus } from '@/types/products/productStatus';
 
-interface CutSheet {
+export interface ProductFile {
 	id: number;
+	name: string;
 	key: string;
 	bucket: string;
 	fileUrl: string;
@@ -64,7 +65,9 @@ export interface ProductItemType {
 	subCategory: Subcategory;
 	prices: Price[];
 	images: ImageType[];
-	cutsheets: CutSheet[];
+	cutsheets: ProductFile[];
+	manuals: ProductFile[];
+	certifications: ProductFile[];
 	dynamic_attr: DynamicAttribute[];
 	seller: {
 		name: string;

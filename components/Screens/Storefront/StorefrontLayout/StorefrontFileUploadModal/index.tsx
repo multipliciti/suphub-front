@@ -1,8 +1,9 @@
 import { FC, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
+import { SellerProductFile } from '@/types/services/sellerProduct';
 import { ModalLayout } from '@/components/Features/ModalLayout';
-import { ImageType } from '@/types/products/image';
+import { ProductFile } from '@/types/products/product';
 import { Dropzone } from '@/components/UI/Dropzone';
 import { Api } from '@/services';
 
@@ -11,21 +12,23 @@ import s from '@/components/Modals/StorefrontAddProduct/Form.module.scss';
 interface Props {
 	onHide: () => void;
 	productId: number;
-	setImages: (images: ImageType[]) => void;
+	type: SellerProductFile;
+	setFiles: (files: ProductFile[]) => void;
 }
 
 type FormValues = {
 	files: File[];
 };
 
-export const StorefrontProductImageUploadModal: FC<Props> = ({
+export const StorefrontProductFileUploadModal: FC<Props> = ({
 	onHide,
 	productId,
-	setImages,
+	type,
+	setFiles,
 }) => {
 	const api = Api();
 
-	const [files, setFiles] = useState<File[]>([]);
+	const [uploadFiles, setUploadFiles] = useState<File[]>([]);
 
 	const { register, handleSubmit, formState, setValue } = useForm<FormValues>({
 		defaultValues: {
@@ -39,8 +42,8 @@ export const StorefrontProductImageUploadModal: FC<Props> = ({
 	}, [register]);
 
 	useEffect(() => {
-		setValue('files', files, { shouldValidate: true });
-	}, [files]);
+		setValue('files', uploadFiles, { shouldValidate: true });
+	}, [uploadFiles]);
 
 	const onSubmit: SubmitHandler<FormValues> = async (values) => {
 		try {
@@ -50,35 +53,51 @@ export const StorefrontProductImageUploadModal: FC<Props> = ({
 
 			const response = await api.productSeller.uploadFiles({
 				productId,
-				type: 'images',
+				type,
 				files: values.files,
 			});
 
-			setImages(response.images);
+			if (type === 'cutsheets') {
+				setFiles(response.cutsheets);
+			}
+
+			if (type === 'certifications') {
+				setFiles(response.certifications);
+			}
+
+			if (type === 'manuals') {
+				setFiles(response.manuals);
+			}
+
 			onHide();
 		} catch (e) {
 			console.log('Error with upload product images', e);
 		}
 	};
 
+	const modalTitle =
+		type === 'cutsheets'
+			? 'Cutsheets'
+			: type === 'manuals'
+			  ? 'Installation Manuals'
+			  : type === 'certifications'
+			    ? 'Certifications Documents'
+			    : '';
+
 	return (
-		<ModalLayout title="Upload Image" onHide={onHide}>
+		<ModalLayout title={`Upload ${modalTitle}`} onHide={onHide}>
 			<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 				<div className={s.form_row}>
 					<Dropzone
-						label="Drag your photo"
+						label="Drag your files"
 						size="l"
 						iconType={2}
 						isFileListSeparate={true}
-						maxSize={5000000}
+						maxSize={20000000}
 						maxFiles={5}
 						multiple={true}
-						files={files}
-						setFiles={setFiles}
-						accept={{
-							'image/jpeg': [],
-							'image/png': [],
-						}}
+						files={uploadFiles}
+						setFiles={setUploadFiles}
 					/>
 				</div>
 
