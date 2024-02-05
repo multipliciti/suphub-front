@@ -4,7 +4,7 @@ import Image from 'next/image';
 import s from './FileListItem.module.scss';
 
 import deleteIcon from '@/imgs/Buyer&Seller/delete.svg';
-import uploadIcon from '@/imgs/Buyer&Seller/upload_icon.svg';
+import { getImageFilePath, shortenFilename } from '@/utils/defineFileFormatIcon';
 
 interface Props {
 	filename: string;
@@ -12,22 +12,25 @@ interface Props {
 }
 export const FileListItem: FC<Props> = ({ filename, onDelete }) => {
 	const [isHover, setIsHover] = useState(false);
-
+	const compactFilename = shortenFilename(filename);
+	const imageSrc = getImageFilePath(filename);
 	return (
 		<div
 			className={s.wrapper}
 			onMouseEnter={() => setIsHover(true)}
 			onMouseLeave={() => setIsHover(false)}
+			title={filename}
 		>
-			<Image
-				src={uploadIcon}
-				alt="image"
-				width={24}
-				height={24}
-				style={{ borderRadius: 8 }}
-			/>
+			<div className={s.wrapper_image}>
+				<Image
+					src={imageSrc}
+					alt={'image'}
+					height={48}
+					style={{ borderRadius: 8 }}
+				/>
+			</div>
 
-			<div className={s.filename}>{filename}</div>
+			<div className={s.filename}>{compactFilename}</div>
 
 			{isHover && (
 				<div className={s.delete_button} onClick={onDelete}>

@@ -1,15 +1,22 @@
 .wrapper {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
-	justify-content: center;
+
 
 	position: relative;
 
-	height: 48px;
+	&_image {
+		display: flex;
+		justify-content: center;
+		width: 48px;
+		height: 48px;
+	}
+
 }
 
 .filename {
-}
+	}
 
 .delete_button {
 	position: absolute;
