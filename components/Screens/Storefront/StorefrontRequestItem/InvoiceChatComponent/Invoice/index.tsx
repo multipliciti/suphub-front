@@ -5,48 +5,59 @@ import edit_icon from '@/imgs/Buyer&Seller/edit.svg';
 import Image from 'next/image';
 import { useRef } from 'react';
 import { Spinner } from '@/components/UI/Spinner';
-//new
-export const Invoice = () => {
+
+type TypeProps = {
+	project: any;
+};
+
+export const Invoice = ({ project }: TypeProps) => {
+	console.log('project', project);
 	const string = `774 Jennings Court San Francisco, CA 94112 917-333-6767`;
 	const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+	// console.log('project.companyAddress', project.companyAddress);
+	const formattedAddress = project.companyAddress
+		? `${project.companyAddress.street}\n${project.companyAddress.city}, ${project.companyAddress.state} ${project.companyAddress.zipcode}\n${project.companyAddress.country}`
+		: 'Not adress';
+
+	// console.log('formattedAddress', formattedAddress);
 	const handleEditClick = () => {
 		if (textareaRef.current) {
 			textareaRef.current.focus();
 		}
 	};
 
-	const tableBataArr = [
-		{
-			title: 'Vinyl double single hung',
-			size: 'Size: 36” x 60”',
-			qty: '1',
-			price: '$70.35',
-			amount: '$70.35',
-		},
-		{
-			title: 'Vinyl double single hung',
-			size: 'Size: 36” x 60”',
-			qty: '1',
-			price: '$70.35',
-			amount: '$70.35',
-		},
-		{
-			title: 'Vinyl double single hung',
-			size: 'Size: 36” x 60”',
-			qty: '1',
-			price: '$70.35',
-			amount: '$70.35',
-		},
-	];
+	// const tableBataArr = [
+	// 	{
+	// 		title: 'Vinyl double single hung',
+	// 		size: 'Size: 36” x 60”',
+	// 		qty: '1',
+	// 		price: '$70.35',
+	// 		amount: '$70.35',
+	// 	},
+	// 	{
+	// 		title: 'Vinyl double single hung',
+	// 		size: 'Size: 36” x 60”',
+	// 		qty: '1',
+	// 		price: '$70.35',
+	// 		amount: '$70.35',
+	// 	},
+	// 	{
+	// 		title: 'Vinyl double single hung',
+	// 		size: 'Size: 36” x 60”',
+	// 		qty: '1',
+	// 		price: '$70.35',
+	// 		amount: '$70.35',
+	// 	},
+	// ];
 
-	const descriptionArr = [
-		{ key: 'Lead time (weeks):', value: '2' },
-		{ key: 'Payment terms:', value: '50% deposit, 50% before shipment' },
-		{ key: 'Certifications:', value: 'NFRC' },
-		{ key: 'Warranty (years):', value: '25' },
-		{ key: 'Shipment:', value: 'Air freight' },
-	];
+	// const descriptionArr = [
+	// 	{ key: 'Lead time (weeks):', value: '2' },
+	// 	{ key: 'Payment terms:', value: '50% deposit, 50% before shipment' },
+	// 	{ key: 'Certifications:', value: 'NFRC' },
+	// 	{ key: 'Warranty (years):', value: '25' },
+	// 	{ key: 'Shipment:', value: 'Air freight' },
+	// ];
 
 	return (
 		<div className={s.wrapper}>
@@ -56,7 +67,8 @@ export const Invoice = () => {
 				<div className={s.block}>
 					<p className={s.header}>Manufacturer</p>
 					<p className={s.title}>
-						Weika Windows <br /> <span className={s.subtitle}>Anhui, China</span>
+						{project.abbreviation} <br />
+						<span className={s.subtitle}>{project.name}</span>
 					</p>
 				</div>
 
@@ -69,7 +81,8 @@ export const Invoice = () => {
 			{/* Product table  */}
 
 			<div className={s.info_product}>
-				<table className={s.table}>
+				{/* here you need the conditions if there is at least 1 product for rendering */}
+				{/* <table className={s.table}>
 					<thead className={s.thead}>
 						<tr className={s.tr}>
 							<th>Product</th>
@@ -92,9 +105,8 @@ export const Invoice = () => {
 								</tr>
 							);
 						})}
-						{/* Добавьте другие строки по мере необходимости */}
 					</tbody>
-				</table>
+				</table> */}
 
 				<div className={s.amount}>
 					<p className={s.amount_shipping}>
@@ -106,7 +118,7 @@ export const Invoice = () => {
 					</p>
 				</div>
 			</div>
-			<div className={s.items}>
+			{/* <div className={s.items}>
 				{descriptionArr.map((el, ind) => {
 					return (
 						<div key={ind} className={s.item}>
@@ -115,7 +127,7 @@ export const Invoice = () => {
 						</div>
 					);
 				})}
-			</div>
+			</div> */}
 		</div>
 	);
 };

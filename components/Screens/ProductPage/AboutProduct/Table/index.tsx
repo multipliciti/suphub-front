@@ -1,4 +1,3 @@
-// @ts-ignore
 import React, { useState } from 'react';
 import s from './Table.module.scss';
 import { classNames } from '@/utils/classNames';

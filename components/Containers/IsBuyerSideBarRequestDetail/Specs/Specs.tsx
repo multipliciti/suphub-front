@@ -30,6 +30,11 @@ export const Specs = ({
 	subCategories,
 	setIsLoading,
 }: TypeProps) => {
+	//1 For fields with the "string" type inside the data useState, display it as the default value in the input. Create a handler to handle changes in the fields within the data useState and update accordingly.
+	//2 For fields without the "string" type, simply add the ability to retrieve elements from the data useState. Create the necessary handler.
+	//3 After changing the data useState, send it to the ready endpoint.
+	//!!! Notes
+
 	const api = Api();
 	const [chooseCategory, setChooseCategory] = useState<boolean>(false);
 	const certificationsInputRef = useRef<HTMLInputElement | null>(null);

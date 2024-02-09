@@ -1,6 +1,8 @@
 import { AxiosInstance } from 'axios';
 import { RfqOption } from '@/types/services/rfq';
 
+const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
+
 export const RfqOptionApi = (instance: AxiosInstance) => ({
 	async createOwn(data: RfqOption) {
 		try {
@@ -13,8 +15,12 @@ export const RfqOptionApi = (instance: AxiosInstance) => ({
 		}
 	},
 	async create(data: RfqOption) {
+		const optionData = {
+			...data,
+			redirectUrl: `${HOST}/marketplace`,
+		};
 		const url = `/rfq/option`;
-		const response = await instance.post(url, data);
+		const response = await instance.post(url, optionData);
 		return response;
 	},
 	async getOptionsByRfqId(id: number) {

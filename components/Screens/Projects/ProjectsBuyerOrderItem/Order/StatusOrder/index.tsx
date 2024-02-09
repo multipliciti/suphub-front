@@ -17,7 +17,7 @@ export const StatusOrder = ({ code, status }: PropsType) => {
 					status === 'confirmed' && s.info_status_issued,
 					status === 'depositWaiting' && s.info_status_pending,
 					status === 'inProduction' && s.info_status_inproduction,
-					status === 'productionCompleted' && s.info_status_inproduction,
+					// status === 'productionCompleted' && s.info_status_inproduction,
 					status === 'paymentWaiting' && s.info_status_pending,
 					status === 'preShipment' && s.info_status_preshipment,
 					status === 'shipped' && s.info_status_intransit,
@@ -28,7 +28,7 @@ export const StatusOrder = ({ code, status }: PropsType) => {
 				{status === 'confirmed' && 'PO issued'}
 				{status === 'depositWaiting' && 'Payment pending'}
 				{status === 'inProduction' && 'In production'}
-				{status === 'productionCompleted' && 'Production Completed'}
+				{/* {status === 'productionCompleted' && 'Production Completed'} */}
 				{status === 'paymentWaiting' && 'Payment pending'}
 				{status === 'preShipment' && 'Pre-shipment'}
 				{status === 'shipped' && 'In transit'}

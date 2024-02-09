@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { classNames } from '@/utils/classNames';
 import s from './QuotationsTable.module.scss';
@@ -20,6 +21,7 @@ interface TypeProps {
 }
 
 export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
+	const router = useRouter();
 	const [maxOptionsLengthArr, setMaxOptionsLengthArr] = useState<number[]>([]);
 
 	//states for modal 'more'
@@ -29,7 +31,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	const [topRelativeToParent, setTopRelativeToParent] = useState<number>(0);
 	const [leftRelativeToParent, setLeftRelativeToParent] = useState<number>(0);
 
-	// const [hoverRfq, setHoverRfq] = useState<number>(-1);
+	const [hoverRfq, setHoverRfq] = useState<number>(-1);
 
 	useEffect(() => {
 		const maxOptionsLength = rfqs.reduce((max, item) => {
@@ -70,12 +72,15 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	// }, []);
 
 	return (
-		<div ref={targetElement} className={s.wrapper}>
+		<div
+			ref={targetElement}
+			className={classNames(s.wrapper, compress && s.wrapper_compress)}
+		>
 			{indexMore !== -1 && (
 				<div
 					style={{
 						top: `${topRelativeToParent + 25}px`,
-						left: `${leftRelativeToParent - 159}px`,
+						left: `${leftRelativeToParent - 180}px`,
 					}}
 					className={classNames(s.more, indexMore !== -1 && s.more_active)}
 				>
@@ -92,7 +97,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 				</div>
 			)}
 
-			<table className={classNames(s.table)}>
+			<table className={classNames(s.table, compress && s.table_compress)}>
 				<thead className={s.thead}>
 					<tr>
 						<th className={classNames(s.th, compress && s.th_compress)}>
@@ -119,16 +124,28 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 				<tbody className={s.tbody}>
 					{rfqs.map((rfq, ind) => {
 						return (
-							<tr key={ind} className={s.tr}>
+							<tr
+								key={ind}
+								className={classNames(s.tr, hoverRfq === rfq.id && s.tr_active)}
+							>
 								<td
-									// onMouseOver={() => setHoverRfq(ind)}
-									// onMouseOut={() => setHoverRfq(-1)}
+									onMouseOver={() => {
+										//if have options can be hover active
+										if (rfq.options.length > 0) {
+											setHoverRfq(rfq.id);
+										}
+									}}
+									onMouseOut={() => setHoverRfq(-1)}
+									onClick={() => {
+										if (rfq.options.length > 0) {
+											router.push(`/projects/${projectId}/rfq/options/${rfq.id}`);
+										}
+									}}
 									className={classNames(s.td, compress && s.td_compress)}
 								>
 									<Image
 										className={s.eye_icon}
-										// src={hoverRfq === ind ? eye_icon_hover : eye_icon}
-										src={eye_icon}
+										src={hoverRfq === rfq.id ? eye_icon_hover : eye_icon}
 										alt="eye_icon"
 										width={20}
 										height={20}
@@ -140,66 +157,89 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 										<span className={s.noquotes}>You have no quotes yet.</span>
 									</td>
 								)}
-
-								{rfq.options.map((option, ind) => {
-									return (
-										<td
-											data-id={option.id}
-											className={classNames(s.td, compress && s.td_compress)}
-											key={ind}
-										>
-											<span className={s.item}>
-												{/* This is about borders, as td:hover is not working in the
+								{rfq.options
+									.filter((el) => el.status !== 'declined')
+									.map((option, ind) => {
+										return (
+											<td
+												data-id={option.id}
+												className={classNames(s.td, compress && s.td_compress)}
+												key={ind}
+											>
+												<span className={s.item}>
+													{/* This is about borders, as td:hover is not working in the
 												table.
 												bad code */}
-												{/* // */}
-												{/* // */}
-												<span className={classNames(s.border, s.border_top)}></span>
-												<span
-													className={classNames(s.border, s.border_bottom)}
-												></span>
-												<span className={classNames(s.border, s.border_left)}></span>
-												<span
-													className={classNames(s.border, s.border_right)}
-												></span>
-												{/* // */}
-												{/* // */}
-
-												<span className={s.item_info}>
-													<span className={s.item_info_size}>{option.size}</span>
-													<span className={s.item_info_price}>
-														{option.price ? `$${option.price}` : 'Not price'}
+													{/* // */}
+													{/* // */}
+													<span
+														className={classNames(s.border, s.border_top)}
+													></span>
+													<span
+														className={classNames(s.border, s.border_bottom)}
+													></span>
+													<span
+														className={classNames(s.border, s.border_left)}
+													></span>
+													<span
+														className={classNames(s.border, s.border_right)}
+													></span>
+													{/* // */}
+													{/* // */}
+													<span className={s.info}>
+														{/* price and size  */}
+														<span className={s.info_inner}>
+															<span className={s.info_inner_size}>
+																{option.size}
+															</span>
+															<span className={s.info_inner_price}>
+																{option.price ? `$${option.price}` : 'Not price'}
+															</span>
+														</span>
+														{/* icons  */}
+														<span className={s.info_icons}>
+															{option.type === 'ordered' && (
+																<Image
+																	src={ordered_icon}
+																	alt="ordered_icon"
+																	width={20}
+																	height={20}
+																/>
+															)}
+															{option.type === 'inCart' && (
+																<Image
+																	src={purchase_icon}
+																	alt="purchase_icon"
+																	width={20}
+																	height={20}
+																/>
+															)}
+															<Image
+																onClick={(e) => {
+																	handleItemClick(e, ind);
+																	setRfqIdNavigation(option.rfqId);
+																}}
+																className={s.icon_more}
+																src={more_icon}
+																alt="more_icon"
+																width={20}
+																height={20}
+															/>
+														</span>
+													</span>
+													{/* active text when hover rfq row (hover icon eye) */}
+													<span
+														className={classNames(
+															s.compare,
+															hoverRfq === rfq.id && ind === 0 && s.compare_active
+														)}
+													>
+														Click to compare specs
 													</span>
 												</span>
-												<span className={s.item_icons}>
-													<Image
-														src={ordered_icon}
-														alt="ordered_icon"
-														width={20}
-														height={20}
-													/>
-													<Image
-														src={purchase_icon}
-														alt="purchase_icon"
-														width={20}
-														height={20}
-													/>
-													<Image
-														onClick={(e) => {
-															handleItemClick(e, ind);
-															setRfqIdNavigation(option.rfqId);
-														}}
-														className={s.icon_more}
-														src={more_icon}
-														alt="more_icon"
-														width={20}
-														height={20}
-													/>
-												</span>
-											</span>
-										</td>
-									);
-								})}
+											</td>
+										);
+									})}
 							</tr>
 						);
 					})}

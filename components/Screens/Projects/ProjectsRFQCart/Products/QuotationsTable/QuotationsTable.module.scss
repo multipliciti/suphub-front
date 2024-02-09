@@ -3,8 +3,12 @@
 	// overflow-x: scroll;
 	max-width: 505px;
 
+	&_compress {
+		max-width: 100%;
+	}
+
 	.more {
-		width: 190px;
+		width: 210px;
 		border: 1px solid #e2e8f0;
 		background-color: #fff;
 		border-radius: 8px;
@@ -128,7 +132,7 @@
 	position: relative;
 
 	.td {
-		height: 55px;
+		height: 60px;
 		cursor: pointer;
 		border: 1px solid #e2e8f0;
 		position: relative;
@@ -139,6 +143,7 @@
 			display: flex;
 			align-items: center;
 			justify-content: center;
+
 			color: #64748b;
 			font-variant-numeric: lining-nums proportional-nums;
 			font-size: 12px;
@@ -147,99 +152,120 @@
 			line-height: 20px;
 		}
 
-		&_compress {
-			height: 55px;
-		}
-
 		.item {
-			position: relative;
-			padding: 9px 12px;
-			min-width: 190px;
-			height: 54px; //+ 1px ??? .
+			height: 100%;
+			padding: 10px 10px 0px 10px;
+
+			.info {
+				position: relative;
+				min-width: 190px;
+				display: flex;
+				align-items: flex-end;
+				justify-content: space-between;
+				gap: 10px;
+
+				&_inner {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					gap: 2px;
+
+					&_size {
+						color: #94a3b8;
+						font-size: 10px;
+						font-style: normal;
+						font-weight: 400;
+						line-height: 10px;
+					}
+
+					&_price {
+						overflow: hidden;
+						color: #020617;
+						font-variant-numeric: lining-nums proportional-nums;
+						text-overflow: ellipsis;
+						white-space: nowrap;
+
+						font-size: 14px;
+						font-style: normal;
+						font-weight: 700;
+						line-height: 18px;
+					}
+				}
+
+				&_icons {
+					display: flex;
+					gap: 5px;
+				}
+
+				.icon_more {
+					transition: opacity 0.3s ease;
+					pointer-events: all;
+					opacity: 0;
+				}
+
+				//border for <td> tag
+				.border {
+					transition: opacity 0.3s ease;
+					opacity: 0;
+
+					position: absolute;
+					z-index: 2;
+
+					&_top {
+						top: -1px;
+						left: -1px;
+
+						height: 1px;
+						width: 191px; //+1px
+						background-color: #755cf1;
+					}
+					&_bottom {
+						bottom: -1px;
+						left: -1px;
+
+						height: 1px;
+						width: 191px; //+1px
+						background-color: #755cf1;
+					}
+					&_left {
+						left: -1px;
+						top: -1px;
+
+						height: 54px; //-1px?
+						width: 1px;
+						background-color: #755cf1;
+					}
+					&_right {
+						right: -1px;
+						top: -1px;
+
+						height: 54px; //-1px?
+						width: 1px;
+						background-color: #755cf1;
+					}
+				}
+			}
+
+			.compare {
+				color: #755cf1;
+				text-align: center;
+				font-family: Lato;
+				font-size: 12px;
+				font-style: normal;
+				font-weight: 700;
+				line-height: 20px;
+
+				transition: opacity 0.3s ease;
+				opacity: 0;
+
+				&_active {
+					opacity: 1;
+				}
+			}
+
 			display: flex;
-			align-items: flex-end;
-			justify-content: space-between;
-			gap: 10px;
-
-			&_info {
-				display: flex;
-				flex-direction: column;
-				justify-content: center;
-				gap: 2px;
-
-				&_size {
-					color: #94a3b8;
-					font-size: 10px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 10px;
-				}
-
-				&_price {
-					overflow: hidden;
-					color: #020617;
-					font-variant-numeric: lining-nums proportional-nums;
-					text-overflow: ellipsis;
-					white-space: nowrap;
-
-					font-size: 14px;
-					font-style: normal;
-					font-weight: 700;
-					line-height: 18px;
-				}
-			}
-
-			&_icons {
-				display: flex;
-				gap: 5px;
-			}
-
-			.icon_more {
-				transition: opacity 0.3s ease;
-				pointer-events: all;
-				opacity: 0;
-			}
-
-			.border {
-				transition: opacity 0.3s ease;
-				opacity: 0;
-
-				position: absolute;
-				z-index: 2;
-
-				&_top {
-					top: -1px;
-					left: -1px;
-
-					height: 1px;
-					width: 191px; //+1px
-					background-color: #755cf1;
-				}
-				&_bottom {
-					bottom: -1px;
-					left: -1px;
-
-					height: 1px;
-					width: 191px; //+1px
-					background-color: #755cf1;
-				}
-				&_left {
-					left: -1px;
-					top: -1px;
-
-					height: 54px; //-1px?
-					width: 1px;
-					background-color: #755cf1;
-				}
-				&_right {
-					right: -1px;
-					top: -1px;
-
-					height: 54px; //-1px?
-					width: 1px;
-					background-color: #755cf1;
-				}
-			}
+			flex-direction: column;
+			align-items: start;
 		}
 
 		.item:hover {
@@ -270,6 +296,18 @@
 			.icon_more {
 				pointer-events: all;
 				opacity: 1;
+			}
+		}
+	}
+
+	//if hover icon eye and active row
+	.tr {
+		position: relative;
+		transition: hover 0.3s ease;
+
+		&_active {
+			.td {
+				background: rgba(117, 92, 241, 0.05);
 			}
 		}
 	}

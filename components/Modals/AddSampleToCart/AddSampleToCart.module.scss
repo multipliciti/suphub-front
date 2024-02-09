@@ -1,0 +1,26 @@
+.wrapper {
+	min-width: 400px;
+	background-color: #fff;
+	padding: 20px;
+	border-radius: 5px;
+
+	.header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 20px;
+
+		&_title {
+			color: #0f172a;
+			text-align: center;
+			font-size: 24px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 32px;
+		}
+
+		&_close {
+			cursor: pointer;
+		}
+	}
+}

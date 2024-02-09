@@ -85,10 +85,11 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 				setActiveStep(3);
 				setRerenderProgress(!rerenderProgress);
 				break;
-			case 'productionCompleted':
-				setActiveStep(3);
-				setRerenderProgress(!rerenderProgress);
-				break;
+			// !!! #removeapprove
+			// case 'productionCompleted':
+			// 	setActiveStep(3);
+			// 	setRerenderProgress(!rerenderProgress);
+			// 	break;
 			case 'preShipment':
 				setActiveStep(4);
 				setRerenderProgress(!rerenderProgress);
@@ -318,6 +319,7 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 									order.payments?.find((el) => el.type === 'deposit')?.createdAt ??
 									''
 								}
+								activeStep={activeStep}
 								setActiveStep={setActiveStep}
 								status={order.status}
 								productionArr={order.production ? order.production : null}

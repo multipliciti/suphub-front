@@ -9,7 +9,7 @@ type TypeProps = {
 	item: any;
 };
 
-//not table
+// !!! need to redo the layout (HTML) for good future adaptation
 export const RequestList = ({ item }: TypeProps) => {
 	return (
 		<div className={s.wrapper}>

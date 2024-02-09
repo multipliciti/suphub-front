@@ -1,4 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Sample } from '@/types/products/product';
+import { SampleProps } from '@/types/products/product';
 
 type ModalType =
 	| ''
@@ -24,16 +26,30 @@ type ModalType =
 	| 'sellerProductBulkUpload'
 	| 'sellerProductUploadImage'
 	| 'deleteProject'
-	| 'selectSamples';
+	| 'addSampleToCart'
+	| 'addSampleToCartFromOption'
+	| 'Successful';
 
 interface CounterState {
 	modal: ModalType;
+	//for recover email
 	email: string;
+	//for sample add to cart
+	sample: SampleProps | null;
+	//for sample add to cart on options page (<OptionsView />)
+	samples: Sample[] | null;
+	projectId: number;
+	//text for successful modal
+	successfulText: string;
 }
 
 const initialState: CounterState = {
 	modal: '',
 	email: '',
+	sample: null,
+	samples: null,
+	projectId: -1,
+	successfulText: '',
 };
 
 const modalSlice = createSlice({
@@ -46,9 +62,28 @@ const modalSlice = createSlice({
 		setEmail(state, action: PayloadAction<string>) {
 			state.email = action.payload;
 		},
+		setSample(state, action: PayloadAction<SampleProps>) {
+			state.sample = action.payload;
+		},
+		setSamples(state, action: PayloadAction<Sample[]>) {
+			state.samples = action.payload;
+		},
+		setProjectId(state, action: PayloadAction<number>) {
+			state.projectId = action.payload;
+		},
+		setSuccessfulText(state, action: PayloadAction<string>) {
+			state.successfulText = action.payload;
+		},
 	},
 });
 
-export const { setModal, setEmail } = modalSlice.actions;
+export const {
+	setModal,
+	setEmail,
+	setSample,
+	setSamples,
+	setProjectId,
+	setSuccessfulText,
+} = modalSlice.actions;
 
 export default modalSlice.reducer;

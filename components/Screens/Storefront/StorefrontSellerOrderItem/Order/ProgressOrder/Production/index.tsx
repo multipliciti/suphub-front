@@ -23,6 +23,7 @@ interface PropsType {
 	orderId: number;
 	index: number;
 	setActiveStep: (n: number) => void;
+	activeStep: number;
 	rerenderProgress: boolean;
 	setRerenderProgress: (n: boolean) => void;
 	productionArr: ProductionItem[] | null;
@@ -32,6 +33,7 @@ export const Production = ({
 	date,
 	productionStartedDate,
 	activeDisplay,
+	activeStep,
 	status,
 	index,
 	rerenderProgress,
@@ -275,13 +277,17 @@ export const Production = ({
 						</div>
 					</div>
 					<div className={s.buttons}>
+						{/* // !!! Old (weremoved approve from buyer) #removeapprove */}
 						{/* wait buyer approve  (inProduction status) */}
-						{status === 'inProduction' && (
+						{/* {status === 'inProduction' && (
 							<span className={s.waiting}>Waiting for customer approval</span>
-						)}
+						)} */}
+						{/* //  */}
 
+						{/* // !!! Old (weremoved approve from buyer) #removeapprove */}
 						{/* buyer has already approved (productionCompleted status)  */}
-						{!newMessage && status === 'productionCompleted' && (
+						{/* !newMessage && status === 'productionCompleted' && */}
+						{!newMessage && status === 'inProduction' && (
 							<>
 								<button
 									onClick={() => {
@@ -308,7 +314,6 @@ export const Production = ({
 								</button>
 							</>
 						)}
-
 						{/* new updates */}
 						{newMessage && (
 							<>
@@ -336,6 +341,8 @@ export const Production = ({
 						)}
 					</div>
 				</div>
+				{/* if step done  */}
+				{activeStep >= 4 && <div className={s.approved}>Production completed</div>}
 			</div>
 		</>
 	);

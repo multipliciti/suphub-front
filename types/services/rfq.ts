@@ -7,7 +7,7 @@ export interface Option {
 	unit: string;
 	price: number;
 	type: string;
-	status: string;
+	status: 'new' | 'inCart' | 'ordered' | 'declined';
 	productId: number;
 	rfqId: number;
 

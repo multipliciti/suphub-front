@@ -63,7 +63,7 @@ export const ProductPageComponent = (props: PropsType) => {
 							<AboutProduct product={product} />
 						</div>
 						<div className={s.summery}>
-							<Order product={product} user={user} statusGetUser={statusGetUser} />
+							<Order product={product} user={user} />
 						</div>
 					</div>
 				</div>

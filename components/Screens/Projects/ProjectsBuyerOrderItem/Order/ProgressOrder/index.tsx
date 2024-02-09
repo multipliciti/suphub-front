@@ -16,10 +16,12 @@ import done_icon from '@/imgs/Buyer&Seller/done.svg';
 import show_details_icon from '@/imgs/Buyer&Seller/showDetails.svg';
 
 interface TypeProps {
+	rerender: boolean;
+	setRerender: (b: boolean) => void;
 	order: OrderInterface;
 }
 
-export const ProgressOrder = ({ order }: TypeProps) => {
+export const ProgressOrder = ({ order, rerender, setRerender }: TypeProps) => {
 	//useRef for wrapper
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
 	//cteate useRef for everyone steps
@@ -75,10 +77,11 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 				setActiveStep(3);
 				setRerenderProgress(!rerenderProgress);
 				break;
-			case 'productionCompleted':
-				setActiveStep(3);
-				setRerenderProgress(!rerenderProgress);
-				break;
+			// !!! #removeapprove
+			// case 'productionCompleted':
+			// 	setActiveStep(3);
+			// 	setRerenderProgress(!rerenderProgress);
+			// 	break;
 			case 'preShipment':
 				setActiveStep(4);
 				setRerenderProgress(!rerenderProgress);
@@ -113,7 +116,6 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 			}
 		});
 	};
-	console.log('activeStep', activeStep);
 
 	return (
 		<div ref={wrapperRef} className={s.wrapper}>
@@ -331,6 +333,8 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 								index={3}
 								activeStep={activeStep}
 								activeDisplay={activeDisplay}
+								setRerender={setRerender}
+								rerender={rerender}
 							/>
 						)}
 					</div>

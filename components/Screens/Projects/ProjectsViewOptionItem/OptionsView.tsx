@@ -1,12 +1,18 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-
 import s from './OptionsView.module.scss';
+
+import { useAppDispatch } from '@/redux/hooks';
+import { setModal } from '@/redux/slices/modal';
+import { setProjectId } from '@/redux/slices/modal';
+import { setSuccessfulText } from '@/redux/slices/modal';
+
 import { Api } from '@/services';
 import { Option } from '@/types/services/rfq';
 import { BackButton } from '@/components/UI/BackButton';
 import testProduct from '@/imgs/Product/test2.png';
+import { CartCreateBody } from '@/types/services/cart';
 
 type TypeProps = {
 	idProject: number;
@@ -14,6 +20,8 @@ type TypeProps = {
 };
 
 export const OptionsView = ({ idOption, idProject }: TypeProps) => {
+	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const dispatch = useAppDispatch();
 	const api = Api();
 	const [options, setOptions] = useState<Option[]>([]);
 
@@ -21,6 +29,35 @@ export const OptionsView = ({ idOption, idProject }: TypeProps) => {
 		try {
 			const response = await api.rfqOption.getOptionsByRfqId(projectId);
 			setOptions(response.data);
+		} catch (error) {
+			console.error('Error fetchDetOptions options:', error);
+		}
+	};
+
+	const optionAddToCart = async (
+		optionId: number,
+		optionQuantity: number,
+		optionPrice: number
+	) => {
+		try {
+			setIsLoading(true);
+			// Request to get the cart ID
+			const response = await api.cart.findByProjectId(idProject);
+			const cartId = response.id;
+			//request add to cart option
+
+			const data: CartCreateBody = {
+				cartId,
+				model: 'option',
+				modelId: optionId,
+				quantity: optionQuantity,
+				price: optionPrice,
+			};
+
+			const responce = await api.cart.create(data);
+			setIsLoading(false);
+			setModal('');
+			setSuccessfulText('option added to cart');
 		} catch (error) {
 			console.error('Error fetchDetOptions options:', error);
 		}
@@ -45,7 +82,7 @@ export const OptionsView = ({ idOption, idProject }: TypeProps) => {
 							<thead className={s.thead}>
 								<tr>
 									<th>Options</th>
-									{options.map((el: any, ind: number) => {
+									{options.map((el: Option, ind: number) => {
 										return <th key={ind}>option {ind + 1}</th>;
 									})}
 								</tr>
@@ -172,8 +209,23 @@ export const OptionsView = ({ idOption, idProject }: TypeProps) => {
 										return (
 											<td key={ind}>
 												<div className={s.btns}>
-													<button className={s.btns_sample}>Order sample</button>
-													<button className={s.btns_cart}>Add to cart</button>
+													<button
+														onClick={() => {
+															dispatch(setModal('addSampleToCartFromOption'));
+															dispatch(setProjectId(idProject));
+														}}
+														className={s.btns_sample}
+													>
+														Order sample
+													</button>
+													<button
+														onClick={() => {
+															optionAddToCart(el.id, el.quantity, el.price);
+														}}
+														className={s.btns_cart}
+													>
+														Add to cart
+													</button>
 												</div>
 											</td>
 										);

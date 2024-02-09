@@ -11,6 +11,8 @@ import { ProductionItem } from '@/types/services/orders';
 import { formatDateString } from '@/utils/formatDateString';
 
 interface PropsType {
+	setRerender: (b: boolean) => void;
+	rerender: boolean;
 	date: string;
 	productionStartedDate: string;
 	activeDisplay: number[];
@@ -24,7 +26,12 @@ interface PropsType {
 	productionArr: ProductionItem[] | null;
 }
 
+// !!! 1. We need to implement the ability for the seller to send SMS messages.
+// !!! 2. Perhaps we should remove the "productionCompleted" status since we removed the "approve" button from the buyer's side.
+// !!! find tag #removeapprove
 export const Production = ({
+	setRerender,
+	rerender,
 	date,
 	productionStartedDate,
 	activeDisplay,
@@ -43,28 +50,32 @@ export const Production = ({
 	const [formData, setFormData] = useState<string>('');
 	const currentdDate = new Date().toLocaleDateString('en-GB');
 
-	const addOrderProduction = async (updates: string) => {
-		const formDataSend = new FormData();
-		formDataSend.append('orderId', orderId.toString());
-		formDataSend.append('updates', updates);
-		try {
-			await api.sellerOrder.orderProduction(formDataSend);
-		} catch (error) {
-			console.error('addOrderProduction error:', error);
-		}
-	};
+	// const addOrderProduction = async (updates: string) => {
+	// 	const formDataSend = new FormData();
+	// 	formDataSend.append('orderId', orderId.toString());
+	// 	formDataSend.append('updates', updates);
+	// 	try {
+	// 		await api.sellerOrder.orderProduction(formDataSend);
+	// 		setRerenderProgress(!rerenderProgress);
+	// 	} catch (error) {
+	// 		console.error('addOrderProduction error:', error);
+	// 	}
+	// };
 
-	const changeStatusShipped = async (orderId: number, status: string) => {
-		try {
-			await api.sellerOrder.changeStatus({
-				id: orderId,
-				status,
-			});
-			setActiveStep(4);
-		} catch (error) {
-			console.error('changeStatusShipped error:', error);
-		}
-	};
+	// const changeStatusShipped = async (orderId: number, status: string) => {
+	// 	try {
+	// 		await api.sellerOrder.changeStatus({
+	// 			id: orderId,
+	// 			status,
+	// 		});
+	// 		//close input
+	// 		setNewMessage(false);
+	// 		//if set success productionCompleted status for local rerender
+	// 		setRerender(!rerender);
+	// 	} catch (error) {
+	// 		console.error('changeStatusShipped error:', error);
+	// 	}
+	// };
 
 	return (
 		<>
@@ -122,7 +133,6 @@ export const Production = ({
 						</div>
 					);
 				})}
-
 				{/* {sent message} */}
 				{/* <>
 						<div className={s.block}>
@@ -135,7 +145,6 @@ export const Production = ({
 							<p className={s.title}>{formData}</p>
 						</div>
 					</> */}
-
 				{/* {new message} */}
 				<div className={classNames(s.none, newMessage && s.block)}>
 					<div className={s.status}>
@@ -149,13 +158,17 @@ export const Production = ({
 						id="message"
 					/>
 				</div>
-
 				{/* buttons */}
+
 				<div className={s.buttons}>
-					{activeStep >= 4 && (
+					{/* // !!! Old (weremoved approve from buyer) #removeapprove  */}
+					{/* when we click Approve we change ctatus to productionCompleted and shoud show
+						"Milestone approved" */}
+					{/* {status === 'productionCompleted' && (
 						<p className={s.buttons_aproved}>Milestone approved</p>
-					)}
-					{activeStep === 3 && !newMessage && status === 'inProduction' && (
+					)} */}
+
+					{activeStep === 3 && status === 'inProduction' && (
 						<>
 							<button
 								onClick={() => {
@@ -167,17 +180,18 @@ export const Production = ({
 								Decline & add feedback
 							</button>
 
-							<button
+							{/* #removeapprove  */}
+							{/* <button
 								onClick={() => {
 									changeStatusShipped(orderId, 'productionCompleted');
 								}}
 								className={s.buttons_right}
 							>
 								Approve
-							</button>
+							</button> */}
 						</>
 					)}
-					{newMessage && (
+					{/* {newMessage && (
 						<>
 							<button
 								onClick={() => {
@@ -191,18 +205,20 @@ export const Production = ({
 							<button
 								onClick={() => {
 									addOrderProduction(formData);
-									setRerenderProgress(!rerenderProgress);
-									setNewMessage(false);
-
-									setRerenderProgress(!rerenderProgress);
 								}}
 								className={s.buttons_right}
 							>
 								Send
 							</button>
 						</>
-					)}
+					)} */}
 				</div>
+
+				{/* if step Production done  */}
+				{activeStep < 4 && (
+					<div className={s.waiting_approved}>Waiting for customer approval</div>
+				)}
+				{activeStep >= 4 && <div className={s.approved}>Production completed</div>}
 			</div>
 		</>
 	);

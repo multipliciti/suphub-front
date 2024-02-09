@@ -6,8 +6,11 @@ import { useState } from 'react';
 import { classNames } from '@/utils/classNames';
 import { Spinner } from '@/components/UI/Spinner';
 
-//new
-export const InvoiceChatComponent = () => {
+type TypeProps = {
+	project: any;
+};
+
+export const InvoiceChatComponent = ({ project }: TypeProps) => {
 	const [activeDisplay, setActiveDisplay] = useState<number>(1);
 	return (
 		<div className={s.wrapper}>
@@ -27,7 +30,7 @@ export const InvoiceChatComponent = () => {
 			</div>
 
 			{/* {isLoading && <Spinner className={s.spinner} />} */}
-			{activeDisplay === 1 && <Invoice />}
+			{activeDisplay === 1 && <Invoice project={project} />}
 			{activeDisplay === 2 && <Requirements />}
 		</div>
 	);

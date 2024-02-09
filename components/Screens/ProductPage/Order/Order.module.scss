@@ -6,16 +6,18 @@
 
 	.started {
 		position: absolute;
+		z-index: 2;
 		bottom: 0;
 		left: 0;
 		top: 0;
 		right: 0;
+
 		border-radius: 8px;
 		border: 1px solid #cbd5e1;
 		background: rgba(248, 250, 252, 0.5);
 		backdrop-filter: blur(4px);
-		z-index: 2;
 
+		min-height: 500px;
 		display: flex;
 		align-items: center;
 		justify-content: center;

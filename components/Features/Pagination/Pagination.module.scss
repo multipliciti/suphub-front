@@ -26,9 +26,10 @@
 	.pagination {
 		display: flex;
 		align-items: center;
-		gap: 2px;
+		gap: 10px;
 
 		.step {
+			background-color: transparent;
 			cursor: pointer;
 			display: flex;
 			align-items: center;

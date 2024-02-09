@@ -15,6 +15,7 @@ type TypeProps = {
 	item: any;
 };
 
+// !!! need to redo the layout (HTML) for good future adaptation
 export const MyQuotation = ({ item }: TypeProps) => {
 	const api = Api();
 	const wrapperRef = useRef<HTMLTableDataCellElement | null>(null);
@@ -54,9 +55,13 @@ export const MyQuotation = ({ item }: TypeProps) => {
 				productId: el.productId.id,
 			};
 		});
-		finishDataArrya.forEach((el) => {
-			api.rfqOption.create(el);
-		});
+		try {
+			finishDataArrya.forEach((el) => {
+				api.rfqOption.create(el);
+			});
+		} catch (error) {
+			console.log('error create option:', error);
+		}
 	};
 	//Hook for disappearing wrapperRef
 	useClickOutside(wrapperRef, () => {

@@ -1,6 +1,8 @@
 'use client';
 import s from './Order.module.scss';
 import { StatusOrder } from './StatusOrder';
+import { useRouter } from 'next/navigation';
+
 import { Info } from './Info';
 import Image from 'next/image';
 import { BackButton } from '@/components/UI/BackButton';
@@ -9,17 +11,20 @@ import { OrderInterface } from '@/types/services/orders';
 import Link from 'next/link';
 
 interface TypeProps {
+	rerender: boolean;
+	setRerender: (b: boolean) => void;
 	projectId: number;
 	order: OrderInterface;
 }
 
-export const Order = ({ projectId, order }: TypeProps) => {
+export const Order = ({ projectId, order, rerender, setRerender }: TypeProps) => {
+	const router = useRouter();
 	return (
 		<div className={s.wrapper}>
-			<Link href={`projects/${projectId}/orders`}>
-				{/* href from BackButton dosn't work  */}
+			{/* href from BackButton dosn't work. We can don't use projectId. can use  only BackButton without href */}
+			<span onClick={() => router.push(`projects/${projectId}/orders`)}>
 				<BackButton />
-			</Link>
+			</span>
 
 			<StatusOrder code={order.PO} status={order.status} />
 			<Info
@@ -27,7 +32,7 @@ export const Order = ({ projectId, order }: TypeProps) => {
 				payments={order.payments ?? null}
 				price={order.amount}
 			/>
-			<ProgressOrder order={order} />
+			<ProgressOrder rerender={rerender} setRerender={setRerender} order={order} />
 		</div>
 	);
 };

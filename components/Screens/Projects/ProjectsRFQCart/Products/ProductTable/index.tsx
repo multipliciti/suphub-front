@@ -10,8 +10,7 @@ import { RfqItemGot } from '@/types/services/rfq';
 import { setRfqId } from '@/redux/slices/sideBars/sideBarRequestDetail';
 import { Api } from '@/services';
 import debounce from 'lodash.debounce';
-
-import { extractCode } from './halpers';
+import { truncateFileNameEnd } from '@/utils/names';
 
 interface TypeProps {
 	properties: RfqItemGot[];
@@ -104,12 +103,9 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 							</td>
 							<td>
 								<div className={s.description}>
-									<span className={s.subtitle}>
-										{/* refactoring */}
-										CSI {rfq.subCategory.csiCode}
-									</span>
+									<span className={s.subtitle}>CSI {rfq.subCategory.csiCode}</span>
 									<p onClick={() => dispatch(setRfqId(rfq.id))} className={s.title}>
-										{rfq.productName}
+										{truncateFileNameEnd(rfq.productName, compress ? 1000 : 20)}
 									</p>
 								</div>
 							</td>

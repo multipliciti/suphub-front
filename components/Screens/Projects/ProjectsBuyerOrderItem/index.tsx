@@ -13,6 +13,7 @@ interface TypeProps {
 
 export const ProjectsBuyerOrderItem = ({ orderId, projectId }: TypeProps) => {
 	const api = Api();
+	const [rerender, setRerender] = useState<boolean>(false);
 	const [order, setOrder] = useState<OrderInterface | null>(null);
 
 	const getOrderById = async (id: number) => {
@@ -26,13 +27,18 @@ export const ProjectsBuyerOrderItem = ({ orderId, projectId }: TypeProps) => {
 
 	useEffect(() => {
 		getOrderById(orderId);
-	}, []);
+	}, [rerender]);
 
 	return (
 		<div className={s.wrapper}>
 			{order && (
 				<>
-					<Order projectId={projectId} order={order} />
+					<Order
+						rerender={rerender}
+						setRerender={setRerender}
+						projectId={projectId}
+						order={order}
+					/>
 					<InvoiceComponent order={order} />
 				</>
 			)}

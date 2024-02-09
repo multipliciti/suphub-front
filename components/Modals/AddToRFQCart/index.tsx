@@ -169,9 +169,15 @@ export const AddToRFQCart = () => {
 						<span className={s.back_text}>Back</span>
 					</div>
 				)}
-				{step === 1 && <h3 className={s.title}>Choose Projects</h3>}
-				<span onClick={closeModal} className={s.close}>
-					<Image src={modal_close} alt="modal_close" width={15} height={15} />
+				{step === 1 && <h3 className={s.title}>Choose Project</h3>}
+				<span onClick={closeModal} className={s.header_close}>
+					<Image
+						src={modal_close}
+						className={s.modal_close}
+						alt="modal_close"
+						width={15}
+						height={15}
+					/>
 				</span>
 			</div>
 			<div className={s.content}>

@@ -48,6 +48,25 @@ export interface DynamicAttribute {
 
 export type UpdateDynamicAttribute = DynamicAttribute & { attrValueIds: number[] };
 
+export interface Sample {
+	id: number;
+	name: string;
+	price: number;
+	quantity: number;
+	images: {
+		id: number;
+		url: string;
+		name: string;
+	}[];
+
+	description: string;
+	productId: number;
+	updatedAt: string;
+	createdAt: string;
+}
+
+export interface SampleProps extends Pick<Sample, 'id' | 'quantity' | 'price'> {}
+
 export interface ProductItemType {
 	id: number;
 	name: string;
@@ -61,6 +80,7 @@ export interface ProductItemType {
 	views: number;
 	favorites: number;
 	projects: number;
+	samples: Sample[];
 	status: ProductItemStatus;
 	subCategory: Subcategory;
 	prices: Price[];

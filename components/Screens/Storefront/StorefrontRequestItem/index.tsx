@@ -16,21 +16,22 @@ type TypeProps = {
 export const RequestItem = ({ id }: TypeProps) => {
 	const api = Api();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const [activeProject, setActiveProject] = useState<any>();
+	const [project, setProject] = useState<any>();
 
 	//get all projects
 	const getProjects = async () => {
+		//I get all the elements myself and filter the ones I need myself, since the backend is not ready for endpoint
 		try {
 			const response = await api.sellerProject.getSellerProjects({
 				page: 1,
 				limit: 12000000000000,
-				searchParams: '',
 			});
 			const projects = response.result;
+			console.log('projects', projects);
 			//filter active project
 			const item = projects ? findProjectById(projects, id) : null;
 			//set active projects
-			setActiveProject(item);
+			setProject(item);
 			setIsLoading(false);
 		} catch (error) {
 			console.error('getProjects seller error', error);
@@ -49,8 +50,8 @@ export const RequestItem = ({ id }: TypeProps) => {
 				</div>
 			) : (
 				<>
-					<QuoteDetailComponent item={activeProject} />
-					<InvoiceChatComponent />
+					<QuoteDetailComponent item={project} />
+					<InvoiceChatComponent project={project} />
 				</>
 			)}
 		</div>
