@@ -6,6 +6,7 @@
 	.body {
 		display: flex;
 		flex-direction: column;
+		justify-content: space-between;
 		gap: 20px;
 		max-height: 400px;
 		overflow-y: auto;
@@ -17,6 +18,20 @@
 			padding: 16px;
 			border-radius: 5px;
 			border: 1px solid #cbd5e1;
+
+			&_none {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100px;
+
+				color: #0f172a;
+				font-variant-numeric: lining-nums proportional-nums;
+				font-size: 18px;
+				font-style: normal;
+				font-weight: 700;
+				line-height: 24px;
+			}
 
 			.info {
 				display: flex;

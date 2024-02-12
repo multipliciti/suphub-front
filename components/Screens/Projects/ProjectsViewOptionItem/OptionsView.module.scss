@@ -36,6 +36,13 @@
 		max-width: 100vw;
 		overflow: scroll;
 
+		.spinner {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 500px;
+		}
+
 		.table {
 			border-collapse: collapse;
 			// width: 100%;

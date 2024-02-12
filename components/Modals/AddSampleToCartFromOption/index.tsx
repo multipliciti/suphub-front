@@ -1,21 +1,22 @@
 'use client';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import s from './AddSampleToCartFromOption.module.scss';
 import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
 
-import modal_close from '@/imgs/close.svg';
-
 import { AddToCart } from './AddToCart';
 import { Added } from './Added';
+
+import modal_close from '@/imgs/close.svg';
 
 //testing
 export const AddSampleToCartFromOption = () => {
 	const [activeWindow, setActiveWindow] = useState<number>(1);
 
 	const dispatch = useAppDispatch();
+
 	return (
 		<div className={s.wrapper}>
 			<div className={s.header}>

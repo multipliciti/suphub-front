@@ -28,7 +28,7 @@ type ModalType =
 	| 'deleteProject'
 	| 'addSampleToCart'
 	| 'addSampleToCartFromOption'
-	| 'Successful';
+	| 'successful';
 
 interface CounterState {
 	modal: ModalType;
@@ -44,12 +44,12 @@ interface CounterState {
 }
 
 const initialState: CounterState = {
-	modal: '',
+	modal: 'successful',
 	email: '',
 	sample: null,
 	samples: null,
 	projectId: -1,
-	successfulText: '',
+	successfulText: 'Option added to cart',
 };
 
 const modalSlice = createSlice({

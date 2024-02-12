@@ -39,87 +39,53 @@ export const AddToCart = ({ setActiveWindow }: TypeProps) => {
 	};
 
 	const addToCartSamples = async () => {
-		try {
-			setIsLoading(true);
-			// Request to get the cart ID
-			const response = await api.cart.findByProjectId(projectId);
-			const cartId = response.id;
+		//if has sampleCount
+		if (Object.entries(sampleCount).length > 0) {
+			try {
+				setIsLoading(true);
+				// Request to get the cart ID
+				const response = await api.cart.findByProjectId(projectId);
+				const cartId = response.id;
 
-			// Array to store promises for each sample addition
-			const sampleAddPromises = [];
+				// Array to store promises for each sample addition
+				const sampleAddPromises = [];
 
-			// Iterate through the sampleCount entries
-			for (const [sampleId, element] of Object.entries(sampleCount)) {
-				try {
-					// Create data for adding a sample to the cart
-					const data: CartCreateBody = {
-						cartId,
-						model: 'sample',
-						modelId: Number(sampleId),
-						quantity: element.quantity,
-						price: element.price,
-					};
+				// Iterate through the sampleCount entries
+				for (const [sampleId, element] of Object.entries(sampleCount)) {
+					try {
+						// Create data for adding a sample to the cart
+						const data: CartCreateBody = {
+							cartId,
+							model: 'sample',
+							modelId: Number(sampleId),
+							quantity: element.quantity,
+							price: element.price,
+						};
 
-					// Push the promise for the sample addition to the array
-					sampleAddPromises.push(api.cart.create(data));
-					setIsLoading(false);
-				} catch (error) {
-					// Log any errors during the sample addition
-					console.error('Error adding sample to cart:', error);
+						// Push the promise for the sample addition to the array
+						sampleAddPromises.push(api.cart.create(data));
+						setIsLoading(false);
+					} catch (error) {
+						// Log any errors during the sample addition
+						console.error('Error adding sample to cart:', error);
+					}
 				}
+
+				// Wait for all sample addition promises to resolve
+				await Promise.all(sampleAddPromises);
+
+				// Set active window to 2 after all samples are successfully added
+				setActiveWindow(2);
+			} catch (error) {
+				// Log any errors during the cart ID retrieval
+				console.error('Error retrieving cart ID:', error);
 			}
-
-			// Wait for all sample addition promises to resolve
-			await Promise.all(sampleAddPromises);
-
-			// Set active window to 2 after all samples are successfully added
-			setActiveWindow(2);
-		} catch (error) {
-			// Log any errors during the cart ID retrieval
-			console.error('Error retrieving cart ID:', error);
 		}
 	};
 
-	// const samples: Sample[] = [
-	// 	{
-	// 		id: 1000,
-	// 		name: 'Test 330',
-	// 		price: 700,
-	// 		quantity: 1,
-	// 		images: [
-	// 			{
-	// 				id: 6,
-	// 				url: 'https://suphub-dev.s3.amazonaws.com/product/330/samples/5eef6543-da4e-4605-b7eb-95d2f8de733a.png',
-	// 				name: 'fon.png',
-	// 			},
-	// 		],
-	// 		description: 'none',
-	// 		productId: 330,
-	// 		updatedAt: '2024-02-01T16:53:28.994Z',
-	// 		createdAt: '2024-02-01T16:53:28.994Z',
-	// 	},
-	// 	{
-	// 		id: 100444,
-	// 		name: 'Test 330 (2)',
-	// 		price: 90000,
-	// 		quantity: 1,
-	// 		images: [
-	// 			{
-	// 				id: 9,
-	// 				url: 'https://suphub-dev.s3.amazonaws.com/product/330/samples/b94cfabc-101b-4d3a-b11d-52c94e23da34.png',
-	// 				name: 'fon.png',
-	// 			},
-	// 		],
-	// 		description:
-	// 			'nonefkn3rerlwkfnlkwrelgflwkenlkfnewknfkewnlrfnnonefkn3rerlwkfnlkwrelgflwkenlkfnewknfkewnlrfnnonefkn3rerlwkfnlkwrelgflwkenlkfnewknfkewnlrfnnonefkn3rerlwkfnlkwrelgflwkenlkfnewknfkewnlrfnnonefkn3rerlwkfnlkwrelgflwkenlkfnewknfkewnlrfnnonefkn3rerlwkfnlkwrelgflwkenlkfnewknfkewnlrfnnonefkn3rerlwkfnlkwrelgflwkenlkfnewknfkewnlrfnnonefkn3rerlwkfnlkwrelgflwkenlkfnewknfkewnlrfn',
-	// 		productId: 330,
-	// 		updatedAt: '2024-02-01T18:27:28.251Z',
-	// 		createdAt: '2024-02-01T18:27:28.251Z',
-	// 	},
-	// ];
 	return (
 		<div className={s.wrapper}>
-			<div className={s.header}></div>
+			{/* <div className={s.header}></div> */}
 			{/* body  */}
 			<div className={s.body}>
 				{isLoading && (
@@ -130,6 +96,9 @@ export const AddToCart = ({ setActiveWindow }: TypeProps) => {
 
 				{!isLoading && (
 					<>
+						{samples && samples.length < 1 && (
+							<div className={s.sample_none}>No samples</div>
+						)}
 						{samples?.map((el: Sample, ind: number) => {
 							const sampleId = el.id;
 							const quantity = sampleCount[sampleId]?.quantity || 0;

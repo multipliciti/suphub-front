@@ -20,7 +20,7 @@ export const VerifyEmail = () => {
 		try {
 			await api.auth.resendAuth(data);
 		} catch (error) {
-			console.log('error resendAuth: ', error);
+			console.log('error resend Auth: ', error);
 		}
 	};
 

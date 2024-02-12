@@ -196,9 +196,9 @@ export const Modal = () => {
 				{modal === 'addSampleToCart' && <AddSampleToCart />}
 			</div>
 			<div
-				className={classNames(s.wrapper, modal === 'Successful' && s.wrapper_active)}
+				className={classNames(s.wrapper, modal === 'successful' && s.wrapper_active)}
 			>
-				{modal === 'Successful' && <Successful />}
+				{modal === 'successful' && <Successful />}
 			</div>
 		</>
 	);

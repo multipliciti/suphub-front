@@ -4,14 +4,14 @@ import Image from 'next/image';
 import s from './OptionsView.module.scss';
 
 import { useAppDispatch } from '@/redux/hooks';
-import { setModal } from '@/redux/slices/modal';
-import { setProjectId } from '@/redux/slices/modal';
+import { setModal, setSample } from '@/redux/slices/modal';
+import { setSamples } from '@/redux/slices/modal';
 import { setSuccessfulText } from '@/redux/slices/modal';
+import { Spinner } from '@/components/UI/Spinner';
 
 import { Api } from '@/services';
 import { Option } from '@/types/services/rfq';
 import { BackButton } from '@/components/UI/BackButton';
-import testProduct from '@/imgs/Product/test2.png';
 import { CartCreateBody } from '@/types/services/cart';
 
 type TypeProps = {
@@ -45,7 +45,6 @@ export const OptionsView = ({ idOption, idProject }: TypeProps) => {
 			const response = await api.cart.findByProjectId(idProject);
 			const cartId = response.id;
 			//request add to cart option
-
 			const data: CartCreateBody = {
 				cartId,
 				model: 'option',
@@ -53,11 +52,10 @@ export const OptionsView = ({ idOption, idProject }: TypeProps) => {
 				quantity: optionQuantity,
 				price: optionPrice,
 			};
-
-			const responce = await api.cart.create(data);
 			setIsLoading(false);
-			setModal('');
-			setSuccessfulText('option added to cart');
+			const responce = await api.cart.create(data);
+			setModal('successful');
+			setSuccessfulText('Option added to cart');
 		} catch (error) {
 			console.error('Error fetchDetOptions options:', error);
 		}
@@ -75,7 +73,13 @@ export const OptionsView = ({ idOption, idProject }: TypeProps) => {
 				<span className={s.header_title}>Compare - Fixed Window</span>
 			</div>
 			<div className={s.table_container}>
-				{options.length > 0 && (
+				{isLoading && (
+					<div className={s.spinner}>
+						<Spinner />
+					</div>
+				)}
+
+				{options.length > 0 && !isLoading && (
 					<>
 						{/* table  */}
 						<table className={s.table}>
@@ -97,12 +101,11 @@ export const OptionsView = ({ idOption, idProject }: TypeProps) => {
 											<td key={ind}>
 												<Image
 													className={s.img}
-													src={el.product.images[0].url ?? ''}
-													alt="testProduct"
+													src={el.product.images[0]?.url ?? ''}
+													alt="product image"
 													width={160}
 													height={160}
 													objectFit="cover"
-													// layout="fill"
 												/>
 											</td>
 										);
@@ -212,7 +215,7 @@ export const OptionsView = ({ idOption, idProject }: TypeProps) => {
 													<button
 														onClick={() => {
 															dispatch(setModal('addSampleToCartFromOption'));
-															dispatch(setProjectId(idProject));
+															dispatch(setSamples(el.product.samples));
 														}}
 														className={s.btns_sample}
 													>

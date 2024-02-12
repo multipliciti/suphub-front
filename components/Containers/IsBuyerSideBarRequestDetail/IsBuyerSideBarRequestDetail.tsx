@@ -13,15 +13,10 @@ import { RfqItemGot } from '@/types/services/rfq';
 import { categoriesToSubCategories } from '@/utils/categoriesToSubCategories';
 import { CategoryItem } from '@/types/sideBar';
 import { Spinner } from '@/components/UI/Spinner';
+
 type TypeProps = {
 	children: React.ReactNode;
 };
-
-interface updateDataInterface {
-	subCategoryId: number | null;
-	productName: string | null;
-	certifications: string | null;
-}
 
 const btns_nav = [
 	{
@@ -86,6 +81,8 @@ export const IsBuyerSideBarRequestDetail = ({ children }: TypeProps) => {
 	useEffect(() => {
 		getCategory();
 		if (rfqId !== -1) fetchGetRfq(rfqId);
+		//!!! for rerender and show correct data must setData(null)
+		if (rfqId === -1) setData(null);
 	}, [rfqId]);
 
 	return (

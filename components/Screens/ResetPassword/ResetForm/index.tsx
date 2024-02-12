@@ -16,6 +16,7 @@ import modal_eye from '@/imgs/Modal/eye.svg';
 import password_invalid from '@/imgs/Modal/password_invalid.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
 import close_eye from '@/imgs/Modal/close_eye.svg';
+
 interface PropsType {
 	token: string;
 }

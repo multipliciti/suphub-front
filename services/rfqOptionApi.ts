@@ -23,6 +23,11 @@ export const RfqOptionApi = (instance: AxiosInstance) => ({
 		const response = await instance.post(url, optionData);
 		return response;
 	},
+	async declineOption(id: number) {
+		const url = `/rfq/option/decline/${id}`;
+		const response = await instance.patch(url);
+		return response;
+	},
 	async getOptionsByRfqId(id: number) {
 		const url = `/rfq/option/${id}`;
 		const response = await instance.get(url);

@@ -6,7 +6,15 @@ import { useRouter } from 'next/navigation';
 
 import { classNames } from '@/utils/classNames';
 import s from './QuotationsTable.module.scss';
+import { Api } from '@/services';
+import { useAppDispatch } from '@/redux/hooks';
+import { Spinner } from '@/components/UI/Spinner';
+
 import { RfqItemGot } from '@/types/services/rfq';
+
+import { setModal } from '@/redux/slices/modal';
+import { setSuccessfulText } from '@/redux/slices/modal';
+import { CartCreateBody } from '@/types/services/cart';
 
 import more_icon from '@/imgs/Buyer&Seller/more.svg';
 import purchase_icon from '@/imgs/Buyer&Seller/purchase.svg';
@@ -21,17 +29,23 @@ interface TypeProps {
 }
 
 export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
+	const dispatch = useAppDispatch();
+	const api = Api();
 	const router = useRouter();
+
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [maxOptionsLengthArr, setMaxOptionsLengthArr] = useState<number[]>([]);
 
 	//states for modal 'more'
 	const targetElement = useRef<HTMLDivElement | null>(null);
-	const [indexMore, setIndexMore] = useState<number>(-1);
+	const [optionMore, setOptionMore] = useState<number>(-1);
 	const [rfqIdNavigation, setRfqIdNavigation] = useState<number>(0);
 	const [topRelativeToParent, setTopRelativeToParent] = useState<number>(0);
 	const [leftRelativeToParent, setLeftRelativeToParent] = useState<number>(0);
 
 	const [hoverRfq, setHoverRfq] = useState<number>(-1);
+	// const [lastClickEvent, setLastClickEvent] =
+	// 	useState<React.MouseEvent<HTMLImageElement> | null>(null);
 
 	useEffect(() => {
 		const maxOptionsLength = rfqs.reduce((max, item) => {
@@ -50,12 +64,38 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 
 			const topRelativeToTarget = rect.top - targetRect.top;
 			const leftRelativeToTarget = rect.left - targetRect.left;
-
-			setIndexMore(indexMore === index ? -1 : index);
+			setOptionMore(optionMore === index ? -1 : index);
 			setTopRelativeToParent(topRelativeToTarget);
 			setLeftRelativeToParent(leftRelativeToTarget);
 		}
 	};
+
+	const tableRef = useRef<HTMLTableElement | null>(null);
+
+	// useEffect(() => {
+	// 	const handleScroll = () => {
+	// 		if (optionMore !== -1 && targetElement.current) {
+	// 			const rect = targetElement.current.getBoundingClientRect();
+	// 			const topRelativeToTarget = rect.top + window.scrollY;
+	// 			const leftRelativeToTarget = rect.left + window.scrollX;
+	// 			console.log('topRelativeToTarget', topRelativeToTarget);
+	// 			console.log('leftRelativeToTarget', leftRelativeToTarget);
+	// 			setTopRelativeToParent(topRelativeToTarget);
+	// 			setLeftRelativeToParent(leftRelativeToTarget);
+	// 		}
+	// 	};
+
+	// 	const tableElement = tableRef.current;
+	// 	if (tableElement) {
+	// 		tableElement.addEventListener('scroll', handleScroll);
+	// 	}
+
+	// 	return () => {
+	// 		if (tableElement) {
+	// 			tableElement.removeEventListener('scroll', handleScroll);
+	// 		}
+	// 	};
+	// }, [optionMore, targetElement]);
 
 	// later
 	// useEffect(() => {
@@ -71,18 +111,76 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	// }
 	// }, []);
 
+	// useEffect(() => {
+	// 	const handleScroll = () => {
+	// 		if (optionMore !== -1 && targetElement.current) {
+	// 			const rect = targetElement.current.getBoundingClientRect();
+	// 			const topRelativeToTarget = rect.top + window.scrollY;
+	// 			const leftRelativeToTarget = rect.left + window.scrollX;
+	// 			setTopRelativeToParent(topRelativeToTarget);
+	// 			setLeftRelativeToParent(leftRelativeToTarget);
+	// 		}
+	// 	};
+
+	// 	document.addEventListener('scroll', handleScroll);
+
+	// 	return () => {
+	// 		document.removeEventListener('scroll', handleScroll);
+	// 	};
+	// }, [optionMore, targetElement]);
+
+	const declineOptionFunction = async (id: number) => {
+		try {
+			setIsLoading(true);
+			await api.rfqOption.declineOption(id);
+			dispatch(setModal('successful'));
+			dispatch(setSuccessfulText('Option declined'));
+			setIsLoading(false);
+		} catch (e) {
+			console.log('error decline option:', e);
+		}
+	};
+
+	const optionAddToCart = async (
+		optionId: number,
+		optionQuantity: number,
+		optionPrice: number
+	) => {
+		console.log('optionId', optionId);
+		try {
+			setIsLoading(true);
+			// Request to get the cart ID
+			const response = await api.cart.findByProjectId(projectId);
+			const cartId = response.id;
+			//request add to cart option
+			const data: CartCreateBody = {
+				cartId,
+				model: 'option',
+				modelId: optionId,
+				quantity: optionQuantity,
+				price: optionPrice,
+			};
+			setIsLoading(false);
+			const responce = await api.cart.create(data);
+			setModal('successful');
+			setSuccessfulText('Option added to cart');
+		} catch (error) {
+			console.error('Error fetchDetOptions options:', error);
+		}
+	};
+
 	return (
 		<div
 			ref={targetElement}
 			className={classNames(s.wrapper, compress && s.wrapper_compress)}
 		>
-			{indexMore !== -1 && (
+			{optionMore !== -1 && (
 				<div
 					style={{
 						top: `${topRelativeToParent + 25}px`,
 						left: `${leftRelativeToParent - 180}px`,
 					}}
-					className={classNames(s.more, indexMore !== -1 && s.more_active)}
+					className={classNames(s.more, optionMore !== -1 && s.more_active)}
 				>
 					<Link
 						href={`/projects/${projectId}/rfq/options/${rfqIdNavigation}`}
@@ -90,14 +188,34 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 					>
 						Product details
 					</Link>
-					<span className={s.more_item}>Order sample</span>
-					<span className={classNames(s.more_item, s.more_decline)}>
+					<span
+						onClick={() => {
+							const allOptions = rfqs.flatMap((rfqItem) => rfqItem.options);
+							const currentOption = allOptions.find((el) => el.id === optionMore);
+							currentOption &&
+								optionAddToCart(
+									currentOption?.id,
+									currentOption?.quantity,
+									currentOption?.price
+								);
+						}}
+						className={s.more_item}
+					>
+						Add to cart
+					</span>
+					<span
+						onClick={() => declineOptionFunction(optionMore)}
+						className={classNames(s.more_item, s.more_decline)}
+					>
 						Decline offer
 					</span>
 				</div>
 			)}
 
-			<table className={classNames(s.table, compress && s.table_compress)}>
+			<table
+				ref={tableRef}
+				className={classNames(s.table, compress && s.table_compress)}
+			>
 				<thead className={s.thead}>
 					<tr>
 						<th className={classNames(s.th, compress && s.th_compress)}>
@@ -111,6 +229,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 								/>
 							</span>
 						</th>
+
 						{maxOptionsLengthArr.map((el, ind) => {
 							return (
 								<th key={ind} className={s.th}>
@@ -157,15 +276,17 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 										<span className={s.noquotes}>You have no quotes yet.</span>
 									</td>
 								)}
-								{rfq.options
-									.filter((el) => el.status !== 'declined')
-									.map((option, ind) => {
-										return (
-											<td
-												data-id={option.id}
-												className={classNames(s.td, compress && s.td_compress)}
-												key={ind}
-											>
+								{rfq.options.map((option, ind) => {
+									return (
+										<td
+											data-id={option.id}
+											className={classNames(s.td, compress && s.td_compress)}
+											key={ind}
+										>
+											{/* processing declining option...  */}
+											{isLoading && optionMore === option.id ? (
+												<Spinner size={'s'} />
+											) : (
 												<span className={s.item}>
 													{/* This is about borders, as td:hover is not working in the
 												table.
@@ -216,7 +337,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 															)}
 															<Image
 																onClick={(e) => {
-																	handleItemClick(e, ind);
+																	handleItemClick(e, option.id);
 																	setRfqIdNavigation(option.rfqId);
 																}}
 																className={s.icon_more}
@@ -237,9 +358,10 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 														Click to compare specs
 													</span>
 												</span>
-											</td>
-										);
-									})}
+											)}
+										</td>
+									);
+								})}
 							</tr>
 						);
 					})}
