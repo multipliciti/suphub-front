@@ -1,3 +1,5 @@
+import { CartCreateBody } from '@/types/services/cart';
+
 export interface Project {
 	id: number;
 	name: string;
@@ -15,6 +17,13 @@ export interface Project {
 		state: string;
 		country: string;
 		zipcode: string;
+	};
+
+	cart: {
+		id: number;
+		processed: boolean;
+		projectId: number;
+		elements: CartCreateBody[];
 	};
 
 	updatedAt: string;

@@ -44,12 +44,12 @@ interface CounterState {
 }
 
 const initialState: CounterState = {
-	modal: 'successful',
+	modal: '',
 	email: '',
 	sample: null,
 	samples: null,
 	projectId: -1,
-	successfulText: 'Option added to cart',
+	successfulText: '',
 };
 
 const modalSlice = createSlice({

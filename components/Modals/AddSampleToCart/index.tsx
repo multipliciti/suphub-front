@@ -1,5 +1,4 @@
 'use client';
-import { useState } from 'react';
 import Image from 'next/image';
 
 import s from './AddSampleToCart.module.scss';
@@ -11,6 +10,7 @@ import modal_close from '@/imgs/close.svg';
 
 export const AddSampleToCart = () => {
 	const dispatch = useAppDispatch();
+
 	return (
 		<div className={s.wrapper}>
 			<div className={s.header}>

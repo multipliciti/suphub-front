@@ -14,10 +14,12 @@ import { CartCreateBody } from '@/types/services/cart';
 import search_img from '@/imgs/Marketplace/search.svg';
 import white_arrow from '@/imgs/Modal/arrow_right_white.svg';
 import black_arrow from '@/imgs/Modal/arrow_right.svg';
+import password_valid from '@/imgs/Modal/password_valid.svg';
 
 export const ChooseProjects = () => {
 	const api = Api();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [refresh, setRefresh] = useState<boolean>(false);
 	const [search, setSearch] = useState<string>('');
 	const [projects, setProject] = useState<Project[]>([]);
 
@@ -49,8 +51,9 @@ export const ChooseProjects = () => {
 					price: sample.price,
 				};
 				//if has sampleId add to cart
-				const result = sample && (await api.cart.create(sampleElementRoCart));
-				result && setIsLoading(false);
+				await api.cart.create(sampleElementRoCart);
+				setIsLoading(false);
+				setRefresh(!refresh);
 			}
 		} catch (error) {
 			console.error('error addToCart:', error);
@@ -75,7 +78,7 @@ export const ChooseProjects = () => {
 
 	useEffect(() => {
 		getProjects();
-	}, []);
+	}, [refresh]);
 
 	return (
 		<div className={s.wrapper}>
@@ -107,15 +110,21 @@ export const ChooseProjects = () => {
 								project.name.toLowerCase().includes(search.toLowerCase())
 							)
 							.map((project: Project, ind: number) => {
+								const includeInCart = project.cart.elements.some(
+									(el) => el.model === 'sample' && el.modelId === sample?.id
+								);
 								return (
 									<div
-										onClick={() => addToCart(project.id)}
+										onClick={() => {
+											if (!includeInCart) addToCart(project.id);
+										}}
 										className={s.project}
 										key={ind}
 									>
 										<p className={s.project_name}>{project.name}</p>
+
 										<Image
-											src={black_arrow}
+											src={includeInCart ? password_valid : black_arrow}
 											alt="project_arrow"
 											width={24}
 											height={24}
