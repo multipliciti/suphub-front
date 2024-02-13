@@ -146,7 +146,6 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 		optionQuantity: number,
 		optionPrice: number
 	) => {
-		console.log('optionId', optionId);
 		try {
 			setIsLoading(true);
 			// Request to get the cart ID
@@ -155,17 +154,22 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 			//request add to cart option
 			const data: CartCreateBody = {
 				cartId,
-				model: 'option',
+				model: 'rfqOption',
 				modelId: optionId,
 				quantity: optionQuantity,
 				price: optionPrice,
 			};
 			setIsLoading(false);
-			const responce = await api.cart.create(data);
-			setModal('successful');
-			setSuccessfulText('Option added to cart');
+			const responseCart = await api.cart.create(data);
+			if (responseCart.message === 'Product already in cart') {
+				setModal('successful');
+				setSuccessfulText('Product already in cart');
+			} else {
+				setModal('successful');
+				setSuccessfulText('Option added to cart');
+			}
 		} catch (error) {
-			console.error('Error fetchDetOptions options:', error);
+			console.error('Error api.cart.create:', error);
 		}
 	};
 
