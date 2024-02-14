@@ -1,18 +1,24 @@
 .wrapper {
 	padding: 32px;
-}
+	min-height: calc(100vh - 60px); //-padding-top & -header
 
-.title {
-	color: #020617;
-	font-variant-numeric: lining-nums proportional-nums;
+	display: flex;
+	flex-direction: column;
 
-	font-size: 28px;
-	font-style: normal;
-	font-weight: 700;
-	line-height: 36px;
-}
+	.content {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		flex-grow: 1;
+	}
 
-.pagination {
-	padding: 0px;
-	margin: 20px;
+	.title {
+		color: #020617;
+		font-variant-numeric: lining-nums proportional-nums;
+
+		font-size: 28px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 36px;
+	}
 }

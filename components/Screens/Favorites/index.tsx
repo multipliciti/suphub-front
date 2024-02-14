@@ -102,7 +102,7 @@ export const FavoritesComponents = () => {
 				sortParams: sortDirection ? sortDirection : { id: 'desc' },
 				searchParams: JsonString,
 			});
-			setTotalPages(5);
+			setTotalPages(response.totalPages < 1 ? 1 : response.totalPages);
 			dispatch(setProducts(response.result));
 			dispatch(setTotal(response.total));
 			dispatch(setStatus('success'));
@@ -125,8 +125,8 @@ export const FavoritesComponents = () => {
 		<div className={s.wrapper}>
 			<h3 className={s.title}>My favorites</h3>
 			<ProductsFilter />
-			<Products filtersEmpty={filtersEmpty} products={products} status={status} />
-			<div className={s.pagination}>
+			<div className={s.content}>
+				<Products filtersEmpty={filtersEmpty} products={products} status={status} />
 				<Pagination
 					setActivePage={setActivePageFunction}
 					buttons={true}

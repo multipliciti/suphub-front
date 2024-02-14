@@ -16,6 +16,7 @@ body {
 }
 
 .content_container {
+	min-height: calc(100vh - 60px); //-header
 	transition: all 0.3s ease;
 	padding-right: 32px;
 	padding-top: 32px;

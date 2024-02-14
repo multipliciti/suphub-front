@@ -17,6 +17,15 @@
 		padding: 12px;
 		position: relative;
 
+		&_inner {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 244px;
+			height: 212px;
+			overflow: hidden;
+		}
+
 		.add {
 			opacity: 0;
 			pointer-events: none;
@@ -35,7 +44,9 @@
 			outline: none;
 			border: none;
 			border-radius: 0 0 10px 10px;
-			transition: transform 0.3s ease, opacity 0.3s ease;
+			transition:
+				transform 0.3s ease,
+				opacity 0.3s ease;
 			&_text {
 				color: #fff;
 

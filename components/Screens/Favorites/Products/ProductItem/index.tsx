@@ -3,6 +3,9 @@ import { classNames } from '@/utils/classNames';
 import s from './ProductItem.module.scss';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+
+import { useAppDispatch } from '@/redux/hooks';
+import { setModal } from '@/redux/slices/modal';
 //imgs
 import star from '@/imgs/Marketplace/Products/star.svg';
 import star_active from '@/imgs/Marketplace/Products/star_sctive.svg';
@@ -16,6 +19,8 @@ type TypeProps = {
 };
 
 export const ProductItem = ({ product }: TypeProps) => {
+	const dispatch = useAppDispatch();
+
 	const { name, id, dynamic_attr, favorite, images, unitOfMeasurement } = product;
 	const { push } = useRouter();
 	const [favoriteStar, setFavoriteStar] = useState<boolean>(true);
@@ -86,7 +91,7 @@ export const ProductItem = ({ product }: TypeProps) => {
 
 	return (
 		<>
-			<div onClick={() => push(`favorites/product/${id}`)} className={s.wrapper}>
+			<div className={s.wrapper}>
 				<div className={s.img_wrapper}>
 					<div
 						onClick={(e) => {
@@ -102,14 +107,24 @@ export const ProductItem = ({ product }: TypeProps) => {
 							height={20}
 						/>
 					</div>
-					<Image
-						className={s.img}
-						src={images[0]?.url ?? ''}
-						alt="img"
-						width={244}
-						height={212}
-					/>
-					<button className={s.add}>
+					<span
+						onClick={() => push(`favorites/product/${id}`)}
+						className={s.img_wrapper_inner}
+					>
+						<Image
+							layout="responsive"
+							className={s.img}
+							src={images[0]?.url ?? ''}
+							alt="img"
+							width={244}
+							height={212}
+						/>
+					</span>
+
+					<button
+						onClick={() => dispatch(setModal('addToRFQCart'))}
+						className={s.add}
+					>
 						<svg
 							xmlns="http://www.w3.org/2000/svg"
 							width="21"
@@ -127,7 +142,10 @@ export const ProductItem = ({ product }: TypeProps) => {
 						<span className={s.add_text}>Add to RFQ cart</span>
 					</button>
 				</div>
-				<div className={s.description_wrapper}>
+				<div
+					onClick={() => push(`favorites/product/${id}`)}
+					className={s.description_wrapper}
+				>
 					<h1 className={s.title}>{name} </h1>
 					<h2 className={s.price}>
 						<span className={s.price}>

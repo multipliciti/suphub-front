@@ -95,9 +95,9 @@ export const ProductItem = ({ product }: TypeProps) => {
 
 	return (
 		<>
-			<div onClick={() => push(`marketplace/product/${id}`)} className={s.wrapper}>
+			<div className={s.wrapper}>
 				<div className={s.img_wrapper}>
-					<div
+					<span
 						onClick={(e) => {
 							e.stopPropagation();
 							changeFavorite(id);
@@ -110,7 +110,7 @@ export const ProductItem = ({ product }: TypeProps) => {
 							width={20}
 							height={20}
 						/>
-					</div>
+					</span>
 					<button
 						className={s.add}
 						onClick={() => dispatch(setModal('addToRFQCart'))}
@@ -131,7 +131,10 @@ export const ProductItem = ({ product }: TypeProps) => {
 						</svg>
 						<span className={s.add_text}>Add to project</span>
 					</button>
-					<div className={s.img_wrapper_inner}>
+					<div
+						onClick={() => push(`marketplace/product/${id}`)}
+						className={s.img_wrapper_inner}
+					>
 						<Image
 							layout="responsive"
 							className={s.img}
@@ -139,15 +142,14 @@ export const ProductItem = ({ product }: TypeProps) => {
 							alt="img"
 							width={244}
 							height={212}
-							style={{
-								width: '100%',
-								height: 'auto',
-							}}
 						/>
 					</div>
 				</div>
 
-				<div className={s.description_wrapper}>
+				<div
+					onClick={() => push(`marketplace/product/${id}`)}
+					className={s.description_wrapper}
+				>
 					<h1 className={s.title}> {name} </h1>
 					<h2 className={s.price}>
 						<span className={s.price}>
@@ -155,7 +157,6 @@ export const ProductItem = ({ product }: TypeProps) => {
 						</span>
 						<span className={s.price_format}>/ {unitOfMeasurement}</span>
 					</h2>
-
 					{properties.map((el: any, ind: number) => {
 						return (
 							<div key={ind} className={s.p}>

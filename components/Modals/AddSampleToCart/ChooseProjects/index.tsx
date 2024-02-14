@@ -43,7 +43,7 @@ export const ChooseProjects = () => {
 			const cartId = response.id;
 
 			if (sample) {
-				const sampleElementRoCart: CartCreateBody = {
+				const sampleElementToCart: CartCreateBody = {
 					cartId,
 					model: 'sample',
 					modelId: sample.id,
@@ -51,7 +51,7 @@ export const ChooseProjects = () => {
 					price: sample.price,
 				};
 				//if has sampleId add to cart
-				await api.cart.create(sampleElementRoCart);
+				await api.cart.create(sampleElementToCart);
 				setIsLoading(false);
 				setRefresh(!refresh);
 			}

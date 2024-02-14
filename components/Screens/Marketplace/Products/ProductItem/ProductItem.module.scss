@@ -49,6 +49,9 @@
 		}
 
 		&_inner {
+			display: flex;
+			align-items: center;
+			justify-content: center;
 			width: 244px;
 			height: 212px;
 			overflow: hidden;
