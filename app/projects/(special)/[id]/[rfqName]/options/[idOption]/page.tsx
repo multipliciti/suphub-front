@@ -4,13 +4,16 @@ interface Props {
 	params: {
 		id: number;
 		idOption: number;
+		rfqName: string;
 	};
 }
 
-export default function ProjectsOptionItem({ params: { id, idOption } }: Props) {
+export default function ProjectsOptionItem({
+	params: { rfqName, id, idOption },
+}: Props) {
 	return (
 		<>
-			<OptionsView idProject={id} idOption={idOption} />
+			<OptionsView rfqName={rfqName} idProject={id} idOption={idOption} />
 		</>
 	);
 }

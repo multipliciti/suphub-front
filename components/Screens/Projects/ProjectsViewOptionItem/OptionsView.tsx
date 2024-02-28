@@ -4,9 +4,8 @@ import Image from 'next/image';
 import s from './OptionsView.module.scss';
 
 import { useAppDispatch } from '@/redux/hooks';
-import { setModal, setSample } from '@/redux/slices/modal';
+import { setModal, setProjectId } from '@/redux/slices/modal';
 import { setSamples } from '@/redux/slices/modal';
-import { setSuccessfulText } from '@/redux/slices/modal';
 import { Spinner } from '@/components/UI/Spinner';
 
 import { Api } from '@/services';
@@ -14,23 +13,30 @@ import { Option } from '@/types/services/rfq';
 import { BackButton } from '@/components/UI/BackButton';
 import { CartCreateBody } from '@/types/services/cart';
 
+import error_icon from '@/imgs/Buyer&Seller/process_error.svg';
+import success_icon from '@/imgs/ResetPassword/success.svg';
+
 type TypeProps = {
 	idProject: number;
 	idOption: number;
+	rfqName: string;
 };
 
-export const OptionsView = ({ idOption, idProject }: TypeProps) => {
-	const [isLoading, setIsLoading] = useState<boolean>(false);
+export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
+	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [error, setError] = useState<string>('');
+	const [successful, setSuccessful] = useState<string>('');
 	const dispatch = useAppDispatch();
 	const api = Api();
 	const [options, setOptions] = useState<Option[]>([]);
 
-	const fetchDetOptions = async (projectId: number) => {
+	const fetchGetOptions = async (projectId: number) => {
 		try {
 			const response = await api.rfqOption.getOptionsByRfqId(projectId);
 			setOptions(response.data);
+			setIsLoading(false);
 		} catch (error) {
-			console.error('Error fetchDetOptions options:', error);
+			console.error('Error fetchGetOptions options:', error);
 		}
 	};
 
@@ -53,38 +59,60 @@ export const OptionsView = ({ idOption, idProject }: TypeProps) => {
 				price: optionPrice,
 			};
 			setIsLoading(false);
-			const responseCart = await api.cart.create(data);
-			if (responseCart.message === 'Product already in cart') {
-				setModal('successful');
-				setSuccessfulText('Product already in cart');
-			} else {
-				setModal('successful');
-				setSuccessfulText('Option added to cart');
-			}
-		} catch (error) {
+			await api.cart.create(data);
+			setSuccessful('Option added to cart');
+		} catch (error: any) {
+			setError(error.response?.data.message || 'Unknown error occurred');
 			console.error('Error api.cart.create options:', error);
 		}
 	};
 
 	useEffect(() => {
-		fetchDetOptions(idOption);
+		dispatch(setProjectId(idProject));
+		fetchGetOptions(idOption);
 	}, []);
 
 	return (
 		<div className={s.wrapper}>
+			{isLoading && (
+				<div className={s.modal}>
+					<Spinner />
+				</div>
+			)}
+
+			{(error || successful) && (
+				<div className={s.modal}>
+					<div className={s.content}>
+						<Image
+							className={s.header_close}
+							onClick={() => dispatch(setModal(''))}
+							src={successful ? success_icon : error_icon}
+							alt="error_icon"
+							width={100}
+							height={100}
+						/>
+						<h3 className={s.error_title}>{error}</h3>
+						<button
+							onClick={() => {
+								setError('');
+							}}
+							className={s.error_btn}
+						>
+							Close
+						</button>
+					</div>
+				</div>
+			)}
+
 			<div className={s.header}>
 				<BackButton href={`/projects/${idProject}/rfq`} />
 				<span className={s.header_close}></span>
-				<span className={s.header_title}>Compare - Fixed Window</span>
+				<span className={s.header_title}>
+					Compare - {decodeURIComponent(rfqName)}
+				</span>
 			</div>
 			<div className={s.table_container}>
-				{isLoading && (
-					<div className={s.spinner}>
-						<Spinner />
-					</div>
-				)}
-
-				{options.length > 0 && !isLoading && (
+				{options.length > 0 && (
 					<>
 						{/* table  */}
 						<table className={s.table}>

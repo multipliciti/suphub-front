@@ -3,6 +3,39 @@
 	flex-direction: column;
 	gap: 25px;
 
+	.error {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		align-items: center;
+
+		&_title {
+			color: #020617;
+			text-align: center;
+
+			font-size: 19px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 32px;
+		}
+
+		&_btn {
+			max-width: 100px;
+			color: #fff;
+			font-variant-numeric: lining-nums proportional-nums;
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 20px;
+			padding: 8px 0px;
+			width: 100%;
+			border-radius: 8px;
+			background-color: #2b1694;
+			display: flex;
+			justify-content: center;
+		}
+	}
+
 	.label {
 		border-radius: 8px;
 		border: 1px solid #cbd5e1;

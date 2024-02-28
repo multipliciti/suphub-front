@@ -12,12 +12,14 @@ import { Spinner } from '@/components/UI/Spinner';
 
 type TypeProps = {
 	setActiveWindow: (n: number) => void;
+	setError: (s: string) => void;
 };
 
-export const AddToCart = ({ setActiveWindow }: TypeProps) => {
+export const AddToCart = ({ setActiveWindow, setError }: TypeProps) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const samples = useAppSelector((state) => state.modalSlice.samples);
 	const projectId = useAppSelector((state) => state.modalSlice.projectId);
+	console.log('projectId', projectId);
 	const api = Api();
 
 	const [sampleCount, setSampleCount] = useState<{
@@ -33,7 +35,6 @@ export const AddToCart = ({ setActiveWindow }: TypeProps) => {
 			} else {
 				newState[sampleId] = { quantity, price };
 			}
-
 			return newState;
 		});
 	};
@@ -76,8 +77,9 @@ export const AddToCart = ({ setActiveWindow }: TypeProps) => {
 
 				// Set active window to 2 after all samples are successfully added
 				setActiveWindow(2);
-			} catch (error) {
-				// Log any errors during the cart ID retrieval
+			} catch (error: any) {
+				setActiveWindow(3);
+				setError(error.response?.data.message || 'Unknown error occurred');
 				console.error('Error retrieving cart ID:', error);
 			}
 		}

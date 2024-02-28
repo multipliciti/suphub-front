@@ -1,8 +1,9 @@
 'use client';
-import s from './ChooseProjects.module.scss';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import Image from 'next/image';
+
+import s from './ChooseProjects.module.scss';
 
 import { Api } from '@/services';
 import { Spinner } from '@/components/UI/Spinner';
@@ -19,6 +20,7 @@ import password_valid from '@/imgs/Modal/password_valid.svg';
 export const ChooseProjects = () => {
 	const api = Api();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
+	const [errorMessage, setErrorMessage] = useState<string | null>(null);
 	const [refresh, setRefresh] = useState<boolean>(false);
 	const [search, setSearch] = useState<string>('');
 	const [projects, setProject] = useState<Project[]>([]);
@@ -55,7 +57,9 @@ export const ChooseProjects = () => {
 				setIsLoading(false);
 				setRefresh(!refresh);
 			}
-		} catch (error) {
+		} catch (error: any) {
+			setErrorMessage(error.response?.data.message || 'Unknown error occurred');
+			setIsLoading(false);
 			console.error('error addToCart:', error);
 		}
 	};
@@ -84,7 +88,21 @@ export const ChooseProjects = () => {
 		<div className={s.wrapper}>
 			{isLoading && <Spinner />}
 
-			{!isLoading && (
+			{!isLoading && errorMessage !== null && (
+				<div className={s.error}>
+					<p className={s.error_title}>{errorMessage}</p>
+					<button
+						onClick={() => {
+							setErrorMessage(null);
+						}}
+						className={s.error_btn}
+					>
+						Close
+					</button>
+				</div>
+			)}
+
+			{!isLoading && errorMessage === null && (
 				<>
 					<label className={s.label} htmlFor="search">
 						<Image

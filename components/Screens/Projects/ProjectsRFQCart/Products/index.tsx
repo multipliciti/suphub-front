@@ -79,7 +79,9 @@ export const Products = ({ rfqs, projectId }: TypeProps) => {
 										</p>
 									) : (
 										<p>
-											<span className={s.indificator}>CSI</span>
+											<span className={s.indificator}>
+												CSI {el[0].subCategory.category.csiCode}
+											</span>
 											{el[0].subCategory.category.name}
 										</p>
 									)}

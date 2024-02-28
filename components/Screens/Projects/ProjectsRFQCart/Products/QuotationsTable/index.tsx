@@ -1,4 +1,5 @@
 'use client';
+import { AxiosError } from 'axios';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -6,14 +7,14 @@ import { useRouter } from 'next/navigation';
 
 import { classNames } from '@/utils/classNames';
 import s from './QuotationsTable.module.scss';
+
 import { Api } from '@/services';
 import { useAppDispatch } from '@/redux/hooks';
 import { Spinner } from '@/components/UI/Spinner';
+import { truncateFileNameEnd } from '@/utils/names';
 
 import { RfqItemGot } from '@/types/services/rfq';
 
-import { setModal } from '@/redux/slices/modal';
-import { setSuccessfulText } from '@/redux/slices/modal';
 import { CartCreateBody } from '@/types/services/cart';
 
 import more_icon from '@/imgs/Buyer&Seller/more.svg';
@@ -21,6 +22,8 @@ import purchase_icon from '@/imgs/Buyer&Seller/purchase.svg';
 import ordered_icon from '@/imgs/Buyer&Seller/ordered.svg';
 import eye_icon from '@/imgs/Buyer&Seller/eye.svg';
 import eye_icon_hover from '@/imgs/Buyer&Seller/eye_hover.svg';
+import error_icon from '@/imgs/Buyer&Seller/process_error.svg';
+import success_img from '@/imgs/ResetPassword/success.svg';
 
 interface TypeProps {
 	projectId: number;
@@ -34,15 +37,37 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	const router = useRouter();
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	// for local filter after click 'decline option'
+	const [idsFilterOptions, setIdsFilterOptions] = useState<number[]>([]);
+	//state one option for show status
+	const [optionStatusShow, setOptionStatusShow] = useState<boolean>(false);
+	const [statusOption, setStatusOption] = useState<{
+		id: number;
+		seccess: string;
+		error: string;
+	}>({
+		id: -1,
+		seccess: '',
+		error: '',
+	});
+
+	useEffect(() => {
+		const timer = setTimeout(() => {
+			setOptionStatusShow(false);
+		}, 5000);
+		return () => clearTimeout(timer);
+	}, [statusOption]);
+
 	const [maxOptionsLengthArr, setMaxOptionsLengthArr] = useState<number[]>([]);
 
 	//states for modal 'more'
 	const targetElement = useRef<HTMLDivElement | null>(null);
 	const [optionMore, setOptionMore] = useState<number>(-1);
-	const [rfqIdNavigation, setRfqIdNavigation] = useState<number>(0);
 	const [topRelativeToParent, setTopRelativeToParent] = useState<number>(0);
 	const [leftRelativeToParent, setLeftRelativeToParent] = useState<number>(0);
 
+	const [rfqIdNavigation, setRfqIdNavigation] = useState<number>(0);
+	const [rfqNameNavigation, setRfqNameNavigation] = useState<string>('');
 	const [hoverRfq, setHoverRfq] = useState<number>(-1);
 	// const [lastClickEvent, setLastClickEvent] =
 	// 	useState<React.MouseEvent<HTMLImageElement> | null>(null);
@@ -133,9 +158,11 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 		try {
 			setIsLoading(true);
 			await api.rfqOption.declineOption(id);
-			dispatch(setModal('successful'));
-			dispatch(setSuccessfulText('Option declined'));
+			setIdsFilterOptions((prevState) => {
+				return [...prevState, id];
+			});
 			setIsLoading(false);
+			setOptionMore(-1);
 		} catch (e) {
 			console.log('error decline option:', e);
 		}
@@ -160,16 +187,25 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 				price: optionPrice,
 			};
 			setIsLoading(false);
-			const responseCart = await api.cart.create(data);
-			if (responseCart.message === 'Product already in cart') {
-				setModal('successful');
-				setSuccessfulText('Product already in cart');
-			} else {
-				setModal('successful');
-				setSuccessfulText('Option added to cart');
-			}
-		} catch (error) {
-			console.error('Error api.cart.create:', error);
+			await api.cart.create(data);
+			setStatusOption((prevState) => {
+				return {
+					...prevState,
+					id: optionId,
+					seccess: 'Option adeed to cart',
+				};
+			});
+			setOptionStatusShow(true);
+		} catch (error: any) {
+			setStatusOption((prevState) => {
+				return {
+					...prevState,
+					id: optionId,
+					error: error.response?.data.message || 'Unknown error occurred',
+				};
+			});
+			setOptionStatusShow(true);
+			console.log('error optionAddToCart', error);
 		}
 	};
 
@@ -187,7 +223,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 					className={classNames(s.more, optionMore !== -1 && s.more_active)}
 				>
 					<Link
-						href={`/projects/${projectId}/rfq/options/${rfqIdNavigation}`}
+						href={`/projects/${projectId}/${rfqNameNavigation}/options/${rfqIdNavigation}`}
 						className={s.more_item}
 					>
 						Product details
@@ -261,7 +297,9 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 									onMouseOut={() => setHoverRfq(-1)}
 									onClick={() => {
 										if (rfq.options.length > 0) {
-											router.push(`/projects/${projectId}/rfq/options/${rfq.id}`);
+											router.push(
+												`/projects/${projectId}/${rfq.productName}/options/${rfq.id}`
+											);
 										}
 									}}
 									className={classNames(s.td, compress && s.td_compress)}
@@ -280,69 +318,98 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 										<span className={s.noquotes}>You have no quotes yet.</span>
 									</td>
 								)}
-								{rfq.options.map((option, ind) => {
-									return (
-										<td
-											data-id={option.id}
-											className={classNames(s.td, compress && s.td_compress)}
-											key={ind}
-										>
-											{/* processing declining option...  */}
-											{isLoading && optionMore === option.id ? (
-												<Spinner size={'s'} />
-											) : (
-												<span className={s.item}>
-													{/* This is about borders, as td:hover is not working in the
+								{rfq.options
+									.filter((option) => !idsFilterOptions.includes(option.id))
+									.map((option, ind) => {
+										return (
+											<td
+												data-id={option.id}
+												className={classNames(s.td, compress && s.td_compress)}
+												key={ind}
+											>
+												{/* processing declining option...  */}
+												{isLoading && optionMore === option.id ? (
+													<Spinner size={'s'} />
+												) : (
+													<span className={s.item}>
+														{/* This is about borders, as td:hover is not working in the
 												table.
 												bad code */}
-													{/* // */}
-													{/* // */}
-													<span
-														className={classNames(s.border, s.border_top)}
-													></span>
-													<span
-														className={classNames(s.border, s.border_bottom)}
-													></span>
-													<span
-														className={classNames(s.border, s.border_left)}
-													></span>
-													<span
-														className={classNames(s.border, s.border_right)}
-													></span>
-													{/* // */}
-													{/* // */}
-													<span className={s.info}>
-														{/* price and size  */}
-														<span className={s.info_inner}>
-															<span className={s.info_inner_size}>
-																{option.size}
-															</span>
-															<span className={s.info_inner_price}>
-																{option.price ? `$${option.price}` : 'Not price'}
-															</span>
-														</span>
-														{/* icons  */}
-														<span className={s.info_icons}>
-															{option.type === 'ordered' && (
-																<Image
-																	src={ordered_icon}
-																	alt="ordered_icon"
-																	width={20}
-																	height={20}
-																/>
-															)}
-															{option.type === 'inCart' && (
-																<Image
-																	src={purchase_icon}
-																	alt="purchase_icon"
-																	width={20}
-																	height={20}
-																/>
+														{/* // */}
+														{/* // */}
+														<span
+															className={classNames(s.border, s.border_top)}
+														></span>
+														<span
+															className={classNames(s.border, s.border_bottom)}
+														></span>
+														<span
+															className={classNames(s.border, s.border_left)}
+														></span>
+														<span
+															className={classNames(s.border, s.border_right)}
+														></span>
+														{/* // */}
+														{/* // */}
+														<span className={s.info}>
+															{optionStatusShow && statusOption.id === option.id ? (
+																<span className={s.info_status}>
+																	<Image
+																		className={s.eye_icon}
+																		src={
+																			statusOption.seccess ? success_img : error_icon
+																		}
+																		alt="statis_icon"
+																		width={20}
+																		height={20}
+																	/>
+
+																	<p className={s.info_status_title}>
+																		{statusOption.seccess
+																			? statusOption.seccess
+																			: statusOption.error}
+																	</p>
+																</span>
+															) : (
+																<>
+																	{/* price and size  */}
+																	<span className={s.info_inner}>
+																		<span className={s.info_inner_size}>
+																			{truncateFileNameEnd(
+																				option.product.seller.name,
+																				33
+																			)}
+																		</span>
+																		<span className={s.info_inner_price}>
+																			{option.price ? `$${option.price}` : '$0'}
+																		</span>
+																	</span>
+																	{/* icons  */}
+																	<span className={s.info_icons}>
+																		{option.type === 'ordered' && (
+																			<Image
+																				src={ordered_icon}
+																				alt="ordered_icon"
+																				width={20}
+																				height={20}
+																			/>
+																		)}
+																		{option.type === 'inCart' && (
+																			<Image
+																				src={purchase_icon}
+																				alt="purchase_icon"
+																				width={20}
+																				height={20}
+																			/>
+																		)}
+																	</span>
+																</>
 															)}
 															<Image
 																onClick={(e) => {
 																	handleItemClick(e, option.id);
 																	setRfqIdNavigation(option.rfqId);
+																	setRfqNameNavigation(rfq.productName);
 																}}
 																className={s.icon_more}
 																src={more_icon}
@@ -351,21 +418,20 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 																height={20}
 															/>
 														</span>
+														{/* active text when hover rfq row (hover icon eye) */}
+														<span
+															className={classNames(
+																s.compare,
+																hoverRfq === rfq.id && ind === 0 && s.compare_active
+															)}
+														>
+															Click to compare specs
+														</span>
 													</span>
-													{/* active text when hover rfq row (hover icon eye) */}
-													<span
-														className={classNames(
-															s.compare,
-															hoverRfq === rfq.id && ind === 0 && s.compare_active
-														)}
-													>
-														Click to compare specs
-													</span>
-												</span>
-											)}
-										</td>
-									);
-								})}
+												)}
+											</td>
+										);
+									})}
 							</tr>
 						);
 					})}
