@@ -1,0 +1,23 @@
+.status {
+	&_wrapper {
+		backdrop-filter: blur(1px);
+		background-color: rgba(20, 54, 68, 0.35);
+
+		height: calc(100vh - 60px); // -header 60px
+		width: 100%;
+
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		.error {
+			text-align: center;
+			color: #0f172a;
+
+			font-size: 20px;
+			font-style: normal;
+			font-weight: 700;
+			line-height: 26px;
+		}
+	}
+}

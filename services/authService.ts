@@ -65,7 +65,7 @@ export const AuthApi = (instance: AxiosInstance) => ({
 	async recovery(data: RecoveryType) {
 		const requestData = {
 			...data,
-			recoveryUrl: `${HOST}/auth/confirm-email`,
+			recoveryUrl: `${HOST}/auth/reset-password`,
 		};
 		try {
 			const url = '/auth/recovery';

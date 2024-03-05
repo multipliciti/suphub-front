@@ -48,7 +48,7 @@ export const ChooseProjects = () => {
 				const sampleElementToCart: CartCreateBody = {
 					cartId,
 					model: 'sample',
-					modelId: sample.id,
+					modelId: 932903203,
 					quantity: sample.quantity,
 					price: sample.price,
 				};

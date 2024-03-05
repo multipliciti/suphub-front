@@ -53,7 +53,7 @@ export const ResetForm = ({ token }: PropsType) => {
 		};
 		try {
 			api.auth.createPassword(requestData);
-			push('/success-password');
+			push('/auth/success-password');
 		} catch (error: any) {}
 	};
 
