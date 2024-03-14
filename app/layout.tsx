@@ -4,6 +4,7 @@ import { Lato } from 'next/font/google';
 import { MainProvider } from '@/components/Providers';
 import { Header } from '@/components/Features/Header';
 import { Modal } from '@/components/Modals';
+import { PendoScript } from '@/components/Providers/PendoScript';
 
 import '@/styles/globals.scss';
 
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 					<div id="root-modals">
 						<Modal />
 					</div>
+					<PendoScript />
 				</MainProvider>
 			</body>
 		</html>
