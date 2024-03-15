@@ -173,6 +173,14 @@
 					padding: 10px 20px;
 				}
 
+				.product_name {
+					transition: 0.3s all ease;
+					cursor: pointer;
+				}
+				.product_name:hover {
+					color: #755cf1;
+				}
+
 				td {
 					color: #020617;
 					font-variant-numeric: lining-nums proportional-nums;

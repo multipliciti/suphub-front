@@ -20,6 +20,7 @@ type TypeProps = {
 export const ProductItem = ({ product }: TypeProps) => {
 	const dispatch = useAppDispatch();
 	const { name, id, dynamic_attr, favorite, images, unitOfMeasurement } = product;
+	console.log('dynamic_attr', dynamic_attr);
 	const { push } = useRouter();
 	const user = useAppSelector((state) => state.authSlice.user);
 	const [favoriteStar, setFavoriteStar] = useState<boolean>(false);

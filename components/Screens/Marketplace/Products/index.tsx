@@ -10,6 +10,7 @@ import { ProductItemType } from '@/types/products/product';
 import { useAppDispatch } from '@/redux/hooks';
 import { setSortDirection } from '@/redux/slices/marketplace/productsFilter';
 import { useClickOutside } from '@/components/Hooks/useClickOutside';
+import { Spinner } from '@/components/UI/Spinner';
 //imgs
 import { NoResults } from '../NoResults';
 import selected_img from '@/imgs/Marketplace/Filters/selected.svg';
@@ -130,7 +131,11 @@ export const Products = (props: ProductsPropsType) => {
 				</div>
 			</div>
 
-			{status === 'pending' && <div> Loading...</div>}
+			{status === 'pending' && (
+				<div className={s.spinner}>
+					<Spinner />
+				</div>
+			)}
 			{status === 'rejected' && <div> Error! </div>}
 			{products && products.length < 1 && status === 'success' && (
 				<NoResults filtersEmpty={filtersEmpty} />

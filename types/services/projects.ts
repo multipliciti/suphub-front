@@ -1,5 +1,5 @@
+import { SellerCompany } from './company';
 import { ProjectType } from '@/types/products/project';
-
 type SortOptions = {
 	[key: string]: 'asc' | 'desc';
 };
@@ -49,6 +49,7 @@ export interface FetchFind {
 	searchText?: string;
 	searchParams?: string;
 }
+
 export interface Order {
 	id: number;
 	status: string;
@@ -56,6 +57,7 @@ export interface Order {
 	amount: number;
 	shipmentAmount: number;
 	PO: string;
+	sellerCompany: SellerCompany;
 	buyerCompanyId: number;
 	sellerCompanyId: number;
 	estDate: string;

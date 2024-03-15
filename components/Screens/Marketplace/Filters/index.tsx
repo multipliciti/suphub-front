@@ -15,7 +15,6 @@ export const Filters = () => {
 	const [open, setOpen] = useState(false);
 	const charData = useAppSelector((state) => state.filtersSlice.char);
 	const filterItems = useAppSelector((state) => state.filtersSlice.itemsFilter);
-	console.log('itemsFilter', filterItems);
 	const totalAttributeValuesCount = charData.reduce((total, charItem) => {
 		return total + charItem.attrValueIds.length;
 	}, 0);

@@ -1,0 +1,49 @@
+.wrapper {
+	padding-bottom: 48px;
+	width: 440px;
+	background-color: #fff;
+	display: flex;
+	flex-direction: column;
+	gap: 24px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+
+	.header {
+		width: 100%;
+		padding-top: 16px;
+		padding-right: 20px;
+
+		display: flex;
+		justify-content: flex-end;
+
+		&_close {
+			cursor: pointer;
+		}
+	}
+
+	.title {
+		color: #020617;
+		text-align: center;
+
+		font-family: Lato;
+		font-size: 24px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 32px;
+	}
+
+	.btn {
+		color: #fff;
+
+		font-family: Lato;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 24px;
+
+		padding: 10px 20px;
+		border-radius: 8px;
+		background: #2b1694;
+	}
+}

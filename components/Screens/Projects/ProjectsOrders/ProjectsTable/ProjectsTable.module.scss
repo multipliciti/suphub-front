@@ -26,6 +26,7 @@
 }
 
 .td {
+	cursor: pointer;
 	&_wrapper_status {
 		display: inline-block;
 		width: 100%;
@@ -39,7 +40,6 @@
 
 		.updates {
 			cursor: pointer;
-			margin-left: auto !important;
 			color: #2b1694;
 
 			font-size: 14px;

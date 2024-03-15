@@ -28,16 +28,6 @@ export const ProjectsOrders = ({ projectId }: typeProps) => {
 
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [orders, setOrders] = useState<Order[]>([]);
-	const columns = [
-		{ title: 'PO#', key: 'PO#' },
-		{ title: 'Issue Date', key: 'Issue Date' },
-		{ title: 'Manufacturer', key: 'Manufacturer' },
-		{ title: 'Product', key: 'Product' },
-		{ title: 'Order Type', key: 'Order Type' },
-		{ title: 'Subtotal (USD)', key: 'Subtotal (USD)' },
-		{ title: 'Status', key: 'Status' },
-		{ title: 'Est.Delivery', key: 'Est.Delivery' },
-	];
 
 	// create fetch objs
 	const objFetchSearch = stateInputs.search
@@ -99,7 +89,7 @@ export const ProjectsOrders = ({ projectId }: typeProps) => {
 				) : (
 					<>
 						{orders.length > 0 && (
-							<ProjectsTable projectId={projectId} columns={columns} data={orders} />
+							<ProjectsTable projectId={projectId} data={orders} />
 						)}
 						<PaginationWrapper
 							limitItems={limitItems}

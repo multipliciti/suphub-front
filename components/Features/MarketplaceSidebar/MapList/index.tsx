@@ -77,7 +77,10 @@ export const MapList = () => {
 					<div key={index}>
 						<span
 							onClick={() => dispatch(setParentActiveId(item.id))}
-							className={s.item}
+							className={classNames(
+								s.item,
+								parentActiveIds.includes(item.id) && s.item_active
+							)}
 						>
 							<div className={s.item_wrapper}>
 								<Image

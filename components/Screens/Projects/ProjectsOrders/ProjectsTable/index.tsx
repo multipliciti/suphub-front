@@ -1,17 +1,29 @@
 import React from 'react';
 import s from './ProjectsTable.module.scss';
-import { truncateFileNameEnd } from '@/utils/names';
 import { classNames } from '@/utils/classNames';
 import { useRouter } from 'next/navigation';
 import { Order } from '@/types/services/projects';
 
+import { formatDate } from './utils';
+import { truncateFileNameEnd } from '@/utils/names';
+import { formatDateString } from '@/utils/formatDateString';
+
 interface PropsType {
 	projectId: number;
-	columns: { title: string; key: string }[];
 	data: Order[];
 }
 
-export const ProjectsTable = ({ projectId, columns, data }: PropsType) => {
+export const ProjectsTable = ({ projectId, data }: PropsType) => {
+	const columns: { title: string; key: string }[] = [
+		{ title: 'PO#', key: 'PO#' },
+		{ title: 'Issue Date', key: 'Issue Date' },
+		{ title: 'Manufacturer', key: 'Manufacturer' },
+		// { title: 'Order Type', key: 'Order Type' },
+		{ title: 'Subtotal (USD)', key: 'Subtotal (USD)' },
+		{ title: 'Status', key: 'Status' },
+		{ title: 'Est.Delivery', key: 'Est.Delivery' },
+		{ title: 'Product', key: 'Product' },
+	];
 	const { push } = useRouter();
 
 	return (
@@ -32,7 +44,7 @@ export const ProjectsTable = ({ projectId, columns, data }: PropsType) => {
 							onClick={() => push(`/projects/${projectId}/order/${row.id}`)}
 							key={rowIndex}
 						>
-							{columns.map((column, indd) => (
+							{columns.map((column) => (
 								<>
 									{/* PO  */}
 									{column.key === 'PO#' && (
@@ -43,26 +55,26 @@ export const ProjectsTable = ({ projectId, columns, data }: PropsType) => {
 									{/* Issue Date */}
 									{column.key === 'Issue Date' && (
 										<td className={s.td}>
-											<span>02/26/2023</span>
+											<span>{formatDateString(row.createdAt)}</span>
 										</td>
 									)}
 									{/* Issue Date */}
 									{column.key === 'Manufacturer' && (
 										<td className={s.td}>
-											<span>Example</span>
+											<span>{truncateFileNameEnd(row.sellerCompany.name, 25)}</span>
 										</td>
 									)}
 									{/* Product */}
 									{column.key === 'Product' && (
 										<td className={s.td}>
 											<span className={s.td_product}>
-												<span>{truncateFileNameEnd('Product name', 25)}</span>
+												{/* <span>{truncateFileNameEnd('name', 25)}</span> */}
 												<span className={s.updates}>See updates</span>
 											</span>
 										</td>
 									)}
 									{/* Order Type */}
-									{column.key === 'Order Type' && (
+									{/* {column.key === 'Order Type' && (
 										<td className={s.td}>
 											<span className={s.td_order}>
 												<span
@@ -75,7 +87,7 @@ export const ProjectsTable = ({ projectId, columns, data }: PropsType) => {
 												Sample order
 											</span>
 										</td>
-									)}
+									)} */}
 									{/* Subtotal (USD) */}
 									{column.key === 'Subtotal (USD)' && (
 										<td className={s.td}>
@@ -120,7 +132,7 @@ export const ProjectsTable = ({ projectId, columns, data }: PropsType) => {
 									{/* Est.Delivery  */}
 									{column.key === 'Est.Delivery' && (
 										<td className={s.td}>
-											<span>Est.Delivery Example</span>
+											<span>{formatDate(row.estDate)}</span>
 										</td>
 									)}
 								</>

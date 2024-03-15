@@ -8,6 +8,9 @@ import s from './ChooseProjects.module.scss';
 import { Api } from '@/services';
 import { Spinner } from '@/components/UI/Spinner';
 import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch } from '@/redux/hooks';
+import { setModal } from '@/redux/slices/modal';
+import { setCartProject } from '@/redux/slices/modal';
 
 import { Project } from '@/types/products/project';
 import { CartCreateBody } from '@/types/services/cart';
@@ -18,10 +21,11 @@ import black_arrow from '@/imgs/Modal/arrow_right.svg';
 import password_valid from '@/imgs/Modal/password_valid.svg';
 
 export const ChooseProjects = () => {
+	const dispatch = useAppDispatch();
 	const api = Api();
+
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [errorMessage, setErrorMessage] = useState<string | null>(null);
-	const [refresh, setRefresh] = useState<boolean>(false);
 	const [search, setSearch] = useState<string>('');
 	const [projects, setProject] = useState<Project[]>([]);
 
@@ -48,14 +52,16 @@ export const ChooseProjects = () => {
 				const sampleElementToCart: CartCreateBody = {
 					cartId,
 					model: 'sample',
-					modelId: 932903203,
+					modelId: sample.id,
 					quantity: sample.quantity,
 					price: sample.price,
 				};
 				//if has sampleId add to cart
 				await api.cart.create(sampleElementToCart);
 				setIsLoading(false);
-				setRefresh(!refresh);
+				//add modal to cart
+				dispatch(setModal('goToCart'));
+				dispatch(setCartProject(idProject));
 			}
 		} catch (error: any) {
 			setErrorMessage(error.response?.data.message || 'Unknown error occurred');
@@ -82,7 +88,7 @@ export const ChooseProjects = () => {
 
 	useEffect(() => {
 		getProjects();
-	}, [refresh]);
+	}, []);
 
 	return (
 		<div className={s.wrapper}>

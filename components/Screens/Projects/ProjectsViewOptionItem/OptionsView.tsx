@@ -1,10 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import s from './OptionsView.module.scss';
 
 import { useAppDispatch } from '@/redux/hooks';
-import { setModal, setProjectId } from '@/redux/slices/modal';
+import { setModal, setProjectId, setCartProject } from '@/redux/slices/modal';
 import { setSamples } from '@/redux/slices/modal';
 import { Spinner } from '@/components/UI/Spinner';
 
@@ -14,7 +15,6 @@ import { BackButton } from '@/components/UI/BackButton';
 import { CartCreateBody } from '@/types/services/cart';
 
 import error_icon from '@/imgs/Buyer&Seller/process_error.svg';
-import success_icon from '@/imgs/ResetPassword/success.svg';
 
 type TypeProps = {
 	idProject: number;
@@ -23,9 +23,9 @@ type TypeProps = {
 };
 
 export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
+	const router = useRouter();
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const [error, setError] = useState<string>('');
-	const [successful, setSuccessful] = useState<string>('');
 	const dispatch = useAppDispatch();
 	const api = Api();
 	const [options, setOptions] = useState<Option[]>([]);
@@ -60,7 +60,8 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 			};
 			setIsLoading(false);
 			await api.cart.create(data);
-			setSuccessful('Option added to cart');
+			//if success add to cart
+			dispatch(setModal('goToCart'));
 		} catch (error: any) {
 			setError(error.response?.data.message || 'Unknown error occurred');
 			console.error('Error api.cart.create options:', error);
@@ -70,6 +71,8 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 	useEffect(() => {
 		dispatch(setProjectId(idProject));
 		fetchGetOptions(idOption);
+		//Setting the project ID for the card for successful addition to the cart.
+		dispatch(setCartProject(idProject));
 	}, []);
 
 	return (
@@ -80,13 +83,13 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 				</div>
 			)}
 
-			{(error || successful) && (
+			{error && (
 				<div className={s.modal}>
 					<div className={s.content}>
 						<Image
 							className={s.header_close}
 							onClick={() => dispatch(setModal(''))}
-							src={successful ? success_icon : error_icon}
+							src={error_icon}
 							alt="error_icon"
 							width={100}
 							height={100}
@@ -148,7 +151,17 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 								<tr>
 									<td>Product name</td>
 									{options.map((el: Option, ind: number) => {
-										return <td key={ind}>{el.product.name}</td>;
+										return (
+											<td
+												className={s.product_name}
+												onClick={() => {
+													router.push(`/marketplace/product/${el.product.id}`);
+												}}
+												key={ind}
+											>
+												{el.product.name}
+											</td>
+										);
 									})}
 								</tr>
 								{/* Unit Price  */}
@@ -157,7 +170,7 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 									{options.map((el: Option, ind: number) => {
 										return (
 											<td className={s.price} key={ind}>
-												${el.price}
+												${el.price ? el.price : '0'}
 											</td>
 										);
 									})}
@@ -175,7 +188,7 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 									{options.map((el: Option, ind: number) => {
 										return (
 											<td key={ind}>
-												{el.product.moq} {el.product.moq > 1 ? ' Units' : ' Unit'}
+												{el.product.moq} {el.product.unitOfMeasurement}
 											</td>
 										);
 									})}
@@ -186,7 +199,7 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 									{options.map((el: Option, ind: number) => {
 										return (
 											<td key={ind}>
-												{el.product.leadTime}
+												{el.product.leadTime > 0 ? el.product.leadTime : 0}
 												{el.product.leadTime > 1 ? ' Weeks' : ' Week'}
 											</td>
 										);
@@ -196,7 +209,10 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 								<tr>
 									<td>Certification</td>
 									{options.map((el: Option, ind: number) => {
-										return <td key={ind}>Undefined</td>;
+										const certification = el.product.dynamic_attr.find(
+											(attr) => attr.label === 'Certification'
+										)?.value;
+										return <td key={ind}>{certification ? certification : '-'}</td>;
 									})}
 								</tr>
 								{/* Warranty (years) */}
@@ -205,8 +221,10 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 									{options.map((el: Option, ind: number) => {
 										return (
 											<td key={ind}>
-												{el.product.warranty}
-												{el.product.warranty > 1 ? ' years' : ' year'}
+												{el.product.warranty ? el.product.warranty : '-'}
+												{el.product.warranty && el.product.warranty > 1
+													? ' years'
+													: ' year'}
 											</td>
 										);
 									})}
@@ -215,28 +233,37 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 								<tr>
 									<td>Opening Size</td>
 									{options.map((el: Option, ind: number) => {
-										return <td key={ind}>{el.size}</td>;
+										return <td key={ind}>{el.size ? el.size : '-'}</td>;
 									})}
 								</tr>
 								{/* Material */}
 								<tr>
 									<td>Material</td>
 									{options.map((el: Option, ind: number) => {
-										return <td key={ind}>Undefined</td>;
+										const material = el.product.dynamic_attr.find(
+											(attr) => attr.label === 'Frame Material'
+										)?.value;
+										return <td key={ind}>{material ? material : '-'}</td>;
 									})}
 								</tr>
 								{/* Glazing */}
 								<tr>
 									<td>Glazing</td>
 									{options.map((el: Option, ind: number) => {
-										return <td key={ind}>Undefined</td>;
+										const glazing = el.product.dynamic_attr.find(
+											(attr) => attr.label === 'Glazing Type'
+										)?.value;
+										return <td key={ind}>{glazing ? glazing : '-'}</td>;
 									})}
 								</tr>
 								{/* U-factor */}
 								<tr>
 									<td>U-factor</td>
 									{options.map((el: Option, ind: number) => {
-										return <td key={ind}>Undefined</td>;
+										const ufactor = el.product.dynamic_attr.find(
+											(attr) => attr.label === 'U-Factor'
+										)?.value;
+										return <td key={ind}>{ufactor ? ufactor : '-'}</td>;
 									})}
 								</tr>
 								<tr>

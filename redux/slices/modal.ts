@@ -27,7 +27,8 @@ type ModalType =
 	| 'sellerProductUploadImage'
 	| 'deleteProject'
 	| 'addSampleToCart'
-	| 'addSampleToCartFromOption';
+	| 'addSampleToCartFromOption'
+	| 'goToCart';
 
 interface CounterState {
 	modal: ModalType;
@@ -38,6 +39,8 @@ interface CounterState {
 	//for sample add to cart on options page (<OptionsView />)
 	samples: Sample[] | null;
 	projectId: number;
+	//The card number when something has been successfully added to the cart for reference.
+	projectCart: number;
 }
 
 const initialState: CounterState = {
@@ -46,6 +49,7 @@ const initialState: CounterState = {
 	sample: null,
 	samples: null,
 	projectId: -1,
+	projectCart: -1,
 };
 
 const modalSlice = createSlice({
@@ -67,9 +71,18 @@ const modalSlice = createSlice({
 		setProjectId(state, action: PayloadAction<number>) {
 			state.projectId = action.payload;
 		},
+		setCartProject(state, action: PayloadAction<number>) {
+			state.projectCart = action.payload;
+		},
 	},
 });
 
-export const { setModal, setEmail, setSample, setSamples, setProjectId } =
-	modalSlice.actions;
+export const {
+	setModal,
+	setEmail,
+	setSample,
+	setSamples,
+	setProjectId,
+	setCartProject,
+} = modalSlice.actions;
 export default modalSlice.reducer;

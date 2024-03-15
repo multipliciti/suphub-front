@@ -24,6 +24,7 @@ import { DeleteProject } from '@/components/Modals/Projects/DeleteProject';
 import { WarningTrialCanBeUsedOnce } from '@/components/Modals/WarningTrialCanBeUsedOnce';
 import { AddSampleToCartFromOption } from './AddSampleToCartFromOption';
 import { AddSampleToCart } from './AddSampleToCart';
+import { GoToCart } from './GoToCart';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -193,6 +194,11 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'addSampleToCart' && <AddSampleToCart />}
+			</div>
+			<div
+				className={classNames(s.wrapper, modal === 'goToCart' && s.wrapper_active)}
+			>
+				{modal === 'goToCart' && <GoToCart />}
 			</div>
 		</>
 	);

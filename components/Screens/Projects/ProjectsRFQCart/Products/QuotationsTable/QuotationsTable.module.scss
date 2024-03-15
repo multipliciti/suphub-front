@@ -1,7 +1,8 @@
 .wrapper {
 	position: relative;
 	// overflow-x: scroll;
-	max-width: 505px;
+	overflow-x: auto;
+	// max-width: 100%;
 
 	// .modal {
 	// 	position: absolute;
@@ -15,9 +16,9 @@
 	// 	background-color: rgba(20, 54, 68, 0.35);
 	// }
 
-	&_compress {
-		max-width: 100%;
-	}
+	// &_compress {
+	// 	max-width: 100%;
+	// }
 
 	.more {
 		width: 210px;
@@ -166,7 +167,7 @@
 
 		.item {
 			height: 100%;
-			padding: 10px 10px 0px 10px;
+			padding: 9px 10px 0px 10px;
 
 			.info {
 				position: relative;
@@ -236,48 +237,6 @@
 					pointer-events: all;
 					opacity: 0;
 				}
-
-				//border for <td> tag
-				.border {
-					transition: opacity 0.3s ease;
-					opacity: 0;
-
-					position: absolute;
-					z-index: 2;
-
-					&_top {
-						top: -1px;
-						left: -1px;
-
-						height: 1px;
-						width: 211px; //+1px
-						background-color: #755cf1;
-					}
-					&_bottom {
-						bottom: -1px;
-						left: -1px;
-
-						height: 1px;
-						width: 211px; //+1px
-						background-color: #755cf1;
-					}
-					&_left {
-						left: -1px;
-						top: -1px;
-
-						height: 54px; //-1px?
-						width: 1px;
-						background-color: #755cf1;
-					}
-					&_right {
-						right: -1px;
-						top: -1px;
-
-						height: 54px; //-1px?
-						width: 1px;
-						background-color: #755cf1;
-					}
-				}
 			}
 
 			.compare {
@@ -319,19 +278,15 @@
 
 	tr:last-child {
 		.td {
-			height: 55px;
+			height: 60px;
 			border-bottom: none;
-
-			&_compress {
-				height: 55px;
-			}
 		}
-		td:hover {
-			.icon_more {
-				pointer-events: all;
-				opacity: 1;
-			}
-		}
+		// td:hover {
+		// 	.icon_more {
+		// 		pointer-events: all;
+		// 		opacity: 1;
+		// 	}
+		// }
 	}
 
 	//if hover icon eye and active row

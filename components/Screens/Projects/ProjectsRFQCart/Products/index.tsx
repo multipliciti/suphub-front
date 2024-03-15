@@ -79,10 +79,8 @@ export const Products = ({ rfqs, projectId }: TypeProps) => {
 										</p>
 									) : (
 										<p>
-											<span className={s.indificator}>
-												CSI {el[0].subCategory.category.csiCode}
-											</span>
-											{el[0].subCategory.category.name}
+											<span className={s.indificator}>CSI</span>
+											{el[0].subCategory.category.csiCode}
 										</p>
 									)}
 								</div>
@@ -119,9 +117,7 @@ export const Products = ({ rfqs, projectId }: TypeProps) => {
 									activeRfqs.includes(ind) && s.table_wrapper
 								)}
 							>
-								<span>
-									<ProductTable compress={compress} properties={el} />
-								</span>
+								<ProductTable compress={compress} properties={el} />
 							</span>
 						</div>
 						<div

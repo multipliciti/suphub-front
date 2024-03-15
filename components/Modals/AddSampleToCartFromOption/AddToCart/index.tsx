@@ -1,6 +1,6 @@
 'use client';
 import s from './AddToCart.module.scss';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { Api } from '@/services';
 import { useAppSelector } from '@/redux/hooks';
@@ -19,7 +19,6 @@ export const AddToCart = ({ setActiveWindow, setError }: TypeProps) => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const samples = useAppSelector((state) => state.modalSlice.samples);
 	const projectId = useAppSelector((state) => state.modalSlice.projectId);
-	console.log('projectId', projectId);
 	const api = Api();
 
 	const [sampleCount, setSampleCount] = useState<{

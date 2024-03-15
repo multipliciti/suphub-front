@@ -1,11 +1,12 @@
 .wrapper {
 	transition: width 0.4s ease;
-	background-color: #465569;
+	background-color: #fff;
 	padding: 24px 24px;
 	height: calc(100vh - 60px);
 	position: fixed;
-		width: 0px;
+	width: 0px;
 	height: 100%;
+	box-shadow: 0 10px 25px 0 rgba(53, 53, 53, 0.12);
 
 	&_scroll {
 		height: 100%;
@@ -34,8 +35,9 @@
 
 	.title {
 		margin-bottom: 12px;
-		color: #fff;
-		font-family: 'Lato', sans-serif;
+		color: #334155;
+		font-variant-numeric: lining-nums proportional-nums;
+
 		font-size: 18px;
 		font-style: normal;
 		font-weight: 700;

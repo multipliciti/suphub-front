@@ -9,7 +9,6 @@ import { classNames } from '@/utils/classNames';
 import s from './QuotationsTable.module.scss';
 
 import { Api } from '@/services';
-import { useAppDispatch } from '@/redux/hooks';
 import { Spinner } from '@/components/UI/Spinner';
 import { truncateFileNameEnd } from '@/utils/names';
 
@@ -32,7 +31,6 @@ interface TypeProps {
 }
 
 export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
-	const dispatch = useAppDispatch();
 	const api = Api();
 	const router = useRouter();
 
@@ -252,13 +250,10 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 				</div>
 			)}
 
-			<table
-				ref={tableRef}
-				className={classNames(s.table, compress && s.table_compress)}
-			>
+			<table ref={tableRef} className={s.table}>
 				<thead className={s.thead}>
 					<tr>
-						<th className={classNames(s.th, compress && s.th_compress)}>
+						<th className={s.th}>
 							<span className={s.eye_icon}>
 								<Image
 									className={s.eye_icon}
@@ -302,7 +297,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 											);
 										}
 									}}
-									className={classNames(s.td, compress && s.td_compress)}
+									className={s.td}
 								>
 									<Image
 										className={s.eye_icon}
@@ -322,35 +317,12 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 									.filter((option) => !idsFilterOptions.includes(option.id))
 									.map((option, ind) => {
 										return (
-											<td
-												data-id={option.id}
-												className={classNames(s.td, compress && s.td_compress)}
-												key={ind}
-											>
+											<td data-id={option.id} className={s.td} key={ind}>
 												{/* processing declining option...  */}
 												{isLoading && optionMore === option.id ? (
 													<Spinner size={'s'} />
 												) : (
 													<span className={s.item}>
-														{/* This is about borders, as td:hover is not working in the
-												table.
-												bad code */}
-														{/* // */}
-														{/* // */}
-														<span
-															className={classNames(s.border, s.border_top)}
-														></span>
-														<span
-															className={classNames(s.border, s.border_bottom)}
-														></span>
-														<span
-															className={classNames(s.border, s.border_left)}
-														></span>
-														<span
-															className={classNames(s.border, s.border_right)}
-														></span>
-														{/* // */}
-														{/* // */}
 														<span className={s.info}>
 															{optionStatusShow && statusOption.id === option.id ? (
 																<span className={s.info_status}>
@@ -363,7 +335,6 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 																		width={20}
 																		height={20}
 																	/>
-
 																	<p className={s.info_status_title}>
 																		{statusOption.seccess
 																			? statusOption.seccess

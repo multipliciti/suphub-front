@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 
 import s from './ProductPage.module.scss';
 import { Api } from '@/services';
@@ -15,7 +14,6 @@ type PropsType = {
 };
 
 export const ProductPageComponent = (props: PropsType) => {
-	const pathname = usePathname();
 	const dispatch = useAppDispatch();
 	const api = Api();
 
@@ -26,7 +24,6 @@ export const ProductPageComponent = (props: PropsType) => {
 		'success'
 	);
 	const product = useAppSelector((state) => state.productSlice.product);
-	const backLink = pathname.includes('marketplace') ? '/marketplace' : '/favorites';
 
 	const fetchProductOne = async (id: number) => {
 		try {
@@ -54,7 +51,7 @@ export const ProductPageComponent = (props: PropsType) => {
 				<div className={s.container}>
 					<div className={s.header}>
 						<div className={s.nav}>
-							<BackButton href={backLink} />
+							<BackButton />
 						</div>
 					</div>
 

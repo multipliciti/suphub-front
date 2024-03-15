@@ -98,16 +98,16 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 		},
 	];
 
-	const orderTypeArr = [
-		{
-			label: 'Sample',
-			status: 'sample',
-		},
-		{
-			label: 'Product',
-			status: 'product',
-		},
-	];
+	// const orderTypeArr = [
+	// 	{
+	// 		label: 'Sample',
+	// 		status: 'sample',
+	// 	},
+	// 	{
+	// 		label: 'Product',
+	// 		status: 'product',
+	// 	},
+	// ];
 
 	return (
 		<div className={s.wrapper}>
@@ -190,7 +190,7 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 			</div>
 
 			{/* Order Type filter*/}
-			<div
+			{/* <div
 				ref={orderTypeRef}
 				onClick={() => setActiveFilter(activeFilter !== 2 ? 2 : -1)}
 				className={s.filter}
@@ -235,7 +235,7 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 						);
 					})}
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 };
