@@ -1,4 +1,3 @@
-import { Feedback } from '../../components/Screens/Storefront/StorefrontSellerOrderItem/Order/ProgressOrder/Feedback/index';
 export interface ProductionItem {
 	id: number;
 	updates: string;
@@ -146,9 +145,9 @@ export interface OrderInterface {
 }
 
 export interface OrderCreateBody {
-	type: string;
-	PO: string;
-	shipmentAmount: number;
-	estDate: string;
+	type?: string;
+	PO?: string;
+	shipmentAmount?: number;
+	estDate?: string;
 	cartElementIds: number[];
 }
