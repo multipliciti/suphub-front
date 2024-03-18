@@ -168,9 +168,18 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 								<tr>
 									<td>Unit Price</td>
 									{options.map((el: Option, ind: number) => {
+										const minPriceOfPrices =
+											el.product.prices.length > 0
+												? el.product.prices.reduce(function (prev, current) {
+														return prev.value < current.value ? prev : current;
+												  })
+												: null;
 										return (
 											<td className={s.price} key={ind}>
-												${el.price ? el.price : '0'}
+												{minPriceOfPrices != null
+													? `${minPriceOfPrices.value}`
+													: '0'}
+												<span>{`/${el.product.unitOfMeasurement}`}</span>
 											</td>
 										);
 									})}

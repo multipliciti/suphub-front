@@ -28,7 +28,7 @@ export const Login: React.FC = () => {
 	const searchParams = useSearchParams();
 	const dispatch = useAppDispatch();
 	const { push } = useRouter();
-	const [incorrect, setIncorrect] = useState<boolean>(false);
+	const [incorrectMesssage, setIncorrecMesssage] = useState<string>('');
 	const [hidePassword, setHidePassword] = useState<boolean>(true);
 	const [notVerified, setNotVerified] = useState<boolean>(false);
 	//for rerender page
@@ -78,7 +78,13 @@ export const Login: React.FC = () => {
 				error.response?.data?.statusCode === 401 &&
 				error.response?.data?.message === 'Unauthorized'
 			) {
-				setIncorrect(true);
+				setIncorrecMesssage('Incorrect password or email. Please try again.');
+			}
+			if (
+				error.response?.data?.statusCode === 400 &&
+				error.response?.data?.message === 'No User found'
+			) {
+				setIncorrecMesssage('No User found');
 			}
 			if (
 				error.response?.data?.statusCode === 401 &&
@@ -108,7 +114,9 @@ export const Login: React.FC = () => {
 				</p>
 			</div>
 
-			<div className={classNames(s.incorrect, incorrect && s.incorrect_active)}>
+			<div
+				className={classNames(s.incorrect, incorrectMesssage && s.incorrect_active)}
+			>
 				<Image
 					className={s.label_image}
 					src={modal_incorrect}
@@ -116,9 +124,7 @@ export const Login: React.FC = () => {
 					width={24}
 					height={24}
 				/>
-				<p className={s.incorrect_text}>
-					Incorrect password or email. Please try again.
-				</p>
+				<p className={s.incorrect_text}>{incorrectMesssage}</p>
 			</div>
 
 			<form className={classNames(s.form)} onSubmit={handleSubmit(submit, onErrors)}>
