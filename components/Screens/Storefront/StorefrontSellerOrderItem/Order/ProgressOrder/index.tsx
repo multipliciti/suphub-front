@@ -4,6 +4,7 @@ import s from './ProgressOrder.module.scss';
 import { classNames } from '@/utils/classNames';
 import Image from 'next/image';
 import { Deposit } from './Deposit';
+import { OrderConfirmation } from './OrderConfirmation';
 import { Data } from './Data';
 import { Production } from './Production';
 import { PreShipmentInspection } from './PreShipmentInspection';
@@ -164,10 +165,36 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 									activeStep >= 1 && s.step_title_confirmed
 								)}
 							>
-								<span>Order confirmed</span>
+								<span>
+									{activeStep >= 2 ? 'Order confirmed' : 'Order confirmation'}
+								</span>
+							</span>
+							<span
+								onClick={() => setActiveDisplayFunction(1)}
+								className={s.details}
+							>
+								<span className={s.details_title}>
+									{activeDisplay.includes(1) ? 'Hide details' : 'Show details'}
+								</span>
+								<Image
+									className={classNames(
+										s.details_icon,
+										activeDisplay.includes(1) && s.details_icon_active
+									)}
+									src={show_details_icon}
+									alt="toggle_img"
+									width={20}
+									height={20}
+								/>
 							</span>
 						</div>
 						<Data date={order.createdAt} />
+						<OrderConfirmation
+							id={order.id}
+							totalSum={order.amount}
+							index={1}
+							activeDisplay={activeDisplay}
+						/>
 					</div>
 				</div>
 			</div>

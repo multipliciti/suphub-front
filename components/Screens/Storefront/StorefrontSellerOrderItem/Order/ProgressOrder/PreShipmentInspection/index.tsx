@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { classNames } from '@/utils/classNames';
 import { useAppDispatch } from '@/redux/hooks';
@@ -29,6 +29,7 @@ interface formDataType {
 	files: File[];
 	photos: File[];
 	type: string;
+	estDate: string;
 }
 
 export const PreShipmentInspection = ({
@@ -47,10 +48,53 @@ export const PreShipmentInspection = ({
 		photos: [],
 		type: '',
 		amount: '',
+		estDate: '',
 	});
 
 	// for local rerenderind
 	const [approved, setApproved] = useState<boolean>(false);
+
+	const handleDateChange = (event: any) => {
+		const inputValue = event.target.value;
+		const sanitizedValue = inputValue.replace(/\D/g, '');
+		let formattedValue = '';
+
+		// Format the value as MM/DD/YYYY
+		if (sanitizedValue.length <= 2) {
+			formattedValue = sanitizedValue;
+		} else if (sanitizedValue.length <= 4) {
+			formattedValue = `${sanitizedValue.slice(0, 2)}/${sanitizedValue.slice(2)}`;
+		} else {
+			formattedValue = `${sanitizedValue.slice(0, 2)}/${sanitizedValue.slice(
+				2,
+				4
+			)}/${sanitizedValue.slice(4, 8)}`;
+		}
+
+		setFormData((prevData) => ({ ...prevData, estDate: formattedValue }));
+	};
+
+	function convertDateFormat(inputDate: string) {
+		// Split the input date string into its components
+		const [month, day, year] = inputDate.split('/');
+
+		// Create a new Date object using the components (Note: months are zero-based in JavaScript)
+		const date = new Date(+year, +month - 1, +day);
+
+		// Format the date components into the desired format
+		const formattedDate = `${date.getFullYear()}-${padZero(
+			date.getMonth() + 1
+		)}-${padZero(date.getDate())} ${padZero(date.getHours())}:${padZero(
+			date.getMinutes()
+		)}:${padZero(date.getSeconds())}.${date.getMilliseconds()}`;
+
+		return formattedDate;
+	}
+
+	// Helper function to pad single-digit numbers with leading zeros
+	function padZero(num: number) {
+		return num.toString().padStart(2, '0');
+	}
 
 	// add photo
 	const handleAddPhoto = (event: ChangeEvent<HTMLInputElement>) => {
@@ -103,6 +147,7 @@ export const PreShipmentInspection = ({
 		formDataSend.append('orderId', orderId.toString());
 		formDataSend.append('amount', data.amount.toString());
 		formDataSend.append('type', data.type);
+		formDataSend.append('estDate', convertDateFormat(data.estDate));
 		try {
 			await api.sellerOrder.orderDelivery(formDataSend);
 			setApproved(true);
@@ -174,6 +219,20 @@ export const PreShipmentInspection = ({
 											</span>
 										);
 									})}
+								</div>
+							</div>
+							{/* Estimated delivery date */}
+							<div className={s.form_chapter}>
+								<div className={s.block}>
+									<h5 className={s.title}>Estimated delivery date</h5>
+								</div>
+								<div className={s.block}>
+									<input
+										onChange={handleDateChange}
+										placeholder="MM/DD/YYYY"
+										className={s.input_amount} // Add your CSS class here
+										value={formData.estDate}
+									/>
 								</div>
 							</div>
 							{/* input amount */}

@@ -232,6 +232,7 @@ export const ProgressOrder = ({ order, rerender, setRerender }: TypeProps) => {
 						</div>
 						{activeStep >= 2 && (
 							<Deposit
+								priceInner={order.depositAmount}
 								date={
 									activeStep === 2
 										? order.updatedAt

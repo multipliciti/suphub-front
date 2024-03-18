@@ -1,0 +1,188 @@
+.wrapper {
+  width: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 4px 6px 12px 0px rgba(184, 191, 198, 0.16);
+  border: 1px solid #e7e9ef;
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+  height: 0;
+
+  &_active {
+    margin-top: 16px;
+    padding: 20px 24px;
+    opacity: 1;
+    pointer-events: all;
+    height: auto;
+  }
+
+  .message {
+    &_info {
+      text-align: start;
+      color: #58707A;
+      height: 18px;
+
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 18px;
+
+      margin-bottom: 5px;
+    }
+  }
+
+  &_control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 36px;
+
+    &_buttons {
+      display: flex;
+      gap: 12px;
+    }
+  }
+}
+
+@mixin common-button-style {
+  width: 125px;
+  height: 36px;
+
+  border: 1px solid #B3BEC3;
+  border-radius: 4px;
+
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 20px;
+  color: #B3BEC3;
+}
+
+.button {
+  @include common-button-style;
+
+  &_decline {
+    @include common-button-style;
+    background-color: #FAFBFC;
+
+    &_active {
+      @include common-button-style;
+
+      color: #12006C;
+      background-color: #FFFFFF;
+      border-color: #12006C;
+    };
+  };
+
+  &_confirm {
+    @include common-button-style;
+    background-color: #E8EBED;
+    border:none;
+
+    &_active {
+      @include common-button-style;
+      border: none;
+
+      color: #FFFFFF;
+      background-color: #2B1694;
+    };
+  };
+}
+
+@mixin common-input-wrapper-style {
+  height:36px;
+  border: 1px solid #D0D3DF;
+  display: flex;
+  flex-direction: row;
+  padding-left: 12px;
+}
+
+@mixin common-input-style {
+  border: none;
+  outline: none; /* Removes the default outline */
+  background-color: transparent; /* Ensures the input background is transparent */
+  //padding: 0; /* Optional: Remove padding */
+  //margin: 0; /* Optional: Remove margin */
+}
+
+.input {
+  @include common-input-style;
+
+  &_wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+
+  &_percentage {
+    @include common-input-style;
+
+    width: 28px;
+
+    text-align: right;
+
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 400;
+    color: #12006C;
+
+    &_wrapper {
+      @include common-input-wrapper-style;
+      width: 82px;
+
+      border-color: #2B1694;
+      border-radius: 4px 0 0 4px;
+
+      background-color: #F0F2FE;
+    }
+
+    &_prefix {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      padding-right: 20px;
+
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 24px;
+      color: #12006C;
+
+      width: 100%;
+    }
+  }
+
+  &_amount {
+    @include common-input-style;
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #475569;
+
+    height: 14px;
+
+    transform: translateY(-1.8px);
+
+    &_wrapper {
+      @include common-input-wrapper-style;
+
+      width: 280px;
+
+      border-radius: 0 4px 4px 0;
+
+      background-color: #FFFFFF;
+
+      padding: 12px 16px 12px 14px
+    }
+
+    &_prefix {
+      display: flex;
+      align-items: center;
+      padding-right: 4px;
+
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 20px;
+      color: #475569;
+    }
+  }
+}

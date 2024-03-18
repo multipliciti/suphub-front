@@ -4,6 +4,7 @@ import { classNames } from '@/utils/classNames';
 import { formatDateString } from '@/utils/formatDateString';
 import { Api } from '@/services';
 import { useRouter } from 'next/navigation';
+import { formatNumber } from '@/utils/formatNumber';
 
 interface PropsType {
 	date: string;
@@ -14,9 +15,11 @@ interface PropsType {
 	status: string;
 	rerenderProgress: boolean;
 	setRerenderProgress: (b: boolean) => void;
+	priceInner: number;
 }
 
 export const Deposit = ({
+	priceInner,
 	activeDisplay,
 	index,
 	orderId,
@@ -26,13 +29,13 @@ export const Deposit = ({
 }: PropsType) => {
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 	const api = Api();
-	const priceInner = Math.floor(price / 4);
+	const percentage = (priceInner / price) * 100;
 	const { push } = useRouter();
 
 	const fetchOrderPay = async () => {
 		const data = {
 			orderId,
-			amount: priceInner,
+			amount: +priceInner.toFixed(0),
 			type: 'deposit',
 			successUrl: `${HOST}/projects/order/${orderId}`,
 			cancelUrl: `${HOST}/projects/order/${orderId}`,
@@ -65,9 +68,11 @@ export const Deposit = ({
 			>
 				{status === 'depositWaiting' ? (
 					<>
-						<p className={s.title}>To start production pay Deposit</p>
+						<p className={s.title}>
+							To start production pay Deposit ({percentage}% due)
+						</p>
 						<button onClick={() => fetchOrderPay()} className={s.btn}>
-							Pay ${priceInner} now
+							Pay ${formatNumber(priceInner)} now
 						</button>
 					</>
 				) : (

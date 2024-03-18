@@ -23,6 +23,15 @@ export const sellerOrderAPI = (instance: AxiosInstance) => ({
 		const result = response.data;
 		return result;
 	},
+	async setDeposit(id: number, depositAmount: number) {
+		try {
+			const url = `/order/set-deposit/${id}`;
+			const response = await instance.patch(url, { depositAmount });
+			return response.data;
+		} catch (error) {
+			throw error;
+		}
+	},
 	async changeStatus(data: { id: number; status: string }) {
 		const url = `/order/change-status`;
 		const response = await instance.patch(url, data);

@@ -137,6 +137,7 @@ export interface OrderInterface {
 	buyerFeedback: FeedbackInterface | null;
 	payments?: Payment[];
 	estDate: string;
+	depositAmount: number;
 	updatedAt: string;
 	createdAt: string;
 	deliveryDate: null | string;
