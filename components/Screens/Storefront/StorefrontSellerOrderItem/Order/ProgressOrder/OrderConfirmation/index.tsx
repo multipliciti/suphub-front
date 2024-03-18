@@ -9,6 +9,8 @@ interface PropsType {
 	index: number;
 	id: number;
 	totalSum: number;
+	activeStep: number;
+	setActiveStep: (n: number) => void;
 }
 
 export const OrderConfirmation = ({
@@ -16,10 +18,14 @@ export const OrderConfirmation = ({
 	activeDisplay,
 	index,
 	totalSum,
+	activeStep,
+	setActiveStep,
 }: PropsType) => {
 	const api = Api();
 	const [percentageAmount, setPercentageAmount] = useState<number | null>(null);
-	const [isBlockedSubmission, setIsBlockedSubmission] = useState<boolean>(false);
+	const [isBlockedSubmission, setIsBlockedSubmission] = useState<boolean>(
+		activeStep >= 2 || false
+	);
 	const isActive = !isBlockedSubmission && Boolean(percentageAmount);
 
 	function prettifyNumber() {
@@ -45,6 +51,18 @@ export const OrderConfirmation = ({
 		setPercentageAmount(+value);
 	};
 
+	const changeStatusPreShipment = async () => {
+		try {
+			await api.sellerOrder.changeStatus({
+				id,
+				status: 'depositWaiting',
+			});
+			setActiveStep(2);
+		} catch (error) {
+			console.error('changeStatusPreShipment error:', error);
+		}
+	};
+
 	const handleDecline = () => {
 		setPercentageAmount(null);
 	};
@@ -53,6 +71,7 @@ export const OrderConfirmation = ({
 		try {
 			const amount = totalSum * (percentageAmount ? percentageAmount / 100 : 1);
 			await api.sellerOrder.setDeposit(id, amount);
+			await changeStatusPreShipment();
 			setIsBlockedSubmission(true);
 		} catch (e) {
 			console.error('fetchOrderPay error:', e);

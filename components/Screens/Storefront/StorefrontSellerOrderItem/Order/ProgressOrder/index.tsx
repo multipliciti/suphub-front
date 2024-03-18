@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import s from './ProgressOrder.module.scss';
 import { classNames } from '@/utils/classNames';
 import Image from 'next/image';
@@ -194,6 +194,8 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 							totalSum={order.amount}
 							index={1}
 							activeDisplay={activeDisplay}
+							activeStep={activeStep}
+							setActiveStep={setActiveStep}
 						/>
 					</div>
 				</div>
