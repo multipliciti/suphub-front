@@ -4,11 +4,9 @@ import { StatusOrder } from './StatusOrder';
 import { useRouter } from 'next/navigation';
 
 import { Info } from './Info';
-import Image from 'next/image';
 import { BackButton } from '@/components/UI/BackButton';
 import { ProgressOrder } from './ProgressOrder';
 import { OrderInterface } from '@/types/services/orders';
-import Link from 'next/link';
 
 interface TypeProps {
 	rerender: boolean;
@@ -28,7 +26,7 @@ export const Order = ({ projectId, order, rerender, setRerender }: TypeProps) =>
 
 			<StatusOrder code={order.PO} status={order.status} />
 			<Info
-				date={order.estDate}
+				date={order.delivery?.estDate ?? 'Not Available'}
 				payments={order.payments ?? null}
 				price={order.amount}
 			/>

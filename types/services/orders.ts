@@ -14,6 +14,7 @@ export interface Delivery {
 	id?: number;
 	type: string;
 	amount: number;
+	estDate: string;
 	documents:
 		| {
 				id: number;

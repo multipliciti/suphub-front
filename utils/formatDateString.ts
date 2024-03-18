@@ -1,6 +1,8 @@
 export function formatDateString(inputDateString: string) {
 	if (inputDateString === '') {
 		return '';
+	} else if (inputDateString === 'Not Available') {
+		return inputDateString;
 	}
 
 	const inputDate = new Date(inputDateString);

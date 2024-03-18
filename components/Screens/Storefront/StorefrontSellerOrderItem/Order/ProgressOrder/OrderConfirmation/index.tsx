@@ -51,7 +51,7 @@ export const OrderConfirmation = ({
 		setPercentageAmount(+value);
 	};
 
-	const changeStatusPreShipment = async () => {
+	const changeStatusDepositWaiting = async () => {
 		try {
 			await api.sellerOrder.changeStatus({
 				id,
@@ -59,7 +59,7 @@ export const OrderConfirmation = ({
 			});
 			setActiveStep(2);
 		} catch (error) {
-			console.error('changeStatusPreShipment error:', error);
+			console.error('changeStatusDepositWaiting error:', error);
 		}
 	};
 
@@ -71,7 +71,7 @@ export const OrderConfirmation = ({
 		try {
 			const amount = totalSum * (percentageAmount ? percentageAmount / 100 : 1);
 			await api.sellerOrder.setDeposit(id, amount);
-			await changeStatusPreShipment();
+			await changeStatusDepositWaiting();
 			setIsBlockedSubmission(true);
 		} catch (e) {
 			console.error('fetchOrderPay error:', e);

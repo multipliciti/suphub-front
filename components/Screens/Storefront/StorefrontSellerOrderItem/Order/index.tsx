@@ -5,7 +5,6 @@ import { Info } from './Info';
 import { ProgressOrder } from './ProgressOrder';
 import { OrderInterface } from '@/types/services/orders';
 import { BackButton } from '@/components/UI/BackButton';
-import Link from 'next/link';
 
 interface Product {
 	order: OrderInterface;
@@ -18,7 +17,7 @@ export const Order = ({ order }: Product) => {
 
 			<StatusOrder code={order.PO} status={order.status} />
 			<Info
-				date={order.estDate}
+				date={order.delivery?.estDate ?? 'Not Available'}
 				payments={order.payments ?? null}
 				price={order.amount}
 			/>
