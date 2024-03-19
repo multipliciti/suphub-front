@@ -55,8 +55,8 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 				cartId,
 				model: 'rfqOption',
 				modelId: optionId,
-				quantity: optionQuantity,
-				price: optionPrice,
+				quantity: optionQuantity ?? 1,
+				price: optionPrice ?? 0,
 			};
 			setIsLoading(false);
 			await api.cart.create(data);
