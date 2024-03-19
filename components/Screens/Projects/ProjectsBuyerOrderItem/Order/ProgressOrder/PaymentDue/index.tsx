@@ -28,7 +28,7 @@ export const PaymentDue = ({
 	const fetchOrderPay = async () => {
 		const data = {
 			orderId,
-			amount: Math.round((price * 3) / 4),
+			amount: Math.round((price * 3) / 4) * 100,
 			type: 'remaining',
 			successUrl: `${HOST}/projects/order/${orderId}`,
 			cancelUrl: `${HOST}/projects/order/${orderId}`,

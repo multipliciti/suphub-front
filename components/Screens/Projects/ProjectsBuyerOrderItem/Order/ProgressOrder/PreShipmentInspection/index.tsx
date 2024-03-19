@@ -1,5 +1,4 @@
 'use client';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { setPhotoShow } from '@/redux/slices/Order/order';
 import { useAppDispatch } from '@/redux/hooks';
@@ -42,7 +41,7 @@ export const PreShipmentInspection = ({
 	const fetchOrderPay = async () => {
 		const data = {
 			orderId,
-			amount: delivery?.amount ? delivery?.amount : 0,
+			amount: delivery?.amount ? delivery?.amount * 100 : 0,
 			type: 'delivery',
 			successUrl: `${HOST}/projects/order/${orderId}`,
 			cancelUrl: `${HOST}/projects/order/${orderId}`,

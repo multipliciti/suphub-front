@@ -35,7 +35,7 @@ export const Deposit = ({
 	const fetchOrderPay = async () => {
 		const data = {
 			orderId,
-			amount: +priceInner.toFixed(0),
+			amount: +priceInner.toFixed(0) * 100,
 			type: 'deposit',
 			successUrl: `${HOST}/projects/order/${orderId}`,
 			cancelUrl: `${HOST}/projects/order/${orderId}`,
