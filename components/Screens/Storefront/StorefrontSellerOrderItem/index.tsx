@@ -13,6 +13,7 @@ interface TypeProps {
 export const StorefrontSellerOrderItem = ({ orderId }: TypeProps) => {
 	const api = Api();
 	const [order, setOrder] = useState<OrderInterface | null>(null);
+	const [rerender, setRerender] = useState<boolean>(false);
 
 	const getOrderById = async (id: number) => {
 		try {
@@ -26,13 +27,13 @@ export const StorefrontSellerOrderItem = ({ orderId }: TypeProps) => {
 
 	useEffect(() => {
 		getOrderById(orderId);
-	}, []);
+	}, [rerender, setRerender]);
 
 	return (
 		<div className={s.wrapper}>
 			{order && (
 				<>
-					<Order order={order} />
+					<Order order={order} setRerender={setRerender} />
 					<InvoiceComponent order={order} />
 				</>
 			)}

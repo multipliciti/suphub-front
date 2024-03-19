@@ -132,7 +132,7 @@ export const ProjectsTable = ({ projectId, data }: PropsType) => {
 									{/* Est.Delivery  */}
 									{column.key === 'Est.Delivery' && (
 										<td className={s.td}>
-											<span>{formatDate(row.estDate)}</span>
+											{formatDate(row.delivery?.estDate || 'Not Available')}
 										</td>
 									)}
 								</>

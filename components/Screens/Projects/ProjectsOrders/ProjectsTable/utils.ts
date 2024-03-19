@@ -1,4 +1,7 @@
 export function formatDate(isoDateString: string): string {
+	if (isoDateString === 'Not Available') {
+		return isoDateString;
+	}
 	const date = new Date(isoDateString);
 	const day = date.getDate();
 	const month = date.getMonth() + 1;

@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { classNames } from '@/utils/classNames';
 import { truncateFileNameEnd } from '@/utils/names';
 import { Order } from '@/types/services/projects';
+import { formatDate } from '@/components/Screens/Projects/ProjectsOrders/ProjectsTable/utils';
 
 interface PropsType {
 	columns: { title: string; key: string }[];
@@ -26,7 +27,7 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 					{/* Creating Data Rows */}
 					{data.map((row, rowIndex) => (
 						<tr key={rowIndex}>
-							{columns.map((column, indd) => (
+							{columns.map((column) => (
 								<>
 									{/* PO  */}
 									{column.key === 'PO#' && (
@@ -37,7 +38,7 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 									{/* Issue Date */}
 									{column.key === 'Issue Date' && (
 										<td className={s.td}>
-											<span>02/26/2023</span>
+											<span>{formatDate(row.createdAt)}</span>
 										</td>
 									)}
 									{/* Issue Date */}
@@ -119,7 +120,7 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 									{/* Est.Delivery  */}
 									{column.key === 'Est.Delivery' && (
 										<td className={s.td}>
-											<span>Est.Delivery Example</span>
+											{formatDate(row.delivery?.estDate || 'Not Available')}
 										</td>
 									)}
 								</>

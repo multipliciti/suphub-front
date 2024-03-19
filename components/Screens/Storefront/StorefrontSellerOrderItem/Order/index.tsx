@@ -8,20 +8,21 @@ import { BackButton } from '@/components/UI/BackButton';
 
 interface Product {
 	order: OrderInterface;
+	setRerender: (b: boolean) => void;
 }
 
-export const Order = ({ order }: Product) => {
+export const Order = ({ order, setRerender }: Product) => {
 	return (
 		<div className={s.wrapper}>
 			<BackButton href="/storefront/orders" />
 
 			<StatusOrder code={order.PO} status={order.status} />
 			<Info
-				date={order.delivery?.estDate ?? 'Not Available'}
+				date={order.delivery?.estDate || 'Not Available'}
 				payments={order.payments ?? null}
 				price={order.amount}
 			/>
-			<ProgressOrder order={order} />
+			<ProgressOrder order={order} setRerender={setRerender} />
 		</div>
 	);
 };

@@ -1,5 +1,6 @@
 import { SellerCompany } from './company';
 import { ProjectType } from '@/types/products/project';
+import { Delivery } from '@/types/services/orders';
 type SortOptions = {
 	[key: string]: 'asc' | 'desc';
 };
@@ -58,6 +59,7 @@ export interface Order {
 	shipmentAmount: number;
 	PO: string;
 	sellerCompany: SellerCompany;
+	delivery: Delivery;
 	buyerCompanyId: number;
 	sellerCompanyId: number;
 	estDate: string;

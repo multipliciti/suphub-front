@@ -17,8 +17,9 @@ import show_details_icon from '@/imgs/Buyer&Seller/showDetails.svg';
 import { OrderInterface } from '@/types/services/orders';
 interface TypeProps {
 	order: OrderInterface;
+	setRerender: (value: boolean) => void;
 }
-export const ProgressOrder = ({ order }: TypeProps) => {
+export const ProgressOrder = ({ order, setRerender }: TypeProps) => {
 	//useRef for wrapper
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
 	//cteate useRef for everyone steps
@@ -430,10 +431,10 @@ export const ProgressOrder = ({ order }: TypeProps) => {
 									order.payments?.find((el) => el.type === 'delivery')?.updatedAt ??
 									''
 								}
+								isSubmitted={Boolean(order?.delivery?.estDate)}
 								activeStep={activeStep}
 								orderId={order.id}
-								rerenderProgress={rerenderProgress}
-								setRerenderProgress={setRerenderProgress}
+								setRerenderProgress={setRerender}
 								index={4}
 								activeDisplay={activeDisplay}
 							/>

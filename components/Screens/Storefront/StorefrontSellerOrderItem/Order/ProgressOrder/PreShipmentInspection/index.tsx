@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 import { classNames } from '@/utils/classNames';
 import { useAppDispatch } from '@/redux/hooks';
@@ -19,9 +19,9 @@ interface PropsType {
 	activeDisplay: number[];
 	orderId: number;
 	index: number;
-	rerenderProgress: boolean;
-	setRerenderProgress: (n: boolean) => void;
+	setRerenderProgress: any;
 	activeStep: number;
+	isSubmitted: boolean;
 }
 
 interface formDataType {
@@ -38,8 +38,8 @@ export const PreShipmentInspection = ({
 	index,
 	orderId,
 	activeStep,
-	rerenderProgress,
 	setRerenderProgress,
+	isSubmitted,
 }: PropsType) => {
 	const dispatch = useAppDispatch();
 	const api = Api();
@@ -139,6 +139,7 @@ export const PreShipmentInspection = ({
 	};
 
 	const handleAddTypes = (type: string) => {
+		if (isSubmitted) return;
 		setFormData((prevData) => ({ ...prevData, type }));
 	};
 
@@ -151,6 +152,7 @@ export const PreShipmentInspection = ({
 		try {
 			await api.sellerOrder.orderDelivery(formDataSend);
 			setApproved(true);
+			setRerenderProgress((prev: boolean) => !prev);
 		} catch (error) {
 			console.error('postOrdeDelivery error:', error);
 		}
@@ -230,8 +232,9 @@ export const PreShipmentInspection = ({
 									<input
 										onChange={handleDateChange}
 										placeholder="MM/DD/YYYY"
-										className={s.input_amount} // Add your CSS class here
+										className={s.input_amount}
 										value={formData.estDate}
+										disabled={isSubmitted}
 									/>
 								</div>
 							</div>
@@ -249,6 +252,7 @@ export const PreShipmentInspection = ({
 										placeholder="Amount"
 										className={s.input_amount}
 										type="number"
+										disabled={isSubmitted}
 									/>
 								</div>
 							</div>
@@ -291,6 +295,7 @@ export const PreShipmentInspection = ({
 											id="pdf"
 											className={s.pdf_input}
 											type="file"
+											disabled={isSubmitted}
 										/>
 										<span className={s.pdf_upload_text}>Upload files</span>
 									</label>
@@ -309,6 +314,7 @@ export const PreShipmentInspection = ({
 											accept="image/*"
 											id="photo"
 											type="file"
+											disabled={isSubmitted}
 										/>
 										<Image src={plus_icon} alt="plus_icon" width={24} height={24} />
 									</label>
@@ -351,6 +357,7 @@ export const PreShipmentInspection = ({
 										postOrdeDelivery(formData);
 										setApproved(!approved);
 									}}
+									disabled={isSubmitted}
 									className={s.send}
 								>
 									Send for approval
