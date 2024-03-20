@@ -1,5 +1,4 @@
 'use client';
-import { AxiosError } from 'axios';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -190,7 +189,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 				return {
 					...prevState,
 					id: optionId,
-					seccess: 'Option adeed to cart',
+					seccess: 'Option added to cart',
 				};
 			});
 			setOptionStatusShow(true);
@@ -233,8 +232,8 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 							currentOption &&
 								optionAddToCart(
 									currentOption?.id,
-									currentOption?.quantity,
-									currentOption?.price
+									currentOption?.quantity ?? 1,
+									currentOption?.price ?? 0
 								);
 						}}
 						className={s.more_item}
