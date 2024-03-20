@@ -8,6 +8,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { setModal, setProjectId, setCartProject } from '@/redux/slices/modal';
 import { setSamples } from '@/redux/slices/modal';
 import { Spinner } from '@/components/UI/Spinner';
+import { getUniqueLabels } from './utils';
 
 import { Api } from '@/services';
 import { Option } from '@/types/services/rfq';
@@ -30,6 +31,10 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 	const api = Api();
 	const [options, setOptions] = useState<Option[]>([]);
 
+	const dynamic_attr_arr = options.map((option: Option) => {
+		return option.product.dynamic_attr;
+	});
+	const uniqueLabelsFromDynamicAtrr = getUniqueLabels(dynamic_attr_arr);
 	const fetchGetOptions = async (projectId: number) => {
 		try {
 			const response = await api.rfqOption.getOptionsByRfqId(projectId);
@@ -214,58 +219,20 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 										);
 									})}
 								</tr>
-								{/* Certification */}
-								<tr>
-									<td>Certification</td>
-									{options.map((el: Option, ind: number) => {
-										const certification = el.product.dynamic_attr.find(
-											(attr) => attr.label === 'Certification'
-										)?.value;
-										return <td key={ind}>{certification ? certification : '-'}</td>;
-									})}
-								</tr>
-								{/* Warranty (years) */}
-								<tr>
-									<td>Warranty (years)</td>
-									{options.map((el: Option, ind: number) => {
-										return (
-											<td key={ind}>
-												{el.product.warranty ? el.product.warranty : '-'}
-												{el.product.warranty && el.product.warranty > 1
-													? ' years'
-													: ' year'}
-											</td>
-										);
-									})}
-								</tr>
-								{/* Opening Size */}
-								<tr>
-									<td>Opening Size</td>
-									{options.map((el: Option, ind: number) => {
-										return <td key={ind}>{el.size ? el.size : '-'}</td>;
-									})}
-								</tr>
-								{/* Material */}
-								<tr>
-									<td>Material</td>
-									{options.map((el: Option, ind: number) => {
-										const material = el.product.dynamic_attr.find(
-											(attr) => attr.label === 'Frame Material'
-										)?.value;
-										return <td key={ind}>{material ? material : '-'}</td>;
-									})}
-								</tr>
-								{/* Glazing */}
-								<tr>
-									<td>Glazing</td>
-									{options.map((el: Option, ind: number) => {
-										const glazing = el.product.dynamic_attr.find(
-											(attr) => attr.label === 'Glazing Type'
-										)?.value;
-										return <td key={ind}>{glazing ? glazing : '-'}</td>;
-									})}
-								</tr>
-								{/* U-factor */}
+								{/* all dynamic attr  */}
+								{uniqueLabelsFromDynamicAtrr.map((element: string) => {
+									return (
+										<tr>
+											<td>{element}</td>
+											{options.map((el: Option, ind: number) => {
+												const valueAttr = el.product.dynamic_attr.find(
+													(attr) => attr.label === element
+												)?.value;
+												return <td key={ind}>{valueAttr ? valueAttr : '-'}</td>;
+											})}
+										</tr>
+									);
+								})}
 								<tr>
 									<td>U-factor</td>
 									{options.map((el: Option, ind: number) => {

@@ -19,6 +19,7 @@ interface TypeProps {
 }
 
 export const Products = ({ rfqs, projectId }: TypeProps) => {
+	console.log('ProductsRfqs', rfqs);
 	const [activeRfqs, setActiveRfqs] = useState<number[]>([0]);
 	const [compress, setCompress] = useState<boolean>(false);
 

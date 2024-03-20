@@ -6,6 +6,7 @@ import { PaginationWrapper } from './PaginationWrapper';
 import { Api } from '@/services';
 import { Order } from '@/types/services/projects';
 import { Spinner } from '@/components/UI/Spinner';
+
 export const StorefrontOrders = () => {
 	const api = Api();
 	//store filters-inputs value
@@ -23,16 +24,6 @@ export const StorefrontOrders = () => {
 
 	const [orders, setOrders] = useState<Order[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
-	const columns = [
-		{ title: 'PO#', key: 'PO#' },
-		{ title: 'Issue Date', key: 'Issue Date' },
-		{ title: 'Manufacturer', key: 'Manufacturer' },
-		{ title: 'Product', key: 'Product' },
-		{ title: 'Order Type', key: 'Order Type' },
-		{ title: 'Subtotal (USD)', key: 'Subtotal (USD)' },
-		{ title: 'Status', key: 'Status' },
-		{ title: 'Est.Delivery', key: 'Est.Delivery' },
-	];
 
 	// create fetch objs
 	const objFetchSearch = stateInputs.search
@@ -93,7 +84,7 @@ export const StorefrontOrders = () => {
 					<Spinner style={{ marginTop: '9vh' }} />
 				) : (
 					<>
-						{orders.length > 0 && <ProjectsTable columns={columns} data={orders} />}
+						{orders.length > 0 && <ProjectsTable data={orders} />}
 						<PaginationWrapper
 							limitItems={limitItems}
 							totalItems={totalItems}

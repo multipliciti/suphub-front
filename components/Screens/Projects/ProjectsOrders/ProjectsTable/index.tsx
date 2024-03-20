@@ -18,11 +18,10 @@ export const ProjectsTable = ({ projectId, data }: PropsType) => {
 		{ title: 'PO#', key: 'PO#' },
 		{ title: 'Issue Date', key: 'Issue Date' },
 		{ title: 'Manufacturer', key: 'Manufacturer' },
-		// { title: 'Order Type', key: 'Order Type' },
+		{ title: 'Product', key: 'Product' },
 		{ title: 'Subtotal (USD)', key: 'Subtotal (USD)' },
 		{ title: 'Status', key: 'Status' },
 		{ title: 'Est.Delivery', key: 'Est.Delivery' },
-		{ title: 'Product', key: 'Product' },
 	];
 	const { push } = useRouter();
 
@@ -49,7 +48,7 @@ export const ProjectsTable = ({ projectId, data }: PropsType) => {
 									{/* PO  */}
 									{column.key === 'PO#' && (
 										<td className={s.td}>
-											<span> {row.PO}</span>
+											<span> {row.PO ? row.PO : '-'}</span>
 										</td>
 									)}
 									{/* Issue Date */}
@@ -61,18 +60,25 @@ export const ProjectsTable = ({ projectId, data }: PropsType) => {
 									{/* Issue Date */}
 									{column.key === 'Manufacturer' && (
 										<td className={s.td}>
-											<span>{truncateFileNameEnd(row.sellerCompany.name, 25)}</span>
+											<span>
+												{row.sellerCompany.name
+													? truncateFileNameEnd(row.sellerCompany.name, 30)
+													: '-'}
+											</span>
 										</td>
 									)}
 									{/* Product */}
 									{column.key === 'Product' && (
 										<td className={s.td}>
 											<span className={s.td_product}>
-												{/* <span>{truncateFileNameEnd('name', 25)}</span> */}
+												<span>
+													{truncateFileNameEnd(row.productNames.join(', '), 35)}
+												</span>
 												<span className={s.updates}>See updates</span>
 											</span>
 										</td>
 									)}
+
 									{/* Order Type */}
 									{/* {column.key === 'Order Type' && (
 										<td className={s.td}>
@@ -132,7 +138,9 @@ export const ProjectsTable = ({ projectId, data }: PropsType) => {
 									{/* Est.Delivery  */}
 									{column.key === 'Est.Delivery' && (
 										<td className={s.td}>
-											{formatDate(row.delivery?.estDate || 'Not Available')}
+											{row.delivery?.estDate
+												? formatDate(row.delivery?.estDate)
+												: '-'}
 										</td>
 									)}
 								</>

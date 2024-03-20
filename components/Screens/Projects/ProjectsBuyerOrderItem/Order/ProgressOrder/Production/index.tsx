@@ -170,7 +170,7 @@ export const Production = ({
 
 					{activeStep === 3 && status === 'inProduction' && (
 						<>
-							<button
+							{/* <button
 								onClick={() => {
 									setRerenderProgress(!rerenderProgress);
 									setNewMessage(!newMessage);
@@ -178,7 +178,7 @@ export const Production = ({
 								className={s.buttons_left}
 							>
 								Decline & add feedback
-							</button>
+							</button> */}
 
 							{/* #removeapprove  */}
 							{/* <button

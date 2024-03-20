@@ -60,23 +60,28 @@ const initialState: ProductFilter = {
 			items: [
 				{
 					id: 1,
-					title: 'Chicago',
-					value: 'Chicago',
+					title: 'Canada',
+					value: 'Canada',
 				},
 				{
 					id: 2,
-					title: 'Dallas',
-					value: 'Dallas',
+					title: 'China',
+					value: 'China',
 				},
 				{
 					id: 3,
-					title: 'Atlanta',
-					value: 'Atlanta',
+					title: 'USA',
+					value: 'USA',
 				},
 				{
 					id: 4,
-					title: 'USA',
-					value: 'USA',
+					title: 'Mexico',
+					value: 'Mexico',
+				},
+				{
+					id: 5,
+					title: 'Vietnam',
+					value: 'Vietnam',
 				},
 			],
 			selectedItems: [],

@@ -60,6 +60,7 @@ export interface Order {
 	PO: string;
 	sellerCompany: SellerCompany;
 	delivery: Delivery;
+	productNames: string[];
 	buyerCompanyId: number;
 	sellerCompanyId: number;
 	estDate: string;

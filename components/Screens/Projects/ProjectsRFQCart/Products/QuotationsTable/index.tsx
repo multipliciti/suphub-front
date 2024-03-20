@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useAppDispatch } from '@/redux/hooks';
 
 import { classNames } from '@/utils/classNames';
 import s from './QuotationsTable.module.scss';
@@ -22,6 +23,7 @@ import eye_icon from '@/imgs/Buyer&Seller/eye.svg';
 import eye_icon_hover from '@/imgs/Buyer&Seller/eye_hover.svg';
 import error_icon from '@/imgs/Buyer&Seller/process_error.svg';
 import success_img from '@/imgs/ResetPassword/success.svg';
+import { setModal, setSamples } from '@/redux/slices/modal';
 
 interface TypeProps {
 	projectId: number;
@@ -30,6 +32,7 @@ interface TypeProps {
 }
 
 export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
+	const dispatch = useAppDispatch();
 	const api = Api();
 	const router = useRouter();
 
@@ -66,8 +69,10 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	const [rfqIdNavigation, setRfqIdNavigation] = useState<number>(0);
 	const [rfqNameNavigation, setRfqNameNavigation] = useState<string>('');
 	const [hoverRfq, setHoverRfq] = useState<number>(-1);
+	const [sapmlesLocal, setSamplesLocal] = useState<any>();
 	// const [lastClickEvent, setLastClickEvent] =
 	// 	useState<React.MouseEvent<HTMLImageElement> | null>(null);
+	console.log('optionMore', optionMore);
 
 	useEffect(() => {
 		const maxOptionsLength = rfqs.reduce((max, item) => {
@@ -226,15 +231,19 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 						Product details
 					</Link>
 					<span
+						// onClick={() => {
+						// 	const allOptions = rfqs.flatMap((rfqItem) => rfqItem.options);
+						// 	const currentOption = allOptions.find((el) => el.id === optionMore);
+						// 	currentOption &&
+						// 		optionAddToCart(
+						// 			currentOption?.id,
+						// 			currentOption?.quantity,
+						// 			currentOption?.price
+						// 		);
+						// }}
 						onClick={() => {
-							const allOptions = rfqs.flatMap((rfqItem) => rfqItem.options);
-							const currentOption = allOptions.find((el) => el.id === optionMore);
-							currentOption &&
-								optionAddToCart(
-									currentOption?.id,
-									currentOption?.quantity ?? 1,
-									currentOption?.price ?? 0
-								);
+							dispatch(setModal('addSampleToCartFromOption'));
+							dispatch(setSamples(sapmlesLocal));
 						}}
 						className={s.more_item}
 					>
@@ -315,6 +324,24 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 								{rfq.options
 									.filter((option) => !idsFilterOptions.includes(option.id))
 									.map((option, ind) => {
+										// ()
+										// ()
+										// ()
+										let price;
+										const countNeedBuyer = rfq.quantity;
+										const sortedPrices = option.product.prices.sort(
+											(a, b) => b.minCount - a.minCount
+										);
+										for (const sortedPrice of sortedPrices) {
+											if (sortedPrice.minCount < countNeedBuyer) {
+												price = sortedPrice.value;
+												break;
+											}
+										}
+										// ()
+										// ()
+										// ()
+
 										return (
 											<td data-id={option.id} className={s.td} key={ind}>
 												{/* processing declining option...  */}
@@ -342,7 +369,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 																</span>
 															) : (
 																<>
-																	{/* price and size  */}
+																	{/* price and seller  */}
 																	<span className={s.info_inner}>
 																		<span className={s.info_inner_size}>
 																			{truncateFileNameEnd(
@@ -351,7 +378,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 																			)}
 																		</span>
 																		<span className={s.info_inner_price}>
-																			{option.price ? `$${option.price}` : '$0'}
+																			{price ? `$${price}` : '$0'}
 																		</span>
 																	</span>
 																	{/* icons  */}
@@ -377,6 +404,9 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 															)}
 															<Image
 																onClick={(e) => {
+																	//First, I set the samples locally to samplesLocal. After clicking "add to cart," I set these local samples in Redux for the modal.
+																	setSamplesLocal(option.product.samples);
+
 																	handleItemClick(e, option.id);
 																	setRfqIdNavigation(option.rfqId);
 																	setRfqNameNavigation(rfq.productName);

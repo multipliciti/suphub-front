@@ -28,6 +28,7 @@ import { GoToCart } from './GoToCart';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
+	console.log('mpdal', modal);
 
 	return (
 		<>

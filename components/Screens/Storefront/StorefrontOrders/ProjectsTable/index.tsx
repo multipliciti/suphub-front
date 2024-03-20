@@ -2,16 +2,26 @@ import React from 'react';
 import s from './ProjectsTable.module.scss';
 import Link from 'next/link';
 import { classNames } from '@/utils/classNames';
+import { useRouter } from 'next/navigation';
 import { truncateFileNameEnd } from '@/utils/names';
 import { Order } from '@/types/services/projects';
 import { formatDate } from '@/components/Screens/Projects/ProjectsOrders/ProjectsTable/utils';
 
 interface PropsType {
-	columns: { title: string; key: string }[];
 	data: Order[];
 }
 
-export const ProjectsTable = ({ columns, data }: PropsType) => {
+export const ProjectsTable = ({ data }: PropsType) => {
+	const columns: { title: string; key: string }[] = [
+		{ title: 'PO#', key: 'PO#' },
+		{ title: 'Issue Date', key: 'Issue Date' },
+		{ title: 'Manufacturer', key: 'Manufacturer' },
+		{ title: 'Product', key: 'Product' },
+		{ title: 'Subtotal (USD)', key: 'Subtotal (USD)' },
+		{ title: 'Status', key: 'Status' },
+		{ title: 'Est.Delivery', key: 'Est.Delivery' },
+	];
+	const { push } = useRouter();
 	return (
 		<div className={s.wrapper}>
 			<table className={s.table}>
@@ -26,13 +36,17 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 				<tbody>
 					{/* Creating Data Rows */}
 					{data.map((row, rowIndex) => (
-						<tr key={rowIndex}>
+						<tr
+							className={s.tr}
+							onClick={() => push(`/storefront/order/${row.id}`)}
+							key={rowIndex}
+						>
 							{columns.map((column) => (
 								<>
 									{/* PO  */}
 									{column.key === 'PO#' && (
 										<td className={s.td}>
-											<span> {row.PO}</span>
+											<span> {row.PO ? row.PO : '-'}</span>
 										</td>
 									)}
 									{/* Issue Date */}
@@ -44,25 +58,26 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 									{/* Issue Date */}
 									{column.key === 'Manufacturer' && (
 										<td className={s.td}>
-											<span>Example</span>
+											<span>
+												{row.sellerCompany.name
+													? truncateFileNameEnd(row.sellerCompany.name, 30)
+													: '-'}
+											</span>
 										</td>
 									)}
 									{/* Product */}
 									{column.key === 'Product' && (
 										<td className={s.td}>
 											<span className={s.td_product}>
-												<span>{truncateFileNameEnd('Product name', 25)}</span>
-												<Link
-													href={`/storefront/order/${row.id}`}
-													className={s.updates}
-												>
-													See updates
-												</Link>
+												<span>
+													{truncateFileNameEnd(row.productNames.join(', '), 35)}
+												</span>
+												<span className={s.updates}>See updates</span>
 											</span>
 										</td>
 									)}
 									{/* Order Type */}
-									{column.key === 'Order Type' && (
+									{/* {column.key === 'Order Type' && (
 										<td className={s.td}>
 											<span className={s.td_order}>
 												<span
@@ -75,7 +90,7 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 												Sample order
 											</span>
 										</td>
-									)}
+									)} */}
 									{/* Subtotal (USD) */}
 									{column.key === 'Subtotal (USD)' && (
 										<td className={s.td}>
@@ -120,7 +135,9 @@ export const ProjectsTable = ({ columns, data }: PropsType) => {
 									{/* Est.Delivery  */}
 									{column.key === 'Est.Delivery' && (
 										<td className={s.td}>
-											{formatDate(row.delivery?.estDate || 'Not Available')}
+											{row.delivery?.estDate
+												? formatDate(row.delivery?.estDate)
+												: '-'}
 										</td>
 									)}
 								</>
