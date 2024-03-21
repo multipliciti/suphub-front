@@ -105,14 +105,12 @@ export const Header = () => {
 			{user && (
 				<div className={s.wrapper}>
 					<div className={s.menu}>
-						<Image
-							className={s.img_logo}
-							src={logo}
-							alt="Logo"
-							width={117}
-							height={36}
-						/>
-
+						<span className={s.logo}>
+							<Image src={logo} alt="Logo" width={117} height={36} />
+							{user.role === 'seller' && (
+								<span className={s.seller}>Seller Center</span>
+							)}
+						</span>
 						{/* seller nav  */}
 						{user.role === 'seller' && (
 							<div className={s.buttons}>

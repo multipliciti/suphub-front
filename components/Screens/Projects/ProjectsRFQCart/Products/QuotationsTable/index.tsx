@@ -324,9 +324,6 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 								{rfq.options
 									.filter((option) => !idsFilterOptions.includes(option.id))
 									.map((option, ind) => {
-										// ()
-										// ()
-										// ()
 										let price;
 										const countNeedBuyer = rfq.quantity;
 										const sortedPrices = option.product.prices.sort(
@@ -338,10 +335,6 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 												break;
 											}
 										}
-										// ()
-										// ()
-										// ()
-
 										return (
 											<td data-id={option.id} className={s.td} key={ind}>
 												{/* processing declining option...  */}
@@ -383,7 +376,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 																	</span>
 																	{/* icons  */}
 																	<span className={s.info_icons}>
-																		{option.type === 'ordered' && (
+																		{option.status === 'ordered' && (
 																			<Image
 																				src={ordered_icon}
 																				alt="ordered_icon"
@@ -391,7 +384,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 																				height={20}
 																			/>
 																		)}
-																		{option.type === 'inCart' && (
+																		{option.status === 'inCart' && (
 																			<Image
 																				src={purchase_icon}
 																				alt="purchase_icon"
@@ -399,24 +392,24 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 																				height={20}
 																			/>
 																		)}
+																		<Image
+																			onClick={(e) => {
+																				//First, I set the samples locally to samplesLocal. After clicking "add to cart," I set these local samples in Redux for the modal.
+																				setSamplesLocal(option.product.samples);
+
+																				handleItemClick(e, option.id);
+																				setRfqIdNavigation(option.rfqId);
+																				setRfqNameNavigation(rfq.productName);
+																			}}
+																			className={s.icon_more}
+																			src={more_icon}
+																			alt="more_icon"
+																			width={20}
+																			height={20}
+																		/>
 																	</span>
 																</>
 															)}
-															<Image
-																onClick={(e) => {
-																	//First, I set the samples locally to samplesLocal. After clicking "add to cart," I set these local samples in Redux for the modal.
-																	setSamplesLocal(option.product.samples);
-
-																	handleItemClick(e, option.id);
-																	setRfqIdNavigation(option.rfqId);
-																	setRfqNameNavigation(rfq.productName);
-																}}
-																className={s.icon_more}
-																src={more_icon}
-																alt="more_icon"
-																width={20}
-																height={20}
-															/>
 														</span>
 														{/* active text when hover rfq row (hover icon eye) */}
 														<span

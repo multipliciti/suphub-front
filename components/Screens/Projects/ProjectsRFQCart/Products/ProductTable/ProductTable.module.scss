@@ -153,6 +153,9 @@
 			font-weight: 400;
 			line-height: 18px;
 
+			background: #edf1f6;
+			color: #64748b;
+
 			&_compress {
 				display: block;
 				min-width: 90px;
@@ -171,6 +174,10 @@
 			&_ordered {
 				background: #ebf8f6;
 				color: #0ba98a;
+			}
+			&_inCart {
+				background: #f0f2fe;
+				color: #2b1694;
 			}
 		}
 	}

@@ -48,8 +48,21 @@
 	background: #475569;
 }
 
-.img_logo {
-	margin-right: 20px;
+.logo {
+	margin-right: 48px;
+
+	display: flex;
+	align-items: center;
+	gap: 10px;
+
+	.seller {
+		color: #cbd5e1;
+
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 600;
+		line-height: 24px;
+	}
 }
 
 //login header
@@ -59,10 +72,15 @@
 	.buttons {
 		display: flex;
 		gap: 8px;
+
+		&_seller {
+			color: #fff;
+		}
 	}
 }
 
 .menu_btn {
+	transition: 0.3s all ease;
 	display: flex;
 	align-items: center;
 	padding: 3px 6px;
@@ -70,16 +88,21 @@
 	cursor: pointer;
 
 	color: #cbd5e1;
-	font-size: 16px;
-	font-style: normal;
-	font-weight: 900;
-	line-height: 24px;
 
-	white-space: nowrap;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 600;
+	line-height: 20px;
+
+	&:hover {
+		background-color: #3d2e86;
+		color: #fff;
+	}
 
 	&_active {
+		font-size: 16px;
 		color: #fff;
-		background-color: #272e3f;
+		background-color: #594d98;
 	}
 }
 
@@ -94,7 +117,7 @@
 .avatar {
 	cursor: pointer;
 	border-radius: 50%;
-	user-drag: none;
+
 	-webkit-user-drag: none;
 	user-select: none;
 	-webkit-user-select: none;
@@ -102,7 +125,7 @@
 		border-radius: 50%;
 		border: 1.5px solid #cbd5e1;
 		padding: 1px;
-		user-drag: none;
+
 		-webkit-user-drag: none;
 		user-select: none;
 		-webkit-user-select: none;
@@ -190,7 +213,7 @@
 				border-top: 1px solid #e7e9ef;
 
 				.text {
-					color: var(--alerts-error-red, #f52419);
+					color: #f52419;
 
 					font-size: 16px;
 					font-style: normal;

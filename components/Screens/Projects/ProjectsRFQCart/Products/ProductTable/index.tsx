@@ -163,7 +163,8 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 										rfq.status === 'draft' && s.status_requested,
 										rfq.status === 'requested' && s.status_requested,
 										rfq.status === 'selectionNeeded' && s.status_selectionNeeded,
-										rfq.status === 'ordered' && s.status_ordered
+										rfq.status === 'ordered' && s.status_ordered,
+										rfq.status === 'inCart' && s.status_inCart
 									)}
 								>
 									{rfq.status.charAt(0).toUpperCase() + rfq.status.slice(1)}
