@@ -31,13 +31,18 @@ interface TypeProps {
 	compress: boolean;
 }
 
+interface ErrorObject {
+	id: number;
+	value: string;
+}
+
 export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	const dispatch = useAppDispatch();
 	const api = Api();
 	const router = useRouter();
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
-	const [error, setError] = useState<string>('');
+	const [error, setError] = useState<ErrorObject | null>(null);
 	// for local filter after click 'decline option'
 	const [idsFilterOptions, setIdsFilterOptions] = useState<number[]>([]);
 	//state one option for show status
@@ -159,8 +164,8 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	useEffect(() => {
 		if (error) {
 			setTimeout(() => {
-				setError('');
-			}, 1500);
+				setError(null);
+			}, 3000);
 		}
 	}, [error]);
 
@@ -201,7 +206,10 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 			//if success add to cart
 			dispatch(setModal('goToCart'));
 		} catch (error: any) {
-			setError(error.response?.data.message || 'Unknown error occurred');
+			setError({
+				id: optionId,
+				value: error.response?.data.message || 'Unknown error occurred',
+			});
 			setOptionMore(-1);
 			console.error('Error api.cart.create options:', error);
 		}
@@ -346,8 +354,8 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 												{/* processing declining option...  */}
 												{isLoading && optionMore === option.id ? (
 													<Spinner size={'s'} />
-												) : error ? (
-													<p className={s.error_text}>{error}</p>
+												) : error?.id === option?.id ? (
+													<p className={s.error_text}>{error.value}</p>
 												) : (
 													<span className={s.item}>
 														<span className={s.info}>
