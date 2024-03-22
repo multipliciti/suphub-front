@@ -206,12 +206,21 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 			//if success add to cart
 			dispatch(setModal('goToCart'));
 		} catch (error: any) {
-			setError({
-				id: optionId,
-				value: error.response?.data.message || 'Unknown error occurred',
-			});
-			setOptionMore(-1);
-			console.error('Error api.cart.create options:', error);
+			//handle useless backend error
+			if (
+				error.response?.data?.message.startsWith(
+					'An operation failed because it depends on one or more records that were required but not found.'
+				)
+			) {
+				dispatch(setModal('goToCart'));
+			} else {
+				setError({
+					id: optionId,
+					value: error.response?.data.message || 'Unknown error occurred',
+				});
+				setOptionMore(-1);
+				console.error('Error api.cart.create options:', error);
+			}
 		}
 	};
 

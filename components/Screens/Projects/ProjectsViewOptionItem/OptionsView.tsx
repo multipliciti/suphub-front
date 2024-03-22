@@ -68,8 +68,17 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 			//if success add to cart
 			dispatch(setModal('goToCart'));
 		} catch (error: any) {
-			setError(error.response?.data.message || 'Unknown error occurred');
-			console.error('Error api.cart.create options:', error);
+			//handle useless backend error
+			if (
+				error.response?.data?.message.startsWith(
+					'An operation failed because it depends on one or more records that were required but not found.'
+				)
+			) {
+				dispatch(setModal('goToCart'));
+			} else {
+				setError(error.response?.data.message || 'Unknown error occurred');
+				console.error('Error api.cart.create options:', error);
+			}
 		}
 	};
 
