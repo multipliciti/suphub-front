@@ -12,6 +12,7 @@ interface PropsType {
 	index: number;
 	price: number;
 	orderId: number;
+	projectId: number;
 	status: string;
 	rerenderProgress: boolean;
 	setRerenderProgress: (b: boolean) => void;
@@ -23,6 +24,7 @@ export const Deposit = ({
 	activeDisplay,
 	index,
 	orderId,
+	projectId,
 	status,
 	price,
 	date,
@@ -37,8 +39,8 @@ export const Deposit = ({
 			orderId,
 			amount: +priceInner.toFixed(0) * 100,
 			type: 'deposit',
-			successUrl: `${HOST}/projects/order/${orderId}`,
-			cancelUrl: `${HOST}/projects/order/${orderId}`,
+			successUrl: `${HOST}/projects/${projectId}/order/${orderId}`,
+			cancelUrl: `${HOST}/projects/${projectId}/order/${orderId}`,
 		};
 
 		try {

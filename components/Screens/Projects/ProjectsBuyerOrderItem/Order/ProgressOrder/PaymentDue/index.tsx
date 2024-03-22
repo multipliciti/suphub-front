@@ -12,6 +12,7 @@ interface PropsType {
 	orderId: number;
 	activeStep: number;
 	price: number;
+	projectId: number;
 }
 
 export const PaymentDue = ({
@@ -19,6 +20,7 @@ export const PaymentDue = ({
 	activeDisplay,
 	index,
 	orderId,
+	projectId,
 	activeStep,
 	price,
 }: PropsType) => {
@@ -30,8 +32,8 @@ export const PaymentDue = ({
 			orderId,
 			amount: Math.round((price * 3) / 4) * 100,
 			type: 'remaining',
-			successUrl: `${HOST}/projects/order/${orderId}`,
-			cancelUrl: `${HOST}/projects/order/${orderId}`,
+			successUrl: `${HOST}/projects/${projectId}/order/${orderId}`,
+			cancelUrl: `${HOST}/projects/${projectId}/order/${orderId}`,
 		};
 
 		try {

@@ -30,7 +30,12 @@ export const Order = ({ projectId, order, rerender, setRerender }: TypeProps) =>
 				payments={order.payments ?? null}
 				price={order.amount}
 			/>
-			<ProgressOrder rerender={rerender} setRerender={setRerender} order={order} />
+			<ProgressOrder
+				rerender={rerender}
+				setRerender={setRerender}
+				order={order}
+				projectId={projectId}
+			/>
 		</div>
 	);
 };

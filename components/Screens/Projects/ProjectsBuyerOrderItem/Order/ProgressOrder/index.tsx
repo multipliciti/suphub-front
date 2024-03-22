@@ -19,9 +19,15 @@ interface TypeProps {
 	rerender: boolean;
 	setRerender: (b: boolean) => void;
 	order: OrderInterface;
+	projectId: number;
 }
 
-export const ProgressOrder = ({ order, rerender, setRerender }: TypeProps) => {
+export const ProgressOrder = ({
+	order,
+	rerender,
+	setRerender,
+	projectId,
+}: TypeProps) => {
 	//useRef for wrapper
 	const wrapperRef = useRef<HTMLDivElement | null>(null);
 	//cteate useRef for everyone steps
@@ -244,6 +250,7 @@ export const ProgressOrder = ({ order, rerender, setRerender }: TypeProps) => {
 								setRerenderProgress={setRerenderProgress}
 								index={2}
 								price={order.amount}
+								projectId={projectId}
 								orderId={order.id}
 								activeDisplay={activeDisplay}
 							/>
@@ -411,6 +418,7 @@ export const ProgressOrder = ({ order, rerender, setRerender }: TypeProps) => {
 								}
 								activeStep={activeStep}
 								delivery={order.delivery ?? null}
+								projectId={projectId}
 								orderId={order.id}
 								index={4}
 								activeDisplay={activeDisplay}
@@ -492,6 +500,7 @@ export const ProgressOrder = ({ order, rerender, setRerender }: TypeProps) => {
 								}
 								price={order.amount}
 								activeStep={activeStep}
+								projectId={projectId}
 								orderId={order.id}
 								index={5}
 								activeDisplay={activeDisplay}

@@ -14,6 +14,7 @@ interface PropsType {
 	date: string;
 	delivery: Delivery | null;
 	orderId: number;
+	projectId: number;
 	activeDisplay: number[];
 	activeStep: number;
 	index: number;
@@ -26,6 +27,7 @@ export const PreShipmentInspection = ({
 	index,
 	delivery,
 	orderId,
+	projectId,
 }: PropsType) => {
 	const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 	const dispatch = useAppDispatch();
@@ -43,8 +45,8 @@ export const PreShipmentInspection = ({
 			orderId,
 			amount: delivery?.amount ? delivery?.amount * 100 : 0,
 			type: 'delivery',
-			successUrl: `${HOST}/projects/order/${orderId}`,
-			cancelUrl: `${HOST}/projects/order/${orderId}`,
+			successUrl: `${HOST}/projects/${projectId}/order/${orderId}`,
+			cancelUrl: `${HOST}/projects/${projectId}/order/${orderId}`,
 		};
 		try {
 			const response = await api.buyerOrder.orderPay(data);
