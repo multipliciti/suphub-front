@@ -23,7 +23,7 @@ import eye_icon from '@/imgs/Buyer&Seller/eye.svg';
 import eye_icon_hover from '@/imgs/Buyer&Seller/eye_hover.svg';
 import error_icon from '@/imgs/Buyer&Seller/process_error.svg';
 import success_img from '@/imgs/ResetPassword/success.svg';
-import { setModal } from '@/redux/slices/modal';
+import { setCartProject, setModal } from '@/redux/slices/modal';
 
 interface TypeProps {
 	projectId: number;
@@ -190,6 +190,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	) => {
 		try {
 			setIsLoading(true);
+			dispatch(setCartProject(projectId));
 			// Request to get the cart ID
 			const response = await api.cart.findByProjectId(projectId);
 			const cartId = response.id;
