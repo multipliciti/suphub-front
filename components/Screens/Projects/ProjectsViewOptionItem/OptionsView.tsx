@@ -220,19 +220,21 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 									})}
 								</tr>
 								{/* all dynamic attr  */}
-								{uniqueLabelsFromDynamicAtrr.map((element: string) => {
-									return (
-										<tr>
-											<td>{element}</td>
-											{options.map((el: Option, ind: number) => {
-												const valueAttr = el.product.dynamic_attr.find(
-													(attr) => attr.label === element
-												)?.value;
-												return <td key={ind}>{valueAttr ? valueAttr : '-'}</td>;
-											})}
-										</tr>
-									);
-								})}
+								{uniqueLabelsFromDynamicAtrr.map(
+									(element: string, index: number) => {
+										return (
+											<tr key={index}>
+												<td>{element}</td>
+												{options.map((el: Option, ind: number) => {
+													const valueAttr = el.product.dynamic_attr.find(
+														(attr) => attr.label === element
+													)?.value;
+													return <td key={ind}>{valueAttr ? valueAttr : '-'}</td>;
+												})}
+											</tr>
+										);
+									}
+								)}
 								<tr>
 									<td>U-factor</td>
 									{options.map((el: Option, ind: number) => {
@@ -259,7 +261,11 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 													</button>
 													<button
 														onClick={() => {
-															optionAddToCart(el.id, el.quantity, el.price);
+															optionAddToCart(
+																el.id,
+																el.quantity ?? el.product.moq,
+																el.price ?? el.product.unitPrice
+															);
 														}}
 														className={s.btns_cart}
 													>

@@ -112,7 +112,6 @@ export const Production = ({
 	};
 
 	const AddOrderProduction = async (data: OrderProductionInterface) => {
-		console.log('data AddOrderProduction', data);
 		const formDataSend = new FormData();
 		for (let i = 0; i < data.images.length; i++) {
 			formDataSend.append('files', data.images[i]);

@@ -23,7 +23,7 @@ import eye_icon from '@/imgs/Buyer&Seller/eye.svg';
 import eye_icon_hover from '@/imgs/Buyer&Seller/eye_hover.svg';
 import error_icon from '@/imgs/Buyer&Seller/process_error.svg';
 import success_img from '@/imgs/ResetPassword/success.svg';
-import { setModal, setSamples } from '@/redux/slices/modal';
+import { setModal } from '@/redux/slices/modal';
 
 interface TypeProps {
 	projectId: number;
@@ -37,6 +37,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	const router = useRouter();
 
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [error, setError] = useState<string>('');
 	// for local filter after click 'decline option'
 	const [idsFilterOptions, setIdsFilterOptions] = useState<number[]>([]);
 	//state one option for show status
@@ -72,7 +73,6 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	const [sapmlesLocal, setSamplesLocal] = useState<any>();
 	// const [lastClickEvent, setLastClickEvent] =
 	// 	useState<React.MouseEvent<HTMLImageElement> | null>(null);
-	console.log('optionMore', optionMore);
 
 	useEffect(() => {
 		const maxOptionsLength = rfqs.reduce((max, item) => {
@@ -156,6 +156,14 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 	// 	};
 	// }, [optionMore, targetElement]);
 
+	useEffect(() => {
+		if (error) {
+			setTimeout(() => {
+				setError('');
+			}, 1500);
+		}
+	}, [error]);
+
 	const declineOptionFunction = async (id: number) => {
 		try {
 			setIsLoading(true);
@@ -185,29 +193,17 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 				cartId,
 				model: 'rfqOption',
 				modelId: optionId,
-				quantity: optionQuantity,
-				price: optionPrice,
+				quantity: optionQuantity ?? 1,
+				price: optionPrice ?? 0,
 			};
 			setIsLoading(false);
 			await api.cart.create(data);
-			setStatusOption((prevState) => {
-				return {
-					...prevState,
-					id: optionId,
-					seccess: 'Option added to cart',
-				};
-			});
-			setOptionStatusShow(true);
+			//if success add to cart
+			dispatch(setModal('goToCart'));
 		} catch (error: any) {
-			setStatusOption((prevState) => {
-				return {
-					...prevState,
-					id: optionId,
-					error: error.response?.data.message || 'Unknown error occurred',
-				};
-			});
-			setOptionStatusShow(true);
-			console.log('error optionAddToCart', error);
+			setError(error.response?.data.message || 'Unknown error occurred');
+			setOptionMore(-1);
+			console.error('Error api.cart.create options:', error);
 		}
 	};
 
@@ -242,8 +238,18 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 						// 		);
 						// }}
 						onClick={() => {
-							dispatch(setModal('addSampleToCartFromOption'));
-							dispatch(setSamples(sapmlesLocal));
+							const allOptions = rfqs.flatMap((rfqItem) => rfqItem.options);
+							const currentOption = allOptions.find((el) => el.id === optionMore);
+							currentOption &&
+								optionAddToCart(
+									currentOption?.id,
+									currentOption?.quantity
+										? currentOption?.quantity ?? 1
+										: currentOption?.product?.moq ?? 1,
+									currentOption?.price
+										? currentOption?.price ?? 0
+										: currentOption?.product?.unitPrice ?? 0
+								);
 						}}
 						className={s.more_item}
 					>
@@ -340,6 +346,8 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 												{/* processing declining option...  */}
 												{isLoading && optionMore === option.id ? (
 													<Spinner size={'s'} />
+												) : error ? (
+													<p className={s.error_text}>{error}</p>
 												) : (
 													<span className={s.item}>
 														<span className={s.info}>

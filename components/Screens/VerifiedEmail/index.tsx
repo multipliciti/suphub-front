@@ -15,7 +15,6 @@ export const VerifiedEmail = () => {
 	const token = searchParams.get('token') || null;
 
 	const fetchData = async (data: confirmEmailType) => {
-		console.log('start');
 		try {
 			const valid = data.id !== null && data.token !== null;
 			if (valid) {
@@ -26,7 +25,7 @@ export const VerifiedEmail = () => {
 			} else {
 			}
 		} catch (error: any) {
-			console.log('error');
+			console.error('error');
 			setStatus('error');
 		}
 	};

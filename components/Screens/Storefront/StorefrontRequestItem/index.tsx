@@ -27,7 +27,6 @@ export const RequestItem = ({ id }: TypeProps) => {
 				limit: 12000000000000,
 			});
 			const projects = response.result;
-			console.log('projects', projects);
 			//filter active project
 			const item = projects ? findProjectById(projects, id) : null;
 			//set active projects

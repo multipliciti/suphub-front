@@ -1,31 +1,27 @@
 'use client';
 import { classNames } from '@/utils/classNames';
 import s from './Invoice.module.scss';
-import edit_icon from '@/imgs/Buyer&Seller/edit.svg';
-import Image from 'next/image';
-import { useRef } from 'react';
-import { Spinner } from '@/components/UI/Spinner';
+// import { useRef } from 'react';
 
 type TypeProps = {
 	project: any;
 };
 
 export const Invoice = ({ project }: TypeProps) => {
-	console.log('project', project);
 	const string = `774 Jennings Court San Francisco, CA 94112 917-333-6767`;
-	const textareaRef = useRef<HTMLTextAreaElement>(null);
+	// const textareaRef = useRef<HTMLTextAreaElement>(null);
 
 	// console.log('project.companyAddress', project.companyAddress);
-	const formattedAddress = project.companyAddress
-		? `${project.companyAddress.street}\n${project.companyAddress.city}, ${project.companyAddress.state} ${project.companyAddress.zipcode}\n${project.companyAddress.country}`
-		: 'Not adress';
-
-	// console.log('formattedAddress', formattedAddress);
-	const handleEditClick = () => {
-		if (textareaRef.current) {
-			textareaRef.current.focus();
-		}
-	};
+	// const formattedAddress = project.companyAddress
+	// 	? `${project.companyAddress.street}\n${project.companyAddress.city}, ${project.companyAddress.state} ${project.companyAddress.zipcode}\n${project.companyAddress.country}`
+	// 	: 'Not adress';
+	//
+	// // console.log('formattedAddress', formattedAddress);
+	// const handleEditClick = () => {
+	// 	if (textareaRef.current) {
+	// 		textareaRef.current.focus();
+	// 	}
+	// };
 
 	// const tableBataArr = [
 	// 	{

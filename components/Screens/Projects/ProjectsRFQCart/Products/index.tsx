@@ -1,6 +1,6 @@
 'use client';
 import s from './Products.module.scss';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { classNames } from '@/utils/classNames';
 import { ProductTable } from './ProductTable';
@@ -19,7 +19,6 @@ interface TypeProps {
 }
 
 export const Products = ({ rfqs, projectId }: TypeProps) => {
-	console.log('ProductsRfqs', rfqs);
 	const [activeRfqs, setActiveRfqs] = useState<number[]>([0]);
 	const [compress, setCompress] = useState<boolean>(false);
 

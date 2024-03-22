@@ -117,9 +117,6 @@ export const BusinessVerification = () => {
 
 	const handleAddCountryCertification = () => {
 		const trimmedInput = addCountryInput.trim().toLowerCase();
-
-		console.log(trimmedInput, countryProductsCertifiedFor);
-
 		if (
 			countryProductsCertifiedFor.some(
 				(certification) => certification.trim().toLowerCase() === trimmedInput
