@@ -1,8 +1,9 @@
 'use client';
 import s from './OrderConfirmation.module.scss';
 import { classNames } from '@/utils/classNames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Api } from '@/services';
+import { OrderInterface } from '@/types/services/orders';
 
 interface PropsType {
 	activeDisplay: number[];
@@ -11,6 +12,7 @@ interface PropsType {
 	totalSum: number;
 	activeStep: number;
 	setActiveStep: (n: number) => void;
+	order: OrderInterface;
 }
 
 export const OrderConfirmation = ({
@@ -20,11 +22,12 @@ export const OrderConfirmation = ({
 	totalSum,
 	activeStep,
 	setActiveStep,
+	order,
 }: PropsType) => {
 	const api = Api();
 	const [percentageAmount, setPercentageAmount] = useState<number | null>(null);
 	const [isBlockedSubmission, setIsBlockedSubmission] = useState<boolean>(
-		activeStep >= 2 || false
+		activeStep > 1
 	);
 	const isActive = !isBlockedSubmission && Boolean(percentageAmount);
 
@@ -77,6 +80,15 @@ export const OrderConfirmation = ({
 			console.error('fetchOrderPay error:', e);
 		}
 	};
+
+	useEffect(() => {
+		if (activeStep > 1) {
+			setIsBlockedSubmission(activeStep > 1);
+			if (order?.depositAmount && order?.amount) {
+				setPercentageAmount((order.depositAmount / order?.amount) * 100);
+			}
+		}
+	}, [activeStep]);
 
 	return (
 		<>

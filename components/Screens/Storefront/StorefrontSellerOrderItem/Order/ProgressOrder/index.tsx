@@ -77,6 +77,7 @@ export const ProgressOrder = ({ order, setRerender }: TypeProps) => {
 		switch (order.status) {
 			case 'confirmed':
 				setActiveStep(1);
+				setActiveDisplay([1]);
 				setRerenderProgress(!rerenderProgress);
 				break;
 			case 'depositWaiting':
@@ -146,7 +147,7 @@ export const ProgressOrder = ({ order, setRerender }: TypeProps) => {
 							activeStep > 1 && s.step_number_done
 						)}
 					>
-						{activeStep < 1 ? (
+						{activeStep <= 1 ? (
 							<span>1</span>
 						) : (
 							<Image src={done_icon} alt="done_icon" width={16} height={16} />
@@ -197,6 +198,7 @@ export const ProgressOrder = ({ order, setRerender }: TypeProps) => {
 							activeDisplay={activeDisplay}
 							activeStep={activeStep}
 							setActiveStep={setActiveStep}
+							order={order}
 						/>
 					</div>
 				</div>
