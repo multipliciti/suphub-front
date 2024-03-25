@@ -11,5 +11,5 @@ export function formatDateString(inputDateString: string) {
 	const month = (inputDate.getMonth() + 1).toString().padStart(2, '0');
 	const day = inputDate.getDate().toString().padStart(2, '0');
 
-	return `${day}/${month}/${year}`;
+	return `${month}/${day}/${year}`;
 }

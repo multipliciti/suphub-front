@@ -433,6 +433,7 @@ export const ProgressOrder = ({ order, setRerender }: TypeProps) => {
 									order.payments?.find((el) => el.type === 'delivery')?.updatedAt ??
 									''
 								}
+								order={order}
 								isSubmitted={Boolean(order?.delivery?.estDate)}
 								activeStep={activeStep}
 								orderId={order.id}
