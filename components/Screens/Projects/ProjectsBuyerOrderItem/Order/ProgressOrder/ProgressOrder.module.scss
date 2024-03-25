@@ -25,6 +25,11 @@
 	.step {
 		position: relative;
 		z-index: 2;
+
+		&_wrapper:nth-child(1) {
+			min-height: 36px;
+		}
+
 		&_wrapper {
 			display: flex;
 
