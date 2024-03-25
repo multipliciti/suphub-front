@@ -354,7 +354,7 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 											(a, b) => b.minCount - a.minCount
 										);
 										for (const sortedPrice of sortedPrices) {
-											if (sortedPrice.minCount < countNeedBuyer) {
+											if (sortedPrice.minCount <= countNeedBuyer) {
 												price = sortedPrice.value;
 												break;
 											}
