@@ -14,7 +14,7 @@ export const Invoice = ({ project }: TypeProps) => {
 	// console.log('project.companyAddress', project.companyAddress);
 	// const formattedAddress = project.companyAddress
 	// 	? `${project.companyAddress.street}\n${project.companyAddress.city}, ${project.companyAddress.state} ${project.companyAddress.zipcode}\n${project.companyAddress.country}`
-	// 	: 'Not adress';
+	// 	: 'Not address';
 	//
 	// // console.log('formattedAddress', formattedAddress);
 	// const handleEditClick = () => {

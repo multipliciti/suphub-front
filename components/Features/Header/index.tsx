@@ -49,13 +49,7 @@ export const Header = () => {
 			href: '/settings/personal-info',
 		},
 		{
-			id: 3,
-			img: Comment,
-			title: 'Send Feedback',
-			href: '/404',
-		},
-		{
-			id: 4,
+			id: 2,
 			img: Calendar,
 			title: 'Book a call',
 			href: '/404',
@@ -264,7 +258,7 @@ export const Header = () => {
 											className={s.logout}
 										>
 											<Image src={LogOut} alt="el" width={20} height={20} />
-											<span className={s.text}> Log out</span>
+											<span className={s.text}>Log out</span>
 										</button>
 									</div>
 								)}

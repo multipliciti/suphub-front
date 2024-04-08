@@ -18,7 +18,7 @@ export const Order = ({ order, setRerender }: Product) => {
 
 			<StatusOrder code={order.PO} status={order.status} />
 			<Info
-				date={order.delivery?.estDate || 'Not Available'}
+				date={order.delivery?.estDate || '-'}
 				payments={order.payments ?? null}
 				price={order.amount}
 			/>

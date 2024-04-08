@@ -20,14 +20,16 @@ export const Invoice = ({ order }: TypeProps) => {
 		}
 	};
 
-	const totalPrice = order.elements?.reduce(
-		(acc, order) => acc + (order.price || 0),
-		0
-	);
+	const totalPrice = order.elements
+		?.reduce(
+			(acc, order) => acc + (order.price * order.quantity || 0),
+			0 + order.shipmentAmount
+		)
+		.toFixed(2);
 
-	const formattedAddress = order.buyerCompany.address
-		? `${order.buyerCompany.address.street}\n${order.buyerCompany.address.city}, ${order.buyerCompany.address.state} ${order.buyerCompany.address.zipcode}\n${order.buyerCompany.address.country}`
-		: 'Not adress';
+	const formattedAddress = order.project.address
+		? `${order.project.address.street}\n${order.project.address.city}, ${order.project.address.state} ${order.project.address.zipcode}\n${order.project.address.country}`
+		: 'Not address';
 
 	return (
 		<div className={s.wrapper}>
@@ -83,7 +85,7 @@ export const Invoice = ({ order }: TypeProps) => {
 										<td className={s.td_info}>{product.quantity}</td>
 										<td className={s.td_info}>${product.price}</td>
 										<td className={s.td_info}>
-											${`${(product.quantity * product.price).toFixed(0)}`}
+											${`${(product.quantity * product.price).toFixed(2)}`}
 										</td>
 									</tr>
 								);
@@ -97,7 +99,7 @@ export const Invoice = ({ order }: TypeProps) => {
 						</p>
 						<p className={s.amount_total}>
 							<span>Total</span>
-							<span>${totalPrice?.toFixed(0)}</span>
+							<span>${totalPrice}</span>
 						</p>
 					</div>
 				</div>

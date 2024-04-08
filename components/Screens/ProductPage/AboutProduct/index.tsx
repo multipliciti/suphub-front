@@ -14,6 +14,7 @@ export const AboutProduct = ({ product }: PropsType) => {
 	const [activeImg, setActiveImg] = useState<number>(0);
 	const { dynamic_attr, images } = product;
 	//generate info product
+
 	const shipmentPackaging = [
 		{
 			label: 'packaging',

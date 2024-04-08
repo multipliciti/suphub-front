@@ -1,7 +1,7 @@
 export function formatDateString(inputDateString: string) {
 	if (inputDateString === '') {
 		return '';
-	} else if (inputDateString === 'Not Available') {
+	} else if (inputDateString === '-') {
 		return inputDateString;
 	}
 

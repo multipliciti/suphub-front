@@ -153,7 +153,7 @@ export const ProductItem = ({ product }: TypeProps) => {
 					<h1 className={s.title}> {name} </h1>
 					<h2 className={s.price}>
 						<span className={s.price}>
-							${minPriceOfPrices ? minPriceOfPrices.value : '-'}
+							${minPriceOfPrices ? minPriceOfPrices.value.toFixed(2) : '-'}
 						</span>
 						<span className={s.price_format}>/ {unitOfMeasurement}</span>
 					</h2>

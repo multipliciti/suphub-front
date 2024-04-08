@@ -1,6 +1,6 @@
 'use client';
 import s from './Order.module.scss';
-import imageTest1 from '@/imgs/Product/ImageTest1.png';
+
 import { SampleComponent } from './SampleComponent';
 import { classNames } from '@/utils/classNames';
 import { User } from '@/types/services/auth';
@@ -61,7 +61,7 @@ export const Order = ({ user, product }: PropsType) => {
 							<p key={ind} className={s.price_row}>
 								<span className={s.price_row_key}> {`QTY. ${el.minCount}`} </span>
 								<span className={s.price_row_value}>
-									${el.value}
+									${el.value.toFixed(2)}
 									<span className={s.unit}>/ {product.unitOfMeasurement}</span>
 								</span>
 							</p>

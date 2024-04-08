@@ -9,7 +9,6 @@ import { setModal } from '@/redux/slices/modal';
 //imgs
 import star from '@/imgs/Marketplace/Products/star.svg';
 import star_active from '@/imgs/Marketplace/Products/star_sctive.svg';
-import test2 from '@/imgs/Product/test2.png';
 import { useEffect, useState } from 'react';
 import { ProductItemType } from '@/types/products/product';
 import { Api } from '@/services';
@@ -149,7 +148,7 @@ export const ProductItem = ({ product }: TypeProps) => {
 					<h1 className={s.title}>{name} </h1>
 					<h2 className={s.price}>
 						<span className={s.price}>
-							${minPriceOfPrices ? minPriceOfPrices.value : '-'}
+							${minPriceOfPrices ? minPriceOfPrices.value.toFixed(2) : '-'}
 						</span>
 						<span className={s.price_format}>/ {unitOfMeasurement}</span>
 					</h2>

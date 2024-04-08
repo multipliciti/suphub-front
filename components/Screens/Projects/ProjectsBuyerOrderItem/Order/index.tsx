@@ -26,7 +26,7 @@ export const Order = ({ projectId, order, rerender, setRerender }: TypeProps) =>
 
 			<StatusOrder code={order.PO} status={order.status} />
 			<Info
-				date={order.delivery?.estDate || 'Not Available'}
+				date={order.delivery?.estDate || '-'}
 				payments={order.payments ?? null}
 				price={order.amount}
 			/>

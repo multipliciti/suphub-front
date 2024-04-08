@@ -121,6 +121,20 @@ interface BuyerCompanyType {
 	address: Address;
 }
 
+interface ProjectType {
+	address: Address;
+	addressId: number;
+	budget: number;
+	buyerCompanyId: number;
+	buyerId: number;
+	floorArea: number;
+	id: number;
+	name: string;
+	type: string;
+	updatedAt: string;
+	createdAt: string;
+}
+
 export interface OrderInterface {
 	id: number;
 	status: string;
@@ -143,6 +157,7 @@ export interface OrderInterface {
 	deliveryDate: null | string;
 	sellerCompany: sellerCompanyType;
 	buyerCompany: BuyerCompanyType;
+	project: ProjectType;
 }
 
 export interface OrderCreateBody {

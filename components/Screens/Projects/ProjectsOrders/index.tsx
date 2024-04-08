@@ -1,4 +1,5 @@
 'use client';
+import s from './ProjectsOrders.module.scss';
 import { Filters } from './Filters';
 import { useState, useEffect } from 'react';
 import { ProjectsTable } from './ProjectsTable';
@@ -61,6 +62,7 @@ export const ProjectsOrders = ({ projectId }: typeProps) => {
 	const getOrders = async () => {
 		try {
 			const orders = await api.buyerProject.getBuyerOrders({
+				projectId,
 				page: currentPage,
 				limit: limitItems,
 				searchParams: finalJsonString,
@@ -87,10 +89,8 @@ export const ProjectsOrders = ({ projectId }: typeProps) => {
 				{isLoading ? (
 					<Spinner />
 				) : (
-					<>
-						{orders.length > 0 && (
-							<ProjectsTable projectId={projectId} data={orders} />
-						)}
+					<div className={s.wrapper_table}>
+						<ProjectsTable projectId={projectId} data={orders} />
 						<PaginationWrapper
 							limitItems={limitItems}
 							totalItems={totalItems}
@@ -98,7 +98,7 @@ export const ProjectsOrders = ({ projectId }: typeProps) => {
 							setActivePage={setCurrentPage}
 							totalPages={totalPages}
 						/>
-					</>
+					</div>
 				)}
 			</div>
 		);

@@ -41,14 +41,15 @@ export interface CreateProjectBody {
 }
 
 export interface FetchFind {
-	limit?: number;
-	page?: number;
+	limit: number;
+	page: number;
 	sortParams?: {
 		id?: string;
 		sortDirection?: SortOptions;
 	};
 	searchText?: string;
 	searchParams?: string;
+	projectId?: number;
 }
 
 export interface Order {

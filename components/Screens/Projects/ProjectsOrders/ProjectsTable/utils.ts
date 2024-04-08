@@ -1,5 +1,5 @@
 export function formatDate(isoDateString: string): string {
-	if (isoDateString === 'Not Available') {
+	if (isoDateString === '-') {
 		return isoDateString;
 	}
 	const date = new Date(isoDateString);

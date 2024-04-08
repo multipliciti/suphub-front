@@ -17,6 +17,7 @@ export const ProjectsSidebarLayout: FC<PropsWithChildren> = ({ children }) => {
 				)}
 			>
 				<ProjectsHeader />
+
 				{children}
 			</div>
 		</>

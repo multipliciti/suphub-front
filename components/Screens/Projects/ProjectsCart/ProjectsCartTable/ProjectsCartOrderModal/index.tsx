@@ -72,6 +72,7 @@ export const ProjectsCartOrderModal: FC<Props> = ({ sellerId, onHide }) => {
 	};
 
 	const selectedProducts = getSelectedProducts();
+
 	const total = selectedProducts.reduce((previousValue, currentValue) => {
 		return previousValue + currentValue.price * currentValue.quantity;
 	}, 0);
@@ -159,7 +160,7 @@ export const ProjectsCartOrderModal: FC<Props> = ({ sellerId, onHide }) => {
 									<p>{project.address?.street}</p>
 									<p>{project.address?.city}</p>
 									<p>
-										{project.address?.state} {project.address?.country}{' '}
+										{project.address?.state} {project.address?.country}
 										{project.address?.zipcode}
 									</p>
 								</>
