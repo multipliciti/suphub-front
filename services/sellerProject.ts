@@ -14,7 +14,7 @@ export const SellerProjectApi = (instance: AxiosInstance) => ({
 		const response = await instance.get(url);
 		return response.data;
 	},
-	async getSellerProducts({ page = 1, limit = 10000, searchParams }: FetchFind) {
+	async getSellerProducts({ page, limit, searchParams }: FetchFind) {
 		const search = searchParams ? `&find=${searchParams}` : '';
 		const url = `product-seller?page=${page}&limit=${limit}${search}`;
 		const response = await instance.get(url);

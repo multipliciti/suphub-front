@@ -41,6 +41,8 @@ export const ProductsNameList = ({
 	const fetchSellerProject = async () => {
 		try {
 			const response = await api.sellerProject.getSellerProducts({
+				page: 1,
+				limit: 100000,
 				searchParams: finalJsonString,
 			});
 			const projects = response.result;
