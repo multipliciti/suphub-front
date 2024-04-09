@@ -39,6 +39,8 @@ export interface ProjectCart {
 
 type CartModel = (RfqOption | ModifiedSample) & {
 	product?: ModifiedProductItemType;
+	//name appears only on samples
+	name?: string;
 };
 
 type ModifiedSample = Omit<Sample, 'images'> & { size: number };

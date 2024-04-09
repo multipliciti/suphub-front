@@ -122,48 +122,52 @@ export const ProjectsCartTable: FC<Props> = ({ item }) => {
 				</thead>
 
 				<tbody>
-					{item.products.map((el, index) => (
-						<tr key={`${el.cartId}-${index}`}>
-							<td style={{ paddingLeft: 12, paddingRight: 0, margin: 'auto' }}>
-								<input
-									type="checkbox"
-									style={{ width: 20, height: 20 }}
-									checked={isSelected(el.id)}
-									onChange={() => handleSelectOne(el.id)}
-								/>
-							</td>
-							<td>
-								<ProjectsCartProduct
-									imgUrl={el.model.product?.images[0]?.image?.url}
-									title={el.model.product?.name || ''}
-									labels={generateProductLabels(el.model)}
-								/>
-							</td>
-							<td>
-								<SpanPrice>{formatNumberAsCurrency(el.price)}</SpanPrice>
-							</td>
-							<td>
-								<ProjectsCartQuantity
-									sellerId={item.sellerId}
-									productId={el.id}
-									initQuantity={el.quantity}
-								/>
-							</td>
-							<td style={{ textTransform: 'capitalize' }}>
-								{el.model.product?.unitOfMeasurement}
-							</td>
-							<td>{el.model.product?.leadTime}</td>
-							<td>{el.model.product?.warranty}</td>
-							<td style={{ textAlign: 'end' }}>
-								<SpanPrice>
-									{formatNumberAsCurrency(el.price * el.quantity)}
-								</SpanPrice>
-							</td>
-							<td>
-								<ProjectsCartDelete sellerId={item.sellerId} productId={el.id} />
-							</td>
-						</tr>
-					))}
+					{item.products.map((el, index) => {
+						console.log(el, index);
+						return (
+							<tr key={`${el.cartId}-${index}`}>
+								<td style={{ paddingLeft: 12, paddingRight: 0, margin: 'auto' }}>
+									<input
+										type="checkbox"
+										style={{ width: 20, height: 20 }}
+										checked={isSelected(el.id)}
+										onChange={() => handleSelectOne(el.id)}
+									/>
+								</td>
+								<td>
+									<ProjectsCartProduct
+										imgUrl={el.model.product?.images[0]?.image?.url}
+										//required because if there is model.name, than it is a sample, and we need to display sample name
+										title={el.model?.name || el.model?.product?.name || ''}
+										labels={generateProductLabels(el.model)}
+									/>
+								</td>
+								<td>
+									<SpanPrice>{formatNumberAsCurrency(el.price)}</SpanPrice>
+								</td>
+								<td>
+									<ProjectsCartQuantity
+										sellerId={item.sellerId}
+										productId={el.id}
+										initQuantity={el.quantity}
+									/>
+								</td>
+								<td style={{ textTransform: 'capitalize' }}>
+									{el.model.product?.unitOfMeasurement}
+								</td>
+								<td>{el.model.product?.leadTime}</td>
+								<td>{el.model.product?.warranty}</td>
+								<td style={{ textAlign: 'end' }}>
+									<SpanPrice>
+										{formatNumberAsCurrency(el.price * el.quantity)}
+									</SpanPrice>
+								</td>
+								<td>
+									<ProjectsCartDelete sellerId={item.sellerId} productId={el.id} />
+								</td>
+							</tr>
+						);
+					})}
 				</tbody>
 			</table>
 		</div>

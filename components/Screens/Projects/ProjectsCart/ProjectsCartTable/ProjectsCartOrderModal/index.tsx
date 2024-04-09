@@ -134,7 +134,7 @@ export const ProjectsCartOrderModal: FC<Props> = ({ sellerId, onHide }) => {
 								<span>Date of issue:</span> {getCurrentDate()}
 							</p>
 							<p>
-								<span>Approved by:</span> John Doe
+								<span>Approved by:</span> {user?.firstName} {user?.lastName}
 							</p>
 							<p>
 								<span>Payment Terms:</span> 30/70 TT
