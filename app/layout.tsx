@@ -5,6 +5,7 @@ import { MainProvider } from '@/components/Providers';
 import { Header } from '@/components/Features/Header';
 import { Modal } from '@/components/Modals';
 import { PendoScript } from '@/components/Providers/PendoScript';
+import { IntercomScript } from '@/components/Providers/IntercomScript';
 
 import '@/styles/globals.scss';
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 						<Modal />
 					</div>
 					<PendoScript />
+					<IntercomScript />
 				</MainProvider>
 			</body>
 		</html>
