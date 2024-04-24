@@ -5,20 +5,11 @@ import { useEffect } from 'react';
 import { initializeIntercomScript } from '@/utils/initializeIntercomScript';
 
 export const IntercomScript = () => {
-	const INTERCOM_APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;
-
 	const user = useAppSelector((state) => state.authSlice.user);
 
 	useEffect(() => {
-		if (user && INTERCOM_APP_ID) initializeIntercomScript(user);
+		initializeIntercomScript(user);
 	}, [user]);
-
-	if (!INTERCOM_APP_ID) {
-		console.error(
-			'IntercomScript initialization error: INTERCOM_APP_ID is not defined'
-		);
-		return;
-	}
 
 	return (
 		<Script id="intercom">

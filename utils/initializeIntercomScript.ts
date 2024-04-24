@@ -1,15 +1,15 @@
 import { User } from '@/types/services/auth';
 
-export const initializeIntercomScript = (userResponse: User) => {
+export const initializeIntercomScript = (userResponse: User | null) => {
 	try {
-		const INTERCOM_APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID;
-		if (!INTERCOM_APP_ID) {
-			console.error(
-				'IntercomScript initialization error: INTERCOM_APP_ID is not defined'
-			);
+		if (!userResponse) {
+			// @ts-ignore
+			window.intercomSettings = {
+				api_base: 'https://api-iam.intercom.io',
+				app_id: 'strk46bw',
+			};
 			return;
 		}
-
 		const {
 			id,
 			email,
@@ -24,7 +24,7 @@ export const initializeIntercomScript = (userResponse: User) => {
 		// @ts-ignore
 		window.intercomSettings = {
 			api_base: 'https://api-iam.intercom.io',
-			app_id: INTERCOM_APP_ID,
+			app_id: 'strk46bw',
 			id: id,
 			email: email,
 			role: role,
