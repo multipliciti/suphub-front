@@ -253,40 +253,51 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 										return <td key={ind}>{ufactor ? ufactor : '-'}</td>;
 									})}
 								</tr>
-								<tr>
-									<td></td>
-									{options.map((el: Option, ind: number) => {
-										return (
-											<td key={ind}>
-												<div className={s.btns}>
-													<button
-														onClick={() => {
-															dispatch(setModal('addSampleToCartFromOption'));
-															dispatch(setSamples(el.product.samples));
-														}}
-														className={s.btns_sample}
-													>
-														Order sample
-													</button>
-													<button
-														onClick={() => {
-															optionAddToCart(
-																el.id,
-																el.quantity ?? el.product.moq,
-																el.price ?? el.product.unitPrice
-															);
-														}}
-														className={s.btns_cart}
-													>
-														Add to cart
-													</button>
-												</div>
-											</td>
-										);
-									})}
-								</tr>
 							</tbody>
 						</table>
+
+						{/* last btns sticky */}
+
+						{/* To be sticky relative to the wrapper, it should have been moved one level
+						up in the container hierarchy */}
+						<div className={s.table_btns}>
+							<table className={s.table}>
+								<tbody className={s.tbody}>
+									<tr>
+										<td className={s.td}></td>
+										{options.map((el: Option, ind: number) => {
+											return (
+												<td className={s.td} key={ind}>
+													<div className={s.btns}>
+														<button
+															onClick={() => {
+																dispatch(setModal('addSampleToCartFromOption'));
+																dispatch(setSamples(el.product.samples));
+															}}
+															className={s.btns_sample}
+														>
+															Order sample
+														</button>
+														<button
+															onClick={() => {
+																optionAddToCart(
+																	el.id,
+																	el.quantity ?? el.product.moq,
+																	el.price ?? el.product.unitPrice
+																);
+															}}
+															className={s.btns_cart}
+														>
+															Add to cart
+														</button>
+													</div>
+												</td>
+											);
+										})}
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</>
 				)}
 			</div>

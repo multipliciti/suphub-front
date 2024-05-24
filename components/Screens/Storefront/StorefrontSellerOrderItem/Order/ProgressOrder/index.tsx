@@ -88,7 +88,7 @@ export const ProgressOrder = ({ order, setRerender }: TypeProps) => {
 				setActiveStep(3);
 				setRerenderProgress(!rerenderProgress);
 				break;
-			// !!! #removeapprove
+			// !!! #productionCompleted
 			// case 'productionCompleted':
 			// 	setActiveStep(3);
 			// 	setRerenderProgress(!rerenderProgress);

@@ -30,7 +30,7 @@ export const PaymentDue = ({
 	const fetchOrderPay = async () => {
 		const data = {
 			orderId,
-			amount: Math.round((price * 3) / 4) * 100,
+			amount: Number(((price * 3) / 4).toFixed(2)),
 			type: 'remaining',
 			successUrl: `${HOST}/projects/${projectId}/order/${orderId}`,
 			cancelUrl: `${HOST}/projects/${projectId}/order/${orderId}`,
@@ -67,7 +67,7 @@ export const PaymentDue = ({
 						</p>
 
 						<button onClick={() => fetchOrderPay()} className={s.btn}>
-							Pay $3,244.50
+							Pay ${((price * 3) / 4).toFixed(2)}
 						</button>
 					</>
 				)}

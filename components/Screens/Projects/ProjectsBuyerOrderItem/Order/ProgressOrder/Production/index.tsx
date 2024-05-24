@@ -28,7 +28,8 @@ interface PropsType {
 
 // !!! 1. We need to implement the ability for the seller to send SMS messages.
 // !!! 2. Perhaps we should remove the "productionCompleted" status since we removed the "approve" button from the buyer's side.
-// !!! find tag #removeapprove
+// !!! find tag #productionCompleted
+
 export const Production = ({
 	setRerender,
 	rerender,
@@ -50,32 +51,32 @@ export const Production = ({
 	const [formData, setFormData] = useState<string>('');
 	const currentdDate = new Date().toLocaleDateString('en-GB');
 
-	// const addOrderProduction = async (updates: string) => {
-	// 	const formDataSend = new FormData();
-	// 	formDataSend.append('orderId', orderId.toString());
-	// 	formDataSend.append('updates', updates);
-	// 	try {
-	// 		await api.sellerOrder.orderProduction(formDataSend);
-	// 		setRerenderProgress(!rerenderProgress);
-	// 	} catch (error) {
-	// 		console.error('addOrderProduction error:', error);
-	// 	}
-	// };
+	const addOrderProduction = async (updates: string) => {
+		const formDataSend = new FormData();
+		formDataSend.append('orderId', orderId.toString());
+		formDataSend.append('updates', updates);
+		try {
+			await api.sellerOrder.orderProduction(formDataSend);
+			setRerenderProgress(!rerenderProgress);
+		} catch (error) {
+			console.error('addOrderProduction error:', error);
+		}
+	};
 
-	// const changeStatusShipped = async (orderId: number, status: string) => {
-	// 	try {
-	// 		await api.sellerOrder.changeStatus({
-	// 			id: orderId,
-	// 			status,
-	// 		});
-	// 		//close input
-	// 		setNewMessage(false);
-	// 		//if set success productionCompleted status for local rerender
-	// 		setRerender(!rerender);
-	// 	} catch (error) {
-	// 		console.error('changeStatusShipped error:', error);
-	// 	}
-	// };
+	const changeStatusShipped = async (orderId: number, status: string) => {
+		try {
+			await api.sellerOrder.changeStatus({
+				id: orderId,
+				status,
+			});
+			//close input
+			setNewMessage(false);
+			//if set success productionCompleted status for local rerender
+			setRerender(!rerender);
+		} catch (error) {
+			console.error('changeStatusShipped error:', error);
+		}
+	};
 
 	return (
 		<>
@@ -107,7 +108,7 @@ export const Production = ({
 								<span className={s.status_data}>
 									{formatDateString(el.createdAt)}
 								</span>
-								<span>new</span>
+								{/* <span>new</span> */}
 							</p>
 							<p className={s.title}>{el.updates}</p>
 							{el.images.length > 0 && (
@@ -161,16 +162,17 @@ export const Production = ({
 				{/* buttons */}
 
 				<div className={s.buttons}>
-					{/* // !!! Old (weremoved approve from buyer) #removeapprove  */}
+					{/* // !!! Old (we removed approve from buyer) #productionCompleted  */}
 					{/* when we click Approve we change ctatus to productionCompleted and shoud show
 						"Milestone approved" */}
 					{/* {status === 'productionCompleted' && (
 						<p className={s.buttons_aproved}>Milestone approved</p>
 					)} */}
+					{/* // !!! #productionCompleted */}
 
-					{activeStep === 3 && status === 'inProduction' && (
+					{/* {activeStep === 3 && status === 'inProduction' && !newMessage && (
 						<>
-							{/* <button
+							<button
 								onClick={() => {
 									setRerenderProgress(!rerenderProgress);
 									setNewMessage(!newMessage);
@@ -178,20 +180,21 @@ export const Production = ({
 								className={s.buttons_left}
 							>
 								Decline & add feedback
-							</button> */}
+							</button>
 
-							{/* #removeapprove  */}
-							{/* <button
+							<button
 								onClick={() => {
-									changeStatusShipped(orderId, 'productionCompleted');
+									// #productionCompleted
+									// changeStatusShipped(orderId, 'productionCompleted');
+									changeStatusShipped(orderId, 'preShipment');
 								}}
 								className={s.buttons_right}
 							>
 								Approve
-							</button> */}
+							</button>
 						</>
 					)}
-					{/* {newMessage && (
+					{newMessage && (
 						<>
 							<button
 								onClick={() => {
@@ -214,10 +217,11 @@ export const Production = ({
 					)} */}
 				</div>
 
-				{/* if step Production done  */}
-				{activeStep < 4 && (
+				{/* if don't step Production done  */}
+				{/* {activeStep < 4 && (
 					<div className={s.waiting_approved}>Waiting for customer approval</div>
-				)}
+				)} */}
+				{/* if step Production done  */}
 				{activeStep >= 4 && <div className={s.approved}>Production completed</div>}
 			</div>
 		</>

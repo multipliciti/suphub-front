@@ -83,7 +83,7 @@ export const ProgressOrder = ({
 				setActiveStep(3);
 				setRerenderProgress(!rerenderProgress);
 				break;
-			// !!! #removeapprove
+			// !!! #productionCompleted
 			// case 'productionCompleted':
 			// 	setActiveStep(3);
 			// 	setRerenderProgress(!rerenderProgress);
@@ -100,11 +100,11 @@ export const ProgressOrder = ({
 				setActiveStep(6);
 				setRerenderProgress(!rerenderProgress);
 				break;
-			case 'delivered':
+			case 'delivered': //delivering
 				setActiveStep(7);
 				setRerenderProgress(!rerenderProgress);
 				break;
-			case 'completed':
+			case 'completed': //delivered
 				setActiveStep(8);
 				setRerenderProgress(!rerenderProgress);
 				break;

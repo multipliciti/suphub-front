@@ -239,7 +239,9 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 					className={classNames(s.more, optionMore !== -1 && s.more_active)}
 				>
 					<Link
-						href={`/projects/${projectId}/${rfqNameNavigation}/options/${rfqIdNavigation}`}
+						href={`/projects/${projectId}/${encodeURIComponent(
+							rfqNameNavigation
+						)}/options/${rfqIdNavigation}`}
 						className={s.more_item}
 					>
 						Product details
@@ -325,7 +327,9 @@ export const QuotationsTable = ({ projectId, rfqs, compress }: TypeProps) => {
 									onClick={() => {
 										if (rfq.options.length > 0) {
 											router.push(
-												`/projects/${projectId}/${rfq.productName}/options/${rfq.id}`
+												`/projects/${projectId}/${encodeURIComponent(
+													rfq.productName
+												)}/options/${rfq.id}`
 											);
 										}
 									}}

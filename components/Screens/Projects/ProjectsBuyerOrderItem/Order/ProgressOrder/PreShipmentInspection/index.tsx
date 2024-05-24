@@ -74,6 +74,10 @@ export const PreShipmentInspection = ({
 				)}
 			>
 				<span className={s.data}>{formatDateString(date)}</span>
+				{/* if has not a delivery */}
+				<div className={s.not_delivery}>Waiting for customer approval</div>
+
+				{/* if has a delivery */}
 				{delivery && (
 					<form className={s.form}>
 						{/* choice type */}

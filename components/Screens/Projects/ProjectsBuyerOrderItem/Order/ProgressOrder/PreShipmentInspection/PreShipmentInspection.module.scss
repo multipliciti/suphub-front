@@ -32,6 +32,16 @@
 	pointer-events: none;
 	height: 0;
 
+	.not_delivery {
+		text-align: right;
+		color: #f52419;
+
+		font-size: 14px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 20px;
+	}
+
 	&_active {
 		margin-top: 16px;
 		padding: 20px 24px;

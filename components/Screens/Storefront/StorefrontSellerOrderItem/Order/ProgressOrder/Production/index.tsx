@@ -157,7 +157,6 @@ export const Production = ({
 						<span className={s.data}>{formatDateString(productionStartedDate)}</span>
 						<span className={s.title}>Production started</span>
 					</div>
-
 					{/* render the incoming messages from the backend here */}
 					{productionArr?.map((el: ProductionItem, ind: number) => {
 						return (
@@ -186,7 +185,6 @@ export const Production = ({
 							</div>
 						);
 					})}
-
 					{/* If I have sent at least one message, we render the incoming messages from the backend here. */}
 					{sentMessages.length > 0 &&
 						sentMessage &&
@@ -275,70 +273,76 @@ export const Production = ({
 							</div>
 						</div>
 					</div>
-					<div className={s.buttons}>
-						{/* // !!! Old (weremoved approve from buyer) #removeapprove */}
-						{/* wait buyer approve  (inProduction status) */}
-						{/* {status === 'inProduction' && (
+
+					{/* if status === 'inProduction' */}
+					{activeStep === 3 && (
+						<div className={s.buttons}>
+							{/* // !!! Old (weremoved approve from buyer) #productionCompleted */}
+							{/* wait buyer approve  (inProduction status) */}
+							{/* {status === 'inProduction' && (
 							<span className={s.waiting}>Waiting for customer approval</span>
 						)} */}
-						{/* //  */}
+							{/* //  */}
 
-						{/* // !!! Old (weremoved approve from buyer) #removeapprove */}
-						{/* buyer has already approved (productionCompleted status)  */}
-						{/* !newMessage && status === 'productionCompleted' && */}
-						{!newMessage && status === 'inProduction' && (
-							<>
-								<button
-									onClick={() => {
-										setNewMessage(true);
-										setRerenderProgress(!rerenderProgress);
-									}}
-									className={classNames(
-										s.buttons_updates,
-										complete && s.buttons_updates_disable
-									)}
-								>
-									+ Add an update
-								</button>
-								<button
-									onClick={() => {
-										changeStatusPreShipment(orderId, 'preShipment');
-									}}
-									className={classNames(
-										s.buttons_production,
-										complete && s.buttons_production_disable
-									)}
-								>
-									Complete production
-								</button>
-							</>
-						)}
-						{/* new updates */}
-						{newMessage && (
-							<>
-								<button
-									onClick={() => {
-										setNewMessage(false);
-										setRerenderProgress(!rerenderProgress);
-									}}
-									className={s.buttons_cansel}
-								>
-									Cancel
-								</button>
-								<button
-									onClick={() => {
-										if (formData) AddOrderProduction(formData);
-									}}
-									className={classNames(
-										s.buttons_send,
-										formData && formData.updates.length < 1 && s.buttons_send_invalid
-									)}
-								>
-									Send
-								</button>
-							</>
-						)}
-					</div>
+							{/* // !!! Old (weremoved approve from buyer) #productionCompleted */}
+							{/* buyer has already approved (productionCompleted status)  */}
+							{/* !newMessage && status === 'productionCompleted' && */}
+							{!newMessage && (
+								<>
+									<button
+										onClick={() => {
+											setNewMessage(true);
+											setRerenderProgress(!rerenderProgress);
+										}}
+										className={classNames(
+											s.buttons_updates,
+											complete && s.buttons_updates_disable
+										)}
+									>
+										+ Add an update
+									</button>
+									<button
+										onClick={() => {
+											changeStatusPreShipment(orderId, 'preShipment');
+										}}
+										className={classNames(
+											s.buttons_production,
+											complete && s.buttons_production_disable
+										)}
+									>
+										Complete production
+									</button>
+								</>
+							)}
+							{/* new updates */}
+							{newMessage && (
+								<>
+									<button
+										onClick={() => {
+											setNewMessage(false);
+											setRerenderProgress(!rerenderProgress);
+										}}
+										className={s.buttons_cansel}
+									>
+										Cancel
+									</button>
+									<button
+										onClick={() => {
+											if (formData) AddOrderProduction(formData);
+										}}
+										className={classNames(
+											s.buttons_send,
+											formData &&
+												formData.updates.length < 1 &&
+												s.buttons_send_invalid
+										)}
+									>
+										Send
+									</button>
+								</>
+							)}
+						</div>
+					)}
 				</div>
 				{/* if step done  */}
 				{activeStep >= 4 && <div className={s.approved}>Production completed</div>}

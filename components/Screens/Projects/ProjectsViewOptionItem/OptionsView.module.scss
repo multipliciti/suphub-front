@@ -92,6 +92,7 @@
 	}
 
 	.table_container {
+		position: relative;
 		max-width: 100vw;
 		overflow: scroll;
 
@@ -182,6 +183,11 @@
 				}
 
 				td {
+					&:nth-child(1) {
+						min-width: 130px;
+					}
+					min-width: 201px;
+
 					color: #020617;
 					font-variant-numeric: lining-nums proportional-nums;
 

@@ -97,7 +97,7 @@ export const ProjectsTable = ({ projectId, data }: PropsType) => {
 									{/* Subtotal (USD) */}
 									{column.key === 'Subtotal (USD)' && (
 										<td className={s.td}>
-											<span>${row.amount}</span>
+											<span>${row.amount.toFixed(2)}</span>
 										</td>
 									)}
 									{/* Status */}

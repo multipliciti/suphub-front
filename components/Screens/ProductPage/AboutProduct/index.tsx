@@ -69,13 +69,16 @@ export const AboutProduct = ({ product }: PropsType) => {
 		<div>
 			<div className={s.product}>
 				<div className={s.product_images}>
-					<Image
-						className={s.product_images_img}
-						src={images[activeImg]?.url ?? ''}
-						alt="product"
-						width={420}
-						height={420}
-					/>
+					<div className={s.product_images_wrapper}>
+						<Image
+							layout="responsive"
+							className={s.product_images_img}
+							src={images[activeImg]?.url ?? ''}
+							alt="product"
+							width={420}
+							height={420}
+						/>
+					</div>
 					<div className={s.product_images_chose}>
 						{images?.map((el, ind) => {
 							return (
