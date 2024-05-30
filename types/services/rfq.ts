@@ -33,6 +33,14 @@ export interface RfqEmptyItem {
 	subCategoryId: number;
 }
 
+export interface RfqFile {
+	name: string;
+	url: string;
+	key: string;
+	mime: string;
+	bucket: string;
+}
+
 export interface RfqItemGot {
 	id: number;
 	projectId: number;
@@ -44,16 +52,8 @@ export interface RfqItemGot {
 	certifications: string;
 	additionalComments: string;
 	cover: string;
-	documents: {
-		name: string;
-		url: string;
-		key: string;
-	}[];
-	images: {
-		name: string;
-		url: string;
-		key: string;
-	}[];
+	documents: RfqFile[];
+	images: RfqFile[];
 	status: string;
 	subCategory: {
 		csiCode: string;

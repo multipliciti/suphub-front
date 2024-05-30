@@ -25,6 +25,7 @@ import { WarningTrialCanBeUsedOnce } from '@/components/Modals/WarningTrialCanBe
 import { AddSampleToCartFromOption } from './AddSampleToCartFromOption';
 import { AddSampleToCart } from './AddSampleToCart';
 import { GoToCart } from './GoToCart';
+import { FilePreview } from './FilePreview';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -199,6 +200,14 @@ export const Modal = () => {
 				className={classNames(s.wrapper, modal === 'goToCart' && s.wrapper_active)}
 			>
 				{modal === 'goToCart' && <GoToCart />}
+			</div>
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'filePreview' && s.wrapper_active
+				)}
+			>
+				{modal === 'filePreview' && <FilePreview />}
 			</div>
 		</>
 	);

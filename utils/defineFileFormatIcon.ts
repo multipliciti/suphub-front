@@ -40,10 +40,10 @@ import XSL from '@/imgs/FileFormatIcons/XSL.svg';
 import ZIP from '@/imgs/FileFormatIcons/ZIP.svg';
 import uploadIcon from '@/imgs/Buyer&Seller/upload_icon.svg';
 
-export function shortenFilename(filename: string) {
+export function shortenFilename(filename: string, length = 9) {
 	try {
-		if (filename.length > 9) {
-			return filename.slice(0, 7) + '...';
+		if (filename.length > length) {
+			return filename.slice(0, length - 2) + '...';
 		} else {
 			return filename;
 		}

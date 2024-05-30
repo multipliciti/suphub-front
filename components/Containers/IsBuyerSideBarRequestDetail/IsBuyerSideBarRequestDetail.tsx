@@ -13,6 +13,7 @@ import { RfqItemGot } from '@/types/services/rfq';
 import { categoriesToSubCategories } from '@/utils/categoriesToSubCategories';
 import { CategoryItem } from '@/types/sideBar';
 import { Spinner } from '@/components/UI/Spinner';
+import { Files } from '@/components/Containers/IsBuyerSideBarRequestDetail/Files/Files';
 
 type TypeProps = {
 	children: React.ReactNode;
@@ -24,8 +25,12 @@ const btns_nav = [
 		id: 1,
 	},
 	{
-		label: 'Customer Support',
+		label: 'Files',
 		id: 2,
+	},
+	{
+		label: 'Customer Support',
+		id: 3,
 	},
 ];
 
@@ -125,6 +130,15 @@ export const IsBuyerSideBarRequestDetail = ({ children }: TypeProps) => {
 										setIsLoading={setIsLoading}
 										data={data}
 										setData={setData}
+									/>
+								)}
+
+								{navId === 2 && (
+									<Files
+										rfqId={rfqId}
+										data={data}
+										setData={setData}
+										setIsLoading={setIsLoading}
 									/>
 								)}
 

@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Sample } from '@/types/products/product';
 import { SampleProps } from '@/types/products/product';
+import { RfqFile } from '@/types/services/rfq';
 
 type ModalType =
 	| ''
@@ -28,7 +29,8 @@ type ModalType =
 	| 'deleteProject'
 	| 'addSampleToCart'
 	| 'addSampleToCartFromOption'
-	| 'goToCart';
+	| 'goToCart'
+	| 'filePreview';
 
 interface CounterState {
 	modal: ModalType;
@@ -41,6 +43,7 @@ interface CounterState {
 	projectId: number;
 	//The card number when something has been successfully added to the cart for reference.
 	projectCart: number;
+	previewFile: RfqFile | null;
 }
 
 const initialState: CounterState = {
@@ -50,6 +53,7 @@ const initialState: CounterState = {
 	samples: null,
 	projectId: -1,
 	projectCart: -1,
+	previewFile: null,
 };
 
 const modalSlice = createSlice({
@@ -74,6 +78,9 @@ const modalSlice = createSlice({
 		setCartProject(state, action: PayloadAction<number>) {
 			state.projectCart = action.payload;
 		},
+		setPreviewFile(state, action: PayloadAction<RfqFile | null>) {
+			state.previewFile = action.payload;
+		},
 	},
 });
 
@@ -84,5 +91,6 @@ export const {
 	setSamples,
 	setProjectId,
 	setCartProject,
+	setPreviewFile,
 } = modalSlice.actions;
 export default modalSlice.reducer;
