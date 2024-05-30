@@ -8,9 +8,9 @@ import { setModal, setPreviewFile } from '@/redux/slices/modal';
 
 import Image from 'next/image';
 import search_img from '@/imgs/Marketplace/search.svg';
-import downloadIcon from '@/imgs/Buyer&Seller/download.svg';
-import modal_eye from '@/imgs/Modal/eye.svg';
-import delete_icon from '@/imgs/Buyer&Seller/delete_icon.svg';
+import downloadIcon from '@/imgs/SideBar/download-02.svg';
+import previewIcon from '@/imgs/Modal/eye.svg';
+import deleteIcon from '@/imgs/SideBar/trash.svg';
 
 interface DefaultPropTypes {
 	rfqId: number;
@@ -175,7 +175,7 @@ export const File = ({ file, rfqId, setIsLoading, setData }: FilePropTypes) => {
 							alt="preview"
 							width={18}
 							height={18}
-							src={modal_eye}
+							src={previewIcon}
 						/>
 						<Image
 							className={s.file_button}
@@ -184,7 +184,7 @@ export const File = ({ file, rfqId, setIsLoading, setData }: FilePropTypes) => {
 							alt="delete"
 							width={18}
 							height={18}
-							src={delete_icon}
+							src={deleteIcon}
 						/>
 					</div>
 				</div>
