@@ -1,6 +1,6 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -18,7 +18,6 @@ import '@/styles/globals.scss';
 
 //imgs
 import Calendar from '@/imgs/Header/menu/Calendar.svg';
-import Comment from '@/imgs/Header/menu/Comment.svg';
 import User from '@/imgs/Header/menu/User.svg';
 import logo from '@/imgs/Header/Logo.svg';
 import LogOut from '@/imgs/Header/LogOut.svg';
@@ -37,6 +36,8 @@ export const Header = () => {
 	const [logoSrc, setLogoSrc] = useState(avatartest);
 	const [menu, setMenu] = useState<boolean>(false);
 	const router = useRouter();
+	const pathname = usePathname();
+
 	useClickOutside(menuRef, () => {
 		setMenu(false);
 	});
@@ -76,6 +77,16 @@ export const Header = () => {
 		if (company?.logo?.url) setLogoSrc(company?.logo.url);
 	};
 
+	const setDefaultActiveLink = () => {
+		let buttons = regularUser;
+		if (user?.role === 'seller') buttons = buttonsSeller;
+		else if (user?.role === 'buyer') buttons = buttonsBuyer;
+
+		const activeButton = buttons.find((button) => pathname.includes(button.href));
+
+		if (activeButton) setActiveLink(activeButton.id);
+	};
+
 	const fetchLogOut = async () => {
 		try {
 			await api.auth.logout();
@@ -91,6 +102,7 @@ export const Header = () => {
 	};
 
 	useEffect(() => {
+		setDefaultActiveLink();
 		handleLogo();
 	}, [user, sellerCompany, buyerCompany]);
 

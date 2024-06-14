@@ -4,64 +4,50 @@ interface Button {
 	href: string;
 }
 
-export const buttonsSeller: Button[] = [
+const baseButtons: Button[] = [
 	{
 		id: 1,
 		label: 'Marketplace',
 		href: '/marketplace',
 	},
+];
+
+export const regularUser: Button[] = [...baseButtons];
+
+export const buttonsSeller: Button[] = [
 	{
-		id: 2,
+		id: 1,
 		label: 'My Storefront',
 		href: '/storefront/get-started',
 	},
 	{
+		id: 2,
+		label: 'My Suppliers',
+		href: '/suppliers',
+	},
+	{
 		id: 3,
-		label: 'Support',
-		href: '/support',
+		label: 'Marketplace',
+		href: '/marketplace',
 	},
 ];
 
 export const buttonsBuyer: Button[] = [
 	{
 		id: 1,
-		label: 'Marketplace',
-		href: '/marketplace',
-	},
-	{
-		id: 2,
-		label: 'Projects',
+		label: 'My Projects',
 		href: '/projects',
 	},
 	{
+		id: 2,
+		label: 'My Suppliers',
+		href: '/suppliers',
+	},
+	{
 		id: 3,
-		label: 'Support',
-		href: '/support',
-	},
-];
-
-export const regularUser: Button[] = [
-	{
-		id: 1,
 		label: 'Marketplace',
 		href: '/marketplace',
 	},
-	{
-		id: 2,
-		label: 'Support',
-		href: '/support',
-	},
 ];
 
-export const logOutUser: Button[] = [
-	{
-		id: 1,
-		label: 'Marketplace',
-		href: '/marketplace',
-	},
-	{
-		id: 2,
-		label: 'Support',
-		href: '/support',
-	},
-];
+export const logOutUser: Button[] = [...baseButtons];
