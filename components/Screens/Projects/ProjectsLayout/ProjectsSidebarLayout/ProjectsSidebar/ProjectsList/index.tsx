@@ -17,9 +17,12 @@ export const ProjectsList = () => {
 	const router = useRouter();
 	const dispatch = useAppDispatch();
 
-	const status = useAppSelector((state) => state.projectsSlice.status);
-	const projectList = useAppSelector((state) => state.projectsSlice.result);
-	const project = useAppSelector((state) => state.projectItemSlice.project);
+	const { projectList, project, status, user } = useAppSelector((state) => ({
+		projectList: state.projectsSlice.result,
+		project: state.projectItemSlice.project,
+		status: state.projectsSlice.status,
+		user: state.authSlice.user,
+	}));
 
 	const handleSelectProject = (id: number) => {
 		router.push(`/projects/${id}/overview`);
@@ -51,7 +54,7 @@ export const ProjectsList = () => {
 				</div>
 			))}
 			{status === 'loading' && <Spinner size="s" />}
-			{status === 'rejected' && <div>Something went wrong</div>}
+			{status === 'rejected' && user && <div>Something went wrong</div>}
 		</div>
 	);
 };

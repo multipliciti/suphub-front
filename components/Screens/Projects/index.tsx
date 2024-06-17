@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { ProjectsEmptyTableMessage } from '@/components/Screens/Projects/ProjectsOverview/ProjectsEmptyTableMessage';
@@ -8,22 +8,41 @@ import { Spinner } from '@/components/UI/Spinner';
 
 export const Projects = () => {
 	const router = useRouter();
+	const { projectList, project, status, user } = useAppSelector((state) => ({
+		projectList: state.projectsSlice.result,
+		project: state.projectItemSlice.project,
+		status: state.projectsSlice.status,
+		user: state.authSlice.user,
+	}));
 
-	const projectList = useAppSelector((state) => state.projectsSlice.result);
-	const project = useAppSelector((state) => state.projectItemSlice.project);
-	const status = useAppSelector((state) => state.projectsSlice.status);
+	const userStatus = useMemo(
+		() => ({
+			hasProjects: project && status === 'success',
+			noProjects: status === 'success' && projectList.length === 0,
+			justLoggedIn: status === 'rejected' && user?.role === 'buyer',
+			loggedOut: status === 'rejected' && !user,
+			rejected: status === 'rejected',
+		}),
+		[project, status, projectList, user]
+	);
 
 	useEffect(() => {
-		if (project && status === 'success') {
-			router.push(`/projects/${project.id}/overview`);
+		if (userStatus.justLoggedIn) window.location.reload();
+	}, [user]);
+
+	useEffect(() => {
+		if (userStatus.hasProjects) {
+			router.push(`/projects/${project?.id}/overview`);
 		}
 	}, [project]);
 
-	if (status === 'success' && projectList.length === 0) {
+	if (userStatus.noProjects || userStatus.loggedOut) {
 		return <ProjectsEmptyTableMessage />;
 	}
-	if (status === 'rejected') {
+
+	if (userStatus.rejected) {
 		return <div>Something went wrong</div>;
 	}
+
 	return <Spinner style={{ marginTop: '15%' }} />;
 };

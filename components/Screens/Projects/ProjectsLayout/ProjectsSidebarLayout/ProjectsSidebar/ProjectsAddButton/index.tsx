@@ -2,7 +2,8 @@
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-import { useAppDispatch } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setModal } from '@/redux/slices/modal';
 import { setStatus } from '@/redux/slices/projects/projects';
 import { Api } from '@/services';
 
@@ -14,8 +15,13 @@ export const ProjectsAddButton = () => {
 	const api = Api();
 	const router = useRouter();
 	const dispatch = useAppDispatch();
+	const user = useAppSelector((state) => state.authSlice.user);
 
 	const handleCreateProject = async () => {
+		if (!user) {
+			dispatch(setModal('login'));
+			return;
+		}
 		try {
 			const response = await api.project.createProject({
 				name: 'Untitled',

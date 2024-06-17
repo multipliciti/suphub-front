@@ -24,10 +24,12 @@ export const ProjectsSidebar = () => {
 
 	const dispatch = useAppDispatch();
 
-	const isSidebar = useAppSelector((state) => state.projectsSidebar.sidebar);
-	const status = useAppSelector((state) => state.projectsSlice.status);
-	const params = useAppSelector((state) => state.projectsSlice.params);
-	const project = useAppSelector((state) => state.projectItemSlice.project);
+	const { project, status, params, isSidebar } = useAppSelector((state) => ({
+		project: state.projectItemSlice.project,
+		status: state.projectsSlice.status,
+		params: state.projectsSlice.params,
+		isSidebar: state.projectsSidebar.sidebar,
+	}));
 
 	useEffect(() => {
 		fetchProjects();
