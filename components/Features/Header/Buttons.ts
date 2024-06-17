@@ -6,21 +6,6 @@ interface Button {
 
 const baseButtons: Button[] = [
 	{
-		id: 1,
-		label: 'Marketplace',
-		href: '/marketplace',
-	},
-];
-
-export const regularUser: Button[] = [...baseButtons];
-
-export const buttonsSeller: Button[] = [
-	{
-		id: 1,
-		label: 'My Storefront',
-		href: '/storefront/get-started',
-	},
-	{
 		id: 2,
 		label: 'My Suppliers',
 		href: '/suppliers',
@@ -30,6 +15,15 @@ export const buttonsSeller: Button[] = [
 		label: 'Marketplace',
 		href: '/marketplace',
 	},
+];
+
+export const buttonsSeller: Button[] = [
+	{
+		id: 1,
+		label: 'My Storefront',
+		href: '/storefront/get-started',
+	},
+	...baseButtons,
 ];
 
 export const buttonsBuyer: Button[] = [
@@ -38,16 +32,9 @@ export const buttonsBuyer: Button[] = [
 		label: 'My Projects',
 		href: '/projects',
 	},
-	{
-		id: 2,
-		label: 'My Suppliers',
-		href: '/suppliers',
-	},
-	{
-		id: 3,
-		label: 'Marketplace',
-		href: '/marketplace',
-	},
+	...baseButtons,
 ];
 
-export const logOutUser: Button[] = [...baseButtons];
+export const regularUser: Button[] = buttonsBuyer;
+
+export const logOutUser: Button[] = buttonsBuyer;

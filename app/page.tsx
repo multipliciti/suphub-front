@@ -10,12 +10,10 @@ export default function Page() {
 	const role = useAppSelector((state) => state.authSlice.user?.role);
 
 	useEffect(() => {
-		if (role === 'buyer') {
-			router.push('/projects');
-		} else if (role === 'seller') {
+		if (role === 'seller') {
 			router.push('/storefront/products');
 		} else {
-			router.push('/marketplace');
+			router.push('/projects');
 		}
 	}, [role]);
 

@@ -102,9 +102,12 @@ export const Header = () => {
 	};
 
 	useEffect(() => {
-		setDefaultActiveLink();
 		handleLogo();
 	}, [user, sellerCompany, buyerCompany]);
+
+	useEffect(() => {
+		setDefaultActiveLink();
+	}, [user, pathname]);
 
 	return (
 		<header className={`header_container ${s.header}`}>
