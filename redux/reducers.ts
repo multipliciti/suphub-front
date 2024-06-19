@@ -18,6 +18,7 @@ import projectsSidebar from './slices/projects/projectsSidebar';
 import projectItemSlice from './slices/projects/projectItem';
 import projectCartSlice from './slices/projects/projectsCart';
 import sideBarRequestDetailSlice from './slices/sideBars/sideBarRequestDetail';
+import suppliersSidebar from '@/redux/slices/suppliers/suppliersSidebar';
 
 const combinedReducer = combineReducers({
 	authSlice,
@@ -37,6 +38,7 @@ const combinedReducer = combineReducers({
 	projectItemSlice,
 	projectCartSlice,
 	sideBarRequestDetailSlice,
+	suppliersSidebar,
 });
 
 export const resetState = createAction('state/reset');

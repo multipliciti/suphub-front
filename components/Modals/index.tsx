@@ -26,6 +26,7 @@ import { AddSampleToCartFromOption } from './AddSampleToCartFromOption';
 import { AddSampleToCart } from './AddSampleToCart';
 import { GoToCart } from './GoToCart';
 import { FilePreview } from './FilePreview';
+import { InviteSuppliers } from './InviteSuppliers';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -208,6 +209,14 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'filePreview' && <FilePreview />}
+			</div>
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'inviteSuppliers' && s.wrapper_active
+				)}
+			>
+				{modal === 'inviteSuppliers' && <InviteSuppliers />}
 			</div>
 		</>
 	);

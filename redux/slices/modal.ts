@@ -30,7 +30,8 @@ type ModalType =
 	| 'addSampleToCart'
 	| 'addSampleToCartFromOption'
 	| 'goToCart'
-	| 'filePreview';
+	| 'filePreview'
+	| 'inviteSuppliers';
 
 interface CounterState {
 	modal: ModalType;

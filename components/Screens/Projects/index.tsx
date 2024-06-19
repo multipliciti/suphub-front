@@ -19,7 +19,8 @@ export const Projects = () => {
 		() => ({
 			hasProjects: project && status === 'success',
 			noProjects: status === 'success' && projectList.length === 0,
-			justLoggedIn: status === 'rejected' && user?.role === 'buyer',
+			justLoggedInBuyer: status === 'rejected' && user?.role === 'buyer',
+			justLoggedInSeller: status === 'rejected' && user?.role === 'seller',
 			loggedOut: status === 'rejected' && !user,
 			rejected: status === 'rejected',
 		}),
@@ -27,7 +28,8 @@ export const Projects = () => {
 	);
 
 	useEffect(() => {
-		if (userStatus.justLoggedIn) window.location.reload();
+		if (userStatus.justLoggedInBuyer) window.location.reload();
+		else if (userStatus.justLoggedInSeller) router.push('storefront/products');
 	}, [user]);
 
 	useEffect(() => {

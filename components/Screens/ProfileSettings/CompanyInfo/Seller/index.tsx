@@ -633,6 +633,7 @@ const SellerCompanyInfo = () => {
 									<Image
 										alt={'add product'}
 										src={plus_sign}
+										className={s.tag_add_icon}
 										onClick={handleAddCountryCertification}
 									/>
 									<input

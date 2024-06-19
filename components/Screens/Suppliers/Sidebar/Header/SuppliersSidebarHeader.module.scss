@@ -1,0 +1,22 @@
+.header {
+	display: flex;
+	width: 100%;
+	padding: 4px;
+	justify-content: space-between;
+	align-items: center;
+	gap: 6px;
+	align-self: stretch;
+
+	&_title {
+		color: #0f172a;
+		font-size: 16px;
+		font-style: normal;
+		font-weight: 700;
+		line-height: 24px;
+	}
+
+	&_icon {
+		color: #0f172a;
+		cursor: pointer;
+	}
+}
