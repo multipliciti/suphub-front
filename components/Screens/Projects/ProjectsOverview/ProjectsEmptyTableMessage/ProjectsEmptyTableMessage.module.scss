@@ -1,22 +1,39 @@
-.add_btn {
-  > div {
-    width: 200px;
-  }
+@mixin button($bg-color, $border-color) {
+	display: flex;
+	padding: 10px 20px 10px 12px;
+	justify-content: center;
+	align-items: center;
+	gap: 8px;
 
-  > button {
-    width: 100%;
+	border-radius: 8px;
+	border: 1px solid  $border-color;
+	background: $bg-color;
+}
 
-    padding: 8px 16px;
+@mixin text($color) {
+	color: $color;
+	font-variant-numeric: lining-nums proportional-nums;
 
-    background-color: #2B1694;
-    border: none;
-    border-radius: 8px;
+	font-size: 16px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: 24px;
+}
 
-    color: #FFFFFF;
-    font-size: 14px;
-    font-weight: 700;
-    line-height: 20px;
+.btn {
+	&_suppliers {
+		@include button(#F0F2FE, #12006C);
 
-    cursor: pointer;
-  }
+		&_text {
+			@include text(#2b1694);
+		}
+	}
+
+	&_project {
+		@include button(#2B1694, #2B1694);
+
+		&_text {
+			@include text(#ffffff);
+		}
+	}
 }
