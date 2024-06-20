@@ -1,10 +1,5 @@
 import { AxiosInstance } from 'axios';
-import {
-	RfqFind,
-	RfqUpdateData,
-	RfqItemFetch,
-	RfqEmptyItem,
-} from '@/types/services/rfq';
+import { RfqFind, RfqItemFetch, RfqEmptyItem } from '@/types/services/rfq';
 
 const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
@@ -32,7 +27,26 @@ export const RfqApi = (instance: AxiosInstance) => ({
 		const response = await instance.get(url);
 		return response.data;
 	},
+	async bulkUploadCsv(file: File) {
+		try {
+			const formData = new FormData();
+			formData.append('file', file);
 
+			const url = `/rfq/upload-csv`;
+			const response = await instance.post<{ error: boolean; message: string }>(
+				url,
+				formData
+			);
+			return response.data;
+		} catch (error) {
+			throw error;
+		}
+	},
+	async downloadFileSample(projectId: string) {
+		const url = `/rfq/download-file-sample/${projectId}`;
+		const response = await instance.get(url);
+		return response;
+	},
 	async updateRfq(rfqId: number, data: any) {
 		// exclude these properties as there are separate endpoints for them.
 		const dataInner = Object.fromEntries(
