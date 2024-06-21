@@ -101,15 +101,21 @@
 			}
 		}
 
-		.chat {
+		.team {
 			display: block;
 			max-width: 20px;
-			position: relative;
 			cursor: pointer;
 
 			&_wrapper {
 				display: flex;
 				justify-content: center;
+				position: relative;
+			}
+
+			&_tag {
+				visibility: hidden;
+				position: absolute;
+				left: 29px;
 			}
 
 			&_sms {
@@ -181,4 +187,86 @@
 			}
 		}
 	}
+}
+
+.team_td {
+	position: relative;
+}
+
+.team_td:hover .team_tag {
+	visibility: visible;
+}
+
+.dropdown {
+	position: absolute;
+	display: flex;
+	width: 157px;
+	flex-direction: column;
+	align-items: flex-start;
+
+	border-radius: 8px;
+	border: 1px solid var(--New-colors-Grey-Border, #e7e9ef);
+	background: var(--New-colors-White, #fff);
+
+	box-shadow: 0 10px 25px 0 rgba(53, 53, 53, 0.12);
+
+	z-index: 10;
+
+	top: 62px;
+	left: 18px;
+
+	&_row {
+		display: flex;
+		padding: 8px 12px;
+		align-items: center;
+		gap: 6px;
+		align-self: stretch;
+
+		background: #fff;
+
+		&:hover {
+			background: #fbfbfb;
+		}
+
+		&:hover &_text {
+			color: #2b1694;
+		}
+
+		&_selected {
+			background: #f0f2fe;
+
+			&:hover {
+				background: #f0f2fe;
+			}
+		}
+
+		&:first-of-type {
+			border-top-left-radius: 8px;
+			border-top-right-radius: 8px;
+		}
+
+		&:last-of-type {
+			border-bottom-left-radius: 8px;
+			border-bottom-right-radius: 8px;
+		}
+
+		&_image {
+			border-radius: 200px;
+			border: 1px solid var(--Neutral-50, #fdfdfd);
+			background: lightgray 50% / cover no-repeat;
+		}
+
+		&_text {
+			color: var(--New-grey-900, #0f172a);
+			font-variant-numeric: lining-nums proportional-nums;
+
+			font-size: 14px;
+			font-style: normal;
+			font-weight: 600;
+			line-height: 20px;
+		}
+	}
+}
+.dropdown_row_selected .dropdown_row_text {
+		color: #2b1694 !important;
 }
