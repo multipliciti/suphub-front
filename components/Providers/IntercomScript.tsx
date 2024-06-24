@@ -8,7 +8,7 @@ export const IntercomScript = () => {
 	const user = useAppSelector((state) => state.authSlice.user);
 
 	useEffect(() => {
-		initializeIntercomScript(user);
+		if (user) initializeIntercomScript(user);
 	}, [user]);
 
 	return (

@@ -1,15 +1,15 @@
 import { User } from '@/types/services/auth';
-
-export const initializeIntercomScript = (userResponse: User | null) => {
+import Intercom from '@intercom/messenger-js-sdk';
+export const initializeIntercomScript = (userResponse: User) => {
 	try {
-		if (!userResponse) {
-			// @ts-ignore
-			window.intercomSettings = {
-				api_base: 'https://api-iam.intercom.io',
-				app_id: 'strk46bw',
-			};
+		const INTERCOM_APP_ID = process.env.NEXT_PUBLIC_INTERCOM_APP_ID as string;
+		if (!INTERCOM_APP_ID) {
+			console.error(
+				'IntercomScript initialization error: INTERCOM_APP_ID is not defined'
+			);
 			return;
 		}
+
 		const {
 			id,
 			email,
@@ -21,10 +21,9 @@ export const initializeIntercomScript = (userResponse: User | null) => {
 			buyerCompanyId,
 			createdAt,
 		} = userResponse;
-		// @ts-ignore
-		window.intercomSettings = {
+		Intercom({
 			api_base: 'https://api-iam.intercom.io',
-			app_id: 'strk46bw',
+			app_id: INTERCOM_APP_ID,
 			id: id,
 			email: email,
 			role: role,
@@ -34,7 +33,7 @@ export const initializeIntercomScript = (userResponse: User | null) => {
 			...(sellerCompanyId && { sellerCompanyId: sellerCompanyId }),
 			...(buyerCompanyId && { buyerCompanyId: buyerCompanyId }),
 			...(createdAt && { createdAt: createdAt }),
-		};
+		});
 	} catch (e) {
 		console.error('Intercom initialization error', e);
 	}
