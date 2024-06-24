@@ -4,12 +4,18 @@ interface Button {
 	href: string;
 }
 
+const isProduction: boolean = process.env.NODE_ENV === 'production';
+
 const baseButtons: Button[] = [
-	{
-		id: 2,
-		label: 'My Suppliers',
-		href: '/suppliers',
-	},
+	...(isProduction
+		? []
+		: [
+				{
+					id: 2,
+					label: 'My Suppliers',
+					href: '/suppliers',
+				},
+		  ]),
 	{
 		id: 3,
 		label: 'Marketplace',
