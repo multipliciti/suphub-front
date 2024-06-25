@@ -4,7 +4,7 @@ interface Button {
 	href: string;
 }
 
-const isProduction: boolean = process.env.NODE_ENV === 'production';
+const isProduction: boolean = process.env.NEXT_PUBLIC_NODE_ENV === 'production';
 
 const baseButtons: Button[] = [
 	...(isProduction
