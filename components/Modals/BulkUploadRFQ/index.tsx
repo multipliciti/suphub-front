@@ -4,11 +4,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { useAppDispatch } from '@/redux/hooks';
+import { categoryService } from '@/services/categoryApi';
+import { Select } from '@/components/UI/Select';
 import { setModal } from '@/redux/slices/modal';
 import { setStatus } from '@/redux/slices/storefront/storefrontProducts';
 import { Button } from '@/components/UI/Button';
 import { Dropzone } from '@/components/UI/Dropzone';
 import { BulkUploadRFQModalLayout } from './layout';
+import { CategoryItem } from '@/types/sideBar';
 import { Api } from '@/services';
 
 import downloadIcon from '@/imgs/Buyer&Seller/download.svg';
@@ -16,6 +19,7 @@ import warningIcon from '@/imgs/Buyer&Seller/warning.svg';
 import s from './BulkUploadRFQ.module.scss';
 
 type FormValues = {
+	subcategory: string;
 	file: File;
 };
 
@@ -25,6 +29,10 @@ export const BulkUploadRFQ = () => {
 
 	const { id: projectId } = useParams();
 
+	const [categories, setCategories] = useState<CategoryItem[]>([]);
+	const [subCategories, setSubCategories] = useState<string[]>([]);
+	const [subcategory, setSubcategory] = useState<string[]>([]);
+
 	const [files, setFiles] = useState<File[]>([]);
 
 	const [successMessage, setSuccessMessage] = useState('');
@@ -32,18 +40,37 @@ export const BulkUploadRFQ = () => {
 
 	const { register, handleSubmit, formState, setValue } = useForm<FormValues>({
 		defaultValues: {
+			subcategory: '',
 			file: undefined,
 		},
 		mode: 'onChange',
 	});
 
 	useEffect(() => {
+		register('subcategory', { required: true });
 		register('file', { required: true });
 	}, [register]);
 
 	useEffect(() => {
+		if (subCategories) {
+			setSubcategory([subCategories[0]]);
+			setValue('subcategory', subCategories[0], { shouldValidate: true });
+		}
+	}, [subCategories]);
+
+	useEffect(() => {
 		setValue('file', files[0], { shouldValidate: true });
 	}, [files]);
+
+	useEffect(() => {
+		const fetch = async () => {
+			const categories = await api.category.getCategories();
+			const subCategories = categoryService.getSubcategories(categories);
+			setCategories(categories);
+			setSubCategories(subCategories);
+		};
+		if (!categories.length || !subCategories.length) fetch();
+	}, []);
 
 	useEffect(() => {
 		if (successMessage) {
@@ -56,6 +83,19 @@ export const BulkUploadRFQ = () => {
 
 	const onSubmit: SubmitHandler<FormValues> = async (values) => {
 		try {
+			//TODO IS this check required when uploading???
+			if (!categories?.length) {
+				throw new Error('Error with no categories');
+			}
+			const subCategoryId = categoryService.findSubcategoryIdByName(
+				categories,
+				values.subcategory
+			);
+
+			if (!subCategoryId) {
+				throw new Error('Error with missing subcategoryId');
+			}
+
 			const response = await api.rfq.bulkUploadCsv(values.file);
 
 			if (!response.error) {
@@ -81,8 +121,25 @@ export const BulkUploadRFQ = () => {
 	};
 
 	const handleDownloadTemplate = async () => {
+		if (!categories?.length || !subcategory.length) {
+			return;
+		}
+		const subCategoryId = categoryService.findSubcategoryIdByName(
+			categories,
+			subcategory[0]
+		);
+
+		if (!subCategoryId) {
+			return;
+		}
+
 		try {
-			const response = await api.rfq.downloadFileSample(projectId as string);
+			const requestBody = {
+				projectId: parseInt(projectId as string),
+				subCategoryId,
+			};
+
+			const response = await api.rfq.downloadFileSample(requestBody);
 
 			const data = new Blob([response.data], { type: 'text/csv' });
 
@@ -110,7 +167,11 @@ export const BulkUploadRFQ = () => {
 	};
 
 	return (
-		<BulkUploadRFQModalLayout title={'Bulk Upload'} close={hideModal}>
+		<BulkUploadRFQModalLayout
+			title={'Bulk Upload'}
+			projectId={projectId}
+			close={hideModal}
+		>
 			{errorMessage && (
 				<div className={s.error_message}>
 					<div className={s.error_message_image}>
@@ -129,9 +190,21 @@ export const BulkUploadRFQ = () => {
 			{!errorMessage && (
 				<form className={s.form} onSubmit={handleSubmit(onSubmit)}>
 					<div className={s.form_row}>
+						<span>Subcategory</span>
+						<Select
+							title="Choose Subcategory"
+							isMulti={false}
+							options={subCategories}
+							value={subcategory}
+							setValue={setSubcategory}
+						/>
+					</div>
+
+					<div className={s.form_row}>
 						<span>Download CSV Template</span>
 						<p>Download CSV file and fill it with your data</p>
 						<Button
+							disabled={subcategory.length === 0}
 							variant="outlined"
 							className={s.download_btn}
 							onClick={handleDownloadTemplate}

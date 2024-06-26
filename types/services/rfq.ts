@@ -103,3 +103,8 @@ export interface RfqOption {
 	rfqId: number;
 	status?: string;
 }
+
+export interface RfqDownloadFileSamle {
+	projectId: number;
+	subCategoryId: number;
+}

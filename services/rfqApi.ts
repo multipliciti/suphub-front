@@ -1,5 +1,10 @@
 import { AxiosInstance } from 'axios';
-import { RfqFind, RfqItemFetch, RfqEmptyItem } from '@/types/services/rfq';
+import {
+	RfqFind,
+	RfqItemFetch,
+	RfqEmptyItem,
+	RfqDownloadFileSamle,
+} from '@/types/services/rfq';
 
 const HOST = process.env.NEXT_PUBLIC_CLIENT_HOST;
 
@@ -42,9 +47,9 @@ export const RfqApi = (instance: AxiosInstance) => ({
 			throw error;
 		}
 	},
-	async downloadFileSample(projectId: string) {
-		const url = `/rfq/download-file-sample/${projectId}`;
-		const response = await instance.get(url);
+	async downloadFileSample(data: RfqDownloadFileSamle) {
+		const url = `/rfq/download-file-sample`;
+		const response = await instance.post(url, data);
 		return response;
 	},
 	async updateRfq(rfqId: number, data: any) {
