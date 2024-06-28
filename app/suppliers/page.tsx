@@ -1,9 +1,14 @@
-'use client';
 import React from 'react';
 import { SuppliersTablePage } from '@/components/Screens/Suppliers/Table';
+import SuppliersHeader from '@/components/Screens/Suppliers/Header';
 
 function Suppliers() {
-	return <SuppliersTablePage />;
+	return (
+		<>
+			<SuppliersHeader />
+			<SuppliersTablePage />
+		</>
+	);
 }
 
 export default Suppliers;

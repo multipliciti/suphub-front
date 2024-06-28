@@ -16,4 +16,8 @@
 	width: 100%;
 	margin: 0 60px;
 	transition: all 0.3s ease;
+
+	&_active {
+		margin: 0 24px 0 60px;
+	}
 }

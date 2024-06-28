@@ -1,10 +1,12 @@
 import React from 'react';
-import s from './SuppliersTable.module.scss';
 import { Supplier } from '@/services/suppliers';
-import Image from 'next/image';
-import commentImage from '@/imgs/Suppliers/table/comment.svg';
 import { useAppDispatch } from '@/redux/hooks';
 import { setSidebar } from '@/redux/slices/suppliers/suppliersSidebar';
+import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import s from './SuppliersTable.module.scss';
+//imgs
+import commentImage from '@/imgs/Suppliers/table/comment.svg';
 
 interface PropsType {
 	data: Supplier[];
@@ -12,6 +14,8 @@ interface PropsType {
 
 export const SuppliersTable = ({ data }: PropsType) => {
 	const dispatch = useAppDispatch();
+	const router = useRouter();
+
 	const columns: { title: string; key: string }[] = [
 		{ title: 'Contact Name', key: 'contactName' },
 		{ title: 'Company', key: 'company' },
@@ -58,7 +62,12 @@ export const SuppliersTable = ({ data }: PropsType) => {
 									{/* Company */}
 									{column.key === 'company' && (
 										<td className={s.td}>
-											<span>{row.company ? row.company : '-'}</span>
+											<span
+												className={s.companyName}
+												onClick={() => router.push(`/suppliers/${row.id}`)}
+											>
+												{row.company ? row.company : '-'}
+											</span>
 										</td>
 									)}
 									{/* Phone Number */}

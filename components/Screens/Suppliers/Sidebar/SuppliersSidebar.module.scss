@@ -9,6 +9,8 @@
 	right: 0;
 
 	min-height: calc(100vh - 60px); //-header
+	height: calc(100vh - 60px); //-header
+	max-height: calc(100vh - 60px); //-header;
 	width: 300px;
 	transform: translateX(300px);
 
@@ -19,10 +21,20 @@
 	transition: all 0.5s ease;
 
 	&_active {
-		position: static;
+		position: fixed;
 		transform: translateX(0);
 		transition: all 0.275s ease-in-out;
 	}
+}
+
+.background {
+	position: static;
+	min-width: 300px;
+	padding: 16px;
+
+	min-height: calc(100vh - 60px); //-header
+	height: calc(100vh - 60px); //-header
+	max-height: calc(100vh - 60px); //-header;
 }
 
 .content {
