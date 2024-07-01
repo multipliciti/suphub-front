@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useAppDispatch } from '@/redux/hooks';
+import { setModal } from '@/redux/slices/modal';
 import { classNames } from '@/utils/classNames';
 import Image from 'next/image';
 import deleteInviteIcon from '@/imgs/Suppliers/Modal/delete.svg';
@@ -14,6 +16,8 @@ const defaultInputForm = {
 };
 
 export function InviteSuppliersSection() {
+	const dispatch = useAppDispatch();
+
 	const [inputForm, setInputForm] = useState(defaultInputForm);
 	const [emails, setEmails] = useState<string[]>([]);
 
@@ -67,7 +71,7 @@ export function InviteSuppliersSection() {
 	const handleSendInvites = () => {
 		setInputForm(defaultInputForm);
 		setEmails([]);
-		return null;
+		dispatch(setModal('suppliersInvited'));
 	};
 
 	const inputRef = useRef<HTMLInputElement>(null);

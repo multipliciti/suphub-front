@@ -27,6 +27,7 @@ import { AddSampleToCart } from './AddSampleToCart';
 import { GoToCart } from './GoToCart';
 import { FilePreview } from './FilePreview';
 import { InviteSuppliers } from './InviteSuppliers';
+import { SuppliersInvited } from './InviteSuppliers/SuppliersInvited';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -36,6 +37,7 @@ export const Modal = () => {
 			<div className={classNames(s.wrapper, modal === 'login' && s.wrapper_active)}>
 				{modal === 'login' && <Login />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -44,11 +46,13 @@ export const Modal = () => {
 			>
 				{modal === 'forgotPassword' && <ForgotPassword />}
 			</div>
+
 			<div
 				className={classNames(s.wrapper, modal === 'checkEmail' && s.wrapper_active)}
 			>
 				{modal === 'checkEmail' && <CheckEmail />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -57,6 +61,7 @@ export const Modal = () => {
 			>
 				{modal === 'verifyEmail' && <VerifyEmail />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -65,6 +70,7 @@ export const Modal = () => {
 			>
 				{modal === 'addToRFQCart' && <AddToRFQCart />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -73,11 +79,13 @@ export const Modal = () => {
 			>
 				{modal === 'editPassword' && <EditPassword />}
 			</div>
+
 			<div
 				className={classNames(s.wrapper, modal === 'showPhoto' && s.wrapper_active)}
 			>
 				{modal === 'showPhoto' && <ShowPhoto />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -86,6 +94,7 @@ export const Modal = () => {
 			>
 				{modal === 'passwordChanged' && <PasswordChanged />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -94,6 +103,7 @@ export const Modal = () => {
 			>
 				{modal === 'submitForReview' && <SubmitForReview />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -102,6 +112,7 @@ export const Modal = () => {
 			>
 				{modal === 'addRequestManually' && <RequestManuallyRFQ />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -110,11 +121,13 @@ export const Modal = () => {
 			>
 				{modal === 'submitedRFQ' && <SubmitedRFQ />}
 			</div>
+
 			<div
 				className={classNames(s.wrapper, modal === 'bulkUpload' && s.wrapper_active)}
 			>
 				{modal === 'bulkUpload' && <BulkUploadRFQ />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -123,6 +136,7 @@ export const Modal = () => {
 			>
 				{modal === 'createBusinessAccount' && <CreateBusinessAccount />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -133,6 +147,7 @@ export const Modal = () => {
 					<BusinessVerification />
 				)}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -141,6 +156,7 @@ export const Modal = () => {
 			>
 				{modal === 'sellerVerificationMembershipFee' && <MembershipFee />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -149,6 +165,7 @@ export const Modal = () => {
 			>
 				{modal === 'warningTrialCanBeUsedOnce' && <WarningTrialCanBeUsedOnce />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -157,6 +174,7 @@ export const Modal = () => {
 			>
 				{modal === 'sellerVerificationDepositSetUp' && <DepositSetUp />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -165,6 +183,7 @@ export const Modal = () => {
 			>
 				{modal === 'sellerAddNewProduct' && <SellerAddNewProduct />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -173,6 +192,7 @@ export const Modal = () => {
 			>
 				{modal === 'sellerProductBulkUpload' && <SellerProductBulkUpload />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -181,6 +201,7 @@ export const Modal = () => {
 			>
 				{modal === 'deleteProject' && <DeleteProject />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -189,6 +210,7 @@ export const Modal = () => {
 			>
 				{modal === 'addSampleToCartFromOption' && <AddSampleToCartFromOption />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -197,11 +219,13 @@ export const Modal = () => {
 			>
 				{modal === 'addSampleToCart' && <AddSampleToCart />}
 			</div>
+
 			<div
 				className={classNames(s.wrapper, modal === 'goToCart' && s.wrapper_active)}
 			>
 				{modal === 'goToCart' && <GoToCart />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -210,6 +234,7 @@ export const Modal = () => {
 			>
 				{modal === 'filePreview' && <FilePreview />}
 			</div>
+
 			<div
 				className={classNames(
 					s.wrapper,
@@ -217,6 +242,15 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'inviteSuppliers' && <InviteSuppliers />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'suppliersInvited' && s.wrapper_active
+				)}
+			>
+				{modal === 'suppliersInvited' && <SuppliersInvited />}
 			</div>
 		</>
 	);

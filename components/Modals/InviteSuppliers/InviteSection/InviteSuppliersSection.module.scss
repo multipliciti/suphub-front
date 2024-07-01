@@ -154,7 +154,13 @@
 		background: #2b1694;
 
 		&:hover {
+			opacity: 0.9;
 			cursor: pointer;
+		}
+
+		&:focus {
+			opacity: 0.9;
+			outline: 4px solid #e8ebfd;
 		}
 
 		&:disabled {
