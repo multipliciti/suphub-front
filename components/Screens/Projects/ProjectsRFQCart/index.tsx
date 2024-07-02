@@ -9,7 +9,6 @@ import { Api } from '@/services';
 import { useAppSelector } from '@/redux/hooks';
 import { IsBuyerSideBarRequestDetail } from '@/components/Containers/IsBuyerSideBarRequestDetail/IsBuyerSideBarRequestDetail';
 import { Spinner } from '@/components/UI/Spinner';
-import { PaginationWrapper } from '@/components/Screens/Projects/ProjectsOrders/PaginationWrapper';
 
 type TypeProps = {
 	projectId: number;
@@ -26,11 +25,6 @@ export const ProjectsRFQCart = ({ projectId }: TypeProps) => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
 
 	const [rfqsSorted, setRfqsSorted] = useState<RfqItemGot[][]>([]);
-
-	const [totalItems, setTotalItems] = useState<number>(0);
-	const [currentPage, setCurrentPage] = useState<number>(1);
-	const [totalPages, setTotalPages] = useState<number>(0);
-	const limitItems = 10;
 
 	// create fetch objs
 	const objFetchSearch = stateInputs.search
@@ -65,15 +59,10 @@ export const ProjectsRFQCart = ({ projectId }: TypeProps) => {
 	const fetchData = async () => {
 		try {
 			const response = await api.rfq.getRfqByProject({
-				page: currentPage,
-				limit: limitItems,
+				limit: 1_000_000,
 				projectId: Number(projectId),
 				searchParams: finalJsonString,
 			});
-
-			setTotalItems(response.total);
-			setTotalPages(response.totalPages);
-			setIsLoading(false);
 
 			const data: RfqItemGot[] = await response.result;
 			setIsLoading(false);
@@ -103,7 +92,7 @@ export const ProjectsRFQCart = ({ projectId }: TypeProps) => {
 			setIsLoading(true);
 			fetchData();
 		}
-	}, [stateInputs, modal, currentPage]);
+	}, [stateInputs, modal]);
 
 	{
 		return (
@@ -120,16 +109,7 @@ export const ProjectsRFQCart = ({ projectId }: TypeProps) => {
 						) : rfqsSorted.length < 1 ? (
 							<NoResult />
 						) : (
-							<>
-								<Products projectId={projectId} rfqs={rfqsSorted} />
-								<PaginationWrapper
-									limitItems={limitItems}
-									totalItems={totalItems}
-									currentPage={currentPage}
-									setActivePage={setCurrentPage}
-									totalPages={totalPages}
-								/>
-							</>
+							<Products projectId={projectId} rfqs={rfqsSorted} />
 						)}
 					</>
 				</IsBuyerSideBarRequestDetail>
