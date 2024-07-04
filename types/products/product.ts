@@ -90,6 +90,7 @@ export interface ProductItemType {
 	certifications: ProductFile[];
 	dynamic_attr: DynamicAttribute[];
 	seller: {
+		id: number;
 		name: string;
 	};
 	containerQty20ft: string;

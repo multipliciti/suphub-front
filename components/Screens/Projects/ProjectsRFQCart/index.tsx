@@ -67,6 +67,15 @@ export const ProjectsRFQCart = ({ projectId }: TypeProps) => {
 			const data: RfqItemGot[] = await response.result;
 			setIsLoading(false);
 
+			//Group options by seller frequency
+			const sellerFrequency: Record<number, number> = {};
+			data.forEach((item) => {
+				item.options.forEach((option) => {
+					const sellerId = option.product.seller.id;
+					sellerFrequency[sellerId] = (sellerFrequency[sellerId] ?? 0) + 1;
+				});
+			});
+
 			//sorted and set got data
 			const groupedData: Record<string, RfqItemGot[]> = data.reduce(
 				(acc, item) => {
@@ -74,6 +83,16 @@ export const ProjectsRFQCart = ({ projectId }: TypeProps) => {
 					if (!acc[categoryId]) {
 						acc[categoryId] = [];
 					}
+
+					// Sort options within the item based on seller frequency
+					item.options.sort((a, b) => {
+						const sellerAId = a.product.seller.id;
+						const sellerBId = b.product.seller.id;
+						return (
+							(sellerFrequency[sellerBId] ?? 0) - (sellerFrequency[sellerAId] ?? 0)
+						);
+					});
+
 					acc[categoryId].push(item);
 					return acc;
 				},
