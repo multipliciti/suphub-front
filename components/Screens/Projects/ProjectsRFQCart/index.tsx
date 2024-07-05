@@ -84,13 +84,19 @@ export const ProjectsRFQCart = ({ projectId }: TypeProps) => {
 						acc[categoryId] = [];
 					}
 
-					// Sort options within the item based on seller frequency
+					// Sort options within the item based on seller frequency, then by seller ID
 					item.options.sort((a, b) => {
 						const sellerAId = a.product.seller.id;
 						const sellerBId = b.product.seller.id;
-						return (
-							(sellerFrequency[sellerBId] ?? 0) - (sellerFrequency[sellerAId] ?? 0)
-						);
+						const frequencyDifference =
+							(sellerFrequency[sellerBId] ?? 0) - (sellerFrequency[sellerAId] ?? 0);
+
+						if (frequencyDifference !== 0) {
+							return frequencyDifference;
+						} else {
+							// If frequencies are the same, sort by seller ID
+							return sellerAId - sellerBId;
+						}
 					});
 
 					acc[categoryId].push(item);
