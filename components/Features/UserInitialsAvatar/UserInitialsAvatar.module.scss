@@ -1,0 +1,26 @@
+.avatar {
+	display: flex;
+	width: 32px;
+	height: 32px;
+	justify-content: center;
+	align-items: center;
+	gap: 10px;
+
+	border-radius: 200px;
+	border: 1px solid #fdfdfd;
+	background: lightgray 50% / cover no-repeat;
+
+	&_text {
+		flex: 1 0 0;
+
+		color: #0a171f;
+		text-align: center;
+		text-transform: uppercase;
+		user-select: none;
+
+		font-size: 10px;
+		font-style: italic;
+		font-weight: 700;
+		line-height: 24px; /* 150% */
+	}
+}

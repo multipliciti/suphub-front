@@ -8,6 +8,7 @@ import { ProductsApi } from './productsService';
 import { ProductSellerApi } from '@/services/productSellerApi';
 import { sideBarApi } from './sideBarService';
 import { ProjectApi } from './projectApi';
+import { ProjectTeamApi } from '@/services/projectTeam';
 import { RfqApi } from './rfqApi';
 import { CategoryApi } from './categoryApi';
 import { RfqOptionApi } from '@/services/rfqOptionApi';
@@ -56,6 +57,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		productPrice: ProductPriceApi(instance),
 		sideBar: sideBarApi(instance),
 		project: ProjectApi(instance),
+		projectTeamMember: ProjectTeamApi(instance),
 		rfq: RfqApi(instance),
 		rfqOption: RfqOptionApi(instance),
 		buyerCompany: BuyerCompanyApi(instance),

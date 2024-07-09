@@ -9,8 +9,12 @@ import { TableSelect } from '@/components/UI/TableSelect';
 import { setProject } from '@/redux/slices/projects/projectItem';
 import { Spinner } from '@/components/UI/Spinner';
 import { Api } from '@/services';
+import ProjectTeam from '@/components/Screens/Projects/ProjectsOverview/ProjectsOverviewTable/ProjectTeam';
 
 import s from './ProjectsOverviewTable.module.scss';
+//imgs
+import projectTeamIcon from '@/imgs/Buyer&Seller/Projects/black_invite_suppliers.svg';
+import Image from 'next/image';
 
 type ChangeProjectFieldFunction = <K extends keyof Project>(
 	key: K,
@@ -111,6 +115,25 @@ export const ProjectsOverviewTable: FC = () => {
 				<Spinner />
 			) : (
 				<div className={s.wrapper}>
+					<table>
+						<thead>
+							<tr>
+								<th colSpan={2} className={s.team_header}>
+									<Image src={projectTeamIcon} alt="Project Team Icon" />
+									Project Team
+								</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr>
+								<td>
+									<ProjectTeam />
+								</td>
+							</tr>
+						</tbody>
+					</table>
+
 					<table>
 						<thead>
 							<tr>

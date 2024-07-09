@@ -32,7 +32,9 @@ type ModalType =
 	| 'goToCart'
 	| 'filePreview'
 	| 'inviteSuppliers'
-	| 'suppliersInvited';
+	| 'suppliersInvited'
+	| 'manageTeam'
+	| 'teamMembersInvited';
 
 interface CounterState {
 	modal: ModalType;

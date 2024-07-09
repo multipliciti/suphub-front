@@ -3,10 +3,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { setModal } from '@/redux/slices/modal';
 import { classNames } from '@/utils/classNames';
+import { ROUTES } from '@/services/routes';
+import { Api } from '@/services';
 import Image from 'next/image';
+import s from './InviteManageTeamSection.module.scss';
+//imgs
 import deleteInviteIcon from '@/imgs/Suppliers/Modal/delete.svg';
 import sendIcon from '@/imgs/Suppliers/Modal/send.svg';
-import s from './InviteSuppliersSection.module.scss';
+
+interface InviteManageTeamSectionProps {
+	projectId: number;
+}
 
 const regexEmail = /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g;
 
@@ -16,9 +23,13 @@ const defaultInputForm = {
 	submitFailureEncountered: false,
 };
 
-export function InviteSuppliersSection() {
+export function InviteManageTeamSection({
+	projectId,
+}: InviteManageTeamSectionProps) {
 	const dispatch = useAppDispatch();
+	const api = Api();
 
+	const inputRef = useRef<HTMLInputElement>(null);
 	const [inputForm, setInputForm] = useState(defaultInputForm);
 	const [emails, setEmails] = useState<string[]>([]);
 
@@ -35,13 +46,13 @@ export function InviteSuppliersSection() {
 		else return verifyEmail();
 	};
 
-	const handleShowError = (text: string) => {
+	const handleShowError = (text: string, duration: number = 1500) => {
 		setInputForm((prev) => ({
 			...prev,
 			submitFailureEncountered: true,
 			error: text,
 		}));
-		setTimeout(() => setInputForm((prev) => ({ ...prev, error: '' })), 1500);
+		setTimeout(() => setInputForm((prev) => ({ ...prev, error: '' })), duration);
 	};
 
 	const handleAddEmail = () => {
@@ -69,13 +80,23 @@ export function InviteSuppliersSection() {
 		setEmails(newEmails);
 	};
 
-	const handleSendInvites = () => {
-		setInputForm(defaultInputForm);
-		setEmails([]);
-		dispatch(setModal('suppliersInvited'));
-	};
+	const handleSendInvites = async () => {
+		try {
+			const invitationPromises = emails.map((email) =>
+				api.projectTeamMember.invite({
+					projectId,
+					email,
+					confirmUrl: ROUTES.confirmEmail,
+				})
+			);
 
-	const inputRef = useRef<HTMLInputElement>(null);
+			await Promise.all(invitationPromises);
+
+			dispatch(setModal('teamMembersInvited'));
+		} catch {
+			handleShowError('Failed to send invites!', 10000);
+		}
+	};
 
 	useEffect(() => {
 		inputRef.current?.focus();

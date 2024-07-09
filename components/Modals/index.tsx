@@ -28,6 +28,8 @@ import { GoToCart } from './GoToCart';
 import { FilePreview } from './FilePreview';
 import { InviteSuppliers } from './InviteSuppliers';
 import { SuppliersInvited } from './InviteSuppliers/SuppliersInvited';
+import { ManageTeam } from '@/components/Modals/ManageTeam';
+import { TeamMembersInvited } from '@/components/Modals/ManageTeam/TeamInvited';
 
 export const Modal = () => {
 	const modal = useAppSelector((state) => state.modalSlice.modal);
@@ -251,6 +253,21 @@ export const Modal = () => {
 				)}
 			>
 				{modal === 'suppliersInvited' && <SuppliersInvited />}
+			</div>
+
+			<div
+				className={classNames(s.wrapper, modal === 'manageTeam' && s.wrapper_active)}
+			>
+				{modal === 'manageTeam' && <ManageTeam />}
+			</div>
+
+			<div
+				className={classNames(
+					s.wrapper,
+					modal === 'teamMembersInvited' && s.wrapper_active
+				)}
+			>
+				{modal === 'teamMembersInvited' && <TeamMembersInvited />}
 			</div>
 		</>
 	);
