@@ -1,95 +1,100 @@
 'use client';
 import { Filters } from './Filters';
 import { useEffect, useState } from 'react';
+import { useAppSelector } from '@/redux/hooks';
+import { SuppliersTableEmptyMessage } from './SuppliersTableEmptyMessage/SuppliersTableEmptyMessage';
 import { SuppliersTable } from './SuppliersTable';
 import { PaginationWrapper } from './PaginationWrapper';
-import { Api } from '@/services';
-import { Supplier, temporaryDataSuppliers } from '@/services/suppliers';
 import { Spinner } from '@/components/UI/Spinner';
+import { Supplier } from '@/services/suppliers';
+import { Api } from '@/services';
 
 export const SuppliersTablePage = () => {
+	const modal = useAppSelector((state) => state.modalSlice.modal);
 	const api = Api();
 	//store filters-inputs value
 	const [stateInputs, setStateInputs] = useState({
 		search: '',
-		manufacturer: [],
 		categories: [],
 	});
 
 	const [totalItems, setTotalItems] = useState<number>(0);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [totalPages, setTotalPages] = useState<number>(0);
-	const limitItems = 12;
+	const limitItems = 8;
 
 	const [suppliers, setSuppliers] = useState<Supplier[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 
-	// create fetch objs
-	const objFetchSearch = stateInputs.search
-		? {
-				status: { contains: stateInputs.search },
-		  }
-		: null;
-	const categoriesFilterArr =
-		stateInputs.categories.length > 0
-			? {
-					subCategory: { category: { id: { in: stateInputs.categories } } },
-			  }
-			: null;
+	//TODO categories filter for table
 
-	const finalAttrObj = {
-		...(categoriesFilterArr && { ...categoriesFilterArr }),
-		...(objFetchSearch && { ...objFetchSearch }),
+	const filterSuppliers = (suppliers: Supplier[]) => {
+		const searchTerm: string = stateInputs.search;
+		return suppliers.filter((supplier) => {
+			const searchLower = searchTerm.toLowerCase();
+
+			const checkValue = (value: string | object | null) => {
+				if (typeof value === 'string') {
+					return value.toLowerCase().includes(searchLower);
+				} else if (typeof value === 'object' && value !== null) {
+					return Object.values(value).some(checkValue);
+				}
+				return false;
+			};
+
+			return Object.values(supplier).some(checkValue);
+		});
 	};
-
-	//Converting the combinedJsonObj to JSON for the request.
-	const finalJsonString = JSON.stringify(finalAttrObj);
+	const getCurrentPageSuppliers = () => {
+		const filteredSuppliers = filterSuppliers(suppliers);
+		const startIndex = (currentPage - 1) * limitItems;
+		const endIndex = startIndex + limitItems;
+		return filteredSuppliers.slice(startIndex, endIndex);
+	};
 
 	const getSuppliers = async () => {
 		try {
-			// const orders = await api.sellerProject.getSellerOrders({
-			// 	page: currentPage,
-			// 	limit: limitItems,
-			// 	searchParams: finalJsonString,
-			// });
-			// const suppliersGot: Supplier[] = orders.result;
-
-			// setOrders(ordersGot);
-			// setTotalItems(orders.total);
-			// setTotalPages(orders.totalPages);
-			setSuppliers(temporaryDataSuppliers);
-			setTotalItems(temporaryDataSuppliers.length);
-			setTotalPages(1);
+			const suppliers = await api.buyerSupplier.getAll();
+			setSuppliers(suppliers);
+			setTotalItems(suppliers.length);
+			setTotalPages(Math.ceil(suppliers.length / limitItems));
 
 			setIsLoading(false);
 		} catch (error) {
+			setIsLoading(false);
 			console.error('getSuppliers seller error', error);
 		}
 	};
 
 	useEffect(() => {
-		getSuppliers();
-	}, [stateInputs, currentPage]);
+		const filteredSuppliers = filterSuppliers(suppliers);
+		setTotalItems(filteredSuppliers.length);
+		setTotalPages(Math.ceil(filteredSuppliers.length / limitItems));
+	}, [stateInputs.search, suppliers]);
 
-	{
-		return (
-			<div>
-				<Filters stateInputs={stateInputs} setStateInputs={setStateInputs} />
-				{isLoading ? (
-					<Spinner style={{ marginTop: '9vh' }} />
-				) : (
-					<>
-						{suppliers.length > 0 && <SuppliersTable data={suppliers} />}
-						<PaginationWrapper
-							limitItems={limitItems}
-							totalItems={totalItems}
-							currentPage={currentPage}
-							setActivePage={setCurrentPage}
-							totalPages={totalPages}
-						/>
-					</>
-				)}
-			</div>
-		);
-	}
+	useEffect(() => {
+		if (modal === '') getSuppliers();
+	}, [stateInputs, currentPage, modal]);
+
+	return (
+		<div>
+			<Filters stateInputs={stateInputs} setStateInputs={setStateInputs} />
+			{isLoading ? (
+				<Spinner style={{ marginTop: '9vh' }} />
+			) : suppliers.length > 0 ? (
+				<>
+					<SuppliersTable data={getCurrentPageSuppliers()} />
+					<PaginationWrapper
+						limitItems={limitItems}
+						totalItems={totalItems}
+						currentPage={currentPage}
+						setActivePage={setCurrentPage}
+						totalPages={totalPages}
+					/>
+				</>
+			) : (
+				<SuppliersTableEmptyMessage />
+			)}
+		</div>
+	);
 };

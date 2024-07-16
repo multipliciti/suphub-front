@@ -34,7 +34,7 @@ export const FilePreview = () => {
 					documents={[
 						{
 							uri: previewFile?.url,
-							fileType: previewFile.mime,
+							fileType: previewFile?.mime,
 							fileName: previewFile.name,
 						},
 					]}

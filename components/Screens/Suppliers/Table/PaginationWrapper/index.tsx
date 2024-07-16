@@ -22,11 +22,12 @@ export const PaginationWrapper = ({
 	setActivePage,
 	totalPages,
 }: PropsType) => {
+	const startItem = (currentPage - 1) * limitItems + 1;
+	const endItem = Math.min(currentPage * limitItems, totalItems);
 	return (
 		<div className={s.wrapper}>
 			<span className={s.step}>
-				{totalPages > limitItems - 1 ? currentPage * limitItems : totalItems} of
-				{` ${totalItems}`}
+				{startItem}-{endItem} of {totalItems}
 			</span>
 			<Image
 				onClick={() => setActivePage(currentPage - 1)}

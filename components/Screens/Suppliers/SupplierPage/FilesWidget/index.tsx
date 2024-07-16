@@ -14,43 +14,16 @@ interface FilePropTypes {
 	file: RfqFile;
 }
 
-const dummyFiles: RfqFile[] = [
-	{
-		name: 'Certificate.pdf',
-		url: 'https://zsory-furdo.hu/evcms_medias/upload/files/testfile.pdf',
-		key: 'certificate.pdf',
-		mime: 'application/pdf',
-		bucket: 'bucket',
-	},
-	{
-		name: 'Guarantees.pdf',
-		url: 'https://zsory-furdo.hu/evcms_medias/upload/files/testfile.pdf',
-		key: 'certificate.pdf',
-		mime: 'application/pdf',
-		bucket: 'bucket',
-	},
-	{
-		name: 'Insurance.pdf',
-		url: 'https://zsory-furdo.hu/evcms_medias/upload/files/testfile.pdf',
-		key: 'certificate.pdf',
-		mime: 'application/pdf',
-		bucket: 'bucket',
-	},
-	{
-		name: 'Progress.pdf',
-		url: 'https://zsory-furdo.hu/evcms_medias/upload/files/testfile.pdf',
-		key: 'certificate.pdf',
-		mime: 'application/pdf',
-		bucket: 'bucket',
-	},
-];
+interface FilesWidgetPropTypes {
+	files: RfqFile[];
+}
 
-export default function FilesWidget() {
+export default function FilesWidget({ files }: FilesWidgetPropTypes) {
 	return (
 		<div className={s.wrapper}>
-			<div className={s.title}>Certificates ({dummyFiles.length})</div>
+			<div className={s.title}>Certificates ({files.length})</div>
 			<div className={s.file_wrapper}>
-				{dummyFiles.map((file, index) => (
+				{files.map((file, index) => (
 					<File key={index} file={file} />
 				))}
 			</div>
@@ -59,8 +32,8 @@ export default function FilesWidget() {
 }
 
 const File = ({ file }: FilePropTypes) => {
-	const { name, url, key } = file;
-	const imageSrc = getImageFilePath(key);
+	const { name, url } = file;
+	const imageSrc = getImageFilePath(name);
 	const compactFilename = shortenFilename(name, 38);
 
 	const dispatch = useAppDispatch();

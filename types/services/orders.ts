@@ -97,7 +97,7 @@ interface sellerCompanyType {
 	createdAt: string;
 }
 
-interface Address {
+export interface Address {
 	id: number;
 	street: string;
 	city: string;

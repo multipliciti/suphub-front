@@ -1,37 +1,25 @@
 import React from 'react';
-import chatIcon from '@/imgs/Suppliers/chatIcon.svg';
-import s from './MessagesSection.module.scss';
+import {
+	MessageProps,
+	MessagesProps,
+} from '@/components/Screens/Suppliers/Sidebar/type';
 import Image from 'next/image';
+import s from './MessagesSection.module.scss';
+//imgs
+import chatIcon from '@/imgs/Suppliers/chatIcon.svg';
 
-interface Message {
-	author: string;
-	date: string;
-	content: string;
-	replies?: Object[];
-}
-
-type MessageProps = { message: Message };
-
-const MESSAGES: Message[] = [
-	{
-		author: 'Mike',
-		date: 'May 24, 2024',
-		content: 'I have an update about this product @John Doe.',
-	},
-	{
-		author: 'Hao',
-		date: 'May 24, 2024',
-		content: 'I have an update about this product.',
-		replies: [{}, {}],
-	},
-];
-
-function MessageSection() {
+function MessageSection({ messages }: MessagesProps) {
 	return (
 		<div className={s.message_wrapper}>
-			{MESSAGES.map((message, index) => (
-				<Message message={message} key={index} />
-			))}
+			{messages.length > 0 ? (
+				messages.map((message, index) => <Message message={message} key={index} />)
+			) : (
+				<div className={s.message}>
+					<span className={s.message_content}>
+						This chat is empty. Be the first to say hello!
+					</span>
+				</div>
+			)}
 		</div>
 	);
 }

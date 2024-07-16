@@ -1,4 +1,5 @@
 import { ImageType } from '@/types/products/image';
+import { RfqFile } from '@/types/services/rfq';
 
 export type plansFetchedStatus = 'loading' | 'success' | 'error';
 export type SubscriptionType = 'none' | 'trial' | 'full';
@@ -59,6 +60,34 @@ export interface SellerCompany {
 
 	updatedAt: string;
 	createdAt: string;
+}
+
+interface User {
+	email: string;
+	firstName: string;
+	lastName: string;
+}
+
+export interface SellerPublicInfo {
+	id: number;
+	name: string;
+	description: string | null;
+	abbreviation: string;
+	website: string;
+	status: string;
+	productCertifications: string;
+	countryProductsCertifiedFor: string;
+	businessCertifications: RfqFile[];
+	factoryCertifications: RfqFile[];
+	companyAddressId: number | null;
+	factoryAddressId: number | null;
+	logoId: number | null;
+	updatedAt: string;
+	createdAt: string;
+	companyAddress: string | null;
+	factoryAddress: string | null;
+	users: User[];
+	supplierId: number | null;
 }
 
 interface SellerCompanyStatistics {

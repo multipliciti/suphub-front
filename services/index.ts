@@ -14,6 +14,7 @@ import { CategoryApi } from './categoryApi';
 import { RfqOptionApi } from '@/services/rfqOptionApi';
 import { SellerCompanyApi } from '@/services/sellerCompanyApi';
 import { BuyerCompanyApi } from '@/services/buyerCompanyApi';
+import { BuyerSupplierApi } from '@/services/buyerSupplier';
 import { BankUSA } from '@/services/bankUSA';
 import { BankInternational } from '@/services/bankInternational';
 import { PaymentApi } from '@/services/payment';
@@ -61,6 +62,7 @@ export const Api = (ctx?: NextPageContext | GetServerSidePropsContext) => {
 		rfq: RfqApi(instance),
 		rfqOption: RfqOptionApi(instance),
 		buyerCompany: BuyerCompanyApi(instance),
+		buyerSupplier: BuyerSupplierApi(instance),
 		buyerProject: BuyerProjectApi(instance),
 		sellerCompany: SellerCompanyApi(instance),
 		sellerProject: SellerProjectApi(instance),

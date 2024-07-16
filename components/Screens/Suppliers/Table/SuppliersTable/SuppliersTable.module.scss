@@ -27,7 +27,7 @@
 	font-weight: 400;
 	line-height: 18px;
 
-	text-align:start;
+	text-align: start;
 }
 
 .table td {
@@ -58,7 +58,7 @@
 	background: #f0f2fe;
 
 	&_wrapper {
-		display:flex;
+		display: flex;
 	}
 }
 
@@ -67,16 +67,20 @@
 	justify-content: space-between;
 	align-items: center;
 	gap: 10px;
+	cursor: pointer;
 
 	&_text {
 		width: 100%;
 	}
 
 	&_image {
-		cursor: pointer;
 	}
 }
 
 .td .companyName {
+	cursor: pointer;
+}
+
+.tr {
 	cursor: pointer;
 }

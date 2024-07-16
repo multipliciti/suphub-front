@@ -5,6 +5,7 @@ import {
 	RemoveCertification,
 	SellerCompany,
 	CompanyAdminAccountApplicationData,
+	SellerPublicInfo,
 } from '@/types/services/company';
 
 export const SellerCompanyApi = (instance: AxiosInstance) => ({
@@ -32,6 +33,16 @@ export const SellerCompanyApi = (instance: AxiosInstance) => ({
 		try {
 			const url: string = `/seller/` + id.toString();
 			const response = await instance.get<SellerCompany>(url);
+			return response;
+		} catch (error) {
+			console.error('Get by id error:', error);
+			throw error;
+		}
+	},
+	async getSellerCompaniesPublicInfoById(id: number) {
+		try {
+			const url: string = `/seller/info/` + id.toString();
+			const response = await instance.get<SellerPublicInfo>(url);
 			return response;
 		} catch (error) {
 			console.error('Get by id error:', error);

@@ -2,15 +2,16 @@
 import s from './Filters.module.scss';
 import { classNames } from '@/utils/classNames';
 import { useEffect, useRef, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
+import { setModal } from '@/redux/slices/modal';
+import { Api } from '@/services';
 import Image from 'next/image';
+//imgs
 import search_icon from '@/imgs/search.svg';
 import arrow_icon from '@/imgs/arrow.svg';
 import clear_input from '@/imgs/Buyer&Seller/clear.svg';
 import plusIcon from '@/imgs/Suppliers/table/plus.svg';
 import plusWhiteIcon from '@/imgs/Suppliers/table/plusWhite.svg';
-import { Api } from '@/services';
-import { useAppDispatch } from '@/redux/hooks';
-import { setModal } from '@/redux/slices/modal';
 
 interface TypeProps {
 	setStateInputs: (n: any) => void;
@@ -19,6 +20,7 @@ interface TypeProps {
 
 export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 	const api = Api();
+	const user = useAppSelector((state) => state.authSlice.user);
 	const dispatch = useAppDispatch();
 	const [activeFilter, setActiveFilter] = useState<number>(-1);
 	const inputSearchRef = useRef<HTMLInputElement | null>(null);
@@ -61,6 +63,10 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 	};
 
 	const handleOpenInviteModal = () => {
+		if (!user) {
+			dispatch(setModal('login'));
+			return;
+		}
 		dispatch(setModal('inviteSuppliers'));
 	};
 
@@ -77,7 +83,7 @@ export const Filters = ({ setStateInputs, stateInputs }: TypeProps) => {
 				<input
 					ref={inputSearchRef}
 					className={s.label_search}
-					placeholder="Search product by product name, PO, manufacture name  "
+					placeholder="Search supplier by contact name, company, email "
 					type="text"
 					name="search"
 					id="search"

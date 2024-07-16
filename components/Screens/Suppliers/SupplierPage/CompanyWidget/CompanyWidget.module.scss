@@ -45,7 +45,10 @@
 	}
 
 	&_description {
-		color: var(--New-colors-Grey-1, #58707a);
+		color: var(--New-colors-Grey-1, white);
+		user-select: none;
+		max-height: 2px;
+
 		font-variant-numeric: lining-nums proportional-nums;
 
 		font-size: 16px;
@@ -88,6 +91,10 @@
 
 	&_suppliers {
 		@include button(#f0f2fe, #12006c);
+
+		&_remove {
+			@include button(#feeae8, #12006c);
+		}
 
 		&_text {
 			@include text(#2b1694);

@@ -4,24 +4,11 @@ interface Button {
 	href: string;
 }
 
-const isProduction: boolean = process.env.NEXT_PUBLIC_NODE_ENV === 'production';
-
-const baseButtons: Button[] = [
-	...(isProduction
-		? []
-		: [
-				{
-					id: 2,
-					label: 'My Suppliers',
-					href: '/suppliers',
-				},
-		  ]),
-	{
-		id: 3,
-		label: 'Marketplace',
-		href: '/marketplace',
-	},
-];
+const marketPlaceButton: Button = {
+	id: 3,
+	label: 'Marketplace',
+	href: '/marketplace',
+};
 
 export const buttonsSeller: Button[] = [
 	{
@@ -29,7 +16,7 @@ export const buttonsSeller: Button[] = [
 		label: 'My Storefront',
 		href: '/storefront/get-started',
 	},
-	...baseButtons,
+	marketPlaceButton,
 ];
 
 export const buttonsBuyer: Button[] = [
@@ -38,7 +25,12 @@ export const buttonsBuyer: Button[] = [
 		label: 'My Projects',
 		href: '/projects',
 	},
-	...baseButtons,
+	{
+		id: 2,
+		label: 'My Suppliers',
+		href: '/suppliers',
+	},
+	marketPlaceButton,
 ];
 
 export const regularUser: Button[] = buttonsBuyer;
