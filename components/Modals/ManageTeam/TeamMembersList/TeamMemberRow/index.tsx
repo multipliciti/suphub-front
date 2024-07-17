@@ -5,10 +5,15 @@ import { getName } from '@/utils/avatar';
 import s from './TeamMemberRow.module.scss';
 interface TeamMemberProps {
 	member: TeamMember;
-	handleRemoveTeamMember: (id: number) => void;
+	handleRemoveTeamMember: (memberId: number) => void;
+	handleAddToProject: (email: string) => void;
 }
 
-const TeamMemberRow = ({ member, handleRemoveTeamMember }: TeamMemberProps) => {
+const TeamMemberRow = ({
+	member,
+	handleRemoveTeamMember,
+	handleAddToProject,
+}: TeamMemberProps) => {
 	return (
 		<div className={s.team_member}>
 			<div className={s.team_member_content}>
@@ -18,15 +23,28 @@ const TeamMemberRow = ({ member, handleRemoveTeamMember }: TeamMemberProps) => {
 				<div className={s.team_member_info}>{getName(member)}</div>
 			</div>
 			<div className={s.team_member_button_wrapper}>
-				<button
-					className={s.team_member_button_remove}
-					onClick={() => handleRemoveTeamMember(member.id)}
-				>
-					<span className={s.team_member_button_remove_text}>Remove</span>
-				</button>
-				<div className={s.team_member_button_role}>
-					<span className={s.team_member_button_role_text}>Member</span>
-				</div>
+				{member.isMember && member.memberId && (
+					<button
+						className={s.team_member_button_remove}
+						onClick={() => handleRemoveTeamMember(Number(member.memberId))}
+					>
+						<span className={s.team_member_button_remove_text}>Remove</span>
+					</button>
+				)}
+				{member.isMember || member.isOwner ? (
+					<div className={s.team_member_button_role}>
+						<span className={s.team_member_button_role_text}>
+							{member.isOwner ? 'Owner' : 'Member'}
+						</span>
+					</div>
+				) : (
+					<button
+						className={s.team_member_button_add}
+						onClick={() => handleAddToProject(member.email)}
+					>
+						<span className={s.team_member_button_add_text}>Add to project</span>
+					</button>
+				)}
 			</div>
 		</div>
 	);

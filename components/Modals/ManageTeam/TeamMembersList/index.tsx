@@ -14,14 +14,33 @@ export function TeamMembersList({ projectId }: TeamMembersListProps) {
 
 	const [teamMembers, setTeamMembers] = useState<TeamMember[]>([]);
 
-	const handleRemoveTeamMember = async (id: number) => {
-		await api.projectTeamMember.delete(id);
+	const handleAddToProject = async (email: string) => {
+		await api.projectTeamMember.invite({
+			projectId,
+			email,
+			confirmUrl: 'https://notrequired.believeme',
+		});
+		await fetchTeamMembers();
+	};
+
+	const handleRemoveTeamMember = async (memberId: number) => {
+		await api.projectTeamMember.delete(memberId);
 		await fetchTeamMembers();
 	};
 
 	const fetchTeamMembers = async () => {
 		const response = await api.projectTeamMember.getAll(projectId);
 		setTeamMembers(response);
+	};
+
+	const sortTeamMembers = (members: TeamMember[]) => {
+		return members.sort((a, b) => {
+			if (a.isOwner && !b.isOwner) return -1;
+			if (!a.isOwner && b.isOwner) return 1;
+			if (a.isMember && !b.isMember) return -1;
+			if (!a.isMember && b.isMember) return 1;
+			return 0;
+		});
 	};
 
 	useEffect(() => {
@@ -33,9 +52,10 @@ export function TeamMembersList({ projectId }: TeamMembersListProps) {
 			<div className={s.content_title}>Team Members List:</div>
 			<div className={s.team_member_wrapper}>
 				{teamMembers.length > 0 ? (
-					teamMembers.map((member, index) => (
+					sortTeamMembers(teamMembers).map((member, index) => (
 						<TeamMemberRow
 							handleRemoveTeamMember={handleRemoveTeamMember}
+							handleAddToProject={handleAddToProject}
 							member={member}
 							key={index}
 						/>

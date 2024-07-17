@@ -6,12 +6,10 @@ interface HslType {
 }
 
 export function getInitials(member: TeamMember) {
-	const {
-		manager: { firstName, lastName, email },
-	} = member;
+	const { firstName, lastName, email } = member;
 
 	if (firstName && lastName) {
-		return `${firstName.charAt(0)}.${lastName.slice(0, 2)}.`;
+		return `${firstName.charAt(0)}.${lastName.charAt(0)}.`;
 	} else if (email) {
 		return `${email.charAt(0)}.${email.charAt(1)}.`;
 	}
@@ -19,9 +17,7 @@ export function getInitials(member: TeamMember) {
 }
 
 export function getName(member: TeamMember) {
-	const {
-		manager: { firstName, lastName, email },
-	} = member;
+	const { firstName, lastName, email } = member;
 
 	return firstName === null && lastName === null
 		? email

@@ -10,13 +10,13 @@ export interface AssignTeamMemberToRFQBody {
 
 export interface TeamMember {
 	id: number;
-	projectId: number;
-	managerId: number;
-	manager: {
-		firstName: string | null;
-		lastName: string | null;
-		email: string;
-		username: string | null;
-		avatar: string | null;
-	};
+	email: string;
+	buyerCompanyId: number;
+	isMember: boolean;
+	isOwner: boolean;
+	memberId: null | number;
+	firstName: null | string;
+	lastName: null | string;
+	username: null | string;
+	avatar: null | string;
 }
