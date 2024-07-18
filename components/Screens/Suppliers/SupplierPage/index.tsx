@@ -1,11 +1,12 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
-import { useAppSelector } from '@/redux/hooks';
+import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { ProductItemType } from '@/types/products/product';
 import { SellerPublicInfo } from '@/types/services/company';
 import { RfqFile } from '@/types/services/rfq';
 import { Supplier } from '@/services/suppliers';
+import { setModal } from '@/redux/slices/modal';
 import CompanyWidget from './CompanyWidget';
 import FilesWidget from './FilesWidget';
 import { Api } from '@/services';
@@ -14,6 +15,7 @@ import s from './SupplierPage.module.scss';
 
 function SupplierPage() {
 	const user = useAppSelector((state) => state.authSlice.user);
+	const dispatch = useAppDispatch();
 	const { id } = useParams();
 	const sellerId = Number(id);
 	const api = Api();
@@ -25,7 +27,10 @@ function SupplierPage() {
 	const [products, setProducts] = useState<ProductItemType[]>([]);
 
 	const handleSaveToMySuppliers = async () => {
-		//TODO do not work, fix after backend error fixed
+		if (!user) {
+			dispatch(setModal('login'));
+			return;
+		}
 
 		const supplierEmail =
 			thisSupplier?.supplierEmail || sellerCompany?.users?.[0]?.email;
@@ -73,24 +78,28 @@ function SupplierPage() {
 			]);
 			setSellerCompany(sellerPublicInfo.data);
 			setProducts(products.result);
+		};
+		fetch();
+	}, []);
 
-			if (user?.role !== 'seller') {
-				const mySuppliers = await api.buyerSupplier.getAll();
-				const mySupplier = mySuppliers.find(
-					(supplier: Supplier) => supplier.sellerCompanyId === sellerId
-				);
-				setIsInMySupplier(mySupplier ? mySupplier : false);
-			}
+	useEffect(() => {
+		const fetchForBuyer = async () => {
+			const mySuppliers = await api.buyerSupplier.getAll();
+			const mySupplier = mySuppliers.find(
+				(supplier: Supplier) => supplier.sellerCompanyId === sellerId
+			);
+			setIsInMySupplier(mySupplier ? mySupplier : false);
 
-			if (sellerPublicInfo.data.supplierId) {
+			if (sellerCompany?.supplierId) {
 				const thisSupplierResponse = await api.buyerSupplier.getById(
-					sellerPublicInfo.data.supplierId
+					sellerCompany.supplierId
 				);
 				setThisSupplier(thisSupplierResponse);
 			}
 		};
-		fetch();
-	}, []);
+
+		if (user?.role === 'buyer') fetchForBuyer();
+	}, [user, sellerCompany]);
 
 	return (
 		<div className={s.wrapper}>
