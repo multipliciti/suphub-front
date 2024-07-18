@@ -4,6 +4,7 @@ import s from './AboutProduct.module.scss';
 import Image from 'next/image';
 import { TableComponent } from './Table';
 import { classNames } from '@/utils/classNames';
+import { useRouter } from 'next/navigation';
 import { ProductItemType } from '@/types/products/product';
 
 interface PropsType {
@@ -12,8 +13,13 @@ interface PropsType {
 
 export const AboutProduct = ({ product }: PropsType) => {
 	const [activeImg, setActiveImg] = useState<number>(0);
+	const router = useRouter();
 	const { dynamic_attr, images } = product;
 	//generate info product
+
+	const handleRedirectToSellerPage = () => {
+		router.push('/suppliers/' + product.seller.id);
+	};
 
 	const shipmentPackaging = [
 		{
@@ -99,7 +105,9 @@ export const AboutProduct = ({ product }: PropsType) => {
 					</div>
 				</div>
 				<div className={s.product_description}>
-					<p className={s.subtitle}>{product.seller.name}</p>
+					<p className={s.subtitle} onClick={handleRedirectToSellerPage}>
+						{product.seller.name}
+					</p>
 					<h3 className={s.title}> {product.name} </h3>
 
 					<div className={s.product_description_wrap}>

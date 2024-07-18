@@ -19,23 +19,27 @@ function SupplierPage() {
 	const api = Api();
 
 	const [sellerCompany, setSellerCompany] = useState<SellerPublicInfo>();
-	const [thisSupplier, setThisSupplier] = useState<Supplier>();
+	const [thisSupplier, setThisSupplier] = useState<Supplier | undefined>();
 	const [isInMySupplier, setIsInMySupplier] = useState<Supplier | false>(false);
 	const [files, setFiles] = useState<RfqFile[]>([]);
 	const [products, setProducts] = useState<ProductItemType[]>([]);
 
 	const handleSaveToMySuppliers = async () => {
 		//TODO do not work, fix after backend error fixed
-		if (!thisSupplier?.supplierEmail) return;
-		await api.buyerSupplier.invite({
-			supplierEmail: thisSupplier.supplierEmail,
+
+		const supplierEmail =
+			thisSupplier?.supplierEmail || sellerCompany?.users?.[0]?.email;
+
+		if (!supplierEmail) return;
+		const addSupplierResponse = await api.buyerSupplier.invite({
+			supplierEmail: supplierEmail,
 			acceptUrl: '',
 			aboutUrl: '',
 		});
 
-		setIsInMySupplier(thisSupplier);
+		setIsInMySupplier(addSupplierResponse);
 
-		return null;
+		return;
 	};
 
 	const handleRemoveSupplierFromMySuppliers = async () => {
@@ -52,19 +56,23 @@ function SupplierPage() {
 		const fetch = async () => {
 			const sellerPublicInfo =
 				await api.sellerCompany.getSellerCompaniesPublicInfoById(sellerId);
-			const thisSupplierResponse = await api.buyerSupplier.getById(
-				Number(sellerPublicInfo.data.supplierId)
-			);
 			const products = await api.product.getProduct({
 				page: 1,
 				limit: 1000,
 				sortParams: {},
 				searchParams: JSON.stringify({
 					seller: {
-						name: sellerPublicInfo.data.name,
+						id: sellerPublicInfo.data.id,
 					},
 				}),
 			});
+
+			setFiles([
+				...sellerPublicInfo.data.businessCertifications,
+				...sellerPublicInfo.data.factoryCertifications,
+			]);
+			setSellerCompany(sellerPublicInfo.data);
+			setProducts(products.result);
 
 			if (user?.role !== 'seller') {
 				const mySuppliers = await api.buyerSupplier.getAll();
@@ -74,13 +82,12 @@ function SupplierPage() {
 				setIsInMySupplier(mySupplier ? mySupplier : false);
 			}
 
-			setThisSupplier(thisSupplierResponse);
-			setFiles([
-				...sellerPublicInfo.data.businessCertifications,
-				...sellerPublicInfo.data.factoryCertifications,
-			]);
-			setSellerCompany(sellerPublicInfo.data);
-			setProducts(products.result);
+			if (sellerPublicInfo.data.supplierId) {
+				const thisSupplierResponse = await api.buyerSupplier.getById(
+					sellerPublicInfo.data.supplierId
+				);
+				setThisSupplier(thisSupplierResponse);
+			}
 		};
 		fetch();
 	}, []);
