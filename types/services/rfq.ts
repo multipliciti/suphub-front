@@ -72,6 +72,15 @@ export interface RfqItemGot {
 		};
 	};
 	options: Option[];
+	//managerId is the same as teamMember's memberId
+	managerId?: number | null;
+	manager?: {
+		avatar: string | null;
+		email: string;
+		firstName: string | null;
+		lastName: string | null;
+		username: string | null;
+	};
 }
 
 export interface RfqFind {
@@ -94,6 +103,7 @@ export interface RfqUpdateData {
 	additionalComments?: string;
 	cover?: string;
 }
+
 export interface RfqOption {
 	size?: string;
 	quantity?: number;

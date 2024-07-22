@@ -1,24 +1,23 @@
-'use client';
 import s from './Products.module.scss';
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { classNames } from '@/utils/classNames';
 import { ProductTable } from './ProductTable';
 import { QuotationsTable } from './QuotationsTable';
 import { truncateFileNameEnd } from '@/utils/names';
+import { RfqItemGot } from '@/types/services/rfq';
+import Image from 'next/image';
+//imgs
 import arrow_white from '@/imgs/Buyer&Seller/arrow_white.svg';
 import arrow_resize from '@/imgs/Buyer&Seller/arrow_resize.svg';
 import arrow_resize_active from '@/imgs/Buyer&Seller/arrow_resize_active.svg';
-// import arrow_icon from '@/imgs/arrow.svg';
-// import disable_arrow from '@/imgs/Buyer&Seller/disable_arrow.svg';
-import { RfqItemGot } from '@/types/services/rfq';
 
 interface TypeProps {
 	projectId: number;
 	rfqs: RfqItemGot[][];
+	refreshTable: () => Promise<void>;
 }
 
-export const Products = ({ rfqs, projectId }: TypeProps) => {
+export const Products = ({ rfqs, projectId, refreshTable }: TypeProps) => {
 	const [activeRfqs, setActiveRfqs] = useState<number[]>([0]);
 	const [compress, setCompress] = useState<boolean>(false);
 
@@ -117,7 +116,12 @@ export const Products = ({ rfqs, projectId }: TypeProps) => {
 									activeRfqs.includes(ind) && s.table_wrapper
 								)}
 							>
-								<ProductTable compress={compress} properties={el} />
+								<ProductTable
+									projectId={projectId}
+									compress={compress}
+									properties={el}
+									refreshTable={refreshTable}
+								/>
 							</span>
 						</div>
 						<div

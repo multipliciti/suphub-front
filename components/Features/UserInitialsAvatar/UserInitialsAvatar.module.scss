@@ -1,7 +1,6 @@
 .avatar {
 	display: flex;
-	width: 32px;
-	height: 32px;
+
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
@@ -9,6 +8,21 @@
 	border-radius: 200px;
 	border: 1px solid #fdfdfd;
 	background: lightgray 50% / cover no-repeat;
+
+	&_l {
+		width: 32px;
+		height: 32px;
+	}
+
+	&_m {
+		width: 24px;
+		height: 24px;
+	}
+
+	&_s {
+		width: 20px;
+		height: 20px;
+	}
 
 	&_text {
 		flex: 1 0 0;
@@ -18,9 +32,22 @@
 		text-transform: uppercase;
 		user-select: none;
 
-		font-size: 10px;
 		font-style: italic;
 		font-weight: 700;
-		line-height: 24px; /* 150% */
+
+		&_l {
+			font-size: 10px;
+			line-height: 24px; /* 150% */
+		}
+
+		&_m {
+			font-size: 10px;
+			line-height: 20px; /* 150% */
+		}
+
+		&_s {
+			font-size: 8px;
+			line-height: 16px; /* 150% */
+		}
 	}
 }

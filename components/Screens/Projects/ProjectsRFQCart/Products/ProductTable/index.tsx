@@ -1,58 +1,46 @@
-'use client';
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAppDispatch } from '@/redux/hooks';
 import { classNames } from '@/utils/classNames';
-import Image from 'next/image';
+import { TeamMember, TeamMemberActive } from '@/types/services/projectTeam';
 import { setRfqId } from '@/redux/slices/sideBars/sideBarRequestDetail';
+import UserInitialsAvatar from '@/components/Features/UserInitialsAvatar';
 import { RfqItemGot } from '@/types/services/rfq';
 import { truncateFileNameEnd } from '@/utils/names';
+import { getName } from '@/utils/avatar';
 import { Api } from '@/services';
+import Image from 'next/image';
 import debounce from 'lodash.debounce';
 import s from './ProductTable.module.scss';
-
-import avatartest from '@/imgs/Header/AvatarsTest.svg';
+//imgs
 import chevron_down from '@/imgs/ProfileSettings/chevron-down.svg';
 
 interface TypeProps {
+	projectId: number;
 	properties: RfqItemGot[];
 	compress: boolean;
+	refreshTable: () => Promise<void>;
 }
 
-interface TeamMember {
-	id: number;
-	logo: any;
-	name: string;
-}
-
-const teamMembers: TeamMember[] = [
-	{
-		id: 1,
-		logo: avatartest,
-		name: 'Alex Tamer',
-	},
-	{
-		id: 2,
-		logo: avatartest,
-		name: 'Mary Burke',
-	},
-];
-
-export const ProductTable = ({ properties, compress }: TypeProps) => {
+export const ProductTable = ({
+	projectId,
+	properties,
+	compress,
+	refreshTable,
+}: TypeProps) => {
 	const api = Api();
 	const dispatch = useAppDispatch();
 	const tableRef = useRef<HTMLTableSectionElement | null>(null);
 	const inputBugetRef = useRef<HTMLInputElement | null>(null);
 
 	const [dropdownVisible, setDropdownVisible] = useState<number | null>(null);
-	const [selectedTeamMember, setSelectedTeamMember] = useState<{
-		[key: number]: TeamMember;
-	}>({});
+	const [teamMembers, setTeamMembers] = useState<TeamMemberActive[]>([]);
 
-	const handleSelectTeamMember = (rfqId: number, teamMember: TeamMember) => {
-		setSelectedTeamMember((prev: any) => ({
-			...prev,
-			[rfqId]: teamMember,
-		}));
+	const handleSelectTeamMember = async (
+		rfqId: number,
+		teamMember: TeamMemberActive
+	) => {
+		await api.projectTeamMember.assignToRFQ(teamMember.memberId, rfqId);
+		await refreshTable();
 		setDropdownVisible(null);
 	};
 
@@ -60,24 +48,6 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 		e.stopPropagation();
 		setDropdownVisible((prev) => (prev === ind ? null : ind));
 	};
-
-	// TODO ADD BACKEND ON IMPLEMENTATION
-	useEffect(() => {
-		const getRandomTeamMember = () => {
-			const randomIndex = Math.floor(Math.random() * teamMembers.length);
-			return teamMembers[randomIndex];
-		};
-
-		const initializeSelectedTeamMembers = () => {
-			const initialSelectedTeamMembers: any = {};
-			properties.forEach((property) => {
-				initialSelectedTeamMembers[property.id] = getRandomTeamMember();
-			});
-			setSelectedTeamMember(initialSelectedTeamMembers);
-		};
-
-		initializeSelectedTeamMembers();
-	}, []);
 
 	const handleUpdateRfqFetch = async (
 		id: number,
@@ -116,6 +86,22 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 	useEffect(() => {
 		return () => debouncedHandleUpdateRfqFtch.cancel();
 	}, [debouncedHandleUpdateRfqFtch]);
+
+	useEffect(() => {
+		const fetchTeamMembers = async () => {
+			try {
+				const response = await api.projectTeamMember.getAll(projectId);
+				const teamMembers: TeamMemberActive[] = response.filter(
+					(member: TeamMember) => member.memberId
+				);
+				setTeamMembers(teamMembers);
+			} catch (error) {
+				console.log('error fetch team members:', error);
+			}
+		};
+
+		fetchTeamMembers();
+	}, []);
 
 	return (
 		<div className={s.wrapper}>
@@ -164,12 +150,16 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 									onClick={(e) => handleIconClick(e, ind)}
 								>
 									<span className={s.team}>
-										<Image
-											src={selectedTeamMember[rfq.id]?.logo || avatartest}
-											alt="teamMember logo"
-											width={24}
-											height={24}
-										/>
+										{rfq.managerId ? (
+											<UserInitialsAvatar
+												size="m"
+												member={rfq.manager as TeamMemberActive}
+											/>
+										) : (
+											<div className={s.team_avatar}>
+												<span className={s.team_avatar_text}>Pick</span>
+											</div>
+										)}
 										<Image
 											className={s.team_tag}
 											src={chevron_down}
@@ -181,31 +171,41 @@ export const ProductTable = ({ properties, compress }: TypeProps) => {
 								</div>
 								{dropdownVisible === ind && (
 									<div className={s.dropdown}>
-										{teamMembers.map((teamMember, index) => (
+										{teamMembers.length ? (
+											teamMembers.map((teamMember, index) => (
+												<div
+													className={classNames(
+														s.dropdown_row,
+														rfq.managerId === teamMember.id &&
+															s.dropdown_row_selected
+													)}
+													key={index}
+													onClick={(e) => {
+														e.stopPropagation();
+														handleSelectTeamMember(rfq.id, teamMember);
+													}}
+												>
+													<UserInitialsAvatar size="m" member={teamMember} />
+													<span className={s.dropdown_row_text}>
+														{getName(teamMember)}
+													</span>
+												</div>
+											))
+										) : (
 											<div
-												className={classNames(
-													s.dropdown_row,
-													selectedTeamMember[rfq.id]?.id === teamMember.id &&
-														s.dropdown_row_selected
-												)}
-												key={index}
-												onClick={(e) => {
-													e.stopPropagation();
-													handleSelectTeamMember(rfq.id, teamMember);
-												}}
+												className={s.dropdown_row}
+												onClick={() => setDropdownVisible(null)}
 											>
-												<Image
-													className={s.dropdown_row_logo}
-													src={teamMember.logo}
-													alt="logo1"
-													width={24}
-													height={24}
-												/>
-												<span className={s.dropdown_row_text}>
-													{teamMember.name}
+												<span
+													className={classNames(
+														s.dropdown_row_text,
+														s.dropdown_row_text_empty
+													)}
+												>
+													No Team Members
 												</span>
 											</div>
-										))}
+										)}
 									</div>
 								)}
 							</td>

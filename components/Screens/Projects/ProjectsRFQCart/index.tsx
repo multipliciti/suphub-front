@@ -127,14 +127,17 @@ export const ProjectsRFQCart = ({ projectId }: TypeProps) => {
 						stateInputs={stateInputs}
 						setStateInputs={setStateInputs}
 					/>
-					{/* // */}
 					<>
 						{isLoading ? (
 							<Spinner />
 						) : rfqsSorted.length < 1 ? (
 							<NoResult />
 						) : (
-							<Products projectId={projectId} rfqs={rfqsSorted} />
+							<Products
+								projectId={projectId}
+								rfqs={rfqsSorted}
+								refreshTable={fetchData}
+							/>
 						)}
 					</>
 				</IsBuyerSideBarRequestDetail>

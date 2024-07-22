@@ -38,9 +38,10 @@ export const ProjectTeamApi = (instance: AxiosInstance) => ({
 		}
 	},
 
-	async assignToRFQ(id: number, body: AssignTeamMemberToRFQBody) {
+	async assignToRFQ(teamMemberId: number, rfqId: number) {
 		try {
-			const url = `/team-member/${id}`;
+			const url = `/team-member/${teamMemberId}`;
+			const body: AssignTeamMemberToRFQBody = { rfqId };
 			const response = await instance.patch(url, body);
 			return response.data;
 		} catch (error) {

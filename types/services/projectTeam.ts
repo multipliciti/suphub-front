@@ -20,3 +20,7 @@ export interface TeamMember {
 	username: null | string;
 	avatar: null | string;
 }
+
+export interface TeamMemberActive extends TeamMember {
+	memberId: number;
+}
