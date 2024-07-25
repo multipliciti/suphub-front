@@ -6,6 +6,7 @@ import { useAppDispatch } from '@/redux/hooks';
 import { setModal, setPreviewFile } from '@/redux/slices/modal';
 import { useAppSelector } from '@/redux/hooks';
 import DocViewer, { DocViewerRenderers } from '@cyntler/react-doc-viewer';
+import mime from 'mime';
 
 import modal_close from '@/imgs/close.svg';
 
@@ -34,7 +35,7 @@ export const FilePreview = () => {
 					documents={[
 						{
 							uri: previewFile?.url,
-							fileType: previewFile?.mime,
+							fileType: previewFile?.mime ?? mime.getType(previewFile?.url),
 							fileName: previewFile.name,
 						},
 					]}
