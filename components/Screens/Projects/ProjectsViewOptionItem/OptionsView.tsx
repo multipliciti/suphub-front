@@ -11,7 +11,7 @@ import { Spinner } from '@/components/UI/Spinner';
 import { getUniqueLabels } from './utils';
 
 import { Api } from '@/services';
-import { Option } from '@/types/services/rfq';
+import { RfqItemFetch, Option } from '@/types/services/rfq';
 import { BackButton } from '@/components/UI/BackButton';
 import { CartCreateBody } from '@/types/services/cart';
 
@@ -29,17 +29,27 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 	const [error, setError] = useState<string>('');
 	const dispatch = useAppDispatch();
 	const api = Api();
+	const [rfq, setRfq] = useState<RfqItemFetch>();
 	const [options, setOptions] = useState<Option[]>([]);
 
 	const dynamic_attr_arr = options.map((option: Option) => {
 		return option.product.dynamic_attr;
 	});
 	const uniqueLabelsFromDynamicAtrr = getUniqueLabels(dynamic_attr_arr);
+
+	const fetchGetRfq = async (rfqId: number) => {
+		try {
+			const response = await api.rfq.getRfqOne(rfqId);
+			setRfq(response);
+		} catch (error) {
+			console.error('Error fetchGetRfq:', error);
+		}
+	};
+
 	const fetchGetOptions = async (projectId: number) => {
 		try {
 			const response = await api.rfqOption.getOptionsByRfqId(projectId);
 			setOptions(response.data);
-			setIsLoading(false);
 		} catch (error) {
 			console.error('Error fetchGetOptions options:', error);
 		}
@@ -83,10 +93,14 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 	};
 
 	useEffect(() => {
-		dispatch(setProjectId(idProject));
-		fetchGetOptions(idOption);
-		//Setting the project ID for the card for successful addition to the cart.
-		dispatch(setCartProject(idProject));
+		void (async () => {
+			dispatch(setProjectId(idProject));
+			await fetchGetOptions(idOption);
+			await fetchGetRfq(idOption);
+			setIsLoading(false);
+			//Setting the project ID for the card for successful addition to the cart.
+			dispatch(setCartProject(idProject));
+		})();
 	}, []);
 
 	return (
@@ -182,17 +196,29 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 								<tr>
 									<td>Unit Price</td>
 									{options.map((el: Option, ind: number) => {
-										const minPriceOfPrices =
+										const priceMatchingPricesTier =
+											el.product.prices.length > 0 && rfq?.quantity
+												? el.product.prices.reduce((acc: unknown, curr) => {
+														if (rfq?.quantity >= curr.minCount) {
+															return curr.value;
+														}
+														return acc;
+												  }, null)
+												: null;
+
+										const maxPriceOfPrices =
 											el.product.prices.length > 0
 												? el.product.prices.reduce(function (prev, current) {
-														return prev.value < current.value ? prev : current;
+														return prev.minCount < current.minCount ? prev : current;
 												  })
 												: null;
+
+										const displayPrice =
+											priceMatchingPricesTier || maxPriceOfPrices?.value;
+
 										return (
 											<td className={s.price} key={ind}>
-												{minPriceOfPrices != null
-													? `${minPriceOfPrices.value}`
-													: '0'}
+												${displayPrice != null ? `${displayPrice}` : '0'}
 												<span>{`/${el.product.unitOfMeasurement}`}</span>
 											</td>
 										);
@@ -211,7 +237,12 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 									{options.map((el: Option, ind: number) => {
 										return (
 											<td key={ind}>
-												{el.product.moq} {el.product.unitOfMeasurement}
+												{
+													el.product.prices.reduce((prev, curr) =>
+														prev.minCount < curr.minCount ? prev : curr
+													)?.minCount
+												}{' '}
+												{el.product.unitOfMeasurement}
 											</td>
 										);
 									})}
@@ -244,15 +275,6 @@ export const OptionsView = ({ rfqName, idOption, idProject }: TypeProps) => {
 										);
 									}
 								)}
-								<tr>
-									<td>U-factor</td>
-									{options.map((el: Option, ind: number) => {
-										const ufactor = el.product.dynamic_attr.find(
-											(attr) => attr.label === 'U-Factor'
-										)?.value;
-										return <td key={ind}>{ufactor ? ufactor : '-'}</td>;
-									})}
-								</tr>
 							</tbody>
 						</table>
 
