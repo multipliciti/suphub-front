@@ -31,7 +31,7 @@ export default function FilesWidget({ files }: FilesWidgetPropTypes) {
 	);
 }
 
-const File = ({ file }: FilePropTypes) => {
+export const File = ({ file }: FilePropTypes) => {
 	const { name, url } = file;
 	const imageSrc = getImageFilePath(name);
 	const compactFilename = shortenFilename(name, 38);

@@ -1,17 +1,16 @@
 'use client';
 import { FC, useEffect, useState } from 'react';
-
 import { StorefrontProductFileUploadModal } from '@/components/Screens/Storefront/StorefrontLayout/StorefrontFileUploadModal';
-import { ProductFile, ProductItemType } from '@/types/products/product';
 import { ImageUploadButton } from '@/components/UI/ImageUploadButton';
-import { SellerProductFile } from '@/types/services/sellerProduct';
 import { TableWrapper } from '@/components/UI/TableWrapper';
 import { FileListItem } from '@/components/UI/FileListItem';
 import { ModalPortal } from '@/components/Features/ModalPortal';
-import { FetchStatus } from '@/types/fetch-status';
 import { Spinner } from '@/components/UI/Spinner';
 import { Api } from '@/services';
-
+import { SellerProductFile } from '@/types/services/sellerProduct';
+import { ProductItemType } from '@/types/products/product';
+import { FetchStatus } from '@/types/fetch-status';
+import { RfqFile } from '@/types/services/rfq';
 import s from './StorefrontProductItemFiles.module.scss';
 
 interface Props {
@@ -45,7 +44,7 @@ export const StorefrontProductItemFiles: FC<Props> = ({ id }) => {
 		}
 	};
 
-	const handleSetFiles = (files: ProductFile[]) => {
+	const handleSetFiles = (files: RfqFile[]) => {
 		setProduct((prevState) => {
 			if (!prevState) {
 				return;
@@ -147,7 +146,7 @@ export const StorefrontProductItemFiles: FC<Props> = ({ id }) => {
 
 				<tr>
 					<td>
-						<div>Certifications Documents</div>
+						<div>Certification Documents</div>
 					</td>
 					<td>
 						<div className={s.filelist}>

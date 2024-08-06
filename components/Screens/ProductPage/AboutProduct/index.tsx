@@ -125,6 +125,7 @@ export const AboutProduct = ({ product }: PropsType) => {
 			<TableComponent
 				shipmentPackaging={shipmentPackaging}
 				dynamic_attr={dynamic_attr}
+				product={product}
 			/>
 		</div>
 	);

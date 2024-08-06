@@ -2,8 +2,8 @@ import { FC, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 import { SellerProductFile } from '@/types/services/sellerProduct';
+import { RfqFile } from '@/types/services/rfq';
 import { ModalLayout } from '@/components/Features/ModalLayout';
-import { ProductFile } from '@/types/products/product';
 import { Dropzone } from '@/components/UI/Dropzone';
 import { Api } from '@/services';
 
@@ -13,7 +13,7 @@ interface Props {
 	onHide: () => void;
 	productId: number;
 	type: SellerProductFile;
-	setFiles: (files: ProductFile[]) => void;
+	setFiles: (files: RfqFile[]) => void;
 }
 
 type FormValues = {
@@ -81,7 +81,7 @@ export const StorefrontProductFileUploadModal: FC<Props> = ({
 			: type === 'manuals'
 			  ? 'Installation Manuals'
 			  : type === 'certifications'
-			    ? 'Certifications Documents'
+			    ? 'Certification Documents'
 			    : '';
 
 	return (

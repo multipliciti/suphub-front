@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import s from './Table.module.scss';
+import { DynamicAttribute, ProductItemType } from '@/types/products/product';
+import { File } from '@/components/Screens/Suppliers/SupplierPage/FilesWidget';
 import { classNames } from '@/utils/classNames';
-import { DynamicAttribute } from '@/types/products/product';
+import s from './Table.module.scss';
 
 interface TypeShipmentPackaging {
 	label: string;
@@ -13,15 +14,20 @@ interface TypeShipmentPackaging {
 interface TypeTables {
 	id: number;
 	title: string;
-	keyShow: DynamicAttribute[] | TypeShipmentPackaging[];
+	keyShow?: DynamicAttribute[] | TypeShipmentPackaging[];
 }
 
 interface PropsType {
 	dynamic_attr: DynamicAttribute[];
 	shipmentPackaging: TypeShipmentPackaging[];
+	product: ProductItemType;
 }
 
-export const TableComponent = ({ dynamic_attr, shipmentPackaging }: PropsType) => {
+export const TableComponent = ({
+	dynamic_attr,
+	shipmentPackaging,
+	product,
+}: PropsType) => {
 	const [activeTable, setActiveTable] = useState<number>(1);
 
 	const tables: TypeTables[] = [
@@ -35,9 +41,20 @@ export const TableComponent = ({ dynamic_attr, shipmentPackaging }: PropsType) =
 			title: 'Shipment & Packaging',
 			keyShow: shipmentPackaging,
 		},
+		{
+			id: 3,
+			title: 'Documents',
+		},
 	];
+
 	const activeTableData =
 		activeTable !== null ? tables.find((table) => table.id === activeTable) : null;
+
+	const documents = [
+		{ label: 'Cutsheet', value: product.cutsheets },
+		{ label: 'Certification Documents', value: product.certifications },
+		{ label: 'Installation Manual', value: product.manuals },
+	];
 
 	return (
 		<div className={s.wrapper}>
@@ -60,21 +77,40 @@ export const TableComponent = ({ dynamic_attr, shipmentPackaging }: PropsType) =
 					<h2 className={s.tables_active}>{activeTableData.title}</h2>
 					<table className={s.table}>
 						<tbody>
-							{tables
-								.find((el) => el.id === activeTable)
-								?.keyShow.map(
-									(item: DynamicAttribute | TypeShipmentPackaging, ind) => (
-										<tr className={s.table_row} key={ind}>
-											<td className={s.table_key}>
-												{item.label}
-												{item.attributeDescription
-													? ` (${item.attributeDescription})`
-													: ''}
-											</td>
-											<td className={s.table_value}>{item.value}</td>
-										</tr>
-									)
-								)}
+							{/* Default Table */}
+							{activeTableData.id !== 3 &&
+								tables
+									.find((el) => el.id === activeTable)
+									?.keyShow?.map(
+										(item: DynamicAttribute | TypeShipmentPackaging, ind) => (
+											<tr className={s.table_row} key={ind}>
+												<td className={s.table_key}>
+													{item.label}
+													{item.attributeDescription
+														? ` (${item.attributeDescription})`
+														: ''}
+												</td>
+												<td className={s.table_value}>{item.value}</td>
+											</tr>
+										)
+									)}
+
+							{/* Renders only for 3rd tab (Document Table) */}
+							{activeTableData.id === 3 &&
+								documents.map(({ label, value }, ind) => (
+									<tr className={s.table_row} key={ind}>
+										<td className={s.table_key}>{label}</td>
+										{value.length > 0 ? (
+											value.map((file, index) => (
+												<td className={s.table_file_wrapper} key={index}>
+													<File file={file} key={index} />
+												</td>
+											))
+										) : (
+											<div className={s.table_value}>No files</div>
+										)}
+									</tr>
+								))}
 						</tbody>
 					</table>
 				</div>

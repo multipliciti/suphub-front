@@ -1,5 +1,6 @@
 import { ImageType } from '@/types/products/image';
 import { ProductItemStatus } from '@/types/products/productStatus';
+import { RfqFile } from '@/types/services/rfq';
 
 export interface ProductFile {
 	id: number;
@@ -85,9 +86,9 @@ export interface ProductItemType {
 	subCategory: Subcategory;
 	prices: Price[];
 	images: ImageType[];
-	cutsheets: ProductFile[];
-	manuals: ProductFile[];
-	certifications: ProductFile[];
+	cutsheets: RfqFile[];
+	manuals: RfqFile[];
+	certifications: RfqFile[];
 	dynamic_attr: DynamicAttribute[];
 	seller: {
 		id: number;
